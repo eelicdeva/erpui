@@ -6,7 +6,9 @@ import { tansParams, blobValidate } from '@/utils/ruoyi'
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
 import useUserStore from '@/store/modules/user'
+import i18n from '@/lang/index';
 
+const {t} = i18n.global;
 let downloadLoadingInstance;
 // 是否显示重新登录
 export let isRelogin = { show: false };
@@ -78,9 +80,9 @@ service.interceptors.response.use(res => {
     if (code === 401) {
       if (!isRelogin.show) {
         isRelogin.show = true;
-        ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
-          confirmButtonText: '重新登录',
-          cancelButtonText: '取消',
+        ElMessageBox.confirm(t('button.ExpiredMessage'), t('register.systemhint'), {
+          confirmButtonText: t('button.ReRegister'),
+          cancelButtonText: t('el.messagebox.cancel'),
           type: 'warning'
         }
       ).then(() => {

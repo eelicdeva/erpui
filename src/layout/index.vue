@@ -22,6 +22,8 @@ import defaultSettings from '@/settings'
 import useAppStore from '@/store/modules/app'
 import useSettingsStore from '@/store/modules/settings'
 
+import { onMounted } from 'vue'
+
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme);
 const sideTheme = computed(() => settingsStore.sideTheme);
@@ -60,6 +62,25 @@ const settingRef = ref(null);
 function setLayout() {
   settingRef.value.openSetting();
 }
+onMounted(() => {
+  let MutationObserver =
+      window.MutationObserver ||
+      window.WebKitMutationObserver ||
+      window.MozMutationObserver;
+    let observer = new MutationObserver(() => {
+      let sidebar = document.getElementsByClassName("sidebar-container")[0];
+      let width = sidebar.offsetWidth;
+      document.getElementsByClassName("main-container")[0].style.marginLeft = `${width}px`;
+    });
+    observer.observe(document.getElementsByClassName("sidebar-container")[0], {
+      attributes: true,
+      characterData: true,
+      childList: true,
+      subtree: true,
+      attributeOldValue: true,
+      characterDataOldValue: true,
+    });
+})
 </script>
 
 <style lang="scss" scoped>

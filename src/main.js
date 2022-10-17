@@ -50,6 +50,8 @@ import DictTag from '@/components/DictTag'
 
 
 
+
+
 const app = createApp(App)
 
 // 全局方法挂载
@@ -70,6 +72,7 @@ app.component('FileUpload', FileUpload)
 app.component('ImageUpload', ImageUpload)
 app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
+
 
 
 

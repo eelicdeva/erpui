@@ -3,24 +3,28 @@
     <hamburger id="hamburger-container" :is-active="appStore.sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!settingsStore.topNav" />
     <top-nav id="topmenu-container" class="topmenu-container" v-if="settingsStore.topNav" />
-
     <div class="right-menu">
       <template v-if="appStore.device !== 'mobile'">
         <header-search id="header-search" class="right-menu-item" />
 
-        <el-tooltip content="源码地址" effect="dark" placement="bottom">
-          <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
+        <el-tooltip :content="$t('button.sourceAddress')" effect="dark" placement="bottom">
+          <ruo-yi-git id="ruoyi-git" class=" right-menu-item hover-effect" />
+        </el-tooltip>
+        
+        <el-tooltip :content="$t('button.language')" effect="dark" placement="bottom">
+          <lang-select :is-active="true" class="right-menu-item hover-effect" />
         </el-tooltip>
 
-        <el-tooltip content="文档地址" effect="dark" placement="bottom">
+        <el-tooltip :content="$t('button.documentAddress')" effect="dark" placement="bottom">
           <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
         </el-tooltip>
-
+        
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
-        <el-tooltip content="布局大小" effect="dark" placement="bottom">
+        <el-tooltip :content="$t('button.size')" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
+        
       </template>
       <div class="avatar-container">
         <el-dropdown @command="handleCommand" class="right-menu-item hover-effect" trigger="click">
@@ -53,6 +57,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import TopNav from '@/components/TopNav'
 import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
+import LangSelect from "@/components/LangSelect";
 import SizeSelect from '@/components/SizeSelect'
 import HeaderSearch from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
@@ -60,7 +65,9 @@ import RuoYiDoc from '@/components/RuoYi/Doc'
 import useAppStore from '@/store/modules/app'
 import useUserStore from '@/store/modules/user'
 import useSettingsStore from '@/store/modules/settings'
+import i18n from '@/lang/index';
 
+const {t} = i18n.global;
 const appStore = useAppStore()
 const userStore = useUserStore()
 const settingsStore = useSettingsStore()
@@ -83,9 +90,9 @@ function handleCommand(command) {
 }
 
 function logout() {
-  ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+  ElMessageBox.confirm(t('button.logout'), t('el.messagebox.title'), {
+    confirmButtonText: t('el.messagebox.confirm'),
+    cancelButtonText: t('el.messagebox.cancel'),
     type: 'warning'
   }).then(() => {
     userStore.logOut().then(() => {

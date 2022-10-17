@@ -64,6 +64,7 @@
             >{{ $t('button.delete') }}</el-button>
          </el-col>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
+         
       </el-row>
 
       <el-table v-loading="loading" :data="noticeList" @selection-change="handleSelectionChange">
@@ -82,7 +83,9 @@
          </el-table-column>
          <el-table-column :label="$t('user.status')" align="center" prop="status" width="100">
             <template #default="scope">
-               <dict-tag :options="sys_notice_status" :value="scope.row.status" />
+               <dict-tag 
+               :options="sys_notice_status" 
+               :value="scope.row.status" />
             </template>
          </el-table-column>
          <el-table-column :label="$t('notice.author2')" align="center" prop="createBy" width="100" />
@@ -140,13 +143,16 @@
                </el-col>
                <el-col :span="24">
                   <el-form-item :label="$t('user.status')">
+                     
                      <el-radio-group v-model="form.status">
                         <el-radio
                            v-for="dict in sys_notice_status"
                            :key="dict.value"
                            :label="dict.value"
-                        >{{ dict.label }}</el-radio>
+                        >{{ dict.label }}
+                     </el-radio>
                      </el-radio-group>
+
                   </el-form-item>
                </el-col>
                <el-col :span="24">
@@ -174,6 +180,8 @@
 <script setup name="Notice">
 import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/system/notice";
 import i18n from '@/lang/index';
+import LangSelect from "@/components/LangSelect";
+
 
 const {t} = i18n.global;
 
@@ -270,13 +278,13 @@ function submitForm() {
     if (valid) {
       if (form.value.noticeId != undefined) {
         updateNotice(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('notice.successModify'));
+          proxy.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addNotice(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('notice.AddSuccess'));
+          proxy.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -291,9 +299,11 @@ function handleDelete(row) {
     return delNotice(noticeIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('user.confirmDelete2'));
+    proxy.$modal.msgSuccess(t('user.succesDeleted'));
   }).catch(() => {});
 }
 
 getList();
 </script>
+
+

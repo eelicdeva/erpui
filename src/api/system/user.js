@@ -125,3 +125,15 @@ export function updateAuthRole(data) {
     params: data
   })
 }
+
+export function updateLang(lang) {
+  const data = {
+    lang
+  }
+  return request({
+    
+    url: '/system/user/setLang',
+    method: 'put',
+    params: data
+  })
+}

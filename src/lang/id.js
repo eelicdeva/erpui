@@ -81,7 +81,7 @@ export default {
     choosePlaceholder: 'Silahkan Pilih',
     post: 'Jabatan',
     role: 'Peran',
-    remark: 'Komentar',
+    remark: 'Catatan',
     remarkPlaceholder: 'Silakan masukkan komentar',
     dragUpload: 'Seret file ke sini, atau ',
     clickUpload: 'klik untuk mengunggah',
@@ -134,7 +134,6 @@ export default {
     handleStatus2: ' " ?',
  
   },
-
   role:{
     id: 'ID Peran',
     name: 'Nama Peran',
@@ -270,6 +269,15 @@ export default {
     addNotice: 'Tambahkan pengumuman',
     confirmDelete: 'Apakah Anda yakin akan menghapus item data dengan nomor buletin " ',
   },
+  book:{
+    title: 'Judul Buku',
+    confirmDelete: 'Apakah Anda yakin akan menghapus item data dengan nomor buku " ',
+    category: 'Kategori Buku',
+    titlePlaceholder: 'Silahkan masukkan judul buku',
+    categoryPlaceholder: 'Silahkan masukkan kategori buku',
+    remarkPlaceholder:  'Silakan masukkan catatan',
+    addBook: 'Tambahkan Buku',
+  },
   button:{
     search: 'Cari',
     reset: 'Atur Ulang',
@@ -293,7 +301,7 @@ export default {
     relation: 'Hubungan Parent-Child',
     save: 'Simpan',
     close: 'Tutup',
-    successModify:'Berhasil dimodifikasi',
+    successModify:'Berhasil diubah',
     AddSuccess: 'Berhasil ditambahkan',
     ImportResults: 'Hasil Impor',
     Authorizationsucceeded: 'Otorisasi Berhasil',
@@ -306,6 +314,21 @@ export default {
     show: 'Tamplikan',
     hide: 'Sembunyikan',
     showhide: 'Tampilkan/Sembunyikan',
+    refresh: 'Segarkan Halaman',
+    closecurrent: 'Tutup ini',
+    closeother: 'Tutup Lainnya',
+    closeleft: 'Tutup Sebelah Kiri',
+    closeright: 'Tutup Sebelah Kanan',
+    closeall: 'Tutup Semua',
+    sourceAddress: 'Alamat Sumber',
+    documentAddress: 'Alamat Dokumen',
+    size: 'Ukuran Huruf',
+    logout: 'Apakah Anda yakin ingin keluar dan keluar dari sistem? ',
+    language : 'Bahasa',
+    NetworkError: 'Kesalahan Jaringan',
+    ExpiredMessage: 'Status login Anda telah kedaluwarsa, Anda dapat tetap berada di halaman ini atau login lagi',
+    ReRegister: 'Login ulang',
+
 
   },
   navbar: {
@@ -318,6 +341,13 @@ export default {
     modifyAvatar: 'Ubah avatar',
     choose: 'Pilih',
     error: 'Format file salah, harap unggah jenis gambar, seperti: JPG, file akhiran PNG.',
+  },
+  uploadImage: {
+    tip1: 'Ukuran',
+    tip2: 'file tidak boleh lebih dari',
+    tip3: ' dan harus dalam format',
+    tip4: '',
+
   },
 
 }

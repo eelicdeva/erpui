@@ -12,7 +12,7 @@ const useAppStore = defineStore(
       },
       device: 'desktop',
       size: Cookies.get('size') || 'default',
-      lang: Cookies.get('lang') 
+      lang: Cookies.get('lang'),
     }),
     actions: {
       toggleSideBar(withoutAnimation) {
@@ -44,8 +44,8 @@ const useAppStore = defineStore(
       },
       setLanguage(lang) {
         this.lang = lang;
-        Cookies.set('lang', lang)
-      }
+        Cookies.set('lang', lang, { expires: 30 })
+      },
     }
   })
 

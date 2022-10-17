@@ -52,6 +52,7 @@ export default {
     sidebarLogo: 'Sidebar Logo',
     dynamicTitle: 'Dynamic Title',
     save: 'Save Configuration',
+    reset: 'Reset Configuration',
     loading: 'Saving to local, please wait...',
     loadingreset: 'Clearing settings cache and refreshing, please wait...',
   },
@@ -267,6 +268,15 @@ export default {
     addNotice: 'Add announcement',
     confirmDelete: 'Are you sure to delete the data item with bulletin number " ',
   },
+  book:{
+    title: 'Book Title',
+    confirmDelete: 'Are you sure to delete the data item with book number " ',
+    category: 'Book Category',
+    titlePlaceholder: 'Please input a book title',
+    categoryPlaceholder: 'Please input a book category',
+    remarkPlaceholder:  'Please input a remark',
+    addBook: 'Add Book',
+  },
   button:{
     search: 'Search',
     reset: 'Reset',
@@ -304,6 +314,21 @@ export default {
     show: 'Show',
     hide: 'Hide',
     showhide: 'Show/Hide',
+    refresh: 'Refresh Page',
+    closecurrent: 'Close Current',
+    closeother: 'Close Other',
+    closeleft: 'Close Left',
+    closeright: 'Close Right',
+    closeall: 'Close All',
+    sourceAddress: 'Source Address',
+    documentAddress: 'Document Address',
+    size: 'Layout Size',
+    logout: 'Are you sure you want to log out and log out of the system? ',
+    language : 'Language',
+    NetworkError: 'Network Error',
+    ExpiredMessage: 'Your login status has expired, you can stay on this page or log in again',
+    ReRegister: 'Re-register',
+ 
   },
   navbar: {
     personalCenter: 'Personal Center',
@@ -315,6 +340,14 @@ export default {
     modifyAvatar: 'Modify Avatar',
     choose: 'Choose',
     error: 'The file format is incorrect, please upload the image type, such as: JPG, PNG suffixed files.',
+  },
+
+  uploadImage: {
+    tip1: 'Please upload',
+    tip2: 'a file with size no larger than',
+    tip3: ' in',
+    tip4: 'format',
+
   },
 
 

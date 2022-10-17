@@ -21,14 +21,14 @@
     </el-upload>
     <!-- 上传提示 -->
     <div class="el-upload__tip" v-if="showTip">
-      请上传
+      {{ $t('uploadImage.tip1') }}
       <template v-if="fileSize">
-        大小不超过 <b style="color: #f56c6c">{{ fileSize }}MB</b>
+      {{ $t('uploadImage.tip2') }} <b style="color: #f56c6c">{{ fileSize }}MB</b>
       </template>
       <template v-if="fileType">
-        格式为 <b style="color: #f56c6c">{{ fileType.join("/") }}</b>
+      {{ $t('uploadImage.tip3') }} <b style="color: #f56c6c">{{ fileType.join("/") }}</b>
       </template>
-      的文件
+      {{ $t('uploadImage.tip4') }}
     </div>
 
     <el-dialog

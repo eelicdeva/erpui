@@ -11,13 +11,12 @@ export function useDict(...args) {
       return (() => { args.forEach((d, index) => {res.value[d] = []; 
           getDicts(d).then(
             resp => {res.value[d] = resp.data.map(
-              p => ({ 
-                label: (lang == "id") ? p.dictLabelId : ((lang == "zh") ? p.dictLabel : p.dictLabelEn),
-                value: p.dictValue, 
-                elTagType: p.listClass, 
-                elTagClass: p.cssClass
-              })
-            )}
+              p => ({ label: (lang == "id") ? p.dictLabelId : ((lang == "zh") ? p.dictLabel : p.dictLabelEn),
+               value: p.dictValue, 
+               elTagType: p.listClass, 
+               elTagClass: p.cssClass})
+              )
+            }
           )
       })
       return toRefs(res.value);

@@ -1,9 +1,13 @@
 <template>
   <div class="login">
     <!-- :rules="loginRules" -->
-    <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form">
+    <el-form ref="loginRef" 
+    :model="loginForm" 
+    :rules="loginRules" 
+    :validate-on-rule-change="false"
+    class="login-form">
       <h3 class="title">{{ $t("login.title") }}</h3>
-      <lang-select class="set-language" />
+      <lang-select @selectLangEvent="langLisen" class="set-language" />
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
@@ -82,8 +86,8 @@ import useUserStore from "@/store/modules/user";
 import LangSelect from "@/components/LangSelect";
 
 export default {
-  name: "Login",
-  components: { LangSelect },
+  name: "login",
+  'components': { LangSelect },
   data() {
     return {
       loginForm: {
@@ -92,6 +96,7 @@ export default {
         rememberMe: false,
         code: "",
         uuid: "",
+        lang: "",
       },
       codeUrl: "",
       loading: false,
@@ -123,7 +128,7 @@ export default {
           { min: 5, max: 20, message: this.$t('login.passwordError'), trigger: 'blur' }
         ],
         code: [
-          { required: true, trigger: "blur", message: this.$t('login.enterCaptcha') },
+          { required: true, trigger: "change", message: this.$t('login.enterCaptcha') },
           { pattern: /^[0-9]+$/, trigger: "change", message: this.$t('register.verificationCode') }
         ],
       };
@@ -136,14 +141,18 @@ export default {
     //   },
     //   immediate: true,
     // },
+    
   },
   created() {
       this.getCode();
       this.getCookie();
   },
   methods: {
-    handleLogin() {
-  
+    langLisen() {      
+      this.$refs.loginRef.clearValidate();
+      this.$nextTick(() => this.$refs.loginRef.validate(()=>{}));
+   },
+    handleLogin() {    
       this.$refs.loginRef.validate((valid) => {
         if (valid) {
          
@@ -158,6 +167,10 @@ export default {
             Cookies.remove("username");
             Cookies.remove("password");
             Cookies.remove("rememberMe");
+          }
+
+          if (this.loginForm.lang != Cookies.get("lang")) {
+            this.loginForm.lang = Cookies.get("lang");
           }
           // 调用action的登录方法
         this.userStore.login(this.loginForm).then(() => {
@@ -206,7 +219,7 @@ export default {
   background-size: cover;
 }
 .title {
-  margin: 0px auto 30px auto;
+  margin: 0px auto 10px auto;
   text-align: center;
   color: #707070;
 }

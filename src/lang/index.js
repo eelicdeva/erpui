@@ -27,7 +27,7 @@ const messages = {
 }
 
 const i18n = createI18n({
-  legacy: false,
+
   locale: Cookies.get('lang') || 'en',
     // 设置文本内容
   messages

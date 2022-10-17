@@ -268,6 +268,15 @@ export default {
     addNotice: '添加公告',
     confirmDelete: '是否确认删除公告编号为"',
   },
+  book:{
+    title: '书籍名称',
+    confirmDelete: '是否确认删除书编号为"',
+    category: '图书类别',
+    titlePlaceholder: '请输入书名',
+    categoryPlaceholder: '请输入图书类别',
+    remarkPlaceholder:  '请输入备注',
+    addBook: '添加图书',
+  },
   button:{
     search: '搜索',
     reset: '重置',
@@ -305,6 +314,21 @@ export default {
     show: '显示',
     hide: '隐藏',
     showhide: '显示/隐藏',
+    refresh: '刷新页面',
+    closecurrent: '关闭当前',
+    closeother: '关闭其他',
+    closeleft: '关闭左侧',
+    closeright: '关闭右侧',
+    closeall: '全部关闭',
+    sourceAddress: '源码地址',
+    documentAddress: '文档地址',
+    size: '布局大小',
+    logout: '确定注销并退出系统吗？',
+    language : '语',
+    NetworkError: '后端接口连接异常',
+    ExpiredMessage: '登录状态已过期，您可以继续留在该页面，或者重新登录',
+    ReRegister: '重新登录',
+    
   },
   navbar: {
     personalCenter: '个人中心',
@@ -316,5 +340,12 @@ export default {
     modifyAvatar: '修改头像',
     choose: '选择',
     error: '文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。',
+  },
+  uploadImage: {
+    tip1: '请上传',
+    tip2: '大小不超过',
+    tip3: '格式为',
+    tip4: '的文件',
+
   },
 }

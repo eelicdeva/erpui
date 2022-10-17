@@ -27,13 +27,13 @@
          </el-col>
          <!--用户数据-->
          <el-col :span="20" :xs="24">
-            <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+            <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" >
                <el-form-item :label="$t('user.name')" prop="userName">
                   <el-input
                      v-model="queryParams.userName"
                      :placeholder="$t('user.UserPlaceholder')"
                      clearable
-                     style="width: 240px"
+                   
                      @keyup.enter="handleQuery"
                   />
                </el-form-item>

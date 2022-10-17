@@ -60,7 +60,7 @@
                <svg-icon :icon-class="scope.row.icon" />
             </template>
          </el-table-column>
-         <el-table-column prop="orderNum" :label="$t('menu.sort')" width="60"></el-table-column>
+         <el-table-column prop="orderNum" :label="$t('menu.sort')" width="100"></el-table-column>
          <el-table-column prop="perms" :label="$t('menu.authID')" :show-overflow-tooltip="true"></el-table-column>
          <el-table-column prop="component" :label="$t('menu.path')" :show-overflow-tooltip="true"></el-table-column>
          <el-table-column prop="status" :label="$t('user.status')" width="80">

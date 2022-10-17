@@ -95,9 +95,9 @@
       <el-table v-loading="loading" :data="roleList" @selection-change="handleSelectionChange">
          <el-table-column type="selection" width="55" align="center" />
          <el-table-column :label="$t('role.id')" prop="roleId" width="120" />
-         <el-table-column :label="$t('role.name')" prop="roleName" :show-overflow-tooltip="true" width="150" />
+         <el-table-column :label="$t('role.name')" prop="roleName" :show-overflow-tooltip="true" width="200" />
          <el-table-column :label="$t('role.key')" prop="roleKey" :show-overflow-tooltip="true" width="150" />
-         <el-table-column :label="$t('role.sort')" prop="roleSort" width="100" />
+         <el-table-column :label="$t('role.sort')" prop="roleSort" width="180" />
          <el-table-column :label="$t('user.status')" align="center" width="100">
             <template #default="scope">
                <el-switch

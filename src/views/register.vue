@@ -1,8 +1,8 @@
 <template>
   <div class="register">
-    <el-form ref="registerRef" :model="registerForm" :rules="registerRules"  class="register-form">
+    <el-form ref="registerRef" :model="registerForm" :rules="registerRules" :validate-on-rule-change="false" class="register-form">
       <h3 class="title">{{ $t('register.title') }}</h3>
-      <lang-select class="set-language" />
+      <lang-select @selectLangEvent="langLisen" class="set-language" />
       <el-form-item prop="username">
         <el-input 
           v-model="registerForm.username" 
@@ -139,6 +139,10 @@ export default {
     this.getCode();
   },
   methods: {
+    langLisen() {      
+      this.$refs.registerRef.clearValidate();
+      this.$nextTick(() => this.$refs.registerRef.validate(()=>{}));
+   },
     getCode() {
       getCodeImg().then(res => {
         this.captchaOnOff = res.captchaOnOff === undefined ? true : res.captchaOnOff;
@@ -183,7 +187,7 @@ export default {
   background-size: cover;
 }
 .title {
-  margin: 0px auto 30px auto;
+  margin: 0px auto 10px auto;
   text-align: center;
   color: #707070;
 }

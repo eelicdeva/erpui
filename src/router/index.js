@@ -85,7 +85,7 @@ export const constantRoutes = [
         path: 'profile',
         component: () => import('@/views/system/user/profile/index'),
         name: 'Profile',
-        meta: { title: t('navbar.personalCenter'), icon: 'user' }
+        meta: { title:  t('navbar.personalCenter'), icon: 'user' }
       }
     ]
   }
