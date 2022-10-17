@@ -47,7 +47,7 @@ watchEffect(() => {
     useAppStore().closeSideBar({ withoutAnimation: false })
   }
   if (width.value - 1 < WIDTH) {
-    useAppStore().toggleDevice('mobile')
+    // useAppStore().toggleDevice('mobile')
     useAppStore().closeSideBar({ withoutAnimation: true })
   } else {
     useAppStore().toggleDevice('desktop')

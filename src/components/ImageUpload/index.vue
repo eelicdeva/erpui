@@ -114,6 +114,7 @@ function handleRemove(file, files) {
 
 // 上传成功回调
 function handleUploadSuccess(res) {
+  console.log(uploadImgUrl);
   uploadList.value.push({ name: res.fileName, url: res.fileName });
   if (uploadList.value.length === number.value) {
     fileList.value = fileList.value.filter(f => f.url !== undefined).concat(uploadList.value);
