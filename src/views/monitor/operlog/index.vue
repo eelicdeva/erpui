@@ -60,8 +60,8 @@
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="Search" @click="handleQuery">{{ $t('button.search') }}</el-button>
+            <el-button icon="Refresh" @click="resetQuery">{{ $t('button.reset') }}</el-button>
          </el-form-item>
       </el-form>
 
@@ -73,8 +73,8 @@
                icon="Delete"
                :disabled="multiple"
                @click="handleDelete"
-               v-hasPermi="['monitor:operlog:remove']"
-            >删除</el-button>
+               v-hasPermi="['system:operlog:remove']"
+            >{{ $t('button.delete') }}</el-button>
          </el-col>
          <el-col :span="1.5">
             <el-button
@@ -82,8 +82,8 @@
                plain
                icon="Delete"
                @click="handleClean"
-               v-hasPermi="['monitor:operlog:remove']"
-            >清空</el-button>
+               v-hasPermi="['system:operlog:remove']"
+            >{{ $t('button.clean') }}</el-button>
          </el-col>
          <el-col :span="1.5">
             <el-button
@@ -91,8 +91,8 @@
                plain
                icon="Download"
                @click="handleExport"
-               v-hasPermi="['monitor:operlog:export']"
-            >导出</el-button>
+               v-hasPermi="['system:operlog:export']"
+            >{{ $t('button.export') }}</el-button>
          </el-col>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
@@ -125,7 +125,7 @@
                   type="text"
                   icon="View"
                   @click="handleView(scope.row, scope.index)"
-                  v-hasPermi="['monitor:operlog:query']"
+                  v-hasPermi="['system:operlog:query']"
                >详细</el-button>
             </template>
          </el-table-column>
@@ -239,8 +239,8 @@ function handleQuery() {
 function resetQuery() {
   dateRange.value = [];
   proxy.resetForm("queryRef");
-  queryParams.value.pageNum = 1;
   proxy.$refs["operlogRef"].sort(defaultSort.value.prop, defaultSort.value.order);
+  handleQuery();
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {

@@ -45,8 +45,8 @@
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="Search" @click="handleQuery">{{ $t('button.search') }}</el-button>
+            <el-button icon="Refresh" @click="resetQuery">{{ $t('button.reset') }}</el-button>
          </el-form-item>
       </el-form>
 
@@ -58,7 +58,7 @@
                icon="Plus"
                @click="handleAdd"
                v-hasPermi="['system:dict:add']"
-            >新增</el-button>
+            >{{ $t('button.add') }}</el-button>
          </el-col>
          <el-col :span="1.5">
             <el-button
@@ -68,7 +68,7 @@
                :disabled="single"
                @click="handleUpdate"
                v-hasPermi="['system:dict:edit']"
-            >修改</el-button>
+            >{{ $t('button.edit') }}</el-button>
          </el-col>
          <el-col :span="1.5">
             <el-button
@@ -78,7 +78,7 @@
                :disabled="multiple"
                @click="handleDelete"
                v-hasPermi="['system:dict:remove']"
-            >删除</el-button>
+            >{{ $t('button.delete') }}</el-button>
          </el-col>
          <el-col :span="1.5">
             <el-button
@@ -87,7 +87,7 @@
                icon="Download"
                @click="handleExport"
                v-hasPermi="['system:dict:export']"
-            >导出</el-button>
+            >{{ $t('button.export') }}</el-button>
          </el-col>
          <el-col :span="1.5">
             <el-button
@@ -96,7 +96,7 @@
                icon="Refresh"
                @click="handleRefreshCache"
                v-hasPermi="['system:dict:remove']"
-            >刷新缓存</el-button>
+            >{{ $t('button.RefreshCache') }}</el-button>
          </el-col>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
@@ -182,7 +182,6 @@
 </template>
 
 <script setup name="Dict">
-import useDictStore from '@/store/modules/dict'
 import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/dict/type";
 
 const { proxy } = getCurrentInstance();
@@ -314,7 +313,6 @@ function handleExport() {
 function handleRefreshCache() {
   refreshCache().then(() => {
     proxy.$modal.msgSuccess("刷新成功");
-    useDictStore().cleanDict();
   });
 }
 

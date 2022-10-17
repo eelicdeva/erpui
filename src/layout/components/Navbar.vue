@@ -31,13 +31,13 @@
           <template #dropdown>
             <el-dropdown-menu>
               <router-link to="/user/profile">
-                <el-dropdown-item>个人中心</el-dropdown-item>
+                <el-dropdown-item>{{ $t('navbar.personalCenter') }}</el-dropdown-item>
               </router-link>
               <el-dropdown-item command="setLayout">
-                <span>布局设置</span>
+                <span>{{ $t('navbar.layoutSettings') }}</span>
               </el-dropdown-item>
               <el-dropdown-item divided command="logout">
-                <span>退出登录</span>
+                <span>{{ $t('navbar.signOut') }}</span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>

@@ -2,6 +2,11 @@ import { createWebHistory, createRouter } from 'vue-router'
 /* Layout */
 import Layout from '@/layout'
 
+import i18n from '@/lang/index';
+
+
+const {t} = i18n.global;
+
 /**
  * Note: 路由配置项
  *
@@ -66,7 +71,7 @@ export const constantRoutes = [
         path: '/index',
         component: () => import('@/views/index'),
         name: 'Index',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
+        meta: { title: t('menu.frontPage'), icon: 'dashboard', affix: true }
       }
     ]
   },
@@ -80,7 +85,7 @@ export const constantRoutes = [
         path: 'profile',
         component: () => import('@/views/system/user/profile/index'),
         name: 'Profile',
-        meta: { title: '个人中心', icon: 'user' }
+        meta: { title: t('navbar.personalCenter'), icon: 'user' }
       }
     ]
   }
@@ -98,7 +103,7 @@ export const dynamicRoutes = [
         path: 'role/:userId(\\d+)',
         component: () => import('@/views/system/user/authRole'),
         name: 'AuthRole',
-        meta: { title: '分配角色', activeMenu: '/system/user' }
+        meta: { title: t('button.authRole'), activeMenu: '/system/user' }
       }
     ]
   },
@@ -112,7 +117,7 @@ export const dynamicRoutes = [
         path: 'user/:roleId(\\d+)',
         component: () => import('@/views/system/role/authUser'),
         name: 'AuthUser',
-        meta: { title: '分配用户', activeMenu: '/system/role' }
+        meta: { title: t('button.AssignUser'), activeMenu: '/system/role' }
       }
     ]
   },

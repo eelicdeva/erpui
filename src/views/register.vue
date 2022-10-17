@@ -1,14 +1,15 @@
 <template>
   <div class="register">
-    <el-form ref="registerRef" :model="registerForm" :rules="registerRules" class="register-form">
-      <h3 class="title">若依后台管理系统</h3>
+    <el-form ref="registerRef" :model="registerForm" :rules="registerRules"  class="register-form">
+      <h3 class="title">{{ $t('register.title') }}</h3>
+      <lang-select class="set-language" />
       <el-form-item prop="username">
         <el-input 
           v-model="registerForm.username" 
           type="text" 
           size="large" 
           auto-complete="off" 
-          placeholder="账号"
+          :placeholder="$t('login.username')"
         >
           <template #prefix><svg-icon icon-class="user" class="el-input__icon input-icon" /></template>
         </el-input>
@@ -19,7 +20,7 @@
           type="password"
           size="large" 
           auto-complete="off"
-          placeholder="密码"
+          :placeholder="$t('login.password')"
           @keyup.enter="handleRegister"
         >
           <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
@@ -31,18 +32,18 @@
           type="password"
           size="large" 
           auto-complete="off"
-          placeholder="确认密码"
+          :placeholder="$t('register.confirmPassword')"
           @keyup.enter="handleRegister"
         >
           <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
         </el-input>
       </el-form-item>
-      <el-form-item prop="code" v-if="captchaEnabled">
+      <el-form-item prop="code" v-if="captchaOnOff">
         <el-input
           size="large" 
           v-model="registerForm.code"
           auto-complete="off"
-          placeholder="验证码"
+          :placeholder="$t('login.captcha')"
           style="width: 63%"
           @keyup.enter="handleRegister"
         >
@@ -60,11 +61,11 @@
           style="width:100%;"
           @click.prevent="handleRegister"
         >
-          <span v-if="!loading">注 册</span>
-          <span v-else>注 册 中...</span>
+          <span v-if="!loading">{{ $t('register.Register') }}</span>
+          <span v-else>{{ $t('register.registering') }}</span>
         </el-button>
         <div style="float: right;">
-          <router-link class="link-type" :to="'/login'">使用已有账户登录</router-link>
+          <router-link class="link-type" :to="'/login'">{{ $t('register.login') }}</router-link>
         </div>
       </el-form-item>
     </el-form>
@@ -75,82 +76,101 @@
   </div>
 </template>
 
-<script setup>
-import { ElMessageBox } from "element-plus";
+<script>
 import { getCodeImg, register } from "@/api/login";
+import LangSelect from "@/components/LangSelect";
 
-const router = useRouter();
-const { proxy } = getCurrentInstance();
+export default {
+  name: "Register",
+  components: { LangSelect },
+  data() {
+    return {
+      codeUrl: "",
+      registerForm: {
+        username: "",
+        password: "",
+        confirmPassword: "",
+        code: "",
+        uuid: ""
+      },
+      loading: false,
+      captchaOnOff: true
+    };
+  },
+  setup() {
+    const router = useRouter();
+    return {
+      router,
+    }
 
-const registerForm = ref({
-  username: "",
-  password: "",
-  confirmPassword: "",
-  code: "",
-  uuid: ""
-});
-
-const equalToPassword = (rule, value, callback) => {
-  if (registerForm.value.password !== value) {
-    callback(new Error("两次输入的密码不一致"));
-  } else {
-    callback();
-  }
-};
-
-const registerRules = {
-  username: [
-    { required: true, trigger: "blur", message: "请输入您的账号" },
-    { min: 2, max: 20, message: "用户账号长度必须介于 2 和 20 之间", trigger: "blur" }
-  ],
-  password: [
-    { required: true, trigger: "blur", message: "请输入您的密码" },
-    { min: 5, max: 20, message: "用户密码长度必须介于 5 和 20 之间", trigger: "blur" }
-  ],
-  confirmPassword: [
-    { required: true, trigger: "blur", message: "请再次输入您的密码" },
-    { required: true, validator: equalToPassword, trigger: "blur" }
-  ],
-  code: [{ required: true, trigger: "change", message: "请输入验证码" }]
-};
-
-const codeUrl = ref("");
-const loading = ref(false);
-const captchaEnabled = ref(true);
-
-function handleRegister() {
-  proxy.$refs.registerRef.validate(valid => {
-    if (valid) {
-      loading.value = true;
-      register(registerForm.value).then(res => {
-        const username = registerForm.value.username;
-        ElMessageBox.alert("<font color='red'>恭喜你，您的账号 " + username + " 注册成功！</font>", "系统提示", {
-          dangerouslyUseHTMLString: true,
-          type: "success",
-        }).then(() => {
-          router.push("/login");
-        }).catch(() => {});
-      }).catch(() => {
-        loading.value = false;
-        if (captchaEnabled) {
-          getCode();
+  },
+  computed: {
+     registerRules: function() {
+      const equalToPassword = (rule, value, callback) => {
+      if (this.registerForm.password !== value) {
+        callback(new Error(this.$t('register.passwordDontMatch')));
+      } else {
+        callback();
+      }
+    };
+        return {
+          username: [
+          { required: true, trigger: "blur", message: this.$t('login.enterUsername')},
+          { min: 4, max: 16, message: this.$t('register.usernamelength'), trigger: 'blur' },
+          { pattern: /^[a-zA-Z]/, message: this.$t('register.usernamePattern2'), trigger: "blur"},
+          { pattern: /^[a-zA-Z0-9_-]+$/, message: this.$t('register.usernamePattern'), trigger: "blur"}
+        ],
+        password: [
+          { required: true, trigger: "blur", message: this.$t('login.enterPassword') },
+          { min: 5, max: 20, message: this.$t('register.passwordlength'), trigger: 'blur' }
+        ],
+        confirmPassword: [
+          { required: true, trigger: "blur", message: this.$t('register.enterConfirmPassword')  },
+          { required: true, validator: equalToPassword, trigger: "blur" }
+        ],
+        code: [
+          { required: true, trigger: "change", message: this.$t('login.enterCaptcha') },
+          { pattern: /^[0-9]+$/, trigger: "change", message: this.$t('register.verificationCode') }
+          ]
+        };
+      },
+  },
+  created() {
+    this.getCode();
+  },
+  methods: {
+    getCode() {
+      getCodeImg().then(res => {
+        this.captchaOnOff = res.captchaOnOff === undefined ? true : res.captchaOnOff;
+        if (this.captchaOnOff) {
+          this.codeUrl = "data:image/gif;base64," + res.img;
+          this.registerForm.uuid = res.uuid;
+        }
+      });
+    },
+    handleRegister() {
+      this.$refs.registerRef.validate(valid => {
+        if (valid) {
+          this.loading = true;
+          register(this.registerForm).then(res => {
+            const username = this.registerForm.username;
+            this.$alert("<font color='red'>" + this.$t('register.congratulations') + " " + username + " " + this.$t('register.success') + " </font>", this.$t('register.systemhint'), {
+              dangerouslyUseHTMLString: true,
+              type: 'success'
+            }).then(() => {
+              this.router.push("/login");
+            }).catch(() => {});
+          }).catch(() => {
+            this.loading = false;
+            if (this.captchaOnOff) {
+              this.getCode();
+            }
+          })
         }
       });
     }
-  });
-}
-
-function getCode() {
-  getCodeImg().then(res => {
-    captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled;
-    if (captchaEnabled.value) {
-      codeUrl.value = "data:image/gif;base64," + res.img;
-      registerForm.value.uuid = res.uuid;
-    }
-  });
-}
-
-getCode();
+  }
+};
 </script>
 
 <style lang='scss' scoped>

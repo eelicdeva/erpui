@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
 
+
 const useAppStore = defineStore(
   'app',
   {
@@ -10,7 +11,8 @@ const useAppStore = defineStore(
         hide: false
       },
       device: 'desktop',
-      size: Cookies.get('size') || 'default'
+      size: Cookies.get('size') || 'default',
+      lang: Cookies.get('lang') 
     }),
     actions: {
       toggleSideBar(withoutAnimation) {
@@ -39,6 +41,10 @@ const useAppStore = defineStore(
       },
       toggleSideBarHide(status) {
         this.sidebar.hide = status
+      },
+      setLanguage(lang) {
+        this.lang = lang;
+        Cookies.set('lang', lang)
       }
     }
   })

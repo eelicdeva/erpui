@@ -3,8 +3,10 @@ import { createApp } from 'vue'
 import Cookies from 'js-cookie'
 
 import ElementPlus from 'element-plus'
-import locale from 'element-plus/lib/locale/lang/zh-cn' // 中文语言
-
+import locale from 'element-plus/lib/locale/lang/en' // 中文语言
+//import locale from 'element-plus/lib/locale/lang/zh-cn' 
+//console.log("locale")
+//console.log(locale)
 import '@/assets/styles/index.scss' // global css
 
 import App from './App'
@@ -23,6 +25,9 @@ import SvgIcon from '@/components/SvgIcon'
 import elementIcons from '@/components/SvgIcon/svgicon'
 
 import './permission' // permission control
+// 国际化支持
+import i18n from './lang'
+
 
 import { useDict } from '@/utils/dict'
 import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels } from '@/utils/ruoyi'
@@ -41,6 +46,9 @@ import ImagePreview from "@/components/ImagePreview"
 import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
 import DictTag from '@/components/DictTag'
+
+
+
 
 const app = createApp(App)
 
@@ -63,11 +71,16 @@ app.component('ImageUpload', ImageUpload)
 app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
 
+
+
 app.use(router)
 app.use(store)
 app.use(plugins)
 app.use(elementIcons)
 app.component('svg-icon', SvgIcon)
+// use添加i18n
+app.use(i18n)
+
 
 directive(app)
 
@@ -75,7 +88,8 @@ directive(app)
 app.use(ElementPlus, {
   locale: locale,
   // 支持 large、default、small
-  size: Cookies.get('size') || 'default'
+  size: Cookies.get('size') || 'default',
+ //message: default
 })
 
 app.mount('#app')
