@@ -13,6 +13,7 @@ const useAppStore = defineStore(
       device: 'desktop',
       size: Cookies.get('size') || 'default',
       lang: Cookies.get('lang'),
+      userNameMbti : '',
     }),
     actions: {
       toggleSideBar(withoutAnimation) {
@@ -45,6 +46,9 @@ const useAppStore = defineStore(
       setLanguage(lang) {
         this.lang = lang;
         Cookies.set('lang', lang, { expires: 30 })
+      },
+      setuserNameMbti(userNameMbti) {
+        this.userNameMbti = userNameMbti
       },
     }
   })

@@ -1,0 +1,169 @@
+
+{
+  "questionList": [
+    {
+      "q": "Saya banyak bicara, sehingga saya sering melakukan kesalahan.",
+      "a": [
+        { "answer": "Setuju", "type": ["E"] },
+        { "answer": "Tidak Setuju", "type": ["I"] }
+      ]
+    },
+    {
+      "q": "Saya tidak punya kata-kata dan orang-orang di sekitar saya terkadang frustrasi.",
+      "a": [
+        { "answer": "Setuju", "type": ["I"] },
+        { "answer": "Tidak Setuju", "type": ["E"] }
+      ]
+    },
+    {
+      "q": "Saya merasa baik ketika saya bertemu orang baru.",
+      "a": [
+        { "answer": "Setuju", "type": ["E"] },
+        { "answer": "Tidak Setuju", "type": ["I"] }
+      ]
+    },
+    {
+      "q": "Saya realistis.",
+      "a": [
+        { "answer": "Setuju", "type": ["S"] },
+        { "answer": "Tidak Setuju", "type": ["N"] }
+      ]
+    },
+    {
+      "q": "Saya berorientasi pada masa depan.",
+      "a": [
+        { "answer": "Setuju", "type": ["N"] },
+        { "answer": "Tidak Setuju", "type": ["S"] }
+      ]
+    },
+    {
+      "q": "Saya menilai sesuatu berdasarkan pengalaman sebelumnya.",
+      "a": [
+        { "answer": "Setuju", "type": ["S"] },
+        { "answer": "Tidak Setuju", "type": ["N"] }
+      ]
+    },
+
+    {
+      "q": "Saya analitis.",
+      "a": [
+        { "answer": "Setuju", "type": ["T"] },
+        { "answer": "Tidak Setuju", "type": ["F"] }
+      ]
+    },
+  
+    {
+      "q": "Saya memiliki banyak kepekaan.",
+      "a": [
+        { "answer": "Setuju", "type": ["F"] },
+        { "answer": "Tidak Setuju", "type": ["T"] }
+      ]
+    },
+  
+    {
+      "q": "Saya objektif.",
+      "a": [
+        { "answer": "Setuju", "type": ["T"] },
+        { "answer": "Tidak Setuju", "type": ["F"] }
+      ]
+    },
+  
+    {
+      "q": "Saya tidak terlalu pandai mengubah keputusan.",
+      "a": [
+        { "answer": "Setuju", "type": ["J"] },
+        { "answer": "Tidak Setuju", "type": ["P"] }
+      ]
+    },
+    {
+      "q": "Saya fleksibel dalam mengambil keputusan.",
+      "a": [
+        { "answer": "Setuju", "type": ["P"] },
+        { "answer": "Tidak Setuju", "type": ["J"] }
+      ]
+    },
+    {
+      "q": "Saya cenderung menyelesaikan sesuatu sesuai dengan rencana.",
+      "a": [
+        { "answer": "Setuju", "type": ["J"] },
+        { "answer": "Tidak Setuju", "type": ["P"] }
+      ]
+    }
+  ],
+
+  "resultsList" : [
+    {
+      "types": "ISTJ",
+      "desc": "Hati-hati, pendiam, fokus, teliti dalam segala hal. Dia memiliki kepribadian yang konkret, sistematis, realistis, logis dan realistis, dan dapat diandalkan. Dia mencoba mengatur semuanya secara sistematis dan memiliki rasa tanggung jawab yang kuat. Kami akan terus mengejarnya dengan mantap. dan sehat, terlepas dari situasinya."
+    },
+    {
+      "types": "ISFJ",
+      "desc": "Tenang, ramah, bertanggung jawab dan teliti. Mereka berdedikasi pada pekerjaan mereka dan memberikan stabilitas pada kemajuan rencana atau kelompok. Teliti, tulus, dan akurat dalam segala hal. Saya memiliki sedikit minat pada mesin. Ia menangani bahkan detail terkecil bila diperlukan. Loyal, penyayang, dan peka terhadap perasaan orang lain."
+    },
+    {
+      "types": "INFJ",
+      "desc": "Dia sabar, kreatif, dan bersedia mencapai apa pun yang dia butuhkan atau inginkan. Lakukan yang terbaik dalam pekerjaan Anda. Dia memiliki pengaruh diam pada orang lain, memiliki hati nurani yang baik dan memiliki minat yang hangat pada orang lain. Kami menghargai prinsip dan prinsip yang teguh. Demi kebaikan bersama, mereka dihormati dan diikuti karena mereka memiliki keyakinan yang kuat."
+    },
+    {
+      "types": "INTJ",
+      "desc": "Mereka biasanya orisinal dan memiliki dorongan yang kuat untuk mencapai ide atau tujuan mereka. Jika itu adalah sesuatu yang menarik perhatian, ia memiliki kemampuan yang sangat baik untuk merencanakan dan melaksanakannya dengan atau tanpa bantuan orang lain. Skeptis, kritis, mandiri, tabah, dan terkadang keras kepala. Anda harus belajar mempertimbangkan perasaan orang lain dan mendengarkan sudut pandang mereka."
+    },
+    {
+      "types": "ISTP",
+      "desc": "Ini adalah pengamat yang tenang. Pendiam, pendiam, mengamati dan menganalisis kehidupan dengan rasa ingin tahu yang terkendali. Terkadang, mereka menunjukkan selera humor yang tidak terduga. Sebagian besar waktu, saya tidak tertarik pada hubungan manusia, tetapi saya sangat tertarik pada bagaimana dan mengapa mesin bekerja. Suka mengorganisasikan fakta menurut prinsip-prinsip logis."
+    },
+    {
+      "types": "ISFP",
+      "desc": "Dia diam-diam manis, baik hati, sensitif, dan rendah hati tanpa memamerkan kemampuannya. Hindari konflik pendapat dan jangan memaksakan pandangan atau nilai Anda pada orang lain. Daripada berdiri di depan orang lain dan memimpin, saya cenderung mengikuti mereka dengan setia. Saya mampu untuk bekerja. Karena Anda menikmati masa kini tanpa repot untuk mencapai tujuan Anda."
+    },
+    {
+      "types": "INFP",
+      "desc": "Dia bersemangat dan setia, tetapi dia tidak menunjukkannya sampai dia mengenal orang lain dengan baik. Tertarik untuk belajar, ide, bahasa, dan pekerjaan mandiri. Mereka tetap melakukannya, tetapi mereka cenderung berlebihan. Meskipun dia ramah kepada orang lain, dia memiliki beban untuk mencoba menyenangkan banyak orang pada saat yang bersamaan. Mereka memiliki sedikit minat pada harta benda atau lingkungan fisik."
+    },
+    {
+      "types": "INTP",
+      "desc": "pendiam dan pendiam Dia terutama menikmati pengejaran teoretis dan ilmiah, dan suka memecahkan masalah dengan logika dan analisis. Dia terutama tertarik pada ide-idenya, tetapi tidak tertarik pada pertemuan atau mengobrol dengan orang-orang. Karena jenis minatnya jelas, mereka dapat menunjukkan kemampuannya di bidang yang dapat memanfaatkan keingintahuan intelektualnya."
+    },
+    {
+      "types":"ESTP",
+      "desc": "Kemampuan untuk memecahkan masalah praktis. Dia tidak khawatir dan tahu bagaimana menangani apa pun. Saya suka bekerja dengan mesin dan olahraga, dan saya suka berteman. Mudah beradaptasi, toleran, dan konservatif. Aku benci penjelasan panjang. Ini bagus dalam menangani tugas-tugas praktis seperti membongkar atau merakit mesin."
+    },
+  
+    {
+      "types":"ESFP",
+      "desc":"Sociable, easygoing, akomodatif, baik hati, dan kakak yang menyenangi segalanya, dia membuat orang lain menikmati pekerjaannya. Dia suka olahraga dan sangat tertarik dengan apa yang terjadi di sekitarnya, jadi dia suka campur tangan. Saya cenderung mengingat fakta konkret lebih baik daripada teori abstrak. Dimungkinkan untuk menunjukkan kemampuan di bidang yang membutuhkan kemampuan khusus yang menargetkan orang serta akal sehat atau objek."
+    },
+  
+    {
+      "types":"ENFP",
+      "desc":"Hangat, bersemangat, hidup, berbakat, dan imajinatif. Jika itu adalah sesuatu yang Anda minati, Anda dapat melakukan apa saja. Dia pandai memecahkan masalah yang sulit dan selalu siap membantu orang lain. Ada banyak kasus improvisasi daripada mempersiapkan terlebih dahulu untuk sisanya yang memamerkan kemampuannya. Jika itu adalah sesuatu yang dia inginkan, dia bertahan dengan alasan apa pun dan terus-menerus mencari sesuatu yang baru."
+    },
+    
+    {
+      "types":"ENTP",
+      "desc":"Lincah, cerdik, berwawasan luas, dan berbakat dalam banyak hal. Dia sangat termotivasi untuk mencoba dan mengejar hal-hal baru, dan dia memiliki kemampuan yang sangat baik untuk memecahkan masalah baru atau kompleks dan fasih. Namun, mudah untuk mengabaikan aspek duniawi dan detail. Bahkan jika Anda tertarik pada satu hal, Anda terus-menerus mencari hal-hal baru. Dia pandai menemukan alasan logis untuk apa yang dia inginkan."
+  
+    },
+  
+    {
+      "types":"ESTJ",
+      "desc":"Beton, realistis, realistis, berbakat dalam bisnis atau mesin. Mereka tidak tertarik pada hal-hal yang tidak praktis dan tahu bagaimana menerapkannya bila perlu. Suka mengatur dan memimpin kegiatan. Jika Anda tahu cara mendengarkan perasaan dan perspektif orang lain, Anda bisa menjadi administrator yang hebat."
+    },
+  
+    {
+      "types":"ESFJ",
+      "desc":"Dia memiliki hati yang hangat, suka berbicara, populer dengan orang-orang, memiliki hati nurani yang baik, memiliki temperamen bawaan untuk membantu orang lain, dan merupakan anggota aktif dalam kelompok. Dia menghargai harmoni dan pandai menciptakan harmoni. Dia selalu berbuat baik kepada orang lain, dan ketika dia mendengar dorongan atau pujian, dia menjadi paling bersemangat. Saya paling tertarik pada hal-hal yang dapat memiliki dampak langsung dan nyata pada orang-orang."
+    },
+  
+    {
+      "types":"ENFJ",
+      "desc":"Dia peka terhadap lingkungannya dan memiliki rasa tanggung jawab yang kuat. Kami menghargai pemikiran dan pendapat orang lain, dan kami mencoba menangani perasaan orang lain. Dia memiliki kemampuan untuk membuat rencana atau memimpin kelompok dengan nyaman dan terampil. Ramah, populer, dan simpatik. Menjadi terlalu sensitif terhadap pujian atau kritik dari orang lain."
+    },
+  
+    {
+      "types":"ENTJ",
+      "desc":"Dia bersemangat, jujur, tegas, dan memiliki keterampilan kepemimpinan. Dia bisa melakukan apa saja yang membutuhkan penalaran dan wacana intelektual, seperti berbicara di depan umum. Mereka biasanya cerdas dengan informasi dan memiliki banyak minat dan keinginan untuk pengetahuan. Kadang-kadang, saya tampak menjadi orang yang lebih positif atau percaya diri daripada diri saya yang sebenarnya."
+    }
+  ]
+}
+ 
