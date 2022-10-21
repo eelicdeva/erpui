@@ -61,12 +61,12 @@ yarn dev
 演示地址：https://www.eelic.org/erp  
 文档地址：http://doc.ruoyi.vip
 
-<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">web ERP EELIC v0.0.1</h1>
+<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">web ERP EELIC v1.0.4</h1>
 <h4 align="center">基于SpringBoot+Vue3前后端分离的Java快速开发框架</h4>
 
 
 ## 平台简介
-* 基于RuoYi v3.8.3
+* 基于RuoYi v3.8.4
 * 本仓库为前端技术栈 [Vue3](https://v3.cn.vuejs.org) + [Element Plus](https://element-plus.org/zh-CN) + [Vite](https://cn.vitejs.dev) 版本。
 * 配套后端代码仓库地址xxx版本。
 * 前端技术栈（[Vue2](https://cn.vuejs.org) + [Element](https://github.com/ElemeFE/element) + [Vue CLI](https://cli.vuejs.org/zh)）。
