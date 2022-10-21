@@ -308,6 +308,10 @@ export default {
     locationRules : '位置不能为空',
     locationRules2 : '位置长度必须为 6',
   },
+  mbti:{
+    result: 'MBTI 结果',
+    answer: '回答',
+  },
   button:{
     search: '搜索',
     reset: '重置',

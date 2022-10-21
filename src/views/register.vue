@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <el-form ref="registerRef" :model="registerForm" :rules="registerRules" :validate-on-rule-change="false" class="register-form">
+    <el-form ref="registerRef" :model="registerForm" :rules="registerRules" :validate-on-rule-change="false" class="register-form">  
       <h3 class="title">{{ $t('register.title') }}</h3>
       <lang-select @selectLangEvent="langLisen" class="set-language" />
       <el-form-item prop="username">

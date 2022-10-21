@@ -311,6 +311,10 @@ export default {
     locationRules2 : 'Panjang lokasi harus 6',
 
   },
+  mbti:{
+    result: 'Hasil MBTI',
+    answer: 'Jawaban',
+  },
   button:{
     search: 'Cari',
     reset: 'Atur Ulang',

@@ -310,6 +310,10 @@ export default {
     locationRules2 : 'Location length must be 6',
     
   },
+  mbti:{
+    result: 'MBTI Result',
+    answer: 'Answer',
+  },
   button:{
     search: 'Search',
     reset: 'Reset',
