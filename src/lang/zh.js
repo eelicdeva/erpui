@@ -383,4 +383,9 @@ export default {
     tip4: '的文件',
 
   },
+  genTable: {
+   columnInformation: '字段信息',
+   columnName: '字段列名',
+   GenerateInfo: '生成信息',
+  },
 }

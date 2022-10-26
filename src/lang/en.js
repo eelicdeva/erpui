@@ -386,6 +386,12 @@ export default {
     tip4: 'format',
 
   },
+  genTable: {
+   columnInformation: 'Column Information',
+   columnName: 'Column Name',
+   GenerateInfo: 'Generate Information',
+
+  },
 
 
 }

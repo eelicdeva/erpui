@@ -1,14 +1,14 @@
 <template>
   <el-card>
     <el-tabs v-model="activeName">
-      <el-tab-pane label="基本信息" name="basic">
+      <el-tab-pane :label="$t('user.BasicInfo')" name="basic">
         <basic-info-form ref="basicInfo" :info="info" />
       </el-tab-pane>
-      <el-tab-pane label="字段信息" name="columnInfo">
+      <el-tab-pane :label="$t('genTable.columnInformation')" name="columnInfo">
         <el-table ref="dragTable" :data="columns" row-key="columnId" :max-height="tableHeight">
           <el-table-column label="序号" type="index" min-width="5%"/>
           <el-table-column
-            label="字段列名"
+            :label="$t('genTable.columnName')"
             prop="columnName"
             min-width="10%"
             :show-overflow-tooltip="true"
@@ -63,6 +63,11 @@
               <el-checkbox true-label="1" v-model="scope.row.isQuery"></el-checkbox>
             </template>
           </el-table-column>
+          <el-table-column label="I18n" min-width="5%">
+            <template #default="scope">
+              <el-checkbox true-label="1" v-model="scope.row.isI18n"></el-checkbox>
+            </template>
+          </el-table-column>
           <el-table-column label="查询方式" min-width="10%">
             <template #default="scope">
               <el-select v-model="scope.row.queryType">
@@ -113,7 +118,7 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="生成信息" name="genInfo">
+      <el-tab-pane :label="$t('genTable.GenerateInfo')" name="genInfo">
         <gen-info-form ref="genInfo" :info="info" :tables="tables" />
       </el-tab-pane>
     </el-tabs>

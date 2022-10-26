@@ -386,5 +386,10 @@ export default {
     tip4: '',
 
   },
+  genTable: {
+   columnInformation: 'Kolom Informasi',
+   columnName: 'Nama Kolom',
+   GenerateInfo: 'Informasi Generate ',
+  },
 
 }
