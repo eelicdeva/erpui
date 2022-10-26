@@ -384,8 +384,12 @@ export default {
 
   },
   genTable: {
+   generate : '生成',
    columnInformation: '字段信息',
    columnName: '字段列名',
    GenerateInfo: '生成信息',
+   tableName: '表名称',
+   tableNamePlaceholder: '请输入表名称',
+   tableComment: '表描述',
   },
 }

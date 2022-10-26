@@ -387,9 +387,13 @@ export default {
 
   },
   genTable: {
+   generate : 'Hasilkan',
    columnInformation: 'Kolom Informasi',
    columnName: 'Nama Kolom',
    GenerateInfo: 'Informasi Generate ',
+   tableName: 'Nama Tabel',
+   tableNamePlaceholder: 'Silakan masukkan nama tabel',
+   tableComment: 'Deskripsi Tabel',
   },
 
 }

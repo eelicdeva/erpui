@@ -68,6 +68,11 @@
               <el-checkbox true-label="1" v-model="scope.row.isI18n"></el-checkbox>
             </template>
           </el-table-column>
+          <el-table-column label="Sub I18n" min-width="6%">
+            <template #default="scope">
+              <el-checkbox true-label="1" v-model="scope.row.isSubI18n"></el-checkbox>
+            </template>
+          </el-table-column>
           <el-table-column label="查询方式" min-width="10%">
             <template #default="scope">
               <el-select v-model="scope.row.queryType">

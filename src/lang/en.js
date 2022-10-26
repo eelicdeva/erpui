@@ -387,9 +387,13 @@ export default {
 
   },
   genTable: {
+   generate : 'Generate',
    columnInformation: 'Column Information',
    columnName: 'Column Name',
    GenerateInfo: 'Generate Information',
+   tableName: 'Table Name',
+   tableNamePlaceholder: 'Please enter a table name',
+   tableComment: 'Table Description',
 
   },
 
