@@ -13,18 +13,24 @@
             min-width="10%"
             :show-overflow-tooltip="true"
           />
-          <el-table-column label="字段描述" min-width="10%">
-            <template #default="scope">
+          <el-table-column :label="$t('genTable.columnComment')" min-width="11%">
+            <template v-if="useAppStore().lang == 'en'" #default="scope">
+              <el-input v-model="scope.row.columnCommentEn"></el-input>
+            </template>
+            <template v-if="useAppStore().lang == 'zh'" #default="scope">
               <el-input v-model="scope.row.columnComment"></el-input>
+            </template>
+            <template v-if="useAppStore().lang == 'id'" #default="scope">
+              <el-input v-model="scope.row.columnCommentId"></el-input>
             </template>
           </el-table-column>
           <el-table-column
-            label="物理类型"
+            :label="$t('genTable.columnType')"
             prop="columnType"
             min-width="10%"
             :show-overflow-tooltip="true"
           />
-          <el-table-column label="Java类型" min-width="11%">
+          <el-table-column :label="$t('genTable.javaType')" min-width="11%">
             <template #default="scope">
               <el-select v-model="scope.row.javaType">
                 <el-option label="Long" value="Long" />
@@ -37,33 +43,33 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="java属性" min-width="10%">
+          <el-table-column :label="$t('genTable.javaField')" min-width="10%">
             <template #default="scope">
               <el-input v-model="scope.row.javaField"></el-input>
             </template>
           </el-table-column>
 
-          <el-table-column label="插入" min-width="5%">
+          <el-table-column :label="$t('genTable.isInsert')" min-width="5%">
             <template #default="scope">
               <el-checkbox true-label="1" v-model="scope.row.isInsert"></el-checkbox>
             </template>
           </el-table-column>
-          <el-table-column label="编辑" min-width="5%">
+          <el-table-column :label="$t('genTable.isEdit')" min-width="4%">
             <template #default="scope">
               <el-checkbox true-label="1" v-model="scope.row.isEdit"></el-checkbox>
             </template>
           </el-table-column>
-          <el-table-column label="列表" min-width="5%">
+          <el-table-column :label="$t('genTable.isList')" min-width="4%">
             <template #default="scope">
               <el-checkbox true-label="1" v-model="scope.row.isList"></el-checkbox>
             </template>
           </el-table-column>
-          <el-table-column label="查询" min-width="5%">
+          <el-table-column :label="$t('genTable.isQuery')" min-width="5%">
             <template #default="scope">
               <el-checkbox true-label="1" v-model="scope.row.isQuery"></el-checkbox>
             </template>
           </el-table-column>
-          <el-table-column label="I18n" min-width="5%">
+          <el-table-column label="I18n" min-width="4%">
             <template #default="scope">
               <el-checkbox true-label="1" v-model="scope.row.isI18n"></el-checkbox>
             </template>
@@ -73,7 +79,7 @@
               <el-checkbox true-label="1" v-model="scope.row.isSubI18n"></el-checkbox>
             </template>
           </el-table-column>
-          <el-table-column label="查询方式" min-width="10%">
+          <el-table-column :label="$t('genTable.queryType')" min-width="10%">
             <template #default="scope">
               <el-select v-model="scope.row.queryType">
                 <el-option label="=" value="EQ" />
@@ -87,27 +93,27 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="必填" min-width="5%">
+          <el-table-column :label="$t('genTable.isRequired')" min-width="7%">
             <template #default="scope">
               <el-checkbox true-label="1" v-model="scope.row.isRequired"></el-checkbox>
             </template>
           </el-table-column>
-          <el-table-column label="显示类型" min-width="12%">
+          <el-table-column :label="$t('genTable.htmlType')" min-width="12%">
             <template #default="scope">
               <el-select v-model="scope.row.htmlType">
-                <el-option label="文本框" value="input" />
-                <el-option label="文本域" value="textarea" />
-                <el-option label="下拉框" value="select" />
-                <el-option label="单选框" value="radio" />
-                <el-option label="复选框" value="checkbox" />
-                <el-option label="日期控件" value="datetime" />
-                <el-option label="图片上传" value="imageUpload" />
-                <el-option label="文件上传" value="fileUpload" />
-                <el-option label="富文本控件" value="editor" />
+                <el-option :label="$t('genTable.input')" value="input" />
+                <el-option :label="$t('genTable.textarea')"  value="textarea" />
+                <el-option :label="$t('genTable.select')"  value="select" />
+                <el-option :label="$t('genTable.radio')"  value="radio" />
+                <el-option :label="$t('genTable.checkbox')"  value="checkbox" />
+                <el-option :label="$t('genTable.datetime')"  value="datetime" />
+                <el-option :label="$t('genTable.imageUpload')"  value="imageUpload" />
+                <el-option :label="$t('genTable.fileUpload')"  value="fileUpload" />
+                <el-option :label="$t('genTable.editor')"  value="editor" />
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="字典类型" min-width="12%">
+          <el-table-column :label="$t('genTable.dictType')" min-width="12%">
             <template #default="scope">
               <el-select v-model="scope.row.dictType" clearable filterable placeholder="请选择">
                 <el-option
@@ -129,8 +135,8 @@
     </el-tabs>
     <el-form label-width="100px">
       <div style="text-align: center;margin-left:-100px;margin-top:10px;">
-        <el-button type="primary" @click="submitForm()">提交</el-button>
-        <el-button @click="close()">返回</el-button>
+        <el-button type="primary" @click="submitForm()">{{ $t('button.submit2') }}</el-button>
+        <el-button @click="close()">{{ $t('button.return') }}</el-button>
       </div>
     </el-form>
   </el-card>
@@ -141,6 +147,7 @@ import { getGenTable, updateGenTable } from "@/api/tool/gen";
 import { optionselect as getDictOptionselect } from "@/api/system/dict/type";
 import basicInfoForm from "./basicInfoForm";
 import genInfoForm from "./genInfoForm";
+import useAppStore from "@/store/modules/app";
 
 const route = useRoute();
 const { proxy } = getCurrentInstance();

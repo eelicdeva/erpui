@@ -89,9 +89,17 @@
          <el-table-column type="selection" width="55" align="center" />
          <el-table-column label="字典编码" align="center" prop="dictCode" />
          <el-table-column label="字典标签" align="center" prop="dictLabel">
-            <template #default="scope">
+            <template v-if="useAppStore().lang == 'zh'" #default="scope">
                <span v-if="scope.row.listClass == '' || scope.row.listClass == 'default'">{{ scope.row.dictLabel }}</span>
                <el-tag v-else :type="scope.row.listClass == 'primary' ? '' : scope.row.listClass">{{ scope.row.dictLabel }}</el-tag>
+            </template>
+            <template v-if="useAppStore().lang == 'en'" #default="scope">
+               <span v-if="scope.row.listClass == '' || scope.row.listClass == 'default'">{{ scope.row.dictLabelEn }}</span>
+               <el-tag v-else :type="scope.row.listClass == 'primary' ? '' : scope.row.listClass">{{ scope.row.dictLabelEn }}</el-tag>
+            </template>
+            <template v-if="useAppStore().lang == 'id'" #default="scope">
+               <span v-if="scope.row.listClass == '' || scope.row.listClass == 'default'">{{ scope.row.dictLabelId }}</span>
+               <el-tag v-else :type="scope.row.listClass == 'primary' ? '' : scope.row.listClass">{{ scope.row.dictLabelId }}</el-tag>
             </template>
          </el-table-column>
          <el-table-column label="字典键值" align="center" prop="dictValue" />
@@ -187,6 +195,7 @@
 <script setup name="Data">
 import { optionselect as getDictOptionselect, getType } from "@/api/system/dict/type";
 import { listData, getData, delData, addData, updateData } from "@/api/system/dict/data";
+import useAppStore from "@/store/modules/app";
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
