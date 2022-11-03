@@ -54,7 +54,7 @@ export const constantRoutes = [
   },
   {
     path: '/mbti',
-    component: () => import('@/views/mbti'),
+    component: () => import('@/views/hr/mbti/mbti'),
     hidden: true
   },
   {
@@ -155,6 +155,20 @@ export const dynamicRoutes = [
     ]
   },
   {
+    path: '/tool/geni18n-edit',
+    component: Layout,
+    hidden: true,
+    permissions: ['tool:gen:edit'],
+    children: [
+      {
+        path: 'index/:tableId(\\d+)',
+        component: () => import('@/views/tool/gen/geni18n/editTable'),
+        name: 'GenEditi18n',
+        meta: { title: '修改生成配置', activeMenu: '/tool/gen/geni18n' }
+      }
+    ]
+  },
+  {
     path: '/tool/gen-edit',
     component: Layout,
     hidden: true,
@@ -162,9 +176,9 @@ export const dynamicRoutes = [
     children: [
       {
         path: 'index/:tableId(\\d+)',
-        component: () => import('@/views/tool/gen/editTable'),
+        component: () => import('@/views/tool/gen/genruoyi/editTable'),
         name: 'GenEdit',
-        meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
+        meta: { title: '修改生成配置', activeMenu: '/tool/gen/ruoyi' }
       }
     ]
   }

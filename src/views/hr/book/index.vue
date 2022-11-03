@@ -192,7 +192,7 @@
 import { listBook, getBook, delBook, addBook, updateBook, changeCdStatus } from "@/api/hr/book";
 import { listCategory } from "@/api/hr/category";
 import { listLocation } from "@/api/hr/location";
-import addCategory from '@/views/hr/category/add';
+import addCategory from '@/components/AddCategory';
 import i18n from '@/lang/index';
 
 const {t} = i18n.global;

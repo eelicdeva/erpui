@@ -129,6 +129,9 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
+      <el-tab-pane :label="$t('genTable.chartInfo')" name="chart">
+        <gen-chart-form ref="chartInfo" :info="info" :tables="tables"/>
+      </el-tab-pane>
       <el-tab-pane :label="$t('genTable.GenerateInfo')" name="genInfo">
         <gen-info-form ref="genInfo" :info="info" :tables="tables" />
       </el-tab-pane>
@@ -142,11 +145,12 @@
   </el-card>
 </template>
 
-<script setup name="GenEdit">
+<script setup name="GenEditi18n">
 import { getGenTable, updateGenTable } from "@/api/tool/gen";
 import { optionselect as getDictOptionselect } from "@/api/system/dict/type";
 import basicInfoForm from "./basicInfoForm";
 import genInfoForm from "./genInfoForm";
+import genChartForm from "./genChartForm";
 import useAppStore from "@/store/modules/app";
 
 const route = useRoute();

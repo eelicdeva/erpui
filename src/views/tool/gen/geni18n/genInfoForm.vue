@@ -8,6 +8,9 @@
             <el-option :label="$t('genTable.crud')" value="crud" />
             <el-option :label="$t('genTable.tree')" value="tree" />
             <el-option :label="$t('genTable.sub')" value="sub" />
+            <el-option :label="$t('genTable.crud') + 'i18n'" value="crudi18n" />
+            <el-option :label="$t('genTable.tree') + 'i18n'" value="treei18n" />
+            <el-option :label="$t('genTable.sub') + 'i18n'" value="subi18n" />
           </el-select>
         </el-form-item>
       </el-col>
@@ -117,9 +120,9 @@
       </el-col>
     </el-row>
     
-    <template v-if="info.tplCategory == 'tree'">
+    <template v-if="info.tplCategory == 'tree' || info.tplCategory == 'treei18n'">
       <h4 class="form-header">其他信息</h4>
-      <el-row v-show="info.tplCategory == 'tree'">
+      <el-row v-show="info.tplCategory == 'tree' || info.tplCategory == 'treei18n'">
         <el-col :span="12">
           <el-form-item>
             <template #label>
@@ -177,7 +180,7 @@
       </el-row>
     </template>
 
-    <template v-if="info.tplCategory == 'sub'">
+    <template v-if="info.tplCategory == 'sub' || info.tplCategory == 'subi18n'">
       <h4 class="form-header">关联信息</h4>
       <el-row>
         <el-col :span="12">
