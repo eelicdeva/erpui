@@ -1,5 +1,13 @@
 // id.js
 export default {
+  components: {
+    sizeSelect: {
+      setSize: "Syetel ukuran, harap menunggu...",
+      sizeLarge: "Besar",
+      sizeDefault: 'Default',
+      sizeSmall: 'Kecil'
+  }
+},
   login: {
     title: 'EELIC SYSTEM',
     logIn: 'Masuk',

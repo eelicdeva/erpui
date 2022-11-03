@@ -3,10 +3,9 @@ import { createApp } from 'vue'
 import Cookies from 'js-cookie'
 
 import ElementPlus from 'element-plus'
-import locale from 'element-plus/lib/locale/lang/en' // 中文语言
-//import locale from 'element-plus/lib/locale/lang/zh-cn' 
-//console.log("locale")
-//console.log(locale)
+// locale bahasa idonesia 语言
+import locale from 'element-plus/lib/locale/lang/id'
+
 import '@/assets/styles/index.scss' // global css
 
 import App from './App'
@@ -24,10 +23,10 @@ import 'virtual:svg-icons-register'
 import SvgIcon from '@/components/SvgIcon'
 import elementIcons from '@/components/SvgIcon/svgicon'
 
-import './permission' // permission control
-// 国际化支持
-import i18n from './lang'
+import '@/permission' // permission control
 
+// 国际化支持
+import i18n from '@/lang';
 
 import { useDict } from '@/utils/dict'
 import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels } from '@/utils/ruoyi'
@@ -36,6 +35,8 @@ import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, select
 import Pagination from '@/components/Pagination'
 // 自定义表格工具组件
 import RightToolbar from '@/components/RightToolbar'
+// EELIC ExtendToolbar
+import ExtendToolbar from '@/components/ExtendToolbar'
 // 文件上传组件
 import FileUpload from "@/components/FileUpload"
 // 图片上传组件
@@ -46,10 +47,6 @@ import ImagePreview from "@/components/ImagePreview"
 import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
 import DictTag from '@/components/DictTag'
-
-
-
-
 
 
 const app = createApp(App)
@@ -72,7 +69,7 @@ app.component('FileUpload', FileUpload)
 app.component('ImageUpload', ImageUpload)
 app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
-
+app.component('ExtendToolbar', ExtendToolbar)
 
 
 

@@ -1,5 +1,13 @@
 // zh.js
 export default {
+  components: {
+    sizeSelect: {
+      setSize: '正在设置布局大小，请稍候...',
+      sizeLarge: '较大',
+      sizeDefault: '默认',
+      sizeSmall: '稍小'
+  }
+},
   login: {
     title: 'EELIC系统',
     logIn: '登录',
@@ -14,8 +22,7 @@ export default {
     enterPassword: '请输入您的密码',
     enterCaptcha: '请输入验证码',
     usernameError: '用户名错误',
-    passwordError: '密码错误',
-
+    passwordError: '密码错误'
   },
   register: {
     title: 'EELIC管理系统',
@@ -32,7 +39,7 @@ export default {
     verificationCode: '验证码必须是数字',
     congratulations: '恭喜你，您的账号', 
     systemhint: '系统提示',
-    success: '注册成功！',
+    success: '注册成功！'
   },
   tagsView: {
     refresh: '刷新',
@@ -215,8 +222,6 @@ export default {
     routeRules: '路由地址不能为空',
     confirmDelete1: '是否确认删除名称为"',
     confirmDelete2: '"的数据项?',
-    
-
   },
   dept:{
     name: '部门名称',

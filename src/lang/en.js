@@ -1,5 +1,13 @@
 // en.js
 export default {
+  components: {
+    sizeSelect: {
+      setSize: 'Setting layout size, please wait...',
+      sizeLarge: 'Large',
+      sizeDefault: 'Default',
+      sizeSmall: 'Small'
+  }
+},
   login: {
     title: 'EELIC SYSTEM',
     logIn: 'Login',
