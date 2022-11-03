@@ -22,8 +22,7 @@
 <script>
 import useAppStore from "@/store/modules/app";
 import { updateLang } from "@/api/system/user";
-import variable from "@/assets/styles/variables.module.scss";
-
+//import variable from "@/assets/styles/variables.module.scss";
 
 export default {
   computed: {
@@ -56,7 +55,7 @@ export default {
       useAppStore().setLanguage(lang)
       if(this.isActive){
         updateLang(lang);
-        this.$modal.loading("正在设置布局大小，请稍候...");
+        this.$modal.loading("正在设置语言，请稍候(Setting language, please wait)...");
         setTimeout("window.location.reload()", 1000);
 
         
