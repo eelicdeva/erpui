@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { listDbTable, importTable } from "@/api/tool/gen";
+import { listDbTable, importTable } from "@/api/tool/geni18n";
 
 const total = ref(0);
 const visible = ref(false);
