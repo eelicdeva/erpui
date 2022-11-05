@@ -430,6 +430,9 @@ export default {
    tree: 'Tree table (add, edit, delete, search)',
    sub: 'Main sub-table (add, edit, delete, search)',
    packagePath: 'Generate Package Path',
+   chartInfo: 'Informasi Chart',
+   chartType: 'Tipe Chart',
+   xAxisChart: 'Kategori',
+   yAxisChart: 'Nilai',
   },
-
 }

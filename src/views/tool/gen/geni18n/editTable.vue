@@ -167,7 +167,8 @@ const info = ref({});
 function submitForm() {
   const basicForm = proxy.$refs.basicInfo.$refs.basicInfoForm;
   const genForm = proxy.$refs.genInfo.$refs.genInfoForm;
-  Promise.all([basicForm, genForm].map(getFormPromise)).then(res => {
+  const genChartForm = proxy.$refs.chartInfo.$refs.genChartForm;
+  Promise.all([basicForm, genForm, genChartForm ].map(getFormPromise)).then(res => {
     const validateResult = res.every(item => !!item);
     if (validateResult) {
       const genTable = Object.assign({}, info.value);
@@ -197,7 +198,7 @@ function getFormPromise(form) {
   });
 }
 function close() {
-  const obj = { path: "/tool/gen", query: { t: Date.now(), pageNum: route.query.pageNum } };
+  const obj = { path: "/tool/gen/geni18n", query: { t: Date.now(), pageNum: route.query.pageNum } };
   proxy.$tab.closeOpenPage(obj);
 }
 

@@ -178,7 +178,7 @@ export const dynamicRoutes = [
         path: 'index/:tableId(\\d+)',
         component: () => import('@/views/tool/gen/genruoyi/editTable'),
         name: 'GenEdit',
-        meta: { title: '修改生成配置', activeMenu: '/tool/gen/ruoyi' }
+        meta: { title: '修改生成配置', activeMenu: '/tool/gen/genruoyi' }
       }
     ]
   }

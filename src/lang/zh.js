@@ -425,5 +425,9 @@ export default {
    tree: '树表（增删改查）',
    sub: '主子表（增删改查）',
    packagePath: '生成包路径',
+   chartInfo: '图表信息',
+   chartType: '图表类型',
+   xAxisChart: '类别',
+   yAxisChart: '值',
   },
 }

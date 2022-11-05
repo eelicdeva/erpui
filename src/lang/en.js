@@ -429,7 +429,9 @@ export default {
    tree: 'Tree table (add, edit, delete, search)',
    sub: 'Main sub-table (add, edit, delete, search)',
    packagePath: 'Generate Package Path',
+   chartInfo: 'Chart Information',
+   chartType: 'Chart Type',
+   xAxisChart: 'Category',
+   yAxisChart: 'Value',
   },
-
-
 }

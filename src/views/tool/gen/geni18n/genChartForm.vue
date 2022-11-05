@@ -2,17 +2,18 @@
     <el-form ref="genChartForm" :model="info" :rules="rules" label-width="150px">
         <el-row>
             <el-col :span="24">
-              <el-form-item label="chart type" prop="tableName">
-                <el-select v-model="chartType" placeholder="">
-                    <el-option label="Pie Chart" value="category" />
-                    <el-option label="Bar Chart" value="loan" />
-                    <el-option label="None" value="loan" />
+              <el-form-item :label="$t('genTable.chartType')" prop="chartType">
+                <el-select v-model="info.chartType" :placeholder="$t('genTable.chartType')">
+                    <el-option label="Basic Line Chart" value="1" />
+                    <el-option label="Pie Chart" value="2" />
+                    <el-option label="Bar Chart" value="3" />
+                    <el-option label="None" value="0" />
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="xAxis data" prop="className">
-                <el-select v-model="xAxis" placeholder="请选择">
+              <el-form-item :label="$t('genTable.xAxisChart')" prop="xAxisChart">
+                <el-select v-model="info.xAxisChart" :placeholder="$t('genTable.xAxisChart')">
                   <el-option 
                   v-for="columns in info.columns" 
                   :label="columns.javaField  + ' ：' + columns.columnName"
@@ -24,8 +25,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="yAxis data" prop="functionAuthor">
-                <el-select v-model="yAxis" placeholder="">
+              <el-form-item :label="$t('genTable.yAxisChart')" prop="yAxisChart">
+                <el-select v-model="info.yAxisChart" :placeholder="$t('genTable.yAxisChart')">
                   <el-option 
                   v-for="columns in info.columns" 
                   :label="columns.javaField  + ' ：' + columns.columnName"
@@ -36,16 +37,12 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-form-item>
-              <el-button type="primary" @click="test">{{ $t('button.submit2') }}</el-button>
-            </el-form-item>
           </el-row>
       </el-form>
 </template>
 
 <script setup>
-const xAxis = ref();
-const yAxis = ref();
+
 const props = defineProps({
   info: {
     type: Object,
@@ -57,10 +54,6 @@ const props = defineProps({
   }
 });
 
-function test() {
-  console.log(props.info.columns)
-  console.log(props.tables);
-  
-}
+
 
 </script>

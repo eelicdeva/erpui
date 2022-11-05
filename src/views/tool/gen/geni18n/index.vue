@@ -89,7 +89,7 @@
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        label="表描述"
+        :label="$t('genTable.tableComment')" 
         align="center"
         prop="tableComment"
         :show-overflow-tooltip="true"
