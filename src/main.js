@@ -36,7 +36,7 @@ import Pagination from '@/components/Pagination'
 // 自定义表格工具组件
 import RightToolbar from '@/components/RightToolbar'
 // // EELIC ExtendToolbar
-// import ExtendToolbar from '@/components/ExtendToolbar'
+import ExtendToolbar from '@/components/ExtendToolbar'
 // 文件上传组件
 import FileUpload from "@/components/FileUpload"
 // 图片上传组件
@@ -69,7 +69,7 @@ app.component('FileUpload', FileUpload)
 app.component('ImageUpload', ImageUpload)
 app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
-// app.component('ExtendToolbar', ExtendToolbar)
+app.component('ExtendToolbar', ExtendToolbar)
 
 
 
