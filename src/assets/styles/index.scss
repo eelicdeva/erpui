@@ -5,7 +5,7 @@
 @import './sidebar.scss';
 @import './btn.scss';
 @import './ruoyi.scss';
-
+@import './datasheet.scss';
 body {
   height: 100%;
   margin: 0;
@@ -123,7 +123,7 @@ aside {
 
 //main-container全局样式
 .app-container {
-  padding: 20px;
+  padding: 12px;
 }
 
 .components-container {
