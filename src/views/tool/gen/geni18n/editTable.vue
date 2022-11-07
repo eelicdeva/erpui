@@ -198,7 +198,7 @@ function getFormPromise(form) {
   });
 }
 function close() {
-  const obj = { path: "/tool/gen/geni18n", query: { t: Date.now(), pageNum: route.query.pageNum } };
+  const obj = { path: "/tool/code/geni18n", query: { t: Date.now(), pageNum: route.query.pageNum } };
   proxy.$tab.closeOpenPage(obj);
 }
 
