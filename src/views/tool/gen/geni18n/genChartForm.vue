@@ -4,8 +4,9 @@
             <el-col :span="24">
               <el-form-item :label="$t('genTable.chartType')" prop="chartType">
                 <el-select v-model="info.chartType" :placeholder="$t('genTable.chartType')">
-                    <el-option label="Basic Line Chart" value="1" />
-                    <el-option label="Bar Chart" value="2" />
+                  <el-option label="Basic Line Chart" value="1" />
+-                   <el-option label="Pie Chart" value="2" />
+-                   <el-option label="Bar Chart" value="3" />
                     <el-option label="None" value="0" />
                 </el-select>
               </el-form-item>
