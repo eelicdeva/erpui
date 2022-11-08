@@ -444,7 +444,7 @@
   { key: 25, label: t('ErpProductDemo.simage7'), visible: false },
   { key: 26, label: t('ErpProductDemo.simage8'), visible: false },
   { key: 27, label: t('ErpProductDemo.status'), visible: false },   
-  { key: 27, label: t('ErpProductDemo.remark'), visible: false }
+  { key: 28, label: t('ErpProductDemo.remark'), visible: false }
 ]);
 
   const data = reactive({

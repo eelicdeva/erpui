@@ -2,12 +2,13 @@
    <div class="app-container">
       <div class="table-box">
          <div class="card table-search" v-show="showSearch">          
-            <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="150px">
+            <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="120px">
                <el-form-item :label="$t('user.name')" prop="userName">
                   <el-input
                      v-model="queryParams.userName"
                      :placeholder="$t('user.UserPlaceholder')"
-                     clearable                 
+                     clearable  
+                     style="width: 240px;"               
                      @keyup.enter="handleQuery"
                   />
                </el-form-item>
@@ -35,15 +36,14 @@
                      />
                   </el-select>
                </el-form-item>
-               <el-form-item :label="$t('user.creationtime')" v-show="showExtend">
+               <el-form-item :label="$t('user.creationtime')" style="width: 368px;" v-show="showExtend" >
                   <el-date-picker
                      v-model="dateRange"
                      value-format="YYYY-MM-DD"
                      type="daterange"
                      range-separator="-"
                      :start-placeholder="$t('user.startDate')"
-                     :end-placeholder="$t('user.endDate')"
-                     style="width: 240px;"
+                     :end-placeholder="$t('user.endDate')"                    
                   ></el-date-picker>
                </el-form-item>
             </el-form>
