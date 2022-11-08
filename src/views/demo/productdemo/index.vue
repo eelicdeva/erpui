@@ -259,7 +259,7 @@
             <el-table-column :label="$t('ErpProductDemo.price')" align="center" v-if="columns[12].visible" prop="price" />
             <el-table-column :label="$t('ErpProductDemo.specialPrice')" align="center" v-if="columns[13].visible" prop="specialPrice" />
             <el-table-column :label="$t('ErpProductDemo.quantity')" align="center" v-if="columns[14].visible" prop="quantity" />
-            <el-table-column :label="$t('ErpProductDemo.primaryCategory')" align="center" v-if="columns[15].visible" prop="primaryCategory" />
+            <el-table-column :label="$t('ErpProductDemo.primaryCategory')" align="center" v-if="columns[15].visible"  prop="primaryCategory" />
             <el-table-column :label="$t('ErpProductDemo.statusLa')" align="center" v-if="columns[16].visible" prop="statusLa" />
             <el-table-column :label="$t('ErpProductDemo.colorFamily')" align="center" v-if="columns[17].visible" prop="colorFamily" :show-overflow-tooltip="true"/>
             <el-table-column :label="$t('ErpProductDemo.fblLa')" align="center" v-if="columns[18].visible" prop="fblLa" />
@@ -272,7 +272,7 @@
             <el-table-column :label="$t('ErpProductDemo.simage7')" align="center" v-if="columns[25].visible" prop="simage7" :show-overflow-tooltip="true"/>
             <el-table-column :label="$t('ErpProductDemo.simage8')" align="center" v-if="columns[26].visible" prop="simage8" :show-overflow-tooltip="true"/>
             <el-table-column :label="$t('ErpProductDemo.status')" align="center" v-if="columns[27].visible" prop="status" />
-            <el-table-column :label="$t('ErpProductDemo.remark')" align="center" v-if="columns[28].visible" prop="remark" />
+            <el-table-column :label="$t('ErpProductDemo.remark')" align="center" v-if="columns[28].visible" prop="remark" :show-overflow-tooltip="true"/>
             <el-table-column :label="$t('user.operate')" align="center" class-name="small-padding fixed-width">
               <template #default="scope">
                 <el-button
@@ -417,7 +417,34 @@
   const title = ref("");
   const columns = ref([
   { key: 0, label: t('ErpProductDemo.idProductLa'), visible: true },
-  { key: 1, label: t('ErpProductDemo.skuLazada'), visible: true },
+  { key: 1, label: t('ErpProductDemo.skuLazada'), visible: false },
+  { key: 2, label: t('ErpProductDemo.skuEelic'), visible: true },
+  { key: 3, label: t('ErpProductDemo.skuNameLa'), visible: true },
+  { key: 4, label: t('ErpProductDemo.shortDescription'), visible: false },
+  { key: 5, label: t('ErpProductDemo.description'), visible: false },  
+  { key: 6, label: t('ErpProductDemo.model'), visible: false },  
+  { key: 7, label: t('ErpProductDemo.packageContent'), visible: false },
+  { key: 8, label: t('ErpProductDemo.packageWeight'), visible: true },
+  { key: 9, label: t('ErpProductDemo.packageLength'), visible: true },
+  { key: 10, label: t('ErpProductDemo.packageWidth'), visible: true },
+  { key: 11, label: t('ErpProductDemo.packageHeight'), visible: true },
+  { key: 12, label: t('ErpProductDemo.price'), visible: false },
+  { key: 13, label: t('ErpProductDemo.specialPrice'), visible: true },
+  { key: 14, label:  t('ErpProductDemo.quantity'), visible: false },
+  { key: 15, label:  t('ErpProductDemo.primaryCategory'), visible: false },  
+  { key: 16, label:  t('ErpProductDemo.statusLa'), visible: false },    
+  { key: 17, label: t('ErpProductDemo.colorFamily'), visible: false },
+  { key: 18, label: t('ErpProductDemo.fblLa'), visible: false },
+  { key: 19, label: t('ErpProductDemo.simage1'), visible: false },
+  { key: 20, label: t('ErpProductDemo.simage2'), visible: false },
+  { key: 21, label: t('ErpProductDemo.simage3'), visible: false },
+  { key: 22, label: t('ErpProductDemo.simage4'), visible: false },
+  { key: 23, label: t('ErpProductDemo.simage5'), visible: false },
+  { key: 24, label: t('ErpProductDemo.simage6'), visible: false },
+  { key: 25, label: t('ErpProductDemo.simage7'), visible: false },
+  { key: 26, label: t('ErpProductDemo.simage8'), visible: false },
+  { key: 27, label: t('ErpProductDemo.status'), visible: false },   
+  { key: 27, label: t('ErpProductDemo.remark'), visible: false }
 ]);
 
   const data = reactive({
