@@ -1,8 +1,8 @@
 <template>
    <div class="app-container">
       <div class="table-box">
-         <div class="card table-search">          
-            <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="150px">
+         <div class="card table-search" v-show="showSearch">          
+            <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="150px">
                <el-form-item :label="$t('user.name')" prop="userName">
                   <el-input
                      v-model="queryParams.userName"
@@ -127,12 +127,12 @@
                         ></el-switch>
                      </template>
                   </el-table-column>
-                  <el-table-column :label="$t('user.creationtime')" align="center" prop="createTime" v-if="columns[6].visible" width="160">
+                  <el-table-column :label="$t('user.creationtime')" width="160" align="center" prop="createTime" v-if="columns[6].visible" >
                      <template #default="scope">
                         <span>{{ parseTime(scope.row.createTime) }}</span>
                      </template>
                   </el-table-column>
-                  <el-table-column :label="$t('user.operate')" align="center" width="150" class-name="small-padding fixed-width">
+                  <el-table-column :label="$t('user.operate')" width="150" align="center"  class-name="small-padding fixed-width">
                      <template #default="scope">
                         <el-tooltip :content="$t('button.edit')" placement="top" v-if="scope.row.userId !== 1">
                            <el-button
