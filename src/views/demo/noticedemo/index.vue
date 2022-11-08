@@ -1,8 +1,8 @@
 <template>
    <div class="app-container">
       <div class="table-box">
-         <div class="card table-search">   
-            <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="150px">
+         <div class="card table-search" v-show="showSearch">   
+            <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="150px">
                <el-form-item :label="$t('notice.title')" prop="noticeTitle">
                   <el-input
                      v-model="queryParams.noticeTitle"
