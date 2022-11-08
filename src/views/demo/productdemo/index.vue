@@ -242,7 +242,7 @@
             </el-row>
           </div>
           <!-- table list -->
-          <el-table v-loading="loading" :data="productdemoList" @selection-change="handleSelectionChange">
+          <el-table v-loading="loading" :data="productdemoList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column :label="$t('ErpProductDemo.idProductLa')" align="center" prop="idProductLa" v-if="columns[0].visible" />
             <el-table-column :label="$t('ErpProductDemo.skuLazada')" width="120" align="left" prop="skuLazada" v-if="columns[1].visible" :show-overflow-tooltip="true" />
@@ -256,7 +256,7 @@
             <el-table-column :label="$t('ErpProductDemo.packageLength')" align="center" v-if="columns[9].visible" prop="packageLength" />
             <el-table-column :label="$t('ErpProductDemo.packageWidth')" align="center" v-if="columns[10].visible" prop="packageWidth" />
             <el-table-column :label="$t('ErpProductDemo.packageHeight')" align="center" v-if="columns[11].visible" prop="packageHeight" />
-            <el-table-column :label="$t('ErpProductDemo.price')" align="center" v-if="columns[12].visible" prop="price" />
+            <el-table-column :label="$t('ErpProductDemo.price')" align="center" v-if="columns[12].visible" prop="price" sortable="custom" :sort-orders="['descending', 'ascending']" />
             <el-table-column :label="$t('ErpProductDemo.specialPrice')" align="center" v-if="columns[13].visible" prop="specialPrice" />
             <el-table-column :label="$t('ErpProductDemo.quantity')" align="center" v-if="columns[14].visible" prop="quantity" />
             <el-table-column :label="$t('ErpProductDemo.primaryCategory')" align="center" v-if="columns[15].visible"  prop="primaryCategory" />
@@ -571,6 +571,13 @@
     multiple.value = !selection.length;
   }
   
+  /** 排序触发事件 */
+function handleSortChange(column, prop, order) {
+  queryParams.value.orderByColumn = column.prop;
+  queryParams.value.isAsc = column.order;
+  getList();
+}
+
   /** 新增按钮操作 */
   function handleAdd() {
     reset();
