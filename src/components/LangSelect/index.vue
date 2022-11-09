@@ -12,7 +12,7 @@
         English
       </el-dropdown-item>
       <el-dropdown-item :disabled="language==='id'" command="id">
-        Bahasa Indonesia
+        Indonesia
       </el-dropdown-item>
     </el-dropdown-menu>
     </template>
@@ -36,16 +36,12 @@ export default {
     type: Boolean,
     default: false
   },
-
-
   },
   created() {
     if(useAppStore().lang == null){
-      this.$i18n.locale = 'en'
-      useAppStore().setLanguage('en')
-       
-    }
-    
+      this.$i18n.locale = 'en',
+      useAppStore().setLanguage('en')      
+    }   
   },
   
   methods: {
@@ -57,18 +53,13 @@ export default {
         updateLang(lang);
         this.$modal.loading("正在设置语言，请稍候(Setting language, please wait)...");
         setTimeout("window.location.reload()", 1000);
-
-        
-        
       }else{
         this.$emit('selectLangEvent');
-
       }
       this.$message({
         message: this.$t('login.setlanguage'),
         type: 'success'
-      })
-      
+      })     
     }
   }
  
