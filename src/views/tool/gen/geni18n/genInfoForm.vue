@@ -8,9 +8,6 @@
             <el-option :label="$t('genTable.crud')" value="crud" />
             <el-option :label="$t('genTable.tree')" value="tree" />
             <el-option :label="$t('genTable.sub')" value="sub" />
-            <el-option :label="$t('genTable.crud') + 'i18n'" value="crudi18n" />
-            <el-option :label="$t('genTable.tree') + 'i18n'" value="treei18n" />
-            <el-option :label="$t('genTable.sub') + 'i18n'" value="subi18n" />
           </el-select>
         </el-form-item>
       </el-col>
