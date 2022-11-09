@@ -398,7 +398,7 @@
     </div>
   </template>
   
-  <script setup name="Productdemo">
+  <script setup lang="ts" name="Productdemo">
   import { listProductdemo, getProductdemo, delProductdemo, addProductdemo, updateProductdemo } from "@/api/demo/productdemo";
   import i18n from '@/lang/index';
   

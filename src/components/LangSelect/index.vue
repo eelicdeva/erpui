@@ -19,7 +19,7 @@
   </el-dropdown>
 </template>
 
-<script>
+ <script >
 import useAppStore from "@/store/modules/app";
 import { updateLang } from "@/api/system/user";
 //import variable from "@/assets/styles/variables.module.scss";
