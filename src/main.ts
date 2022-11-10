@@ -37,19 +37,19 @@ import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, select
 // Pagination
 import Pagination from '@/components/Pagination/index.vue';
 // 自定义表格工具组件
-import RightToolbar from '@/components/RightToolbar'
+import RightToolbar from '@/components/RightToolbar/index.vue'
 // // EELIC ExtendToolbar
-import ExtendToolbar from '@/components/ExtendToolbar'
+import ExtendToolbar from '@/components/ExtendToolbar/index.vue'
 // 文件上传组件
-import FileUpload from "@/components/FileUpload"
+import FileUpload from "@/components/FileUpload/index.vue"
 // 图片上传组件
-import ImageUpload from "@/components/ImageUpload"
+import ImageUpload from "@/components/ImageUpload/index.vue"
 // 图片预览组件
-import ImagePreview from "@/components/ImagePreview"
+import ImagePreview from "@/components/ImagePreview/index.vue"
 // 自定义树选择组件
-import TreeSelect from '@/components/TreeSelect'
+import TreeSelect from '@/components/TreeSelect/index.vue'
 // 字典标签组件
-import DictTag from '@/components/DictTag'
+import DictTag from '@/components/DictTag/index.vue'
 
 
 const app = createApp(App)

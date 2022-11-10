@@ -37,7 +37,7 @@
 		"src/**/*.tsx", 
 		"src/**/*.vue", 
 		"app.d.ts",
-		"vite.config.ts", 
+		"vite.config.ts", "src/api/hr/book.js", "src/api/hr/book.js", 
 	],
 	"exclude": [
 		"node_modules", 
