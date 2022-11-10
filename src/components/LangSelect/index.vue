@@ -12,14 +12,14 @@
         English
       </el-dropdown-item>
       <el-dropdown-item :disabled="language==='id'" command="id">
-        Bahasa Indonesia
+        Indonesia
       </el-dropdown-item>
     </el-dropdown-menu>
     </template>
   </el-dropdown>
 </template>
 
- <script >
+ <script lang="ts">
 import useAppStore from "@/store/modules/app";
 import { updateLang } from "@/api/system/user";
 //import variable from "@/assets/styles/variables.module.scss";
@@ -56,19 +56,14 @@ export default {
       if(this.isActive){
         updateLang(lang);
         this.$modal.loading("正在设置语言，请稍候(Setting language, please wait)...");
-        setTimeout("window.location.reload()", 1000);
-
-        
-        
+        setTimeout("window.location.reload()", 1000);       
       }else{
         this.$emit('selectLangEvent');
-
       }
       this.$message({
         message: this.$t('login.setlanguage'),
         type: 'success'
-      })
-      
+      })    
     }
   }
  
