@@ -1,38 +1,41 @@
-import { createApp } from 'vue'
+import { createApp } from 'vue';
+import App from '@/App.vue';
+//cookie
+import Cookies from 'js-cookie';
+//cookie token
+import { getToken, delToken } from '@/utils/cookieToken'
 
-import Cookies from 'js-cookie'
-
-import ElementPlus from 'element-plus'
-// locale bahasa idonesia 语言
-import locale from 'element-plus/lib/locale/lang/id'
-
-import '@/assets/styles/index.scss' // global css
-
-import App from './App'
-import store from './store'
-import router from './router'
-import directive from './directive' // directive
-
+// global css
+import '@/assets/styles/index.scss';
+// element plus
+import ElementPlus from 'element-plus';
+// locale language
+import locale from 'element-plus/lib/locale/lang/id';
+// element icons
+import elementIcons from '@/components/SvgIcon/svgicon';
+// custom directives
+import directive from './directive'; 
+// vue Router
+import router from './router';
+// vue i18n
+import i18n from '@/lang';
+// pinia store
+import store from './store';
+// svg icons
+import 'virtual:svg-icons-register';
+import SvgIcon from '@/components/SvgIcon/index.vue';
 
 // 注册指令
-import plugins from './plugins' // plugins
-import { download } from '@/utils/request'
+import plugins from './plugins'; // plugins
 
-// svg图标
-import 'virtual:svg-icons-register'
-import SvgIcon from '@/components/SvgIcon'
-import elementIcons from '@/components/SvgIcon/svgicon'
+import { download } from '@/utils/request';
+// permission control
+import '@/permission'; 
+import { useDict } from '@/utils/dict';
+import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels } from '@/utils/ruoyi';
 
-import '@/permission' // permission control
-
-// 国际化支持
-import i18n from '@/lang';
-
-import { useDict } from '@/utils/dict'
-import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels } from '@/utils/ruoyi'
-
-// 分页组件
-import Pagination from '@/components/Pagination'
+// Pagination
+import Pagination from '@/components/Pagination/index.vue';
 // 自定义表格工具组件
 import RightToolbar from '@/components/RightToolbar'
 // // EELIC ExtendToolbar
@@ -70,8 +73,6 @@ app.component('ImageUpload', ImageUpload)
 app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
 app.component('ExtendToolbar', ExtendToolbar)
-
-
 
 app.use(router)
 app.use(store)

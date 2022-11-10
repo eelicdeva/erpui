@@ -1,9 +1,10 @@
 {
-  "name": "ruoyi",
-  "version": "3.8.4",
-  "description": "若依管理系统",
-  "author": "若依",
-  "license": "MIT",
+  "name": "eelic-admin-ui",
+  "version": "1.0.4",
+  "description": "EELIC管理系统",
+  "author": "EELIC",
+  "license": "UNLICENSED",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build:prod": "vite build",
@@ -13,17 +14,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitee.com/y_project/RuoYi-Vue.git"
+    "url": "http://109.106.255.153:3000/eason/erp-ui-dev.git"
   },
   "dependencies": {
     "@element-plus/icons-vue": "1.1.4",
-    "@types/js-cookie": "^3.0.2",
     "@vueuse/core": "8.5.0",
     "axios": "0.26.1",
     "echarts": "5.3.2",
     "element-plus": "2.1.8",
     "file-saver": "2.0.5",
     "fuse.js": "6.5.3",
+    "js-cookie": "^3.0.1",
     "jsencrypt": "3.2.1",
     "nprogress": "0.2.0",
     "pinia": "2.0.14",
@@ -33,6 +34,7 @@
     "vue-router": "4.0.14"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.2",
     "@vitejs/plugin-vue": "2.3.3",
     "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/compiler-sfc": "3.2.36",
