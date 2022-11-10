@@ -3,7 +3,8 @@
   "version": "1.0.4",
   "description": "EELIC管理系统",
   "author": "EELIC",
-  "license": "",
+  "license": "UNLICENSED",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build:prod": "vite build",
