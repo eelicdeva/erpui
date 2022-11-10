@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 查询book category列表
-export function listCategory(query) {
+export function listCategory(query: string) {
   return request({
     url: '/hr/category/list',
     method: 'get',
@@ -10,7 +10,7 @@ export function listCategory(query) {
 }
 
 // 查询book category详细
-export function getCategory(categoryId) {
+export function getCategory(categoryId: string) {
   return request({
     url: '/hr/category/' + categoryId,
     method: 'get'
@@ -18,7 +18,7 @@ export function getCategory(categoryId) {
 }
 
 // 新增book category
-export function addCategory(data) {
+export function addCategory(data: string) {
   return request({
     url: '/hr/category',
     method: 'post',
@@ -27,7 +27,7 @@ export function addCategory(data) {
 }
 
 // 修改book category
-export function updateCategory(data) {
+export function updateCategory(data: string) {
   return request({
     url: '/hr/category',
     method: 'put',
@@ -36,7 +36,7 @@ export function updateCategory(data) {
 }
 
 // 删除book category
-export function delCategory(categoryId) {
+export function delCategory(categoryId: string) {
   return request({
     url: '/hr/category/' + categoryId,
     method: 'delete'

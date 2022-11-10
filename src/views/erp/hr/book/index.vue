@@ -188,11 +188,11 @@
   </div>
 </template>
 
-<script setup name="Book">
+<script setup name="Book" lang="ts">
 import { listBook, getBook, delBook, addBook, updateBook, changeCdStatus } from "@/api/hr/book";
 import { listCategory } from "@/api/hr/category";
 import { listLocation } from "@/api/hr/location";
-import addCategory from '@/components/AddCategory';
+import addCategory from '@/components/AddCategory/index.vue';
 import i18n from '@/lang/index';
 
 const {t} = i18n.global;
