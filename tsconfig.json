@@ -38,9 +38,6 @@
 		"src/**/*.vue", 
 		"app.d.ts",
 		"vite.config.ts", 
-		"src/lang/zh.ts", 
-		"src/lang/id.ts", 
-		"src/lang/en.ts"
 	],
 	"exclude": [
 		"node_modules", 

@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router'
 /* Layout */
-import Layout from '@/layout'
+import Layout from '@/layout/index.vue'
 
 import i18n from '@/lang/index';
 
@@ -44,7 +44,7 @@ export const constantRoutes = [
   },
   {
     path: '/login',
-    component: () => import('@/views/login'),
+    component: () => import('@/views/login.vue'),
     hidden: true
   },
   {
