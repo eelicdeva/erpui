@@ -1,9 +1,11 @@
+import { defineStore } from 'pinia'
 import auth from '@/plugins/auth'
 import router, { constantRoutes, dynamicRoutes } from '@/router'
 import { getRouters } from '@/api/menu'
-import Layout from '@/layout/index'
-import ParentView from '@/components/ParentView'
-import InnerLink from '@/layout/components/InnerLink'
+import Layout from '@/layout/index.vue'
+import ParentView from '@/components/ParentView/index.vue'
+import InnerLink from '@/layout/components/InnerLink/index.vue'
+
 
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue')
