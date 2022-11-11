@@ -1,3 +1,4 @@
+<!-- vue-demi not import yet -->
 <template>
     <el-select 
         ref="refSelect"
@@ -16,7 +17,7 @@
 </template>
 
 <script setup>
-    import { reactive, ref } from "vue-demi";
+   // import { reactive, ref } from "vue-demi";
 
     const refSelect=ref(null);
 
@@ -41,16 +42,16 @@
                     el.style=`
                           font-size: 14px;
                           font-weight: 500;
-                          height: 42px;
+                          block-size: 42px;
                           display: flex;
                           align-items: center;
                           justify-content: center;
                           cursor: pointer;
-                          padding-top:4px;
-                          border-top:1px solid rgb(240 242 245)
+                          padding-block-start:4px;
+                          border-block-start:1px solid rgb(240 242 245)
                     `
                     el.innerHTML = `
-                          <span style="margin-right:8px">
+                          <span style="margin-inline-end:8px">
                                   <svg class="icon" aria-hidden="true">
                                         <use xlink:href="#icon-plus"></use>
                                   </svg>

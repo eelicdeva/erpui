@@ -11,26 +11,25 @@ import enLocale from './en'
 import zhLocale from './zh'
 import idLocale from './id'
 
-const messages = {
-  en: {
-    ...enLocale,
-    ...elementEnLocale
-  },
-  zh: {
-    ...zhLocale,
-    ...elementZhLocale
-  },
-  id: {
-    ...idLocale,
-    ...elementIdLocale
-  }
-}
-
 const i18n = createI18n({
-
-  locale: Cookies.get('lang') || 'en',
-    // 设置文本内容
-  messages
+  legacy: false, // 如果要支持 compositionAPI，此项必须设置为 false
+  locale: Cookies.get('lang') || 'en',   
+  globalInjection: true, // 全局注册$t方法
+  // 设置文本内容
+  messages: {
+    en: {
+      ...enLocale,
+      ...elementEnLocale
+    },
+    zh: {
+      ...zhLocale,
+      ...elementZhLocale
+    },
+    id: {
+      ...idLocale,
+      ...elementIdLocale
+    }
+  }
 })
 
 export default i18n

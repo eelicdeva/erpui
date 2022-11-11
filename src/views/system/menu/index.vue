@@ -291,12 +291,13 @@
    </div>
 </template>
 
-<script setup name="Menu">
+<script setup lang="ts" name="Menu" >
 import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/menu";
 import SvgIcon from "@/components/SvgIcon";
 import IconSelect from "@/components/IconSelect";
 import { ClickOutside as vClickOutside } from 'element-plus'
 import i18n from '@/lang/index';
+import { reactive, ref, toRefs } from "vue";
 
 const {t} = i18n.global;
 
