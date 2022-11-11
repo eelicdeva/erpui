@@ -58,3 +58,12 @@ export function getCodeImg() {
     timeout: 20000
   })
 }
+
+
+// 获取key
+export function getPublicKey() {
+  return request({
+    url: '/publicKey',
+    method: 'get',
+  })
+}

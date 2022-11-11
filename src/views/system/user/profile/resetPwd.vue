@@ -18,6 +18,8 @@
 
 <script setup>
 import { updateUserPwd } from "@/api/system/user";
+import { getPublicKey } from '@/api/login'
+import { encrypt } from "@/utils/jsencrypt";
 import i18n from '@/lang/index';
 
 const {t} = i18n.global;
@@ -47,9 +49,14 @@ const rules = ref({
 function submit() {
   proxy.$refs.pwdRef.validate(valid => {
     if (valid) {
-      updateUserPwd(user.oldPassword, user.newPassword).then(response => {
-        proxy.$modal.msgSuccess( t('button.successModify'));
-      });
+      getPublicKey().then(res => {
+        let publicKey = res.publicKey
+        const oldPassword = encrypt(user.oldPassword, publicKey)
+        const newPassword = encrypt(user.newPassword, publicKey)
+      updateUserPwd(oldPassword, newPassword).then(response => {
+          proxy.$modal.msgSuccess(t('button.successModify'));
+        });
+      })
     }
   });
 };
