@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import useTagsViewStore from '@/store/modules/tagsView'
+import useTagsViewStore from '@/stores/modules/tagsView'
 
 const tagsViewStore = useTagsViewStore()
 const route = useRoute()

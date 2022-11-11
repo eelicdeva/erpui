@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import useAppStore from "@/store/modules/app";
+import useAppStore from "@/stores/modules/app";
 import i18n from '@/lang';
 
 const {t} = i18n.global;

@@ -84,9 +84,9 @@ import originElementPlus from 'element-plus/theme-chalk/index.css'
 import axios from 'axios'
 import { ElLoading, ElMessage } from 'element-plus'
 import { useDynamicTitle } from '@/utils/dynamicTitle'
-import useAppStore from '@/store/modules/app'
-import useSettingsStore from '@/store/modules/settings'
-import usePermissionStore from '@/store/modules/permission'
+import useAppStore from '@/stores/modules/app'
+import useSettingsStore from '@/stores/modules/settings'
+import usePermissionStore from '@/stores/modules/permission'
 import i18n from '@/lang/index';
 
 const {t} = i18n.global;

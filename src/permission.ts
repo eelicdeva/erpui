@@ -5,9 +5,9 @@ import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
 import { isHttp } from '@/utils/validate'
 import { isRelogin } from '@/utils/request'
-import useUserStore from '@/store/modules/user'
-import useSettingsStore from '@/store/modules/settings'
-import usePermissionStore from '@/store/modules/permission'
+import useUserStore from '@/stores/modules/user'
+import useSettingsStore from '@/stores/modules/settings'
+import usePermissionStore from '@/stores/modules/permission'
 
 NProgress.configure({ showSpinner: false });
 

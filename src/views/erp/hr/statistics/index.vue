@@ -34,7 +34,7 @@
 import { countBookLoan } from "@/api/hr/loan";
 import { countBookCategory } from "@/api/hr/book";
 import i18n from '@/lang/index';
-import useAppStore from "@/store/modules/app";
+import useAppStore from "@/stores/modules/app";
 import * as echarts from 'echarts';
 
 const { t } = i18n.global;

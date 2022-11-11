@@ -16,7 +16,7 @@
   </section>
 </template>
 <script>
-import useAppStore from "@/store/modules/app";
+import useAppStore from "@/stores/modules/app";
 
 export default {
   data() {

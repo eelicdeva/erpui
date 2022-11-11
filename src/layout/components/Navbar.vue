@@ -62,9 +62,9 @@ import SizeSelect from '@/components/SizeSelect'
 import HeaderSearch from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
-import useAppStore from '@/store/modules/app'
-import useUserStore from '@/store/modules/user'
-import useSettingsStore from '@/store/modules/settings'
+import useAppStore from '@/stores/modules/app'
+import useUserStore from '@/stores/modules/user'
+import useSettingsStore from '@/stores/modules/settings'
 import i18n from '@/lang/index';
 
 const {t} = i18n.global;

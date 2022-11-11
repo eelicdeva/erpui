@@ -174,7 +174,7 @@ import { listLoan, getLoan, delLoan, addLoan, updateLoan } from "@/api/hr/loan";
 import { getAllBook } from "@/api/hr/book";
 import { listCategory } from "@/api/hr/category";
 import i18n from '@/lang/index';
-import useAppStore from "@/store/modules/app";
+import useAppStore from "@/stores/modules/app";
 import addCategory from '@/components/AddCategory/index.vue';
 import { getCurrentInstance, reactive, ref, toRefs } from "vue";
 

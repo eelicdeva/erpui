@@ -12,7 +12,7 @@
   import Header from '@/components/Mbti/Header'
   import Name from '@/components/Mbti/Name'
   import Mbti from '@/components/Mbti/'
-  import useAppStore from "@/store/modules/app";
+  import useAppStore from "@/stores/modules/app";
   
   export default {
     components : {

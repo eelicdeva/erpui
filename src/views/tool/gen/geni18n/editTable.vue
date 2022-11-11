@@ -151,7 +151,7 @@ import { optionselect as getDictOptionselect } from "@/api/system/dict/type";
 import basicInfoForm from "./basicInfoForm";
 import genInfoForm from "./genInfoForm";
 import genChartForm from "./genChartForm";
-import useAppStore from "@/store/modules/app";
+import useAppStore from "@/stores/modules/app";
 
 const route = useRoute();
 const { proxy } = getCurrentInstance();

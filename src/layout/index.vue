@@ -19,8 +19,8 @@ import Sidebar from './components/Sidebar/index.vue'
 import { AppMain, Navbar, Settings, TagsView } from './components'
 import defaultSettings from '@/settings'
 
-import useAppStore from '@/store/modules/app'
-import useSettingsStore from '@/store/modules/settings'
+import useAppStore from '@/stores/modules/app'
+import useSettingsStore from '@/stores/modules/settings'
 
 import { onMounted } from 'vue'
 

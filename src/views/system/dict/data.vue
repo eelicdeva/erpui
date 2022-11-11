@@ -195,7 +195,7 @@
 <script setup name="Data">
 import { optionselect as getDictOptionselect, getType } from "@/api/system/dict/type";
 import { listData, getData, delData, addData, updateData } from "@/api/system/dict/data";
-import useAppStore from "@/store/modules/app";
+import useAppStore from "@/stores/modules/app";
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");

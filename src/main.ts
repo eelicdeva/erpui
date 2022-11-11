@@ -20,7 +20,7 @@ import router from './router';
 // vue i18n
 import i18n from '@/lang';
 // pinia store
-import store from '@/store';
+import store from '@/stores';
 // svg icons custom
 import 'virtual:svg-icons-register';
 import SvgIcon from '@/components/SvgIcon/index.vue';
