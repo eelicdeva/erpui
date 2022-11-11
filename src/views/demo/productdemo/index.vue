@@ -243,22 +243,22 @@
           </div>
           <!-- table list -->
           <el-table v-loading="loading" :data="productdemoList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-            <el-table-column type="selection" width="55" align="center" />
-            <el-table-column :label="$t('ErpProductDemo.idProductLa')" align="center" prop="idProductLa" v-if="columns[0].visible" />
+            <el-table-column type="selection" width="38" align="center" />
+            <el-table-column :label="$t('ErpProductDemo.idProductLa')" width="65" align="center" prop="idProductLa" v-if="columns[0].visible" />
             <el-table-column :label="$t('ErpProductDemo.skuLazada')" width="120" align="left" prop="skuLazada" v-if="columns[1].visible" :show-overflow-tooltip="true" />
-            <el-table-column :label="$t('ErpProductDemo.skuEelic')" width="200" align="left" prop="skuEelic" v-if="columns[2].visible" :show-overflow-tooltip="true"/>
+            <el-table-column :label="$t('ErpProductDemo.skuEelic')" width="200" align="left" prop="skuEelic" v-if="columns[2].visible" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
             <el-table-column :label="$t('ErpProductDemo.skuNameLa')" width="300" align="center" prop="skuNameLa" v-if="columns[3].visible" :show-overflow-tooltip="true"/>
             <el-table-column :label="$t('ErpProductDemo.shortDescription')" align="center" prop="shortDescription" v-if="columns[4].visible" :show-overflow-tooltip="true"/>
             <el-table-column :label="$t('ErpProductDemo.description')" align="center" prop="description" v-if="columns[5].visible" :show-overflow-tooltip="true"/>
             <el-table-column :label="$t('ErpProductDemo.model')" align="center" prop="model" v-if="columns[6].visible" :show-overflow-tooltip="true"/>
             <el-table-column :label="$t('ErpProductDemo.packageContent')" align="center" v-if="columns[7].visible" prop="packageContent" :show-overflow-tooltip="true"/>
-            <el-table-column :label="$t('ErpProductDemo.packageWeight')" align="center" v-if="columns[8].visible" prop="packageWeight" />
-            <el-table-column :label="$t('ErpProductDemo.packageLength')" align="center" v-if="columns[9].visible" prop="packageLength" />
-            <el-table-column :label="$t('ErpProductDemo.packageWidth')" align="center" v-if="columns[10].visible" prop="packageWidth" />
-            <el-table-column :label="$t('ErpProductDemo.packageHeight')" align="center" v-if="columns[11].visible" prop="packageHeight" />
+            <el-table-column :label="$t('ErpProductDemo.packageWeight')" align="center" v-if="columns[8].visible" prop="packageWeight" sortable="custom" :sort-orders="['descending', 'ascending']" />
+            <el-table-column :label="$t('ErpProductDemo.packageLength')" align="center" v-if="columns[9].visible" prop="packageLength" sortable="custom" :sort-orders="['descending', 'ascending']" />
+            <el-table-column :label="$t('ErpProductDemo.packageWidth')" align="center" v-if="columns[10].visible" prop="packageWidth" sortable="custom" :sort-orders="['descending', 'ascending']" />
+            <el-table-column :label="$t('ErpProductDemo.packageHeight')" align="center" v-if="columns[11].visible" prop="packageHeight" sortable="custom" :sort-orders="['descending', 'ascending']" />
             <el-table-column :label="$t('ErpProductDemo.price')" align="center" v-if="columns[12].visible" prop="price" sortable="custom" :sort-orders="['descending', 'ascending']" />
-            <el-table-column :label="$t('ErpProductDemo.specialPrice')" align="center" v-if="columns[13].visible" prop="specialPrice" />
-            <el-table-column :label="$t('ErpProductDemo.quantity')" align="center" v-if="columns[14].visible" prop="quantity" />
+            <el-table-column :label="$t('ErpProductDemo.specialPrice')" align="center" v-if="columns[13].visible" prop="specialPrice" sortable="custom" :sort-orders="['descending', 'ascending']" />
+            <el-table-column :label="$t('ErpProductDemo.quantity')" align="center" v-if="columns[14].visible" prop="quantity" sortable="custom" :sort-orders="['descending', 'ascending']" />
             <el-table-column :label="$t('ErpProductDemo.primaryCategory')" align="center" v-if="columns[15].visible"  prop="primaryCategory" />
             <el-table-column :label="$t('ErpProductDemo.statusLa')" align="center" v-if="columns[16].visible" prop="statusLa" />
             <el-table-column :label="$t('ErpProductDemo.colorFamily')" align="center" v-if="columns[17].visible" prop="colorFamily" :show-overflow-tooltip="true"/>
@@ -273,7 +273,7 @@
             <el-table-column :label="$t('ErpProductDemo.simage8')" align="center" v-if="columns[26].visible" prop="simage8" :show-overflow-tooltip="true"/>
             <el-table-column :label="$t('ErpProductDemo.status')" align="center" v-if="columns[27].visible" prop="status" />
             <el-table-column :label="$t('ErpProductDemo.remark')" align="center" v-if="columns[28].visible" prop="remark" :show-overflow-tooltip="true"/>
-            <el-table-column :label="$t('user.operate')" align="center" class-name="small-padding fixed-width">
+            <el-table-column :label="$t('user.operate')" width="150" align="center" class-name="small-padding fixed-width">
               <template #default="scope">
                 <el-button
                   type="text"
@@ -290,8 +290,7 @@
               </template>
             </el-table-column>
           </el-table>
-        </div>
-      </div>  
+
       <pagination
         v-show="total>0"
         :total="total"
@@ -299,7 +298,8 @@
         v-model:limit="queryParams.pageSize"
         @pagination="getList"
       />
-  
+        </div>
+      </div>    
       <!-- 添加或修改产品Demo对话框 -->
       <el-dialog :title="title" v-model="open" width="500px" append-to-body>
         <el-form ref="productdemoRef" :model="form" :rules="rules" label-width="80px">
@@ -322,7 +322,7 @@
             <el-input v-model="form.model" :placeholder="$t('ErpProductDemo.modelPlaceholder')" />
           </el-form-item>
           <el-form-item :label="$t('ErpProductDemo.packageContent')">
-            <editor v-model="form.packageContent" :min-height="192"/>
+            <el-input v-model="form.packageContent" :min-height="192"/>
           </el-form-item>
           <el-form-item :label="$t('ErpProductDemo.packageWeight')" prop="packageWeight">
             <el-input v-model="form.packageWeight" :placeholder="$t('ErpProductDemo.packageWeightPlaceholder')" />
@@ -426,14 +426,14 @@ import { reactive, ref, toRefs } from "vue";
   { key: 6, label: t('ErpProductDemo.model'), visible: false },  
   { key: 7, label: t('ErpProductDemo.packageContent'), visible: false },
   { key: 8, label: t('ErpProductDemo.packageWeight'), visible: true },
-  { key: 9, label: t('ErpProductDemo.packageLength'), visible: true },
-  { key: 10, label: t('ErpProductDemo.packageWidth'), visible: true },
-  { key: 11, label: t('ErpProductDemo.packageHeight'), visible: true },
+  { key: 9, label: t('ErpProductDemo.packageLength'), visible: false },
+  { key: 10, label: t('ErpProductDemo.packageWidth'), visible: false },
+  { key: 11, label: t('ErpProductDemo.packageHeight'), visible: false },
   { key: 12, label: t('ErpProductDemo.price'), visible: false },
   { key: 13, label: t('ErpProductDemo.specialPrice'), visible: true },
-  { key: 14, label:  t('ErpProductDemo.quantity'), visible: false },
+  { key: 14, label:  t('ErpProductDemo.quantity'), visible: true },
   { key: 15, label:  t('ErpProductDemo.primaryCategory'), visible: false },  
-  { key: 16, label:  t('ErpProductDemo.statusLa'), visible: false },    
+  { key: 16, label:  t('ErpProductDemo.statusLa'), visible: true },    
   { key: 17, label: t('ErpProductDemo.colorFamily'), visible: false },
   { key: 18, label: t('ErpProductDemo.fblLa'), visible: false },
   { key: 19, label: t('ErpProductDemo.simage1'), visible: false },

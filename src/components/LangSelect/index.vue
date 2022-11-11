@@ -36,16 +36,12 @@ export default {
     type: Boolean,
     default: false
   },
-
-
   },
   created() {
     if(useAppStore().lang == null){
-      this.$i18n.locale = 'en'
-      useAppStore().setLanguage('en')
-       
-    }
-    
+      this.$i18n.locale = 'en',
+      useAppStore().setLanguage('en')      
+    }   
   },
   
   methods: {
@@ -56,14 +52,22 @@ export default {
       if(this.isActive){
         updateLang(lang);
         this.$modal.loading("正在设置语言，请稍候(Setting language, please wait)...");
+<<<<<<< HEAD
         setTimeout("window.location.reload()", 1000);       
+=======
+        setTimeout("window.location.reload()", 1000);
+>>>>>>> 8082ceadc3a49847c8f937ba0e1df44d225e6d4b
       }else{
         this.$emit('selectLangEvent');
       }
       this.$message({
         message: this.$t('login.setlanguage'),
         type: 'success'
+<<<<<<< HEAD
       })    
+=======
+      })     
+>>>>>>> 8082ceadc3a49847c8f937ba0e1df44d225e6d4b
     }
   }
  
