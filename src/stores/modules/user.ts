@@ -1,11 +1,10 @@
-import { login, logout, getInfo, getPublicKey } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
-import defAva from '@/assets/images/profile.jpg'
+import { defineStore } from 'pinia';
+import { login, logout, getInfo, getPublicKey } from '@/api/login';
 import { encrypt } from "@/utils/jsencrypt";
+import { getToken, setToken, removeToken } from '@/utils/auth';
+import defAva from '@/assets/images/profile.jpg';
 
-const useUserStore = defineStore(
-  'user',
-  {
+const useUserStore = defineStore('user', {
     state: () => ({
       token: getToken(),
       name: '',
@@ -15,7 +14,7 @@ const useUserStore = defineStore(
     }),
     actions: {
       // 登录
-      login(userInfo) {
+      login(userInfo: { username: string; password: string; code: string; uuid: string; lang: string; }) {
         return new Promise((resolve, reject) => {
           getPublicKey().then(res => {
             let publicKey = res.publicKey

@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-
+import { defineStore } from 'pinia';
 
 const useAppStore = defineStore(
   'app',
@@ -23,13 +23,13 @@ const useAppStore = defineStore(
         this.sidebar.opened = !this.sidebar.opened
         this.sidebar.withoutAnimation = withoutAnimation
         if (this.sidebar.opened) {
-          Cookies.set('sidebarStatus', 1)
+          Cookies.set('sidebarStatus', "1")
         } else {
-          Cookies.set('sidebarStatus', 0)
+          Cookies.set('sidebarStatus', "0")
         }
       },
       closeSideBar(withoutAnimation) {
-        Cookies.set('sidebarStatus', 0)
+        Cookies.set('sidebarStatus', "0")
         this.sidebar.opened = false
         this.sidebar.withoutAnimation = withoutAnimation
       },

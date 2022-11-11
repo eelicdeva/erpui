@@ -1,4 +1,5 @@
 import { defineConfig, loadEnv } from 'vite'
+// to-check: import vue from '@vitejs/plugin-vue'  and to-do plugins: [vue()]
 import path from 'path'
 import createVitePlugins from './vite/plugins'
 

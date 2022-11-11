@@ -1,9 +1,8 @@
-import store from '@/stores'
 import defaultSettings from '@/settings'
 import useSettingsStore from '@/stores/modules/settings'
 
 /**
- * 动态修改标题
+ * Dynamic Browser Title / 动态修改标题
  */
 export function useDynamicTitle() {
   const settingsStore = useSettingsStore();
