@@ -56,6 +56,9 @@ export default {
         setTimeout("window.location.reload()", 1000);       
 =======
         setTimeout("window.location.reload()", 1000);
+<<<<<<< HEAD
+>>>>>>> 8082ceadc3a49847c8f937ba0e1df44d225e6d4b
+=======
 >>>>>>> 8082ceadc3a49847c8f937ba0e1df44d225e6d4b
       }else{
         this.$emit('selectLangEvent');
@@ -64,7 +67,11 @@ export default {
         message: this.$t('login.setlanguage'),
         type: 'success'
 <<<<<<< HEAD
+<<<<<<< HEAD
       })    
+=======
+      })     
+>>>>>>> 8082ceadc3a49847c8f937ba0e1df44d225e6d4b
 =======
       })     
 >>>>>>> 8082ceadc3a49847c8f937ba0e1df44d225e6d4b
