@@ -3,7 +3,7 @@ import App from '@/App.vue';
 //cookie
 import Cookies from 'js-cookie';
 //cookie token
-import { getToken, delToken } from '@/utils/cookieToken'
+//import { getToken, delToken } from '@/utils/cookieToken'
 
 // global css
 import '@/assets/styles/index.scss';
@@ -21,7 +21,7 @@ import router from './router';
 import i18n from '@/lang';
 // pinia store
 import store from './store';
-// svg icons
+// svg icons custom
 import 'virtual:svg-icons-register';
 import SvgIcon from '@/components/SvgIcon/index.vue';
 

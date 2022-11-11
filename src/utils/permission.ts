@@ -11,7 +11,7 @@ export function checkPermi(value) {
     const permissionDatas = value
     const all_permission = "*:*:*";
 
-    const hasPermission = permissions.some(permission => {
+    const hasPermission = permissions.some((permission: string) => {
       return all_permission === permission || permissionDatas.includes(permission)
     })
 
