@@ -38,7 +38,9 @@
 		"src/**/*.vue", 
 		"app.d.ts",
 		"env.d.ts",
-		"vite.config.ts"
+		"vite.config.ts",
+		"src/utils/jsencrypt.js"
+
 	],
 	"exclude": [
 		"node_modules", 

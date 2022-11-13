@@ -192,10 +192,12 @@
    </div>
 </template>
 
-<script setup name="Data">
+<script setup lang="ts" name="Data">
 import { optionselect as getDictOptionselect, getType } from "@/api/system/dict/type";
 import { listData, getData, delData, addData, updateData } from "@/api/system/dict/data";
 import useAppStore from "@/stores/modules/app";
+import { getCurrentInstance, reactive, ref } from "vue";
+import { useRoute } from "vue-router";
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -241,7 +243,7 @@ const data = reactive({
 const { queryParams, form, rules } = toRefs(data);
 
 /** 查询字典类型详细 */
-function getTypes(dictId) {
+function getTypes(dictId: string) {
   getType(dictId).then(response => {
     queryParams.value.dictType = response.data.dictType;
     defaultDictType.value = response.data.dictType;
@@ -307,13 +309,13 @@ function handleAdd() {
   form.value.dictType = queryParams.value.dictType;
 }
 /** 多选框选中数据 */
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.dictCode);
+function handleSelectionChange(selection: { map: (arg0: (item: any) => any) => never[]; length: number; }) {
+  ids.value = selection.map((item: { dictCode: any; }) => item.dictCode);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 /** 修改按钮操作 */
-function handleUpdate(row) {
+function handleUpdate(row: { dictCode: never[]; }) {
   reset();
   const dictCode = row.dictCode || ids.value;
   getData(dictCode).then(response => {
@@ -324,7 +326,7 @@ function handleUpdate(row) {
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["dataRef"].validate(valid => {
+  proxy.$refs["dataRef"].validate((valid: any) => {
     if (valid) {
       if (form.value.dictCode != undefined) {
         updateData(form.value).then(response => {
@@ -343,7 +345,7 @@ function submitForm() {
   });
 }
 /** 删除按钮操作 */
-function handleDelete(row) {
+function handleDelete(row: { dictCode: never[]; }) {
   const dictCodes = row.dictCode || ids.value;
   proxy.$modal.confirm('是否确认删除字典编码为"' + dictCodes + '"的数据项？').then(function() {
     return delData(dictCodes);

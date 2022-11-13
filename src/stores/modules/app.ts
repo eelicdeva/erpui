@@ -1,13 +1,12 @@
 // @/stores/modules/app.ts 
-// to-do: ? !!+Cookies.get('sidebarStatus') ！！常常用来做类型判断，在第一步!（变量）之后再做逻辑取反运算
-// ? : 可选运算符 1 ？ ！！+1 ： true
 import Cookies from 'js-cookie'
 import { defineStore } from 'pinia';
+import { useAppStore } from '@/stores/interface'
 
 const useAppStore = defineStore('app', {
     state: () => ({
       sidebar: {
-        opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
+        opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus')! : true,
         withoutAnimation: false,
         hide: false
       },

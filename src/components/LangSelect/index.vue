@@ -22,7 +22,6 @@
  <script lang="ts">
 import useAppStore from "@/stores/modules/app";
 import { updateLang } from "@/api/system/user";
-//import variable from "@/assets/styles/variables.module.scss";
 
 export default {
   computed: {

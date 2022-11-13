@@ -181,8 +181,9 @@
    </div>
 </template>
 
-<script setup name="Dict">
+<script setup lang="ts" name="Dict">
 import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/dict/type";
+import { getCurrentInstance, reactive, ref, toRefs } from "vue";
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");

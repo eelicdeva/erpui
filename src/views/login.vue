@@ -83,7 +83,7 @@ import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 import useUserStore from "@/stores/modules/user";
-import LangSelect from "@/components/LangSelect";
+import LangSelect from "@/components/LangSelect/index.vue";
 
 export default {
   name: "login",
