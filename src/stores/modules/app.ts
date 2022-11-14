@@ -12,7 +12,7 @@ const useAppStore = defineStore('app', {
       },
       device: 'desktop',
       size: Cookies.get('size') || 'default',
-      lang: Cookies.get('lang'),
+      lang: Cookies.get('lang') || navigator.language.substring(0,2),
       userNameMbti : '',
     }),
     actions: {

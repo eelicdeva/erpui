@@ -8,7 +8,7 @@
         <header-search id="header-search" class="right-menu-item" />
 
         <el-tooltip :content="$t('button.sourceAddress')" effect="dark" placement="bottom">
-          <ruo-yi-git id="ruoyi-git" class=" right-menu-item hover-effect" />
+          <ruo-yi-git id="eelic-git" class=" right-menu-item hover-effect" />
         </el-tooltip>
         
         <el-tooltip :content="$t('button.language')" effect="dark" placement="bottom">
@@ -16,7 +16,7 @@
         </el-tooltip>
 
         <el-tooltip :content="$t('button.documentAddress')" effect="dark" placement="bottom">
-          <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
+          <ruo-yi-doc id="eelic-doc" class="right-menu-item hover-effect" />
         </el-tooltip>
         
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
@@ -60,8 +60,8 @@ import Screenfull from '@/components/Screenfull'
 import LangSelect from "@/components/LangSelect";
 import SizeSelect from '@/components/SizeSelect'
 import HeaderSearch from '@/components/HeaderSearch'
-import RuoYiGit from '@/components/RuoYi/Git'
-import RuoYiDoc from '@/components/RuoYi/Doc'
+import RuoYiGit from '@/components/EELIC/Git'
+import RuoYiDoc from '@/components/EELIC/Doc'
 import useAppStore from '@/stores/modules/app'
 import useUserStore from '@/stores/modules/user'
 import useSettingsStore from '@/stores/modules/settings'

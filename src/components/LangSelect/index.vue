@@ -24,6 +24,10 @@ import useAppStore from "@/stores/modules/app";
 import { updateLang } from "@/api/system/user";
 
 export default {
+  // to-do:
+//const app = useAppStore(),
+//const langLoad = app.lang//navigator.language.substring(0,2);
+//console.log( "lang load: " +langLoad ),
   computed: {
     language() {
       return useAppStore().lang;
