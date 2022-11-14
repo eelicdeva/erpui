@@ -7,7 +7,29 @@ export default {
       sizeDefault: '默认',
       sizeSmall: '稍小'
   }
+
 },
+  utils: {
+    errorCode: {
+      err401: '认证失败，无法访问系统资源!',
+      err403: '当前操作没有权限!',
+      err404: '访问资源不存在!',
+      errDefault: '系统未知错误，请反馈给管理员!'
+    },
+    request: {
+      msgReSubmit: '数据正在处理，请勿重复提交!',
+      err401Session: '无效的会话，或者会话已过期，请重新登录。',
+      errNetwork: '后端接口连接异常',
+      errSysTimeOut: '系统接口请求超时',
+      errSysInterface: '系统接口',
+      errException: '异常',
+      msgDownload: '正在下载数据，请稍候',
+      errDownload: '下载文件出现错误，请联系管理员',
+      msgExpired: '登录状态已过期，您可以继续留在该页面，或者重新登录',
+      msgSysHint: '系统提示',
+      btnReLogin: '重新登录',
+    }
+  },
   login: {
     title: 'EELIC系统',
     logIn: '登录',
@@ -38,7 +60,6 @@ export default {
     passwordDontMatch: '两次输入的密码不一致',
     verificationCode: '验证码必须是数字',
     congratulations: '恭喜你，您的账号', 
-    systemhint: '系统提示',
     success: '注册成功！'
   },
   tagsView: {
@@ -339,7 +360,6 @@ export default {
     edit: '修改',
     enable: '启用',
     expand: '展开/折叠',
-    ExpiredMessage: '登录状态已过期，您可以继续留在该页面，或者重新登录',
     export: '导出',
     hide: '隐藏',
     hideExtend:'隐藏扩展',
@@ -352,7 +372,6 @@ export default {
     refresh: '刷新页面',
     RefreshCache: '刷新缓存',
     relation: '父子联动',
-    ReRegister: '重新登录',
     reset: '重置',
     resetPW: '重置密码',
     return: '返回',

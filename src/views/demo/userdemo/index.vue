@@ -331,11 +331,13 @@
    </div>
 </template>
 
-<script setup name="User">
+<script setup lang="ts" name="User">
 import { getToken } from "@/utils/auth";
 import { treeselect } from "@/api/system/dept";
 import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser } from "@/api/system/user";
 import i18n from '@/lang/index';
+import { useRouter } from "vue-router";
+import { getCurrentInstance, reactive, ref } from "vue";
 
 const {t} = i18n.global;
 

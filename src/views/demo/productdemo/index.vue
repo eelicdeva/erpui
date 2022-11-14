@@ -416,6 +416,8 @@ import { reactive, ref, toRefs } from "vue";
   const multiple = ref(true);
   const total = ref(0);
   const title = ref("");
+  const defaultSort = ref({ prop: "operData", order: "descending" });
+  
   const columns = ref([
   { key: 0, label: t('ErpProductDemo.idProductLa'), visible: true },
   { key: 1, label: t('ErpProductDemo.skuLazada'), visible: false },

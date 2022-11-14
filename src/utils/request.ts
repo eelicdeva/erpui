@@ -1,11 +1,11 @@
-import axios from 'axios'
-import { ElNotification , ElMessageBox, ElMessage, ElLoading } from 'element-plus'
-import { getToken } from '@/utils/auth'
-import errorCode from '@/utils/errorCode'
-import { tansParams, blobValidate } from '@/utils/ruoyi'
-import cache from '@/plugins/cache'
-import { saveAs } from 'file-saver'
-import useUserStore from '@/stores/modules/user'
+import axios from 'axios';
+import { ElNotification , ElMessageBox, ElMessage, ElLoading } from 'element-plus';
+import { getToken } from '@/utils/auth';
+import httpStatus from '@/utils/httpStatus';
+import { tansParams, blobValidate } from '@/utils/ruoyi';
+import cache from '@/plugins/cache';
+import { saveAs } from 'file-saver';
+import useUserStore from '@/stores/modules/user';
 import i18n from '@/lang/index';
 
 const {t} = i18n.global;
@@ -13,47 +13,65 @@ let downloadLoadingInstance;
 // 是否显示重新登录
 export let isRelogin = { show: false };
 
-axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
-// 创建axios实例
-const service = axios.create({
-  // axios中请求配置有baseURL选项，表示请求URL公共部分
-  baseURL: import.meta.env.VITE_APP_BASE_API,
-  // 超时
-  timeout: 10000
-})
+axios.defaults.headers.get['Content-Type'] = 'application/json;charset=utf-8';
+axios.defaults.headers.put['Content-Type'] = 'application/json;charset=utf-8';
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
+axios.defaults.headers.patch['Content-Type'] = 'application/json;charset=utf-8';
 
-// request拦截器
+// create axios instance / 创建axios实例;
+const service = axios.create({
+  // axios中请求配置有baseURL选项，表示请求URL公共部分;
+  // baseURL setting: 'dev-api' | '/prod-api' | 'stage-api';
+  baseURL: import.meta.env.VITE_APP_BASE_API,
+  // timeout setting unit: ms 超时;
+  timeout: 10000
+});
+
+// request interceptors / 拦截器
 service.interceptors.request.use(config => {
-  // 是否需要设置 token
-  const isToken = (config.headers || {}).isToken === false
-  // 是否需要防止数据重复提交
-  const isRepeatSubmit = (config.headers || {}).repeatSubmit === false
+  // token setting / 是否需要设置 token
+  const isToken = (config.headers || {}).isToken === false;
+  // Repeat Submit setting / 是否需要防止数据重复提交
+  const isRepeatSubmit = (config.headers || {}).repeatSubmit === false;
+
+
   if (getToken() && !isToken) {
-    config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
-  }
-  // get请求映射params参数
+    // setting all request carry token / 让每个请求携带自定义token ;
+    // 可根据实际情况自行修改
+    config.headers!.Authorization = 'Bearer ' + getToken() 
+  };
+  // get params setting / 请求映射params参数
+  // sample request: http://eelic.org:2880/dev-api/system/user/list?pageNum=1&pageSize=10&userName=admin
+  // request params : { pageNum: 1, pageSize: 10, userName: admin }
   if (config.method === 'get' && config.params) {
     let url = config.url + '?' + tansParams(config.params);
     url = url.slice(0, -1);
     config.params = {};
     config.url = url;
-  }
-  if (!isRepeatSubmit && (config.method === 'post' || config.method === 'put')) {
+  };
+
+/**
+ * is Repeat Submit config method: 
+ * time Interval: 1000(ms)
+ * post | put | patch 
+ * error code 
+ */
+  if (!isRepeatSubmit && (config.method === 'post' || config.method === 'put'  || config.method === 'patch')) {
     const requestObj = {
       url: config.url,
       data: typeof config.data === 'object' ? JSON.stringify(config.data) : config.data,
       time: new Date().getTime()
-    }
-    const sessionObj = cache.session.getJSON('sessionObj')
+    };
+    const sessionObj = cache.session.getJSON('sessionObj');
     if (sessionObj === undefined || sessionObj === null || sessionObj === '') {
       cache.session.setJSON('sessionObj', requestObj)
     } else {
-      const s_url = sessionObj.url;                // 请求地址
-      const s_data = sessionObj.data;              // 请求数据
-      const s_time = sessionObj.time;              // 请求时间
-      const interval = 1000;                       // 间隔时间(ms)，小于此时间视为重复提交
+      const s_url = sessionObj.url;                // url/请求地址
+      const s_data = sessionObj.data;              // data/请求数据
+      const s_time = sessionObj.time;              // time/请求时间
+      const interval = 1000;                       // time (ms)/间隔时间(ms)，小于此时间视为重复提交
       if (s_data === requestObj.data && requestObj.time - s_time < interval && s_url === requestObj.url) {
-        const message = '数据正在处理，请勿重复提交';
+        const message: string = t('utils.request.msgReSubmit');
         console.warn(`[${s_url}]: ` + message)
         return Promise.reject(new Error(message))
       } else {
@@ -70,9 +88,9 @@ service.interceptors.request.use(config => {
 // 响应拦截器
 service.interceptors.response.use(res => {
     // 未设置状态码则默认成功状态
-    const code = res.data.code || 200;
-    // 获取错误信息
-    const msg = errorCode[code] || res.data.msg || errorCode['default']
+    const code: number = res.data.code as number || 200;
+       // 获取错误信息
+    const msg = httpStatus[code] || res.data.msg || httpStatus['default']
     // 二进制数据则直接返回
     if(res.request.responseType ===  'blob' || res.request.responseType ===  'arraybuffer'){
       return res.data
@@ -80,8 +98,8 @@ service.interceptors.response.use(res => {
     if (code === 401) {
       if (!isRelogin.show) {
         isRelogin.show = true;
-        ElMessageBox.confirm(t('button.ExpiredMessage'), t('register.systemhint'), {
-          confirmButtonText: t('button.ReRegister'),
+        ElMessageBox.confirm(t('utils.request.msgExpired'), t('utils.request.msgSysHint'), {
+          confirmButtonText: t('utils.request.btnReLogin'),
           cancelButtonText: t('el.messagebox.cancel'),
           type: 'warning'
         }
@@ -94,7 +112,7 @@ service.interceptors.response.use(res => {
         isRelogin.show = false;
       });
     }
-      return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
+      return Promise.reject(t('utils.request.err401Session'));
     } else if (code === 500) {
       ElMessage({
         message: msg,
@@ -114,13 +132,13 @@ service.interceptors.response.use(res => {
     console.log('err' + error)
     let { message } = error;
     if (message == "Network Error") {
-      message = "后端接口连接异常";
+      message = t('utils.request.errNetwork');
     }
     else if (message.includes("timeout")) {
-      message = "系统接口请求超时";
+      message = t('utils.request.errSysTimeOut');
     }
     else if (message.includes("Request failed with status code")) {
-      message = "系统接口" + message.substr(message.length - 3) + "异常";
+      message = t('utils.request.errSysTimeOut') + message.substr(message.length - 3) + t('utils.request.errException');
     }
     ElMessage({
       message: message,
@@ -132,8 +150,8 @@ service.interceptors.response.use(res => {
 )
 
 // 通用下载方法
-export function download(url, params, filename) {
-  downloadLoadingInstance = ElLoading.service({ text: "正在下载数据，请稍候", background: "rgba(0, 0, 0, 0.7)", })
+export function download(url: string, params: any, filename: string | undefined) {
+  downloadLoadingInstance = ElLoading.service({ text: t('utils.request.msgDownload'), background: "rgba(0, 0, 0, 0.7)", })
   return service.post(url, params, {
     transformRequest: [(params) => { return tansParams(params) }],
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -146,13 +164,13 @@ export function download(url, params, filename) {
     } else {
       const resText = await data.text();
       const rspObj = JSON.parse(resText);
-      const errMsg = errorCode[rspObj.code] || rspObj.msg || errorCode['default']
+      const errMsg = httpStatus[rspObj.code] || rspObj.msg || httpStatus['default']
       ElMessage.error(errMsg);
     }
     downloadLoadingInstance.close();
   }).catch((r) => {
     console.error(r)
-    ElMessage.error('下载文件出现错误，请联系管理员！')
+    ElMessage.error(t('utils.request.errDownload'))
     downloadLoadingInstance.close();
   })
 }

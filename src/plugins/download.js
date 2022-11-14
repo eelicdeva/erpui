@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { saveAs } from 'file-saver'
 import { getToken } from '@/utils/auth'
-import errorCode from '@/utils/errorCode'
+import httpStatus from '@/utils/httpStatus'
 import { blobValidate } from '@/utils/ruoyi'
 
 const baseURL = import.meta.env.VITE_APP_BASE_API
@@ -65,7 +65,7 @@ export default {
   async printErrMsg(data) {
     const resText = await data.text();
     const rspObj = JSON.parse(resText);
-    const errMsg = errorCode[rspObj.code] || rspObj.msg || errorCode['default']
+    const errMsg = httpStatus[rspObj.code] || rspObj.msg || httpStatus['default']
     ElMessage.error(errMsg);
   }
 }

@@ -6,8 +6,29 @@ export default {
       sizeLarge: 'Large',
       sizeDefault: 'Default',
       sizeSmall: 'Small'
-  }
-},
+    }
+  },
+  utils: {
+    errorCode: {
+      err401: 'Authentication failed, unable to access system resource!',
+      err403: 'The current operation does not have permission!',
+      err404: 'Access resource does not exist!',
+      errDefault: 'System unknown error, please feedback to administrator!'
+    },
+    request: {
+      msgReSubmit: 'Data is being processed, please do not resubmit!',
+      err401Session: 'Invalid session, or session has expired, please log in again.',
+      errNetwork: 'Network Error',
+      errSysTimeOut: 'System interface request timeout',
+      errSysInterface: 'System Interface',
+      errException: 'abnormal',
+      msgDownload: 'Downloading data, please wait...',
+      errDownload: 'There was an error downloading the file, please contact the administrator!',
+      msgExpired: 'Your login status has expired, you can stay on this page or log in again',
+      msgSysHint: 'System Hint',
+      btnReLogin: 'Re-Login',       
+    }
+  },
   login: {
     title: 'EELIC SYSTEM',
     logIn: 'Login',
@@ -39,7 +60,6 @@ export default {
     passwordDontMatch: 'Passwords do not match',
     verificationCode: 'Verification code must be a number',
     congratulations: 'Congratulations, your account',
-    systemhint: 'System Hint',
     success: 'registration success!',
 
 
@@ -344,7 +364,6 @@ export default {
     edit: 'Edit',
     enable: 'Enable ',
     expand: 'Expand/Collapse',
-    ExpiredMessage: 'Your login status has expired, you can stay on this page or log in again',
     export: 'Export',
     hide: 'Hide',
     hideExtend:'Hide Extend',
@@ -357,7 +376,6 @@ export default {
     refresh: 'Refresh Page',
     RefreshCache: 'Refresh Cache',
     relation: 'Parent-Child relationship',
-    ReRegister: 'Re-register',
     reset: 'Reset',
     resetPW: 'Reset Password',
     return: 'Return',
@@ -514,5 +532,5 @@ export default {
     updateTimePlaceholder: '选择更新时间',
     remark: '备注',
     remarkPlaceholder: '请选择备注'
- }
+  }
 }

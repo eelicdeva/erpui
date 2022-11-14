@@ -6,8 +6,30 @@ export default {
       sizeLarge: "Besar",
       sizeDefault: 'Default',
       sizeSmall: 'Kecil'
-  }
-},
+    } 
+  },
+  utils: {
+    errorCode: {
+      err401: 'Otentikasi gagal, tidak dapat mengakses sumber daya sistem!',
+      err403: 'Operasi saat ini tidak memiliki izin!',
+      err404: 'Sumber daya akses tidak ada',
+      errDefault: 'Kesalahan sistem tidak diketahui, harap umpan balik ke administrator!'
+    },
+    request: {
+      msgReSubmit: 'Data sedang diproses, mohon jangan kirim ulang!',
+      err401Session: 'Sesi tidak valid, atau sesi telah kedaluwarsa, silakan masuk lagi.',
+      errNetwork: 'Kesalahan Jaringan',
+      errSysTimeOut: 'Batas waktu permintaan antarmuka sistem',
+      errSysInterface: 'Antarmuka Sistem',
+      errException: 'abnormal',
+      msgDownload: 'Mengunduh data, harap tunggu...',
+      errDownload: 'Terjadi kesalahan saat mengunduh file, harap hubungi administrator!',
+      msgExpired: 'Status login Anda telah kedaluwarsa, Anda dapat tetap berada di halaman ini atau login lagi', 
+      msgSysHint: 'Petunjuk Sistem', 
+      btnReLogin: 'Login ulang',
+    }    
+  },
+
   login: {
     title: 'EELIC SYSTEM',
     logIn: 'Masuk',
@@ -38,7 +60,6 @@ export default {
     passwordDontMatch: 'Kata sandi tidak cocok',
     verificationCode: 'Kode verifikasi harus berupa angka',
     congratulations: 'Selamat, akun anda',
-    systemhint: 'Petunjuk Sistem',
     success: 'registrasi berhasil!',
 
   },
@@ -344,7 +365,6 @@ export default {
     edit: 'Edit',
     enable: ' Aktifkan',
     expand: 'Perluas/Ciutkan',
-    ExpiredMessage: 'Status login Anda telah kedaluwarsa, Anda dapat tetap berada di halaman ini atau login lagi',
     export: 'Ekspor',
     hide: 'Sembunyikan',
     hideExtend:'Tamplikan Extra',
@@ -357,7 +377,6 @@ export default {
     refresh: 'Segarkan Halaman',
     RefreshCache: 'Segarkan Cache',
     relation: 'Hubungan Parent-Child',
-    ReRegister: 'Login ulang',
     reset: 'Atur Ulang',
     resetPW: 'Setel Ulang Kata Sandi',
     return: 'kembali',
@@ -516,5 +535,5 @@ export default {
     updateTimePlaceholder: '选择更新时间',
     remark: '备注',
     remarkPlaceholder: '请选择备注'
- }
+  }
 }

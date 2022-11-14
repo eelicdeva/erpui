@@ -42,7 +42,7 @@ export default {
   },
   
   methods: {
-    handleSetLanguage(lang) {
+    handleSetLanguage(lang: string) {
       //useAppStore().setdisableValidate(true)
       this.$i18n.locale = lang
       useAppStore().setLanguage(lang)
@@ -50,7 +50,7 @@ export default {
         updateLang(lang);
         this.$modal.loading("正在设置语言，请稍候(Setting language, please wait)...");
 
-        setTimeout("window.location.reload()", 500);      
+        setTimeout("window.location.reload()", 1000);      
       }else{
         this.$emit('selectLangEvent');
       }
