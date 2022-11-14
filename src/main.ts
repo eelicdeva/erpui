@@ -1,5 +1,7 @@
 import { createApp } from 'vue';
 import App from '@/App.vue';
+// pinia stores
+import { createPinia } from 'pinia';
 //cookie
 import Cookies from 'js-cookie';
 //to-do cookie token
@@ -26,9 +28,6 @@ import SvgIcon from '@/components/SvgIcon/index.vue';
 
 // Plugins register / 注册指令
 import plugins from './plugins'; 
-
-// pinia stores
-import { createPinia } from 'pinia';
 
 import { download } from '@/utils/request';
 // permission control
