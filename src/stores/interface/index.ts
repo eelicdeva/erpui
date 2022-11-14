@@ -7,7 +7,7 @@ export interface useAppStore {
     },
     device: 'desktop';
     size: string;
-    lang: string;
+    lang: string; //en|zh|id
     userNameMbti : string;
 }
 

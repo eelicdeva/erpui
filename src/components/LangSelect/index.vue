@@ -22,12 +22,7 @@
  <script lang="ts">
 import useAppStore from "@/stores/modules/app";
 import { updateLang } from "@/api/system/user";
-
 export default {
-  // to-do:
-//const app = useAppStore(),
-//const langLoad = app.lang//navigator.language.substring(0,2);
-//console.log( "lang load: " +langLoad ),
   computed: {
     language() {
       return useAppStore().lang;
@@ -41,10 +36,9 @@ export default {
   },
   },
   created() {
-    if(useAppStore().lang == null){
-      this.$i18n.locale = 'en',
-      useAppStore().setLanguage('en')      
-    }   
+    let langStore = useAppStore().lang;
+    this.$i18n.locale = langStore;
+    useAppStore().setLanguage(langStore);     
   },
   
   methods: {
@@ -56,7 +50,7 @@ export default {
         updateLang(lang);
         this.$modal.loading("正在设置语言，请稍候(Setting language, please wait)...");
 
-        setTimeout("window.location.reload()", 1000);      
+        setTimeout("window.location.reload()", 500);      
       }else{
         this.$emit('selectLangEvent');
       }

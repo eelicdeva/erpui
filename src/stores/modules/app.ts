@@ -1,4 +1,5 @@
 // @/stores/modules/app.ts 
+// to-do: check if navigator.language in dict lang list
 import Cookies from 'js-cookie'
 import { defineStore } from 'pinia';
 import { useAppStore } from '@/stores/interface'
@@ -12,7 +13,7 @@ const useAppStore = defineStore('app', {
       },
       device: 'desktop',
       size: Cookies.get('size') || 'default',
-      lang: Cookies.get('lang') || navigator.language.substring(0,2),
+      lang: Cookies.get('lang') || ( "zhenid".indexOf(navigator.language.substring(0,2))!=-1 ? navigator.language.substring(0,2) : 'en'),
       userNameMbti : '',
     }),
     actions: {
@@ -26,10 +27,8 @@ const useAppStore = defineStore('app', {
 
         if (this.sidebar.opened) {
           Cookies.set('sidebarStatus', "1")
-          console.log("Open Value!!: "!!+Cookies.get('sidebarStatus') )
         } else {
           Cookies.set('sidebarStatus', "0")
-          console.log("Close Value!!: "!!+Cookies.get('sidebarStatus') )
         }
       },
       closeSideBar(withoutAnimation: boolean) {
