@@ -11,5 +11,8 @@
     import { defineComponent } from 'vue'
     const Component: ReturnType<typeof defineComponent>
     export default Component
-  }
+  };
+
+  // declare module 'xxx' for file js || 路径或者模块名 
+  declare module '@/utils/jsencrypt.js'
  

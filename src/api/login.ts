@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 登录方法
+// || 登录方法
 export function login(username: string, password: string, code: string, uuid: string, lang: string) {
   const data = {
     username,
@@ -19,48 +19,45 @@ export function login(username: string, password: string, code: string, uuid: st
   })
 }
 
-// 注册方法
-export function register(data) {
-  return request({
-    url: '/register',
-    headers: {
-      isToken: false
-    },
-    method: 'post',
-    data: data
-  })
-}
+// register || 注册方法
+export const register = async (data: any) => {
+	return await request({
+		url: "/register",
+		headers: {
+			isToken: false,
+		},
+		method: "post",
+		data: data,
+	});
+};
 
-// 获取用户详细信息
-export function getInfo() {
-  return request({
-    url: '/getInfo',
-    method: 'get'
-  })
-}
+// get user Info || 获取用户(角色与权限)详细信息
+export const getInfo = async () => {
+	return await request({
+		url: "/getInfo",
+		method: "get",
+	});
+};
 
-// 退出方法
-export function logout() {
-  return request({
-    url: '/logout',
-    method: 'post'
-  })
-}
+// logout || 退出方法
+export const logout = async () => {
+	return await request({
+		url: "/logout",
+		method: "post",
+	});
+};
 
-// 获取验证码
-export function getCodeImg() {
-  return request({
-    url: '/captchaImage',
-    headers: {
-      isToken: false
-    },
-    method: 'get',
-    timeout: 20000
-  })
-}
+// get Code Image || 获取验证码
+export const getCodeImg = async () => {
+	return await request({
+		url: "/captchaImage",
+		method: "get",
+		timeout: 10000
+	});
+};
 
 
-// 获取key
+// get PublicKey || 获取key
 export function getPublicKey() {
   return request({
     url: '/publicKey',

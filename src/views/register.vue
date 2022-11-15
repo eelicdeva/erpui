@@ -76,7 +76,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { getCodeImg, register } from "@/api/login";
 import LangSelect from "@/components/LangSelect";
 
@@ -158,7 +158,7 @@ export default {
           this.loading = true;
           register(this.registerForm).then(res => {
             const username = this.registerForm.username;
-            this.$alert("<font color='red'>" + this.$t('register.congratulations') + " " + username + " " + this.$t('register.success') + " </font>", this.$t('register.systemhint'), {
+            this.$alert("<font color='red'>" + this.$t('register.congratulations') + " " + username + " " + this.$t('register.success') + " </font>", this.$t('utils.request.msgSysHint'), {
               dangerouslyUseHTMLString: true,
               type: 'success'
             }).then(() => {

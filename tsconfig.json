@@ -14,7 +14,7 @@
 		// "strictPropertyInitialization": true,  /* Enable strict checking of property initialization in classes. */
 		// "noImplicitThis": true,                /* Raise error on 'this' expressions with an implied 'any' type. */
 		// "alwaysStrict": true,                  /* Parse in strict mode and emit "use strict" for each source file. */
-
+		// "allowSyntheticDefaultImports": true   /* When the module does not explicitly specify a default export. */
 		"jsx": "preserve",
 		"sourceMap": true,
 		"resolveJsonModule": true,
@@ -40,11 +40,10 @@
 		"env.d.ts",
 		"vite.config.ts",
 		"src/utils/jsencrypt.js"
-
 	],
 	"exclude": [
 		"node_modules", 
-		"dist",
-		 "**/*.js"
+		"dist"
+		// "**/*.js"
 	]
 }

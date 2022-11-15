@@ -27,19 +27,19 @@ export default {
   },
   // 弹出提示
   alert(content) {
-    ElMessageBox.alert(content, t('register.systemhint'))
+    ElMessageBox.alert(content, t('utils.request.msgSysHint'))
   },
   // 错误提示
   alertError(content) {
-    ElMessageBox.alert(content, t('register.systemhint'), { type: 'error' })
+    ElMessageBox.alert(content, t('utils.request.msgSysHint'), { type: 'error' })
   },
   // 成功提示
   alertSuccess(content) {
-    ElMessageBox.alert(content, t('register.systemhint'), { type: 'success' })
+    ElMessageBox.alert(content, t('utils.request.msgSysHint'), { type: 'success' })
   },
   // 警告提示
   alertWarning(content) {
-    ElMessageBox.alert(content, t('register.systemhint'), { type: 'warning' })
+    ElMessageBox.alert(content, t('utils.request.msgSysHint'), { type: 'warning' })
   },
   // 通知提示
   notify(content) {
@@ -59,7 +59,7 @@ export default {
   },
   // 确认窗体
   confirm(content) {
-    return ElMessageBox.confirm(content, t('register.systemhint'), {
+    return ElMessageBox.confirm(content, t('utils.request.msgSysHint'), {
       confirmButtonText: t('el.messagebox.confirm'),
       cancelButtonText: t('el.messagebox.cancel'),
       type: "warning",
@@ -67,7 +67,7 @@ export default {
   },
   // 提交内容
   prompt(content) {
-    return ElMessageBox.prompt(content, t('register.systemhint'), {
+    return ElMessageBox.prompt(content, t('utils.request.msgSysHint'), {
       confirmButtonText: t('el.messagebox.confirm'),
       cancelButtonText: t('el.messagebox.cancel'),
       type: "warning",

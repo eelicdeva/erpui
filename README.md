@@ -18,8 +18,13 @@
 ### Name format: camelCase => first letter lowercase  
 ### || 命名格式：camelCase => 首字母小写驼峰命名 
 ### ||| Format nama: camelCase => huruf pertama huruf kecil unta
-
 * Preferred naming style format || 首选命名规范 ||| Format gaya penamaan yang disukai
+
+## || typescript代码以';'结束
+
+## || ''首选使用 
+
+
 
 ### Naming format for special requirements || 特殊要求的命名格式 ||| Format penamaan untuk persyaratan khusus
 

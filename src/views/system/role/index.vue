@@ -263,11 +263,13 @@
    </div>
 </template>
 
-<script setup name="Role">
+<script setup lang="ts" name="Role">
+import { getCurrentInstance, reactive, ref, toRefs } from "vue";
+import { useRouter } from "vue-router";
+import i18n from '@/lang/index';
 import { addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole } from "@/api/system/role";
 import { roleMenuTreeselect, treeselect as menuTreeselect } from "@/api/system/menu";
 import { treeselect as deptTreeselect, roleDeptTreeselect } from "@/api/system/dept";
-import i18n from '@/lang/index';
 
 const {t} = i18n.global;
 

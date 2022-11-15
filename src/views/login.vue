@@ -7,7 +7,7 @@
     :validate-on-rule-change="false"
     class="login-form">
       <h3 class="title">{{ $t("login.title") }}</h3>
-      <lang-select @selectLangEvent="langLisen" class="set-language" />
+      <lang-select @selectLangEvent="langListen" class="set-language" />
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
@@ -81,9 +81,11 @@
 <script lang="ts" name="login">
 import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
-import { encrypt, decrypt } from "@/utils/jsencrypt";
+import { encrypt, decrypt } from "@/utils/jsencrypt.js";
 import useUserStore from "@/stores/modules/user";
 import LangSelect from "@/components/LangSelect/index.vue";
+import { useRouter } from "vue-router";
+
 
 export default {
   name: "login",
@@ -105,14 +107,12 @@ export default {
       redirect: undefined,
     };
   },
-   setup() {
-    
+   setup() {  
     const userStore = useUserStore()
     const router = useRouter();
     return {
       userStore, router
     }
-
   },
   computed: {
     loginRules: function () {
@@ -148,7 +148,7 @@ export default {
       this.getCookie();
   },
   methods: {
-    langLisen() {      
+    langListen() {      
       this.$refs.loginRef.clearValidate();
       this.$nextTick(() => this.$refs.loginRef.validate(()=>{}));
    },
