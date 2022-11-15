@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { ElNotification , ElMessageBox, ElMessage, ElLoading } from 'element-plus';
+import axios, { AxiosRequestConfig } from 'axios';
+import { ElNotification , ElMessageBox, ElMessage, ElLoading, LoadingParentElement } from 'element-plus';
 import { getToken } from '@/utils/auth';
 import httpStatus from '@/utils/httpStatus';
 import { tansParams, blobValidate } from '@/utils/ruoyi';
@@ -7,9 +7,10 @@ import cache from '@/plugins/cache';
 import { saveAs } from 'file-saver';
 import useUserStore from '@/stores/modules/user';
 import i18n from '@/lang/index';
+import { ComponentPublicInstance, ComponentOptionsBase, Ref } from 'vue';
 
 const {t} = i18n.global;
-let downloadLoadingInstance;
+let downloadLoadingInstance: { close: any; setText?: (text: string) => void; remvoeElLoadingChild?: () => void; handleAfterLeave?: () => void; vm?: ComponentPublicInstance<{}, {}, {}, {}, {}, {}, {}, {}, false, ComponentOptionsBase<any, any, any, any, any, any, any, any, any, {}>>; $el?: HTMLElement; originalPosition?: Ref<string>; originalOverflow?: Ref<string>; visible?: Ref<boolean>; parent?: Ref<LoadingParentElement>; background?: Ref<string>; svg?: Ref<string>; svgViewBox?: Ref<string>; spinner?: Ref<string | boolean>; text?: Ref<string>; fullscreen?: Ref<boolean>; lock?: Ref<boolean>; customClass?: Ref<string>; target?: Ref<HTMLElement>; beforeClose?: Ref<(() => boolean) | undefined> | undefined; closed?: Ref<(() => void) | undefined> | undefined; };
 // 是否显示重新登录
 export let isRelogin = { show: false };
 
@@ -119,6 +120,19 @@ service.interceptors.response.use(res => {
         type: 'error'
       })
       return Promise.reject(new Error(msg))
+    } else if (code === 601) { 
+    /**
+     * 601 HTTP session start indicates that there is a network error. 
+     * Then make sure that the PDP context is setup properly.
+     * This is a "magic" status code that we use to signal that something wrong happened with the request 
+     * that was so bad that we didn't even got a response back from the server. 
+     * In this case the request timed out (more than 30 seconds to return any bytes).
+     */
+      ElMessage({
+        message: msg,
+        type: 'warning'
+      })
+      return Promise.reject(new Error(msg))
     } else if (code !== 200) {
       ElNotification.error({
         title: msg
@@ -150,16 +164,17 @@ service.interceptors.response.use(res => {
 )
 
 // 通用下载方法
-export function download(url: string, params: any, filename: string | undefined) {
+export function download(url: string, params: any, filename: string, config: AxiosRequestConfig<any> | undefined) {
   downloadLoadingInstance = ElLoading.service({ text: t('utils.request.msgDownload'), background: "rgba(0, 0, 0, 0.7)", })
   return service.post(url, params, {
     transformRequest: [(params) => { return tansParams(params) }],
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    responseType: 'blob'
-  }).then(async (data) => {
-    const isLogin = await blobValidate(data);
+    responseType: 'blob',
+    ...config
+  }).then(async (data: any) => {
+    const isLogin: boolean = await blobValidate(data);
     if (isLogin) {
-      const blob = new Blob([data])
+      const blob = new Blob([data]) 
       saveAs(blob, filename)
     } else {
       const resText = await data.text();

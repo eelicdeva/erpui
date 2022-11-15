@@ -5,6 +5,8 @@
  * Copyright (c) 2019 ruoyi
  */
 
+import { AxiosResponse } from "axios"
+
 // 日期格式化
 export function parseTime(time: string | number | Date, pattern: string) {
   if (arguments.length === 0 || !time) {
@@ -202,7 +204,7 @@ export function handleTree(data, id, parentId, children) {
 * 参数处理
 * @param {*} params  参数
 */
-export function tansParams(params) {
+export function tansParams(params: { [x: string]: any }) {
   let result = ''
   for (const propName of Object.keys(params)) {
     const value = params[propName];
@@ -237,13 +239,17 @@ export function getNormalPath(p) {
   return res;
 }
 
+
 // 验证是否为blob格式
-export async function blobValidate(data) {
+
+export const blobValidate = async (data: any )=> {
+  let isBlob = false;
   try {
     const text = await data.text();
     JSON.parse(text);
-    return false;
+    return isBlob;
   } catch (error) {
-    return true;
+    isBlob = true;
   }
+    return isBlob;
 }
