@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 查询调度日志列表
-export function listJobLog(query) {
+export function listJobLog(query: string) {
   return request({
     url: '/monitor/jobLog/list',
     method: 'get',
@@ -10,7 +10,7 @@ export function listJobLog(query) {
 }
 
 // 删除调度日志
-export function delJobLog(jobLogId) {
+export function delJobLog(jobLogId: string) {
   return request({
     url: '/monitor/jobLog/' + jobLogId,
     method: 'delete'
