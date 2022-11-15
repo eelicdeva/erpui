@@ -11,7 +11,7 @@ import { ComponentPublicInstance, ComponentOptionsBase, Ref } from 'vue';
 
 const {t} = i18n.global;
 let downloadLoadingInstance: { close: any; setText?: (text: string) => void; remvoeElLoadingChild?: () => void; handleAfterLeave?: () => void; vm?: ComponentPublicInstance<{}, {}, {}, {}, {}, {}, {}, {}, false, ComponentOptionsBase<any, any, any, any, any, any, any, any, any, {}>>; $el?: HTMLElement; originalPosition?: Ref<string>; originalOverflow?: Ref<string>; visible?: Ref<boolean>; parent?: Ref<LoadingParentElement>; background?: Ref<string>; svg?: Ref<string>; svgViewBox?: Ref<string>; spinner?: Ref<string | boolean>; text?: Ref<string>; fullscreen?: Ref<boolean>; lock?: Ref<boolean>; customClass?: Ref<string>; target?: Ref<HTMLElement>; beforeClose?: Ref<(() => boolean) | undefined> | undefined; closed?: Ref<(() => void) | undefined> | undefined; };
-// 是否显示重新登录
+// ||是否显示重新登录
 export let isRelogin = { show: false };
 
 axios.defaults.headers.get['Content-Type'] = 'application/json;charset=utf-8';
@@ -19,29 +19,29 @@ axios.defaults.headers.put['Content-Type'] = 'application/json;charset=utf-8';
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
 axios.defaults.headers.patch['Content-Type'] = 'application/json;charset=utf-8';
 
-// create axios instance / 创建axios实例;
+// create axios instance || 创建axios实例;
 const service = axios.create({
-  // axios中请求配置有baseURL选项，表示请求URL公共部分;
+  // || axios中请求配置有baseURL选项，表示请求URL公共部分;
   // baseURL setting: 'dev-api' | '/prod-api' | 'stage-api';
   baseURL: import.meta.env.VITE_APP_BASE_API,
-  // timeout setting unit: ms 超时;
+  // timeout setting unit: ms || 超时,单位:ms;
   timeout: 10000
 });
 
-// request interceptors / 拦截器
+// request interceptors || 拦截器
 service.interceptors.request.use(config => {
-  // token setting / 是否需要设置 token
+  // token setting || 是否需要设置 token
   const isToken = (config.headers || {}).isToken === false;
-  // Repeat Submit setting / 是否需要防止数据重复提交
+  // Repeat Submit setting || 是否需要防止数据重复提交
   const isRepeatSubmit = (config.headers || {}).repeatSubmit === false;
 
 
   if (getToken() && !isToken) {
-    // setting all request carry token / 让每个请求携带自定义token ;
+    // setting all request carry token || 让每个请求携带自定义token ;
     // 可根据实际情况自行修改
     config.headers!.Authorization = 'Bearer ' + getToken() 
   };
-  // get params setting / 请求映射params参数
+  // get params setting || 请求映射params参数
   // sample request: http://eelic.org:2880/dev-api/system/user/list?pageNum=1&pageSize=10&userName=admin
   // request params : { pageNum: 1, pageSize: 10, userName: admin }
   if (config.method === 'get' && config.params) {
@@ -86,13 +86,13 @@ service.interceptors.request.use(config => {
     Promise.reject(error)
 })
 
-// 响应拦截器
+// ||响应拦截器
 service.interceptors.response.use(res => {
-    // 未设置状态码则默认成功状态
+    // ||未设置状态码则默认成功状态
     const code: number = res.data.code as number || 200;
-       // 获取错误信息
+       // ||获取错误信息
     const msg = httpStatus[code] || res.data.msg || httpStatus['default']
-    // 二进制数据则直接返回
+    // ||二进制数据则直接返回
     if(res.request.responseType ===  'blob' || res.request.responseType ===  'arraybuffer'){
       return res.data
     }

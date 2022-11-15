@@ -1,9 +1,46 @@
 
-## 前端运行 Front End
+# Front End || 前端 
+
+
+# Code Language || 代码语言 ||| Bahasa Kode
+## Typescript
+## Vue3
+## Html
+
+# Code Style Format || 代码编写规范 ||| Format Gaya Kode
+## Code Comment || 代码注释 ||| komentar kode
+
+*  Code comments use English by default || 代码注释默认使用英文 ||| Komentar code gunakan bahasa Inggris secara default
+* || + 代码注释使用中文
+* ||| + Komentar kode dalam bahasa indonesia 
+
+## Name Style Format
+### Name format: camelCase => first letter lowercase  
+### || 命名格式：camelCase => 首字母小写驼峰命名 
+### ||| Format nama: camelCase => huruf pertama huruf kecil unta
+
+* Preferred naming style format || 首选命名规范 ||| Format gaya penamaan yang disukai
+
+### Naming format for special requirements || 特殊要求的命名格式 ||| Format penamaan untuk persyaratan khusus
+
+* Interface name style: Capitalized CamelCase 
+* || Interface 命名格式: 首字母大写驼峰命名 Capitalized CamelCase 
+* ||| Gaya nama antarmuka: Kapital CamelCase
+
+
+
+
+# i18n key style || i18n键值样式 ||| gaya kunci i18n.
+
+* Naming format: first letter lowercase camel case || 命名格式：首字母小写驼峰命名
+* Keystyle": "nested" || 翻译路径：嵌套模式 
+* Sample：components.sizeSelect.setSize => { path：components, filename: sizeSelect, key: setSize };
+
 
 ```bash
+
 # 克隆项目
-git clone https://github.com/yangzongzhuan/RuoYi-Vue3.git
+git clone http://109.106.255.153:3000/eason/erp-ui-dev.git
 
 # 进入项目目录 web folder
 cd webxxxxxx
