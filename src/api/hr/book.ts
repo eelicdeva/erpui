@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 查询hr Book Eelic列表
-export function listBook(query) {
+export function listBook(query: string) {
   return request({
     url: '/hr/book/list',
     method: 'get',
@@ -10,7 +10,7 @@ export function listBook(query) {
 }
 
 // 查询hr Book Eelic详细
-export function getBook(bookId) {
+export function getBook(bookId: string) {
   return request({
     url: '/hr/book/' + bookId,
     method: 'get'
@@ -18,7 +18,7 @@ export function getBook(bookId) {
 }
 
 // 新增hr Book Eelic
-export function addBook(data) {
+export function addBook(data: string) {
   return request({
     url: '/hr/book',
     method: 'post',
@@ -27,7 +27,7 @@ export function addBook(data) {
 }
 
 // 修改hr Book Eelic
-export function updateBook(data) {
+export function updateBook(data: string) {
   return request({
     url: '/hr/book',
     method: 'put',
@@ -36,14 +36,14 @@ export function updateBook(data) {
 }
 
 // 删除hr Book Eelic
-export function delBook(bookId) {
+export function delBook(bookId: string) {
   return request({
     url: '/hr/book/' + bookId,
     method: 'delete'
   })
 }
 
-export function changeCdStatus(bookId, cdStatus) {
+export function changeCdStatus(bookId: string, cdStatus: string) {
   const data = {
       bookId,
       cdStatus,

@@ -1,32 +1,39 @@
-import { parseTime } from '@/ruoyi'
+import { parseTime } from '@/utils/ruoyi'
 
-/**
- * 表格时间格式化
- */
-export function formatDate(cellValue) {
-  if (cellValue == null || cellValue == "") return "";
-  var date = new Date(cellValue) 
-  var year = date.getFullYear()
-  var month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
-  var day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate() 
-  var hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours() 
-  var minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes() 
-  var seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
-  return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds
+ /**
+  * || 表格时间格式化
+  * 
+  * @param  {string|number|Date} cellValue
+  * @returns seconds
+  */
+ export const formatDate = (cellValue: string | number | Date) => {
+	if (!cellValue) {
+		return "";
+	};
+  var date = new Date(cellValue) ;
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+  var day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate(); 
+  var hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours(); 
+  var minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes(); 
+  var seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+  return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
 }
 
 /**
+ * || 返回几天前，刚刚等时间
+ *
  * @param {number} time
  * @param {string} option
  * @returns {string}
  */
-export function formatTime(time, option) {
+ export const formatTime = (time: any, option: string) => {
   if (('' + time).length === 10) {
     time = parseInt(time) * 1000
   } else {
     time = +time
   }
-  const d = new Date(time)
+  const d:any = new Date(time)
   const now = Date.now()
 
   const diff = (now - d) / 1000
@@ -42,7 +49,8 @@ export function formatTime(time, option) {
     return '1天前'
   }
   if (option) {
-    return parseTime(time, option)
+    const times: string = String(time)
+    return parseTime(times, option)
   } else {
     return (
       d.getMonth() +
@@ -59,29 +67,47 @@ export function formatTime(time, option) {
 }
 
 /**
+ * ||将Obj里的字段拼接
+ * 
  * @param {string} url
  * @returns {Object}
  */
-export function getQueryObject(url) {
-  url = url == null ? window.location.href : url
-  const search = url.substring(url.lastIndexOf('?') + 1)
-  const obj = {}
-  const reg = /([^?&=]+)=([^?&=]*)/g
-  search.replace(reg, (rs, $1, $2) => {
-    const name = decodeURIComponent($1)
-    let val = decodeURIComponent($2)
-    val = String(val)
-    obj[name] = val
-    return rs
-  })
-  return obj
+
+/**
+ * const methodMap = {
+     GET: style["get"],
+     POST: style["post"],
+     PUT: style["put"],
+     PATCH: style["patch"],
+     DELETE: style["delete"],
+     OPTIONS: style["options"],
+     HEAD: style["head"],
+     CONNECT: style["connect"]
+}
+methodMap[method as keyof typeof methodMap]
+className={methodMap[method]}
+
+ */
+  export const getQueryObject = (url: string): object => { 
+	url = url == null ? window.location.href : url;
+	const search = url.substring(url.lastIndexOf("?") + 1);
+	const obj = {};
+	const reg = /([^?&=]+)=([^?&=]*)/g;
+	search.replace(reg, (rs: any, $1: string, $2: string) => {
+		const nameObj = decodeURIComponent($1);
+		let val = decodeURIComponent($2);
+		val = String(val);
+		obj[nameObj] = val;
+		return rs;
+	});
+	return obj;
 }
 
 /**
  * @param {string} input value
  * @returns {number} output value
  */
-export function byteLength(str) {
+export function byteLength(str: string) {
   // returns the byte length of an utf8 string
   let s = str.length
   for (var i = str.length - 1; i >= 0; i--) {
@@ -97,7 +123,7 @@ export function byteLength(str) {
  * @param {Array} actual
  * @returns {Array}
  */
-export function cleanArray(actual) {
+export function cleanArray(actual: string | any[]) {
   const newArray = []
   for (let i = 0; i < actual.length; i++) {
     if (actual[i]) {
@@ -111,7 +137,7 @@ export function cleanArray(actual) {
  * @param {Object} json
  * @returns {Array}
  */
-export function param(json) {
+export function param(json: { [x: string]: string | number | boolean; }) {
   if (!json) return ''
   return cleanArray(
     Object.keys(json).map(key => {
@@ -125,7 +151,7 @@ export function param(json) {
  * @param {string} url
  * @returns {Object}
  */
-export function param2Obj(url) {
+export function param2Obj(url: string) {
   const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ')
   if (!search) {
     return {}
@@ -147,7 +173,7 @@ export function param2Obj(url) {
  * @param {string} val
  * @returns {string}
  */
-export function html2Text(val) {
+export function html2Text(val: string) {
   const div = document.createElement('div')
   div.innerHTML = val
   return div.textContent || div.innerText
@@ -159,7 +185,7 @@ export function html2Text(val) {
  * @param {(Object|Array)} source
  * @returns {Object}
  */
-export function objectMerge(target, source) {
+export function objectMerge(target: { [x: string]: any; }, source: string | any[]) {
   if (typeof target !== 'object') {
     target = {}
   }
@@ -181,7 +207,7 @@ export function objectMerge(target, source) {
  * @param {HTMLElement} element
  * @param {string} className
  */
-export function toggleClass(element, className) {
+export function toggleClass(element: { className: any; }, className: string | any[]) {
   if (!element || !className) {
     return
   }
@@ -201,7 +227,7 @@ export function toggleClass(element, className) {
  * @param {string} type
  * @returns {Date}
  */
-export function getTime(type) {
+export function getTime(type: string) {
   if (type === 'start') {
     return new Date().getTime() - 3600 * 1000 * 24 * 90
   } else {

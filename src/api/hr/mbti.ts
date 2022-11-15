@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 查询MBTI Test列表
-export function listMbti(query) {
+export function listMbti(query: string) {
   return request({
     url: '/hr/mbti/list',
     method: 'get',
@@ -10,7 +10,7 @@ export function listMbti(query) {
 }
 
 // 查询MBTI Test详细
-export function getMbti(userId) {
+export function getMbti(userId: string) {
   return request({
     url: '/hr/mbti/' + userId,
     method: 'get'
@@ -18,7 +18,7 @@ export function getMbti(userId) {
 }
 
 // 新增MBTI Test
-export function addMbti(data) {
+export function addMbti(data: string) {
   return request({
     url: '/hr/mbti/add',
     method: 'post',
@@ -27,7 +27,7 @@ export function addMbti(data) {
 }
 
 // 修改MBTI Test
-export function updateMbti(data) {
+export function updateMbti(data: string) {
   return request({
     url: '/hr/mbti',
     method: 'put',
@@ -36,7 +36,7 @@ export function updateMbti(data) {
 }
 
 // 删除MBTI Test
-export function delMbti(userId) {
+export function delMbti(userId: string) {
   return request({
     url: '/hr/mbti/' + userId,
     method: 'delete'

@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 查询location列表
-export function listLocation(query) {
+export function listLocation(query: string) {
   return request({
     url: '/hr/location/list',
     method: 'get',
@@ -10,7 +10,7 @@ export function listLocation(query) {
 }
 
 // 查询location详细
-export function getLocation(locationId) {
+export function getLocation(locationId: string) {
   return request({
     url: '/hr/location/' + locationId,
     method: 'get'
@@ -18,7 +18,7 @@ export function getLocation(locationId) {
 }
 
 // 新增location
-export function addLocation(data) {
+export function addLocation(data: string) {
   return request({
     url: '/hr/location',
     method: 'post',
@@ -27,7 +27,7 @@ export function addLocation(data) {
 }
 
 // 修改location
-export function updateLocation(data) {
+export function updateLocation(data: string) {
   return request({
     url: '/hr/location',
     method: 'put',
@@ -36,7 +36,7 @@ export function updateLocation(data) {
 }
 
 // 删除location
-export function delLocation(locationId) {
+export function delLocation(locationId: string) {
   return request({
     url: '/hr/location/' + locationId,
     method: 'delete'
