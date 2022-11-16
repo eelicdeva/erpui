@@ -1,64 +1,61 @@
-import { ElMessage, ElMessageBox, ElNotification, ElLoading } from 'element-plus'
+import { ElMessage, ElMessageBox, ElNotification, ElLoading, MessageParamsTyped } from 'element-plus'
 import i18n from '@/lang/index';
 
 const {t} = i18n.global;
 
-
-let loadingInstance;
-
-
+let loadingInstance: { close: () => void };
 
 export default {
   // 消息提示
-  msg(content) {
+  msg(content: string) {
     ElMessage.info(content)
   },
   // 错误消息
-  msgError(content) {
+  msgError(content: string) {
     ElMessage.error(content)
   },
   // 成功消息
-  msgSuccess(content) {
+  msgSuccess(content: string) {
     ElMessage.success(content)
   },
   // 警告消息
-  msgWarning(content) {
+  msgWarning(content: string) {
     ElMessage.warning(content)
   },
   // 弹出提示
-  alert(content) {
+  alert(content: string) {
     ElMessageBox.alert(content, t('utils.request.msgSysHint'))
   },
   // 错误提示
-  alertError(content) {
+  alertError(content: string) {
     ElMessageBox.alert(content, t('utils.request.msgSysHint'), { type: 'error' })
   },
   // 成功提示
-  alertSuccess(content) {
+  alertSuccess(content: string) {
     ElMessageBox.alert(content, t('utils.request.msgSysHint'), { type: 'success' })
   },
   // 警告提示
-  alertWarning(content) {
+  alertWarning(content: string) {
     ElMessageBox.alert(content, t('utils.request.msgSysHint'), { type: 'warning' })
   },
   // 通知提示
-  notify(content) {
+  notify(content: string) {
     ElNotification.info(content)
   },
   // 错误通知
-  notifyError(content) {
+  notifyError(content: string) {
     ElNotification.error(content);
   },
   // 成功通知
-  notifySuccess(content) {
+  notifySuccess(content: string) {
     ElNotification.success(content)
   },
   // 警告通知
-  notifyWarning(content) {
+  notifyWarning(content: string) {
     ElNotification.warning(content)
   },
   // 确认窗体
-  confirm(content) {
+  confirm(content: string) {
     return ElMessageBox.confirm(content, t('utils.request.msgSysHint'), {
       confirmButtonText: t('el.messagebox.confirm'),
       cancelButtonText: t('el.messagebox.cancel'),
@@ -66,7 +63,7 @@ export default {
     })
   },
   // 提交内容
-  prompt(content) {
+  prompt(content: string) {
     return ElMessageBox.prompt(content, t('utils.request.msgSysHint'), {
       confirmButtonText: t('el.messagebox.confirm'),
       cancelButtonText: t('el.messagebox.cancel'),
@@ -74,7 +71,7 @@ export default {
     })
   },
   // 打开遮罩层
-  loading(content) {
+  loading(content: string) {
     loadingInstance = ElLoading.service({
       lock: true,
       text: content,

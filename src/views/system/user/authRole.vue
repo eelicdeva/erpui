@@ -45,7 +45,7 @@
    </div>
 </template>
 
-<script setup name="AuthRole">
+<script setup lang="ts"name="AuthRole">
 import { getAuthRole, updateAuthRole } from "@/api/system/user";
 import i18n from '@/lang/index';
 

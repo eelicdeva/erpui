@@ -76,12 +76,14 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" name="register">
+import { useRouter } from "vue-router";
 import { getCodeImg, register } from "@/api/login";
-import LangSelect from "@/components/LangSelect";
+import LangSelect from "@/components/LangSelect/index.vue";
+
 
 export default {
-  name: "Register",
+  name: "register",
   components: { LangSelect },
   data() {
     return {

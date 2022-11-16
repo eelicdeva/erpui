@@ -13,7 +13,7 @@ const useAppStore = defineStore('app', {
       },
       device: 'desktop',
       size: Cookies.get('size') || 'default',
-      lang: Cookies.get('lang') || ( "zhenid".indexOf(navigator.language.substring(0,2))!=-1 ? navigator.language.substring(0,2) : 'en'),
+      lang: Cookies.get('lang') || ( "zh.en.id".indexOf(navigator.language.substring(0,2))!=-1 ? navigator.language.substring(0,2) : 'en'),
       userNameMbti : '',
     }),
     actions: {

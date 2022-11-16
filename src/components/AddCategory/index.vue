@@ -25,7 +25,7 @@
     </el-dialog>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import i18n from '@/lang/index';
 import { addCategory, updateCategory } from "@/api/hr/category";
 

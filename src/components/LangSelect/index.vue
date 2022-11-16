@@ -19,7 +19,7 @@
   </el-dropdown>
 </template>
 
- <script lang="ts">
+ <script lang="ts" name="selectLang">
 import useAppStore from "@/stores/modules/app";
 import { updateLang } from "@/api/system/user";
 export default {
@@ -49,8 +49,7 @@ export default {
       if(this.isActive){
         updateLang(lang);
         this.$modal.loading("正在设置语言，请稍候(Setting language, please wait)...");
-
-        setTimeout("window.location.reload()", 1000);      
+        setTimeout("window.location.reload()", 3000);      
       }else{
         this.$emit('selectLangEvent');
       }

@@ -86,7 +86,6 @@ import useUserStore from "@/stores/modules/user";
 import LangSelect from "@/components/LangSelect/index.vue";
 import { useRouter } from "vue-router";
 
-
 export default {
   name: "login",
   'components': { LangSelect },
@@ -170,8 +169,9 @@ export default {
           }
 
           if (this.loginForm.lang != Cookies.get("lang")) {
-            this.loginForm.lang = Cookies.get("lang");
-          }
+            this.loginForm.lang = Cookies.get("lang");          
+          };
+
           // 调用action的登录方法
         this.userStore.login(this.loginForm).then(() => {
         this.router.push({ path: this.redirect || "/" })

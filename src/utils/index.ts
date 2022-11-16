@@ -72,22 +72,6 @@ import { parseTime } from '@/utils/ruoyi'
  * @param {string} url
  * @returns {Object}
  */
-
-/**
- * const methodMap = {
-     GET: style["get"],
-     POST: style["post"],
-     PUT: style["put"],
-     PATCH: style["patch"],
-     DELETE: style["delete"],
-     OPTIONS: style["options"],
-     HEAD: style["head"],
-     CONNECT: style["connect"]
-}
-methodMap[method as keyof typeof methodMap]
-className={methodMap[method]}
-
- */
   export const getQueryObject = (url: string): object => { 
 	url = url == null ? window.location.href : url;
 	const search = url.substring(url.lastIndexOf("?") + 1);

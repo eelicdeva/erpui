@@ -1,50 +1,67 @@
 {
 	"compilerOptions": {
-		"target": "esnext",
+		"target": "esnext",// ||指定ECMAScript目标版本。允许的值为“es3”、“es5”、“es6”、“es2015”、“es2016”、“es2017”、“es2018”或“esnext”。
 		"useDefineForClassFields": true,
-		"module": "esnext",
+		"module": "esnext",// || 指定模块代码生成:“none”、“commonjs”、“amd”、“system”、“umd”、“es2015”或“esnext”。
 		"moduleResolution": "node",
 
 		/* Strict Type-Checking Options */
 		"strict": true /* Enable all strict type-checking options. */,
-		// "noImplicitAny": true,                 /* Raise error on expressions and declarations with an implied 'any' type. */
-		// "strictNullChecks": true,              /* Enable strict null checks. */
-		// "strictFunctionTypes": true,           /* Enable strict checking of function types. */
+		
+		/* to-do || 开启以下编译配置 */
+		
+		// "alwaysStrict": true,                  /* || 保证编译出的文件是 ECMAScript 的严格模式，并且每个文件的头部会添加 'use strict'。*/
 		// "strictBindCallApply": true,           /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
+		// "strictNullChecks": true,              /* Enable strict null checks. */
+		// "noImplicitAny": true,                 /* Raise error on expressions and declarations with an implied 'any' type. */
+		// "strictFunctionTypes": true,           /* Enable strict checking of function types. */
 		// "strictPropertyInitialization": true,  /* Enable strict checking of property initialization in classes. */
 		// "noImplicitThis": true,                /* Raise error on 'this' expressions with an implied 'any' type. */
 		// "alwaysStrict": true,                  /* Parse in strict mode and emit "use strict" for each source file. */
-		// "allowSyntheticDefaultImports": true,   /* When the module does not explicitly specify a default export. */
-		//"suppressImplicitAnyIndexErrors": true,  /* suppresses reporting the error about implicit anys when indexing into objects */
-		"jsx": "preserve",
-		"sourceMap": true,
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"esModuleInterop": true,
-		// 跳过第三方库检查，解决打包失败
-		"skipLibCheck": true,
-		"lib": ["esnext", "dom"],
-		// 解析非相对模块名的基准目录
+		// "noEmitOnError"：true,                   /* || 如果有报错将停止继续编译，也就是不输出编译文件。*/
+		
+		/* || 以下编译配置待确认 */ 
+		
+		// "allowSyntheticDefaultImports": true,   /* When the module does not explicitly specify a default export. || 允许从没有默认导出的模块进行默认导入。这并不影响代码发出，只影响类型查询。 为运行时babel生态系统兼容性提供“……importstar”和“……importdefault”帮助，并为类型系统兼容性启用“——allowSyntheticDefaultImports”。*/
+		// "suppressImplicitAnyIndexErrors": true,  /* suppresses reporting the error about implicit anys when indexing into objects ||在类型 XXX 上找不到具有类型为 “string” 的参数的索引签名。 */ 
+		// "noEmit": true, // ||不要发出输出。
+		"allowJs": true, // ||允许编译javascript文件。
+		"jsx": "preserve", // ||指定JSX代码生成:'preserve'、'react'或' reactive -native'。
+		"sourceMap": true, // ||sourceMap 选项用来表示是否生成sourcemap 文件，这些文件允许调试器和其他工具在使用实际生成的 JavaScript 文件时，显示原始的 TypeScript 代码。
+		"resolveJsonModule": true, // || 在 TypeScript 模块中导入 JSON 文件。
+		"forceConsistentCasingInFileNames": true, // || 不允许对同一文件使用不一致大小写的引用。
+		"isolatedModules": true,// ||无条件地为未解决的文件发出导入。
+		"esModuleInterop": true,// ||跳过第三方库检查，解决打包失败
+		"skipLibCheck": true, // || 跳过声明文件的类型检查
+		"lib": [// ||指定要包含在编译中的库文件。
+		"dom",
+		"dom.iterable",
+		"esnext"
+		],
+		// ||解析非相对模块名的基准目录
 		"baseUrl": "./",
-		// 模块名到基于 baseUrl 的路径映射的列表。
+		// ||模块名到基于 baseUrl 的路径映射的列表。
 		"paths": {
 			"@": ["./src"],
 			"@/*": ["./src/*"]
-		}
+		},
+		"types": ["vite/client", "element-plus/global"]
 	},
-	"include": [
-		"src/**/*.ts", 
-		"src/**/*.d.ts", 
-		"src/**/*.tsx", 
-		"src/**/*.vue", 
+	"include": [// ||包含目录
+		"src",
+		//"src/**/*.ts", 
+		// "src/**/*.d.ts", 
+		// "src/**/*.tsx", 
+		// "src/**/*.vue", 
+		// "src/utils/jsencrypt.js",
 		"app.d.ts",
 		"env.d.ts",
 		"vite.config.ts",
-		"src/utils/jsencrypt.js"
+
 	],
 	"exclude": [
 		"node_modules", 
-		"dist"
-		// "**/*.js"
+		"dist",
+		//"**/*.js"
 	]
 }
