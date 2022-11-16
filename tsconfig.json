@@ -51,19 +51,21 @@
 	"include": [// exec include folder | file || 编译包含目录|文件
 		"app.d.ts",
 		"env.d.ts",	
+		"shims.d.ts",
 		"vite.config.ts",
 		"src/**/*",
 		"src/**/*.ts", 
 		"src/**/*.d.ts", 
 		"src/**/*.tsx", 
-	    "src/**/*.vue"
+	    "src/**/*.vue",
+		//"src/**/*.js"
 	],
 	"exclude": [ // exec exclude folder | file || 编译不包含文件夹|文件
 		"node_modules", 
 		"dist",
-		"src/assets",
-		"src/utils/jsencrypt.js",
+		"src/assets",		
+
 		// for the test folder
-		"src/test",
+		"src/test/",
 	]
 }

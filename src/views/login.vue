@@ -79,12 +79,12 @@
 </template>
 
 <script lang="ts" name="login">
-import { getCodeImg } from "@/api/login";
+import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
-import { encrypt, decrypt } from "@/utils/jsencrypt.js";
+import { getCodeImg } from "@/api/login";
+import { encrypt, decrypt } from "@/utils/jsencrypt";
 import useUserStore from "@/stores/modules/user";
 import LangSelect from "@/components/LangSelect/index.vue";
-import { useRouter } from "vue-router";
 
 export default {
   name: "login",

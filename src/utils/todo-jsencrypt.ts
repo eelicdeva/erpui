@@ -17,6 +17,7 @@ export function encrypt(txt: string, publicKey: string ) {
 
 
 // 解密(暂无使用)
+let privateKey = '';
 export function decrypt(txt: string) {
   const encryptor = new JSEncrypt()
   encryptor.setPrivateKey(privateKey) // 设置私钥
