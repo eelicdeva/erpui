@@ -20,11 +20,9 @@
 ### ||| Format nama: camelCase => huruf pertama huruf kecil unta
 * Preferred naming style format || 首选命名规范 ||| Format gaya penamaan yang disukai
 
-## || typescript代码以';'结束
+## typescript code ends with ';' || typescript代码以';'结束 ||| kode TypeScript diakhiri dengan ';'
 
-## || ''首选使用 
-
-
+## '' preferred to use || ''首选使用 ||| '' lebih disukai untuk digunakan
 
 ### Naming format for special requirements || 特殊要求的命名格式 ||| Format penamaan untuk persyaratan khusus
 
@@ -32,14 +30,14 @@
 * || Interface 命名格式: 首字母大写驼峰命名 Capitalized CamelCase 
 * ||| Gaya nama antarmuka: Kapital CamelCase
 
-
-
-
 # i18n key style || i18n键值样式 ||| gaya kunci i18n.
 
 * Naming format: first letter lowercase camel case || 命名格式：首字母小写驼峰命名
 * Keystyle": "nested" || 翻译路径：嵌套模式 
 * Sample：components.sizeSelect.setSize => { path：components, filename: sizeSelect, key: setSize };
+
+
+
 
 
 ```bash
@@ -61,20 +59,17 @@ yarn dev
 # 构建生产环境 yarn build:prod
 # 前端访问地址 http://localhost:2880
 ```
-## 添加功能(EELIC)
+## 添加业务功能
 
-12.  js to ts
-11.  i18n zh,en,id: .\lang + .\components\LangSelect\
-10.  i18n input verify: .\tool\login.vue + .\tool\register.vue
-09.  i18n redis verify: .\utils\dict.js
-08.  i18n sidebar: .\layout\components\Sidebar\index.vue
-07.  i18n tagsview: .\layout\components\TagsView\index.vue
-06.  i18n user: .\views\system\user\...
-05.  i18n role: .\views\system\role\...
-04.  i18n post: .\views\system\post\...
-03.  i18n notice: .\views\system\notice\....
-02.  i18n menu: .\views\system\menu\...
-01.  i18n dept: .\views\system\dept\...
+03. 
+02. mbti test @view\erp\hr\mbti || mbti 测评  ||| mbti tes 
+01. Book library @view\erp\hr\book || 图书管理 ||| Perpustakaan buku 
+
+## Add system functions || 添加系统功能 ||| Tambahkan fungsi sistem
+
+03.  gen i18n @view\tool\gen\geni18n
+02.  ExtendToolBar: @\components\ExtendToolBar
+01.  i18n @\components\LangSelect || 国际化支持 
 
 ## 内置功能
 
@@ -104,12 +99,13 @@ yarn dev
 演示地址：https://www.eelic.org/erp  
 文档地址：http://doc.ruoyi.vip
 
-<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">web ERP EELIC v1.0.4</h1>
+<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">EELIC SYSTEM web version：v1.0.4</h1>
 <h4 align="center">基于SpringBoot+Vue3前后端分离的Java快速开发框架</h4>
 
 
 ## 平台简介
-* 基于RuoYi v3.8.4
+* EELIC SYSTEM UI
 * 本仓库为前端技术栈 [Vue3](https://v3.cn.vuejs.org) + [Element Plus](https://element-plus.org/zh-CN) + [Vite](https://cn.vitejs.dev) 版本。
 * 配套后端代码仓库地址xxx版本。
 * 前端技术栈（[Vue2](https://cn.vuejs.org) + [Element](https://github.com/ElemeFE/element) + [Vue CLI](https://cli.vuejs.org/zh)）。
+* 基于RuoYi-vue3-ui v3.8.4拓展。
