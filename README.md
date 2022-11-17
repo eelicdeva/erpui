@@ -3,8 +3,8 @@
 
 
 # Code Language || 代码语言 ||| Bahasa Kode
-## Typescript
-## Vue3
+## Typescript version: 4.9.1-beta    
+## Vue3 
 ## Html
 
 # Code Style Format || 代码编写规范 ||| Format Gaya Kode

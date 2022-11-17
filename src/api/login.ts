@@ -1,6 +1,15 @@
 import request from '@/utils/request'
 
-// || 登录方法
+// 
+/**
+ * || 登录方法
+ * 
+ * @param  {string} username
+ * @param  {string} password
+ * @param  {string} code
+ * @param  {string} uuid
+ * @param  {string} lang
+ */
 export function login(username: string, password: string, code: string, uuid: string, lang: string) {
   const data = {
     username,

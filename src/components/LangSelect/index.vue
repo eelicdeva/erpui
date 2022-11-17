@@ -22,6 +22,15 @@
  <script lang="ts" name="selectLang">
 import useAppStore from "@/stores/modules/app";
 import { updateLang } from "@/api/system/user";
+//import { ComponentInternalInstance, getCurrentInstance } from 'vue';
+//const { proxy } = getCurrentInstance() as ComponentInternalInstance
+//proxy?.$axios('')
+//获取当前Vue实例的上下文
+//const { appContext } = getCurrentInstance();
+//const { $modal } = appContext.config.globalProperties;//全局属性解
+
+
+//import modal from "@/plugins/modal";
 export default {
   computed: {
     language() {
@@ -48,6 +57,7 @@ export default {
       useAppStore().setLanguage(lang)
       if(this.isActive){
         updateLang(lang);
+        //app.config.globalProperties.$modal.loading("正在设置语言，请稍候(Setting language, please wait)...");
         this.$modal.loading("正在设置语言，请稍候(Setting language, please wait)...");
         setTimeout("window.location.reload()", 3000);      
       }else{

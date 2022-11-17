@@ -1,4 +1,4 @@
-import { ElMessage, ElMessageBox, ElNotification, ElLoading, MessageParamsTyped } from 'element-plus'
+import { ElMessage, ElMessageBox, ElNotification, ElLoading} from 'element-plus'
 import i18n from '@/lang/index';
 
 const {t} = i18n.global;

@@ -28,9 +28,10 @@
 <script lang="ts" setup>
 import i18n from '@/lang/index';
 import { addCategory, updateCategory } from "@/api/hr/category";
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } from 'vue';
 
-const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDict('sys_normal_disable');
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { sys_normal_disable } = proxy?.useDict('sys_normal_disable');
 
 const {t} = i18n.global;
 const open = ref(false);

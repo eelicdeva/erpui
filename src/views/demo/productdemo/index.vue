@@ -398,13 +398,16 @@
     </div>
   </template>
   
-  <script setup lang="ts" name="Productdemo">
+<script setup lang="ts" name="Productdemo">
   import { listProductdemo, getProductdemo, delProductdemo, addProductdemo, updateProductdemo } from "@/api/demo/productdemo";
   import i18n from '@/lang/index';
-import { reactive, ref, toRefs } from "vue";
-  
+
+  //import { ElForm } from "element-plus";
+  import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } from "vue";
+  //const productdemoRef = ref<InstanceType<typeof ElForm>> ()
+
   const {t} = i18n.global;
-  const { proxy } = getCurrentInstance();
+  const { proxy } = getCurrentInstance() as ComponentInternalInstance;
   
   const productdemoList = ref([]);
   const open = ref(false);
@@ -601,11 +604,11 @@ function handleSortChange(column, prop, order) {
   
   /** 提交按钮 */
   function submitForm() {
-    proxy.$refs["productdemoRef"].validate(valid => {
+    proxy?.$refs["productdemoRef"].validate(valid => {
       if (valid) {
         if (form.value.idProductLa != null) {
           updateProductdemo(form.value).then(response => {
-            proxy.$modal.msgSuccess(t('button.successModify'));
+            proxy?.$modal.msgSuccess(t('button.successModify'));
             open.value = false;
             getList();
           });
@@ -639,4 +642,4 @@ function handleSortChange(column, prop, order) {
   }
   
   getList();
-  </script>
+</script>
