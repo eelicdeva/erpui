@@ -14,8 +14,9 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts" name="Pageination">
 import { scrollTo } from '@/utils/scroll-to'
+import { computed } from 'vue';
 
 const props = defineProps({
   total: {
@@ -57,9 +58,9 @@ const props = defineProps({
     type: Boolean,
     default: false
   }
-})
+});
 
-const emit = defineEmits();
+const emit = defineEmits(['update:page','update:limit','pagination']);
 const currentPage = computed({
   get() {
     return props.page
@@ -76,7 +77,7 @@ const pageSize = computed({
     emit('update:limit', val)
   }
 })
-function handleSizeChange(val) {
+function handleSizeChange(val: number) {
   if (currentPage.value * val > props.total) {
     currentPage.value = 1
   }
@@ -85,7 +86,7 @@ function handleSizeChange(val) {
     scrollTo(0, 800)
   }
 }
-function handleCurrentChange(val) {
+function handleCurrentChange(val: number) {
   emit('pagination', { page: val, limit: pageSize.value })
   if (props.autoScroll) {
     scrollTo(0, 800)

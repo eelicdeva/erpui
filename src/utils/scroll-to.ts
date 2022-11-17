@@ -43,7 +43,7 @@ function position() {
  * @param {number} duration
  * @param {Function} callback
  */
-export function scrollTo(to: number, duration: number, callback: (() => void) | undefined) {
+export const  scrollTo = (to: number, duration: number, callback?: Function): void => {
   const start = position()
   const change = to - start
   const increment = 20
@@ -62,7 +62,6 @@ export function scrollTo(to: number, duration: number, callback: (() => void) | 
     } else {
       if (callback && typeof (callback) === 'function') {
         // the animation is done so lets callback
-        callback()
       }
     }
   }
