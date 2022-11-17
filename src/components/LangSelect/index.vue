@@ -58,8 +58,8 @@ export default {
       if(this.isActive){
         updateLang(lang);
         //app.config.globalProperties.$modal.loading("正在设置语言，请稍候(Setting language, please wait)...");
-        this.$modal.loading("正在设置语言，请稍候(Setting language, please wait)...");
-        setTimeout("window.location.reload()", 3000);      
+        (this.$modal as any).loading("正在设置语言，请稍候(Setting language, please wait)...");
+        setTimeout("window.location.reload()", 500);      
       }else{
         this.$emit('selectLangEvent');
       }
