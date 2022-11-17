@@ -79,6 +79,16 @@
               <el-checkbox true-label="1" v-model="scope.row.isSubI18n"></el-checkbox>
             </template>
           </el-table-column>
+          <el-table-column label="Search" min-width="6%">
+            <template #default="scope">
+              <el-checkbox true-label="1" v-model="scope.row.isSearch"></el-checkbox>
+            </template>
+          </el-table-column>
+          <el-table-column label="Column" min-width="6%">
+            <template #default="scope">
+              <el-checkbox true-label="1" v-model="scope.row.isColumn"></el-checkbox>
+            </template>
+          </el-table-column>
           <el-table-column :label="$t('genTable.queryType')" min-width="10%">
             <template #default="scope">
               <el-select v-model="scope.row.queryType">
