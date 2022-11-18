@@ -78,10 +78,10 @@ import { parseTime } from '@/utils/ruoyi'
 	const obj = {};
 	const reg = /([^?&=]+)=([^?&=]*)/g;
 	search.replace(reg, (rs: any, $1: string, $2: string) => {
-		const nameObj = decodeURIComponent($1);
+		const name = decodeURIComponent($1);
 		let val = decodeURIComponent($2);
 		val = String(val);
-		obj[nameObj] = val;
+		obj[name] = val;
 		return rs;
 	});
 	return obj;

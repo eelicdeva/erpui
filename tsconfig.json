@@ -22,8 +22,8 @@
 
 		/* || 以下编译配置待确认 */ 
 
-		// "allowSyntheticDefaultImports": true,   /* When the module does not explicitly specify a default export. || 允许从没有默认导出的模块进行默认导入。这并不影响代码发出，只影响类型查询。 为运行时babel生态系统兼容性提供“……importstar”和“……importdefault”帮助，并为类型系统兼容性启用“——allowSyntheticDefaultImports”。*/
-		// "suppressImplicitAnyIndexErrors": true,  /* suppresses reporting the error about implicit anys when indexing into objects ||在类型 XXX 上找不到具有类型为 “string” 的参数的索引签名。 */ 
+		//"allowSyntheticDefaultImports": true,   /* When the module does not explicitly specify a default export. || 允许从没有默认导出的模块进行默认导入。这并不影响代码发出，只影响类型查询。 为运行时babel生态系统兼容性提供“……importstar”和“……importdefault”帮助，并为类型系统兼容性启用“——allowSyntheticDefaultImports”。*/
+		//"suppressImplicitAnyIndexErrors": true,  /* suppresses reporting the error about implicit anys when indexing into objects || 参数屏蔽检查，在类型 XXX 上找不到具有类型为 “string” 的参数的索引签名。 */ 
 		// "noEmit": true, // ||不要发出输出。
 		"allowJs": true, // ||允许编译javascript文件。
 		"jsx": "preserve", // ||指定JSX代码生成:'preserve'、'react'或' reactive -native'。
@@ -57,7 +57,7 @@
 		"src/**/*.ts", 
 		"src/**/*.d.ts", 
 		"src/**/*.tsx", 
-	    "src/**/*.vue",
+	  "src/**/*.vue",
 		//"src/**/*.js"
 	],
 	"exclude": [ // exec exclude folder | file || 编译不包含文件夹|文件

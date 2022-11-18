@@ -182,7 +182,9 @@
       </el-dialog>
    </div>
 </template>
-
+<script lang="ts">
+export default { name: 'noticeDemo' };
+</script>
 <script setup lang="ts" name="Notice">
 import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/system/notice";
 import i18n from '@/lang';
@@ -212,7 +214,18 @@ const columns = ref([
   { key: 4, label: t('user.creationtime'), visible: true }
 ]);
 
-const data = reactive({
+
+/*
+  const form = reactive({});
+  const queryParams: reactive<queryParams>( {
+    pageNum: 1,
+    pageSize: 10,
+    noticeTitle: undefined,
+    createBy: undefined,
+    status: undefined
+  })
+*/
+  const data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,

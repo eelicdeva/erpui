@@ -67,6 +67,8 @@ yarn dev
 
 ## Add system functions || 添加系统功能 ||| Tambahkan fungsi sistem
 
+05. 
+04.  @\src\api\ js 2 ts
 03.  gen i18n @view\tool\gen\geni18n
 02.  ExtendToolBar: @\components\ExtendToolBar
 01.  i18n @\components\LangSelect || 国际化支持 

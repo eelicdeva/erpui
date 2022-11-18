@@ -69,7 +69,14 @@ onMounted(() => {
       window.MozMutationObserver;
     let observer = new MutationObserver(() => {
       let sidebar = document.getElementsByClassName("sidebar-container")[0];
-      let width = sidebar.offsetWidth;
+
+
+
+      let width = sidebar.offsetWidth;// to-do:  error when setting TopNav
+
+
+
+      
       document.getElementsByClassName("main-container")[0].style.marginLeft = `${width}px`;
     });
     observer.observe(document.getElementsByClassName("sidebar-container")[0], {

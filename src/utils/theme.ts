@@ -1,5 +1,6 @@
 // 处理主题样式
-export function handleThemeStyle(theme) {
+export function handleThemeStyle(theme: string) {
+	console.log("theme" + theme)
 	document.documentElement.style.setProperty('--el-color-primary', theme)
 	for (let i = 1; i <= 9; i++) {
 		document.documentElement.style.setProperty(`--el-color-primary-light-${i}`, `${getLightColor(theme, i / 10)}`)
@@ -9,9 +10,11 @@ export function handleThemeStyle(theme) {
 	}
 }
 
+
 // hex颜色转rgb颜色
-export function hexToRgb(str) {
+export function hexToRgb(str: any) {
 	str = str.replace('#', '')
+	console.log("str" + str)
 	let hexs = str.match(/../g)
 	for (let i = 0; i < 3; i++) {
 		hexs[i] = parseInt(hexs[i], 16)
@@ -20,7 +23,7 @@ export function hexToRgb(str) {
 }
 
 // rgb颜色转Hex颜色
-export function rgbToHex(r, g, b) {
+export function rgbToHex(r: { toString: (arg0: number) => any }, g: { toString: (arg0: number) => any }, b: { toString: (arg0: number) => any }) {
 	let hexs = [r.toString(16), g.toString(16), b.toString(16)]
 	for (let i = 0; i < 3; i++) {
 		if (hexs[i].length == 1) {

@@ -331,18 +331,18 @@
    </div>
 </template>
 
-<script setup lang="ts" name="User">
+<script setup lang="ts">
 import { getToken } from "@/utils/auth";
 import { treeselect } from "@/api/system/dept";
 import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser } from "@/api/system/user";
 import i18n from '@/lang/index';
 import { useRouter } from "vue-router";
-import { getCurrentInstance, reactive, ref } from "vue";
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref } from "vue";
 
 const {t} = i18n.global;
 
 const router = useRouter();
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const { sys_normal_disable, sys_user_sex } = proxy.useDict("sys_normal_disable", "sys_user_sex");
 
 const userList = ref([]);

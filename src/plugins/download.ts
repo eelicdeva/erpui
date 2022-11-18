@@ -8,7 +8,7 @@ import { blobValidate } from '@/utils/ruoyi'
 const baseURL = import.meta.env.VITE_APP_BASE_API
 
 export default {
-  name(name, isDelete = true) {
+  name(name: string, isDelete = true) {
     var url = baseURL + "/common/download?fileName=" + encodeURI(name) + "&delete=" + isDelete
     axios({
       method: 'get',
@@ -25,7 +25,7 @@ export default {
       }
     })
   },
-  resource(resource) {
+  resource(resource: string) {
     var url = baseURL + "/common/download/resource?resource=" + encodeURI(resource);
     axios({
       method: 'get',
@@ -42,7 +42,7 @@ export default {
       }
     })
   },
-  zip(url, name) {
+  zip(url: string, name: string) {
     var url = baseURL + url
     axios({
       method: 'get',
@@ -59,10 +59,10 @@ export default {
       }
     })
   },
-  saveAs(text, name, opts) {
+  saveAs(text: any, name: string, opts?: any) {
     saveAs(text, name, opts);
   },
-  async printErrMsg(data) {
+  async printErrMsg(data: { text: () => any }) {
     const resText = await data.text();
     const rspObj = JSON.parse(resText);
     const errMsg = httpStatus[rspObj.code] || rspObj.msg || httpStatus['default']

@@ -3,7 +3,7 @@ import { login, logout, getInfo, getPublicKey } from '@/api/login';
 import { getToken, setToken, removeToken } from '@/utils/auth';
 import defAva from '@/assets/images/profile.jpg';
 import { encrypt } from "@/utils/jsencrypt";
-//const { encrypt } = require("@/utils/jsencrypt");
+
 const useUserStore = defineStore('user', {
     state: () => ({
       token: getToken(),
