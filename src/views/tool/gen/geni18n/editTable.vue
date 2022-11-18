@@ -89,6 +89,11 @@
               <el-checkbox true-label="1" v-model="scope.row.isColumn"></el-checkbox>
             </template>
           </el-table-column>
+          <el-table-column label="Sortable" min-width="6%">
+            <template #default="scope">
+              <el-checkbox true-label="1" v-model="scope.row.isSortable"></el-checkbox>
+            </template>
+          </el-table-column>
           <el-table-column :label="$t('genTable.queryType')" min-width="10%">
             <template #default="scope">
               <el-select v-model="scope.row.queryType">
