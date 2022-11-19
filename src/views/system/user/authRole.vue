@@ -1,6 +1,6 @@
 <template>
    <div class="app-container">
-      <h4 class="form-header h4">{{ $t('user.BasicInfo') }}</h4>
+      <h4 class="form-header h4">{{ $t("user.BasicInfo") }}</h4>
       <el-form :model="form" label-width="80px">
          <el-row>
             <el-col :span="8" :offset="2">
@@ -16,8 +16,9 @@
          </el-row>
       </el-form>
 
-      <h4 class="form-header h4">{{ $t('user.RoleInfo') }}</h4>
-      <el-table v-loading="loading" :row-key="getRowKey" @row-click="clickRow" ref="roleRef" @selection-change="handleSelectionChange" :data="roles.slice((pageNum - 1) * pageSize, pageNum * pageSize)">
+      <h4 class="form-header h4">{{ $t("user.RoleInfo") }}</h4>
+      <el-table v-loading="loading" :row-key="getRowKey" @row-click="clickRow" ref="roleRef"
+         @selection-change="handleSelectionChange" :data="roles.slice((pageNum - 1) * pageSize, pageNum * pageSize)">
          <el-table-column :label="$t('user.serialRole')" width="120" type="index" align="center">
             <template #default="scope">
                <span>{{ (pageNum - 1) * pageSize + scope.$index + 1 }}</span>
@@ -37,23 +38,25 @@
       <pagination v-show="total > 0" :total="total" v-model:page="pageNum" v-model:limit="pageSize" />
 
       <el-form label-width="100px">
-         <div style="text-align: center;margin-left:-120px;margin-top:30px;">
-            <el-button type="primary" @click="submitForm()">{{ $t('button.submit2') }}</el-button>
-            <el-button @click="close()">{{ $t('button.return') }}</el-button>
+         <div style="text-align: center; margin-left: -120px; margin-top: 30px">
+            <el-button type="primary" @click="submitForm()">{{
+                  $t("button.submit2")
+            }}</el-button>
+            <el-button @click="close()">{{ $t("button.return") }}</el-button>
          </div>
       </el-form>
    </div>
 </template>
 
-<script setup lang="ts"name="AuthRole">
+<script setup lang="ts" name="AuthRole">
 import { getAuthRole, updateAuthRole } from "@/api/system/user";
-import i18n from '@/lang/index';
+import i18n from "@/lang/index";
+import { ComponentInternalInstance, getCurrentInstance, ref } from "vue";
+import { useRoute } from "vue-router";
 
-const {t} = i18n.global;
-
+const { t } = i18n.global;
 const route = useRoute();
-const { proxy } = getCurrentInstance();
-
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const loading = ref(true);
 const total = ref(0);
 const pageNum = ref(1);
@@ -61,55 +64,55 @@ const pageSize = ref(10);
 const roleIds = ref([]);
 const roles = ref([]);
 const form = ref({
-  nickName: undefined,
-  userName: undefined,
-  userId: undefined
+   nickName: undefined,
+   userName: undefined,
+   userId: undefined,
 });
 
 /** 单击选中行数据 */
 function clickRow(row) {
-  proxy.$refs["roleRef"].toggleRowSelection(row);
-};
+   proxy.$refs["roleRef"].toggleRowSelection(row);
+}
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  roleIds.value = selection.map(item => item.roleId);
-};
+   roleIds.value = selection.map((item) => item.roleId);
+}
 /** 保存选中的数据编号 */
 function getRowKey(row) {
-  return row.roleId;
-};
+   return row.roleId;
+}
 /** 关闭按钮 */
 function close() {
-  const obj = { path: "/system/user" };
-  proxy.$tab.closeOpenPage(obj);
-};
+   const obj = { path: "/system/user" };
+   proxy.$tab.closeOpenPage(obj);
+}
 /** 提交按钮 */
 function submitForm() {
-  const userId = form.value.userId;
-  const rIds = roleIds.value.join(",");
-  updateAuthRole({ userId: userId, roleIds: rIds }).then(response => {
-    proxy.$modal.msgSuccess(t('button.Authorizationsucceeded'));
-    close();
-  });
-};
+   const userId = form.value.userId;
+   const rIds = roleIds.value.join(",");
+   updateAuthRole({ userId: userId, roleIds: rIds }).then((response) => {
+      proxy.$modal.msgSuccess(t("button.Authorizationsucceeded"));
+      close();
+   });
+}
 
 (() => {
-  const userId = route.params && route.params.userId;
-  if (userId) {
-    loading.value = true;
-    getAuthRole(userId).then(response => {
-      form.value = response.user;
-      roles.value = response.roles;
-      total.value = roles.value.length;
-      nextTick(() => {
-        roles.value.forEach(row => {
-          if (row.flag) {
-            proxy.$refs["roleRef"].toggleRowSelection(row);
-          }
-        });
+   const userId = route.params && route.params.userId;
+   if (userId) {
+      loading.value = true;
+      getAuthRole(userId).then((response) => {
+         form.value = response.user;
+         roles.value = response.roles;
+         total.value = roles.value.length;
+         nextTick(() => {
+            roles.value.forEach((row) => {
+               if (row.flag) {
+                  proxy.$refs["roleRef"].toggleRowSelection(row);
+               }
+            });
+         });
+         loading.value = false;
       });
-      loading.value = false;
-    });
-  }
+   }
 })();
 </script>

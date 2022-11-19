@@ -1,6 +1,14 @@
 
 # Front End || 前端 
 
+# Tools：
+* VSCODE
+* Vue Language Features (Volar)：Vscode 开发 vue3 必备插件，提供语法高亮提示
+* Vue 3 Snippets
+* i18n Ally
+* Chrome
+* Vue.js devtools
+
 
 # Code Language || 代码语言 ||| Bahasa Kode
 ## Typescript version: 4.9.1-beta    
@@ -36,7 +44,8 @@
 * Keystyle": "nested" || 翻译路径：嵌套模式 
 * Sample：components.sizeSelect.setSize => { path：components, filename: sizeSelect, key: setSize };
 
-
+## 备注
+* Vue3 中使用了 es6 的 ProxyAPI 对数据代理。
 
 
 
@@ -48,15 +57,19 @@ git clone http://109.106.255.153:3000/eason/erp-ui-dev.git
 # 进入项目目录 web folder
 cd webxxxxxx
 
+
 # 安装依赖 install
 # yarn --registry=https://registry.npmmirror.com
 # yarn --registry=http://registry.npm.taobao.org/
-yarn  install
+  yarn install
+# npm install --legacy-peer-deps
 # 启动服务 run serve
-yarn dev
-
-# 构建测试环境 yarn build:stage
-# 构建生产环境 yarn build:prod
+  yarn dev
+# npm run dev
+# 构建测试环境 
+  yarn build:stage
+# 构建生产环境 
+  yarn build:prod
 # 前端访问地址 http://localhost:2880
 ```
 ## 添加业务功能
@@ -67,7 +80,9 @@ yarn dev
 
 ## Add system functions || 添加系统功能 ||| Tambahkan fungsi sistem
 
-05. 
+07.   
+06.  upgrade "element-plus": "2.1.8" to "element-plus": "2.2.22" error,
+05.  upgrade detail check package.json (..."vue": "3.2.37", to vue": "3.2.45"  )
 04.  @\src\api\ js 2 ts
 03.  gen i18n @view\tool\gen\geni18n
 02.  ExtendToolBar: @\components\ExtendToolBar

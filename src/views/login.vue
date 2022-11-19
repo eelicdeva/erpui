@@ -85,7 +85,7 @@ import { getCodeImg, getPublicKey } from "@/api/login";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 import useUserStore from "@/stores/modules/user";
 import LangSelect from "@/components/LangSelect/index.vue";
-import ElForm from "element-plus/es/components/form";
+//import ElForm from "element-plus/es/components/form";
 
 //const loginRef = ref([] as Array<HTMLElement>)
 export default {
@@ -151,11 +151,11 @@ export default {
   },
   methods: {
     langListen() {      
-      (this.$refs.loginRef as ElForm).clearValidate();
+      this.$refs.loginRef.clearValidate();
       this.$nextTick(() => this.$refs.loginRef.validate(()=>{}));
    },
     handleLogin() {    
-      (this.$refs.loginRef as ElForm).validate((valid) => {
+      this.$refs.loginRef.validate((valid) => {
         if (valid) {
          
           this.loading = true;

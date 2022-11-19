@@ -41,12 +41,14 @@
   </div>
 </template>
 
-<script setup>
-import ScrollPane from './ScrollPane'
+<script setup lang="ts">
+import ScrollPane from './ScrollPane.vue'
 import { getNormalPath } from '@/utils/ruoyi'
 import useTagsViewStore from '@/stores/modules/tagsView'
 import useSettingsStore from '@/stores/modules/settings'
 import usePermissionStore from '@/stores/modules/permission'
+import { computed, getCurrentInstance, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const visible = ref(false);
 const top = ref(0);

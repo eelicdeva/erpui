@@ -4,6 +4,7 @@
 		"target": "ESNext",// ||指定ECMAScript目标版本。允许的值为“es3”、“es5”、“es6”、“es2015”、“es2016”、“es2017”、“es2018”或“esnext”。
 		"useDefineForClassFields": true,
 		"module": "CommonJS",// || 指定模块代码生成:“none”、“commonjs”、“amd”、“system”、“umd”、“es2015”或“esnext”。
+		/** moduleResolution */		
 		"moduleResolution": "node", //推荐使用node，模块解析策略，ts默认用node的解析策略，即相对的方式导入, 可选值：node、classic
 		"lib": [// ||指定要包含在编译中的库文件。
 		"ESNext",
@@ -11,7 +12,9 @@
 		"DOM.Iterable",
 		"ScriptHost"
 		],
-
+    // 从 tslib 导入辅助工具函数（比如 __extends， __rest等）
+    "importHelpers": true,
+		
 
     /**
      * 是否启用实验性的装饰器特性,装饰器的语法是ES7的实验性语法, 不打开可能会出现如下错误：
@@ -48,7 +51,7 @@
 
 		/* || 以下编译配置待确认 */ 
 
-		//"allowSyntheticDefaultImports": true,   /* When the module does not explicitly specify a default export. || 允许从没有默认导出的模块进行默认导入。这并不影响代码发出，只影响类型查询。 为运行时babel生态系统兼容性提供“……importstar”和“……importdefault”帮助，并为类型系统兼容性启用“——allowSyntheticDefaultImports”。*/
+		"allowSyntheticDefaultImports": true,   /* When the module does not explicitly specify a default export. || 允许从没有默认导出的模块进行默认导入。这并不影响代码发出，只影响类型查询。 为运行时babel生态系统兼容性提供“……importstar”和“……importdefault”帮助，并为类型系统兼容性启用“——allowSyntheticDefaultImports”。*/
 		//"suppressImplicitAnyIndexErrors": true,  /* suppresses reporting the error about implicit anys when indexing into objects || 参数屏蔽检查，在类型 XXX 上找不到具有类型为 “string” 的参数的索引签名。 */ 
 		// "noEmit": true, // ||不要发出输出。
 		"sourceMap": true, // prod setting false ||sourceMap 选项用来表示是否生成sourcemap 文件，这些文件允许调试器和其他工具在使用实际生成的 JavaScript 文件时，显示原始的 TypeScript 代码。
@@ -57,7 +60,7 @@
 		"esModuleInterop": true,// ||跳过第三方库检查，解决打包失败
 		"skipLibCheck": true, // || 跳过声明文件的类型检查
     "removeComments": false, /* 用于指定是否将编译后的文件注释删掉，设为true的话即删除注释，默认为false */
-		/** moduleResolution */
+
 
 
 
@@ -75,7 +78,9 @@
 *也就是说， ./node_modules/@types/，../node_modules/@types/和../../node_modules/@types/等等。
 */
 	   //"types" : ["node", "lodash", "express"] //待确认
-		"types": ["vite/client", "element-plus/global", "node","vite"] //默认所有可见的"@types"包会在编译过程中被包含进来。如果指定了typeRoots，只有typeRoots下面的包才会被包含进来。如果指定了types，只有被列出来的npm包才会被包含进来
+		"types": [
+			//"vite/client", "element-plus/global", "node","vite"
+		] //默认所有可见的"@types"包会在编译过程中被包含进来。如果指定了typeRoots，只有typeRoots下面的包才会被包含进来。如果指定了types，只有被列出来的npm包才会被包含进来
 	},
 
 	/**files & include & exclude */
@@ -98,5 +103,7 @@
 
 		// for the test folder
 		"src/test/",
+		"src/views/test/",
+		"src/views/dashboard/"
 	]
 }
