@@ -71,5 +71,6 @@ export function getPublicKey() {
   return request({
     url: '/publicKey',
     method: 'get',
+		timeout: 10000
   })
 }

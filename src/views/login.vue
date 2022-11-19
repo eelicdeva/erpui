@@ -81,11 +81,13 @@
 <script lang="ts" name="login">
 import { useRouter } from "vue-router";
 import Cookies from "js-cookie";
-import { getCodeImg } from "@/api/login";
+import { getCodeImg, getPublicKey } from "@/api/login";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 import useUserStore from "@/stores/modules/user";
 import LangSelect from "@/components/LangSelect/index.vue";
+import ElForm from "element-plus/es/components/form";
 
+//const loginRef = ref([] as Array<HTMLElement>)
 export default {
   name: "login",
   'components': { LangSelect },
@@ -107,7 +109,7 @@ export default {
     };
   },
    setup() {  
-    const userStore = useUserStore()
+    const userStore = useUserStore();
     const router = useRouter();
     return {
       userStore, router
@@ -145,14 +147,15 @@ export default {
   created() {
       this.getCode();
       this.getCookie();
+      this.getPublic();
   },
   methods: {
     langListen() {      
-      this.$refs.loginRef.clearValidate();
+      (this.$refs.loginRef as ElForm).clearValidate();
       this.$nextTick(() => this.$refs.loginRef.validate(()=>{}));
    },
     handleLogin() {    
-      this.$refs.loginRef.validate((valid) => {
+      (this.$refs.loginRef as ElForm).validate((valid) => {
         if (valid) {
          
           this.loading = true;
@@ -192,6 +195,12 @@ export default {
           this.codeUrl = "data:image/gif;base64," + res.img;
           this.loginForm.uuid = res.uuid;
         }
+      });
+    },
+    getPublic() {
+      getPublicKey().then((res) => {
+
+
       });
     },
 

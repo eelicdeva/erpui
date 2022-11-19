@@ -1,66 +1,97 @@
 {
 	"compilerOptions": {
-		"target": "esnext",// ||指定ECMAScript目标版本。允许的值为“es3”、“es5”、“es6”、“es2015”、“es2016”、“es2017”、“es2018”或“esnext”。
+		/**module影响发出代码的模块语法，而target影响其余代码*/
+		"target": "ESNext",// ||指定ECMAScript目标版本。允许的值为“es3”、“es5”、“es6”、“es2015”、“es2016”、“es2017”、“es2018”或“esnext”。
 		"useDefineForClassFields": true,
-		"module": "esnext",// || 指定模块代码生成:“none”、“commonjs”、“amd”、“system”、“umd”、“es2015”或“esnext”。
-		"moduleResolution": "node",
+		"module": "CommonJS",// || 指定模块代码生成:“none”、“commonjs”、“amd”、“system”、“umd”、“es2015”或“esnext”。
+		"moduleResolution": "node", //推荐使用node，模块解析策略，ts默认用node的解析策略，即相对的方式导入, 可选值：node、classic
+		"lib": [// ||指定要包含在编译中的库文件。
+		"ESNext",
+		"DOM",
+		"DOM.Iterable",
+		"ScriptHost"
+		],
+
+
+    /**
+     * 是否启用实验性的装饰器特性,装饰器的语法是ES7的实验性语法, 不打开可能会出现如下错误：
+     * Experimental support for decorators is a feature that is subject to change in a future release. Set the 'experimentalDecorators' option to remove this warning.
+     */
+		"experimentalDecorators": true,  /** 是否启用实验性的ES装饰器。boolean类型，默认值：false。，比如vue-class-component 及 vuex-class等库。当你使用这些库时，必须开启experimentalDecorators。 */
 
 		/* Strict Type-Checking Options */
-		"strict": true /* Enable all strict type-checking options. */,
+		"strict": true /* Enable all strict type-checking options. || true => 同时开启 alwaysStrict, noImplicitAny, noImplicitThis 和 strictNullChecks */,
+		// "alwaysStrict": true,                  /* Parse in strict mode and emit "use strict" for each source file. || 保证编译出的文件是 ECMAScript 的严格模式，并且每个文件的头部会添加 'use strict'。*/
+		"noImplicitAny": false,                 /* Raise error on expressions and declarations with an implied 'any' type. ||如果开启该值，当有隐含any类型时，会报错。建议初次上手TypeScript，把该选项设置为false。 */
+		// "strictNullChecks": true,              /* Enable strict null checks. || 正式项目 开启此项*/
+		// "noImplicitThis": true,                /* Raise error on 'this' expressions with an implied 'any' type. */
 
 		/* to-do || 开启以下编译配置 */
 
-		// "alwaysStrict": true,                  /* || 保证编译出的文件是 ECMAScript 的严格模式，并且每个文件的头部会添加 'use strict'。*/
+
 		// "strictBindCallApply": true,           /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
-		// "strictNullChecks": true,              /* Enable strict null checks. */
-		// "noImplicitAny": true,                 /* Raise error on expressions and declarations with an implied 'any' type. */
 		// "strictFunctionTypes": true,           /* Enable strict checking of function types. */
-		// "strictPropertyInitialization": true,  /* Enable strict checking of property initialization in classes. */
-		// "noImplicitThis": true,                /* Raise error on 'this' expressions with an implied 'any' type. */
-		// "alwaysStrict": true,                  /* Parse in strict mode and emit "use strict" for each source file. */
+		"strictPropertyInitialization": false,   /* Enable strict checking of property initialization in classes.  || 这样就不需要定义一个变量就必须赋有初始值。对使用vuex-class库的，建议请把这个值设为false，*/
 		// "noEmitOnError"：true,                   /* || 如果有报错将停止继续编译，也就是不输出编译文件。*/
+
+		/* || 以下编译配置已经确认 */ 
+		"allowJs": false, // ||允许编译javascript文件，设置为true，js后缀的文件也会被typescript进行编译。
+		/**
+     * 指定jsx代码用于的开发环境: 'preserve', 'react-native', or 'react'
+     * preserve:生成代码中会保留JSX以供后续的转换操作使用(比如：Babel).另外,输出文件会带有.jsx扩展名。 
+     * react:会生成React.createElement,在使用前不需要再进行转换操作了,输出文件的扩展名为.js。 
+     * react-native:相当于preserve,它也保留了所有的JSX,但是输出文件的扩展名是.js
+     */
+		"jsx": "preserve", // ||指定JSX代码生成:'preserve'、'react'或' reactive -native'。
+		"forceConsistentCasingInFileNames": true, // || 不允许对同一文件使用不一致大小写的引用。   
+		"noUnusedLocals": true,	/* ||检查只声明、未使用的局部变量(只提示不报错) */
 
 		/* || 以下编译配置待确认 */ 
 
 		//"allowSyntheticDefaultImports": true,   /* When the module does not explicitly specify a default export. || 允许从没有默认导出的模块进行默认导入。这并不影响代码发出，只影响类型查询。 为运行时babel生态系统兼容性提供“……importstar”和“……importdefault”帮助，并为类型系统兼容性启用“——allowSyntheticDefaultImports”。*/
 		//"suppressImplicitAnyIndexErrors": true,  /* suppresses reporting the error about implicit anys when indexing into objects || 参数屏蔽检查，在类型 XXX 上找不到具有类型为 “string” 的参数的索引签名。 */ 
 		// "noEmit": true, // ||不要发出输出。
-		"allowJs": true, // ||允许编译javascript文件。
-		"jsx": "preserve", // ||指定JSX代码生成:'preserve'、'react'或' reactive -native'。
-		"sourceMap": true, // ||sourceMap 选项用来表示是否生成sourcemap 文件，这些文件允许调试器和其他工具在使用实际生成的 JavaScript 文件时，显示原始的 TypeScript 代码。
+		"sourceMap": true, // prod setting false ||sourceMap 选项用来表示是否生成sourcemap 文件，这些文件允许调试器和其他工具在使用实际生成的 JavaScript 文件时，显示原始的 TypeScript 代码。
 		"resolveJsonModule": true, // || 在 TypeScript 模块中导入 JSON 文件。
-		"forceConsistentCasingInFileNames": true, // || 不允许对同一文件使用不一致大小写的引用。
 		"isolatedModules": true,// ||无条件地为未解决的文件发出导入。
 		"esModuleInterop": true,// ||跳过第三方库检查，解决打包失败
 		"skipLibCheck": true, // || 跳过声明文件的类型检查
+    "removeComments": false, /* 用于指定是否将编译后的文件注释删掉，设为true的话即删除注释，默认为false */
+		/** moduleResolution */
+
+
+
+		// ||输出目录
 		"outDir": "./",
-		"lib": [// ||指定要包含在编译中的库文件。
-		"dom",
-		"dom.iterable",
-		"esnext"
-		],
 		// ||解析非相对模块名的基准目录
-		"baseUrl": "./",
+		"baseUrl": ".",
 		// ||模块名到基于 baseUrl 的路径映射的列表。
 		"paths": {
-			"@": ["./src"],
-			"@/*": ["./src/*"]
+			"@/*": ["src/*"]
 		},
-		"types": ["vite/client", "element-plus/global"]
+		/* 用于指定需要包含的模块，只有在这里列出的模块的声明文件才会被加载 */
+/**
+*默认所有可见的"@types"包会在编译过程中被包含进来。 node_modules/@types文件夹下以及它们子文件夹下的所有包都是可见的； 
+*也就是说， ./node_modules/@types/，../node_modules/@types/和../../node_modules/@types/等等。
+*/
+	   //"types" : ["node", "lodash", "express"] //待确认
+		"types": ["vite/client", "element-plus/global", "node","vite"] //默认所有可见的"@types"包会在编译过程中被包含进来。如果指定了typeRoots，只有typeRoots下面的包才会被包含进来。如果指定了types，只有被列出来的npm包才会被包含进来
 	},
+
+	/**files & include & exclude */
+  /** 
+   * include 用于指定要编译的路径列表，但是和files的区别在于，这里的路径可以是文件夹，
+   * 也可以是文件，可以使用相对和绝对路径，而且可以使用通配符，
+   * 比如"./src"即表示要编译src文件夹下的所有文件以及子文件夹的文件
+   */ 
 	"include": [// exec include folder | file || 编译包含目录|文件
-		"app.d.ts",
-		"env.d.ts",	
-		"shims.d.ts",
 		"vite.config.ts",
-		"src/**/*",
 		"src/**/*.ts", 
 		"src/**/*.d.ts", 
 		"src/**/*.tsx", 
 	  "src/**/*.vue",
-		//"src/**/*.js"
 	],
-	"exclude": [ // exec exclude folder | file || 编译不包含文件夹|文件
+	"exclude": [ // exec exclude folder | file || 编译排除那些不需要编译的文件|文件夹。
 		"node_modules", 
 		"dist",
 		"src/assets",		

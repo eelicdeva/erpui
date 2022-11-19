@@ -193,7 +193,7 @@ import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } 
 const {t} = i18n.global;
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
-const { sys_notice_status, sys_notice_type } = proxy?.useDict("sys_notice_status", "sys_notice_type");
+const { sys_notice_status, sys_notice_type } = proxy.useDict("sys_notice_status", "sys_notice_type");
 
 const noticeList = ref([]);
 const open = ref(false);
@@ -265,7 +265,7 @@ function reset() {
     noticeContent: undefined,
     status: "0"
   };
-  proxy?.resetForm("noticeRef");
+  proxy.resetForm("noticeRef");
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -301,7 +301,7 @@ function handleUpdate(row) {
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy?.$refs["noticeRef"].validate(valid => {
+  proxy.$refs["noticeRef"].validate(valid => {
     if (valid) {
       if (form.value.noticeId != undefined) {
         updateNotice(form.value).then(response => {
@@ -322,7 +322,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const noticeIds = row.noticeId || ids.value
-  proxy?.$modal.confirm(t('notice.confirmDelete') + noticeIds + t('user.confirmDelete2')).then(function() {
+  proxy.$modal.confirm(t('notice.confirmDelete') + noticeIds + t('user.confirmDelete2')).then(function() {
     return delNotice(noticeIds);
   }).then(() => {
     getList();
