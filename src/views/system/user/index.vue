@@ -19,6 +19,7 @@
                   :expand-on-click-node="false"
                   :filter-node-method="filterNode"
                   ref="deptTreeRef"
+                  node-key="id"
                   highlight-current
                   default-expand-all
                   @node-click="handleNodeClick"
@@ -359,7 +360,7 @@ const {t} = i18n.global;
 
 const router = useRouter();
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const { sys_normal_disable, sys_user_sex } = proxy?.useDict("sys_normal_disable", "sys_user_sex");
+const { sys_normal_disable, sys_user_sex } = proxy.useDict("sys_normal_disable", "sys_user_sex");
 
 const userList = ref([]);
 const open = ref(false);
@@ -430,7 +431,7 @@ const filterNode = (value, data) => {
 };
 /** 根据名称筛选部门树 */
 watch(deptName, val => {
-  proxy?.$refs["deptTreeRef"].filter(val);
+  proxy.$refs["deptTreeRef"].filter(val);
 });
 /** 查询部门下拉树结构 */
 function getDeptTree() {
@@ -460,13 +461,15 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  proxy?.resetForm("queryRef");
+  proxy.resetForm("queryRef");
+  queryParams.value.deptId = undefined;
+  proxy.$refs.tree.setCurrentKey(null);  
   handleQuery();
 };
 /** 删除按钮操作 */
 function handleDelete(row) {
   const userIds = row.userId || ids.value;
-  proxy?.$modal.confirm(t('user.confirmDelete1') + userIds + t('user.confirmDelete2')).then(function () {
+  proxy.$modal.confirm(t('user.confirmDelete1') + userIds + t('user.confirmDelete2')).then(function () {
     return delUser(userIds);
   }).then(() => {
     getList();
@@ -475,17 +478,17 @@ function handleDelete(row) {
 };
 /** 导出按钮操作 */
 function handleExport() {
-  proxy?.download("system/user/export", {
+  proxy.download("system/user/export", {
     ...queryParams.value,
   },`user_${new Date().getTime()}.xlsx`);
 };
 /** 用户状态修改  */
 function handleStatusChange(row: { status: string; userName: string; userId: string; }) {
   let text = row.status === "0" ? t('button.enable') : t('button.disable');
-  proxy?.$modal.confirm(t('user.handleStatus1') + text + ' " " ' + row.userName + t('user.handleStatus2')).then(function () {
+  proxy.$modal.confirm(t('user.handleStatus1') + text + ' " " ' + row.userName + t('user.handleStatus2')).then(function () {
     return changeUserStatus(row.userId, row.status);
   }).then(() => {
-    proxy?.$modal.msgSuccess(text + t('button.success'));
+    proxy.$modal.msgSuccess(text + t('button.success'));
   }).catch(function () {
     row.status = row.status === "0" ? "1" : "0";
   });
@@ -510,7 +513,7 @@ function handleAuthRole(row: { userId: string; }) {
 };
 /** 重置密码按钮操作 */
 function handleResetPwd(row: { status?: string; userName: string; userId: string; }) {
-  proxy?.$prompt(t('user.resetPW1') + row.userName + t('user.resetPW2'), t('el.messagebox.title'), {
+  proxy.$prompt(t('user.resetPW1') + row.userName + t('user.resetPW2'), t('el.messagebox.title'), {
     confirmButtonText: t('el.messagebox.confirm'),
     cancelButtonText: t('el.messagebox.cancel'),
     closeOnClickModal: false,
@@ -535,7 +538,7 @@ function handleImport() {
 };
 /** 下载模板操作 */
 function importTemplate() {
-  proxy?.$download("system/user/importTemplate", {
+  proxy.$download("system/user/importTemplate", {
   }, `user_template_${new Date().getTime()}.xlsx`);
 };
 /**文件上传中处理 */
@@ -546,13 +549,13 @@ const handleFileUploadProgress = (event, file, fileList) => {
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
-  proxy?.$refs["uploadRef"].handleRemove(file);
-  proxy?.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", t('button.ImportResults'), { dangerouslyUseHTMLString: true });
+  proxy.$refs["uploadRef"].handleRemove(file);
+  proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", t('button.ImportResults'), { dangerouslyUseHTMLString: true });
   getList();
 };
 /** 提交上传文件 */
 function submitFileForm() {
-  proxy?.$refs["uploadRef"].submit();
+  proxy.$refs["uploadRef"].submit();
 };
 
 /** 重置操作表单 */
@@ -571,7 +574,7 @@ function reset() {
     postIds: [],
     roleIds: []
   };
-  proxy?.resetForm("userRef");
+  proxy.resetForm("userRef");
 };
 /** 取消按钮 */
 function cancel() {
@@ -581,7 +584,6 @@ function cancel() {
 /** 新增按钮操作 */
 function handleAdd() {
   reset();
-  initTreeData();
   getUser().then(response => {
     postOptions.value = response.posts;
     roleOptions.value = response.roles;
@@ -593,7 +595,6 @@ function handleAdd() {
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
-  initTreeData();
   const userId = row.userId || ids.value;
   getUser(userId).then(response => {
     form.value = response.data;
@@ -608,17 +609,17 @@ function handleUpdate(row) {
 };
 /** 提交按钮 */
 function submitForm() {
-  proxy?.$refs["userRef"].validate(valid => {
+  proxy.$refs["userRef"].validate(valid => {
     if (valid) {
       if (form.value.userId != undefined) {
         updateUser(form.value).then(response => {
-          proxy?.$modal.msgSuccess(t('button.successModify'));
+          proxy.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addUser(form.value).then(response => {
-          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
+          proxy.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });

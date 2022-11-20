@@ -115,10 +115,7 @@ service.interceptors.response.use(res => {
     }
       return Promise.reject(t('utils.request.err401Session'));
     } else if (code === 500) {
-      ElMessage({
-        message: msg,
-        type: 'error'
-      })
+      ElMessage({ message: msg, type: 'error' })
       return Promise.reject(new Error(msg))
     } else if (code === 601) { 
     /**
@@ -128,15 +125,10 @@ service.interceptors.response.use(res => {
      * that was so bad that we didn't even got a response back from the server. 
      * In this case the request timed out (more than 30 seconds to return any bytes).
      */
-      ElMessage({
-        message: msg,
-        type: 'warning'
-      })
+      ElMessage({ message: msg, type: 'warning' })
       return Promise.reject(new Error(msg))
     } else if (code !== 200) {
-      ElNotification.error({
-        title: msg
-      })
+      ElNotification.error({ title: msg })
       return Promise.reject('error')
     } else {
       return  Promise.resolve(res.data)
@@ -154,11 +146,7 @@ service.interceptors.response.use(res => {
     else if (message.includes("Request failed with status code")) {
       message = t('utils.request.errSysTimeOut') + message.substr(message.length - 3) + t('utils.request.errException');
     }
-    ElMessage({
-      message: message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    ElMessage({ message: message, type: 'error', duration: 5 * 1000 })
     return Promise.reject(error)
   }
 )

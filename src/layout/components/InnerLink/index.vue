@@ -8,7 +8,9 @@
     ></iframe>
   </div>
 </template>
+
 <script setup lang="ts">
+import { ref } from 'vue';
 
 const props = defineProps({
   src: {
@@ -19,5 +21,6 @@ const props = defineProps({
     type: String
   }
 });
+
 const height = ref(document.documentElement.clientHeight - 94.5 + "px");
 </script>
