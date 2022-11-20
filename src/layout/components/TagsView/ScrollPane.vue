@@ -3,17 +3,20 @@
     ref="scrollContainer"
     :vertical="false"
     class="scroll-container"
-    @wheel.prevent="handleScroll"
+    @wheel.native.prevent="handleScroll"
   >
+  <div>
     <slot />
+  </div>
   </el-scrollbar>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import useTagsViewStore from '@/stores/modules/tagsView'
+import { ComponentInternalInstance, computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue';
 
 const tagAndTagSpacing = ref(4);
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const scrollWrapper = computed(() => proxy.$refs.scrollContainer.$refs.wrap$);
 
@@ -23,16 +26,32 @@ onMounted(() => {
 onBeforeUnmount(() => {
   scrollWrapper.value.removeEventListener('scroll', emitScroll)
 })
-
+/**
+ * 
+ * @param e 鼠标中键盘滚轮移动 chrome:120(px)
+ * 电脑鼠标滚轮垂直行数默认值是3，wheelDelta默认值120，即单行行高40px，
+ * 
+ * @return number
+ */
 function handleScroll(e) {
+  // wheelDelta：获取滚轮滚动方向，向上120，向下-120，但为常量，与滚轮速率无关
+  // deltaY：垂直滚动幅度，正值向下滚动。电脑鼠标滚轮垂直行数默认值是3
+  // wheelDelta只有部分浏览器支持，deltaY几乎所有浏览器都支持
+  /**
+   *  const eventDelta = e.wheelDelta || -e.deltaY * 40;
+      const $scrollWrapper = this.$refs.scrollContainer.$refs.wrap;
+      // 0到scrollLeft为滚动区域隐藏部分
+      $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4;
+   */
   const eventDelta = e.wheelDelta || -e.deltaY * 40
   const $scrollWrapper = scrollWrapper.value;
   $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
 }
-const emits = defineEmits()
+const emits = defineEmits(['scroll'])
 const emitScroll = () => {
   emits('scroll')
 }
+
 
 const tagsViewStore = useTagsViewStore()
 const visitedViews = computed(() => tagsViewStore.visitedViews);

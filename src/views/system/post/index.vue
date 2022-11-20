@@ -1,11 +1,12 @@
 <template>
    <div class="app-container">
-      <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
          <el-form-item :label="$t('post.code')" prop="postCode">
             <el-input
                v-model="queryParams.postCode"
                :placeholder="$t('post.codePlaceholder')"
                clearable
+               style="width: 200px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
@@ -14,11 +15,12 @@
                v-model="queryParams.postName"
                :placeholder="$t('post.postPlaceholder')"
                clearable
+               style="width: 200px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
          <el-form-item :label="$t('user.status')" prop="status">
-            <el-select v-model="queryParams.status" :placeholder="$t('post.statusPlaceholder')" clearable>
+            <el-select v-model="queryParams.status" :placeholder="$t('post.statusPlaceholder')" clearable style="width: 200px">
                <el-option
                   v-for="dict in sys_normal_disable"
                   :key="dict.value"

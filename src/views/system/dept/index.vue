@@ -10,7 +10,7 @@
             />
          </el-form-item>
          <el-form-item :label="$t('user.status')" prop="status">
-            <el-select v-model="queryParams.status" :placeholder="$t('dept.statusPlaceholder')" clearable>
+            <el-select v-model="queryParams.status" :placeholder="$t('dept.statusPlaceholder')" clearable style="width: 200px">
                <el-option
                   v-for="dict in sys_normal_disable"
                   :key="dict.value"

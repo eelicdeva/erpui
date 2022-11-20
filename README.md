@@ -4,6 +4,9 @@
 # Tools：
 * VSCODE
 * Vue Language Features (Volar)：Vscode 开发 vue3 必备插件，提供语法高亮提示
+1. Volar 提供了一个叫做“Takeover 模式”的功能。在这个模式下，Volar 能够使用一个 TS 语言服务实例同时为 Vue 和 TS 文件提供支持。
+2. 要开启 Takeover 模式，你需要执行以下步骤来在你的项目的工作空间中禁用 VSCode 的内置 TS 语言服务：
+3. ref>>https://cn.vuejs.org/guide/typescript/overview.html#volar-takeover-mode
 * Vue 3 Snippets
 * i18n Ally
 * Chrome

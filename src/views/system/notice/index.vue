@@ -1,11 +1,12 @@
 <template>
    <div class="app-container">
-      <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="150px">
+      <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
          <el-form-item :label="$t('notice.title')" prop="noticeTitle">
             <el-input
                v-model="queryParams.noticeTitle"
                :placeholder="$t('notice.titlePlaceholder')"
                clearable
+               style="width: 200px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
@@ -14,11 +15,12 @@
                v-model="queryParams.createBy"
                :placeholder="$t('notice.authorPlaceholder')"
                clearable
+               style="width: 200px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
          <el-form-item :label="$t('notice.type')" prop="noticeType">
-            <el-select v-model="queryParams.noticeType" :placeholder="$t('notice.typePlaceholder')" clearable>
+            <el-select v-model="queryParams.noticeType" :placeholder="$t('notice.typePlaceholder')" clearable style="width: 200px">
                <el-option
                   v-for="dict in sys_notice_type"
                   :key="dict.value"

@@ -27,8 +27,9 @@
 		// "alwaysStrict": true,                  /* Parse in strict mode and emit "use strict" for each source file. || 保证编译出的文件是 ECMAScript 的严格模式，并且每个文件的头部会添加 'use strict'。*/
 		"noImplicitAny": false,                 /* Raise error on expressions and declarations with an implied 'any' type. ||如果开启该值，当有隐含any类型时，会报错。建议初次上手TypeScript，把该选项设置为false。 */
 		// "strictNullChecks": true,              /* Enable strict null checks. || 正式项目 开启此项*/
-		// "noImplicitThis": true,                /* Raise error on 'this' expressions with an implied 'any' type. */
-
+	/**Vue3 setting true*/
+		"noImplicitThis": true,                /* Vue3 ask setting true -> Raise error on 'this' expressions with an implied 'any' type. || vue3 必须开启*/
+		"isolatedModules": true,               // ||Vue3 应该设置为true ->无条件地为未解决的文件发出导入。使用选项式 API，需要将 compilerOptions.strict 设置为 true (或者至少开启 compilerOptions.noImplicitThis，它是 strict 模式的一部分)
 		/* to-do || 开启以下编译配置 */
 
 
@@ -56,7 +57,6 @@
 		// "noEmit": true, // ||不要发出输出。
 		"sourceMap": true, // prod setting false ||sourceMap 选项用来表示是否生成sourcemap 文件，这些文件允许调试器和其他工具在使用实际生成的 JavaScript 文件时，显示原始的 TypeScript 代码。
 		"resolveJsonModule": true, // || 在 TypeScript 模块中导入 JSON 文件。
-		"isolatedModules": true,// ||无条件地为未解决的文件发出导入。
 		"esModuleInterop": true,// ||跳过第三方库检查，解决打包失败
 		"skipLibCheck": true, // || 跳过声明文件的类型检查
     "removeComments": false, /* 用于指定是否将编译后的文件注释删掉，设为true的话即删除注释，默认为false */
@@ -94,7 +94,7 @@
 		"src/**/*.ts", 
 		"src/**/*.d.ts", 
 		"src/**/*.tsx", 
-	  "src/**/*.vue",
+	  "src/**/*.vue"
 	],
 	"exclude": [ // exec exclude folder | file || 编译排除那些不需要编译的文件|文件夹。
 		"node_modules", 
@@ -103,7 +103,7 @@
 
 		// for the test folder
 		"src/test/",
-		"src/views/test/",
+		//"src/views/test/",
 		"src/views/dashboard/"
 	]
 }

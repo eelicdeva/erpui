@@ -126,6 +126,15 @@ export function updateAuthRole(data: string) {
   })
 }
 
+// 查询部门下拉树结构
+export function deptTreeSelect() {
+  return request({
+    url: '/system/user/deptTree',
+    method: 'get'
+  })
+}
+
+// update lang select
 export function updateLang(lang: string) {
   const data = {
     lang

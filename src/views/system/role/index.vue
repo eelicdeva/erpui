@@ -1,6 +1,6 @@
 <template>
    <div class="app-container">
-      <el-form :model="queryParams" ref="queryRef" v-show="showSearch" :inline="true">
+      <el-form :model="queryParams" ref="queryRef" v-show="showSearch" :inline="true" label-width="68px">
          <el-form-item :label="$t('role.name')" prop="roleName">
             <el-input
                v-model="queryParams.roleName"
@@ -267,9 +267,8 @@
 import { getCurrentInstance, reactive, ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import i18n from '@/lang/index';
-import { addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole } from "@/api/system/role";
+import { addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole, deptTreeSelect } from "@/api/system/role";
 import { roleMenuTreeselect, treeselect as menuTreeselect } from "@/api/system/menu";
-import { treeselect as deptTreeselect, roleDeptTreeselect } from "@/api/system/dept";
 
 const {t} = i18n.global;
 
@@ -469,8 +468,8 @@ function getRoleMenuTreeselect(roleId) {
   });
 }
 /** 根据角色ID查询部门树结构 */
-function getRoleDeptTreeselect(roleId) {
-  return roleDeptTreeselect(roleId).then(response => {
+function getDeptTree(roleId) {
+  return deptTreeSelect(roleId).then(response => {
     deptOptions.value = response.depts;
     return response;
   });
@@ -550,12 +549,12 @@ function dataScopeSelectChange(value) {
 /** 分配数据权限操作 */
 function handleDataScope(row) {
   reset();
-  const roleDeptTreeselect = getRoleDeptTreeselect(row.roleId);
+  const deptTreeSelect = getDeptTree(row.roleId);
   getRole(row.roleId).then(response => {
     form.value = response.data;
     openDataScope.value = true;
     nextTick(() => {
-      roleDeptTreeselect.then(res => {
+      deptTreeSelect.then(res => {
         nextTick(() => {
           if (deptRef.value) {
             deptRef.value.setCheckedKeys(res.checkedKeys);
