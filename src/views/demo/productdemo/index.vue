@@ -275,18 +275,16 @@
             <el-table-column :label="$t('ErpProductDemo.remark')" align="center" v-if="columns[28].visible" prop="remark" :show-overflow-tooltip="true"/>
             <el-table-column :label="$t('user.operate')" width="150" align="center" class-name="small-padding fixed-width">
               <template #default="scope">
-                <el-button
-                  type="text"
-                  icon="Edit"
-                  @click="handleUpdate(scope.row)"
-                  v-hasPermi="['demo:productdemo:edit']"
-                >{{ $t('button.edit') }}</el-button>
-                <el-button
-                  type="text"
-                  icon="Delete"
-                  @click="handleDelete(scope.row)"
-                  v-hasPermi="['demo:productdemo:remove']"
-                >{{ $t('button.delete') }}</el-button>
+                <el-button                  
+                  v-for="button in buttons"
+                  :key="button.text"
+                  :type="button.type"
+                  :icon="button.icon"
+                  @click="handleButtonText(scope.row,button.act)"
+                  :v-hasPermi="button.permi"
+                  text
+
+                >{{ button.text }}</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -399,13 +397,18 @@
   </template>
   
 <script setup lang="ts" name="Productdemo">
-  import { listProductdemo, getProductdemo, delProductdemo, addProductdemo, updateProductdemo } from "@/api/demo/productdemo";
-  import i18n from '@/lang/index';
-  import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } from "vue";
+import { listProductdemo, getProductdemo, delProductdemo, addProductdemo, updateProductdemo } from "@/api/demo/productdemo";
+import i18n from '@/lang/index';
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } from "vue";
 
-  const {t} = i18n.global;
-  const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-  
+const {t} = i18n.global;
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+
+const buttons = [
+{ type: 'primary', text: t('button.edit'), icon: 'Edit', act: 'edit', permi: ['demo:productdemo:delete'] },
+{ type: 'primary', text: t('button.delete'), icon: 'Delete', act: 'delete', permi: ['demo:productdemo:delete'] }
+] as const  
+
   const productdemoList = ref([]);
   const open = ref(false);
   const loading = ref(true);
@@ -587,7 +590,17 @@ function handleSortChange(column, prop, order) {
     open.value = true;
     title.value = "添加产品Demo";
   }
-  
+   /** 修改按钮操作 */
+   function handleButtonText(row, act: string) {
+    if( act == "edit" ){
+      return handleUpdate(row);
+    }
+    if( act == "delete" ){
+      return handleDelete(row);
+    }
+  };
+
+
   /** 修改按钮操作 */
   function handleUpdate(row) {
     reset();
