@@ -49,10 +49,7 @@ const useAppStore = defineStore('app', {
       setLanguage(lang: string) {
         this.lang = lang;
         Cookies.set('lang', lang, { expires: 30 })
-      },
-      setuserNameMbti(userNameMbti: string) {
-        this.userNameMbti = userNameMbti
-      },
+      }
     }
   })
 

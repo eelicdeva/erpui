@@ -71,10 +71,10 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 // import mbti from 'assets/data.json'
 import mbti from '@/assets/demodata.json'
-import Btn from '@/views/erp/hr/mbti/components/Mbti/Btn' 
+import Btn from '@/views/erp/hr/mbti/components/Mbti/Btn.vue' 
 import { addMbti } from "@/api/hr/mbti";
 
 export default {

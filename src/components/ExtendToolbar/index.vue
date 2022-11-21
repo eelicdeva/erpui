@@ -12,9 +12,6 @@
  * option:  <extend-toolbar v-model:showExtend="showExtend" v-hasPermi="['xxx:xxx:xxx']"> </extend-toolbar> 
  * script add: const showExtend = ref(false);
 **/
-import i18n from '@/lang';
-
-const {t} = i18n.global;
 const props = defineProps({
   showExtend: {
     type: Boolean,
@@ -28,6 +25,4 @@ const emits = defineEmits(['update:showExtend', 'queryTable']);
 function toggleExtend() {
   emits("update:showExtend", !props.showExtend);
 }
-
-
 </script>

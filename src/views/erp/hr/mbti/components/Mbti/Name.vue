@@ -15,8 +15,8 @@
     </div>
   </section>
 </template>
-<script>
-import useAppStore from "@/stores/modules/app";
+<script lang="ts">
+import useMbtiStore from "@/stores/modules/mbti";
 
 export default {
   data() {
@@ -29,7 +29,7 @@ export default {
   ],
   methods: {
     nameEntry() {
-      useAppStore().setuserNameMbti(this.name)
+      useMbtiStore().setUserNameMbti(this.name)
     }
   }
 }

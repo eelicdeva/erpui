@@ -8,11 +8,11 @@
       v-else />
   </template>
   
-  <script>
-  import Header from '@/views/erp/hr/mbti/components/Mbti/Header'
-  import Name from '@/views/erp/hr/mbti/components/Mbti/Name'
-  import Mbti from '@/views/erp/hr/mbti/components/Mbti/'
-  import useAppStore from "@/stores/modules/app";
+  <script lang="ts">
+  import Header from '@/views/erp/hr/mbti/components/Mbti/Header.vue'
+  import Name from '@/views/erp/hr/mbti/components/Mbti/Name.vue'
+  import Mbti from '@/views/erp/hr/mbti/components/Mbti/index.vue'
+  import useMbtiStore from "@/stores/modules/mbti";
   
   export default {
     components : {
@@ -27,7 +27,7 @@
     },
     computed: {
       userName() {
-        return useAppStore().userNameMbti;
+        return useMbtiStore().usernameMbti;
       }
     },
     methods: {
