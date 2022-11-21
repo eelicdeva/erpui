@@ -100,7 +100,10 @@
 		"node_modules", 
 		"dist",
 		"src/assets",		
-
+		// fix i18n {'@'} error
+		"src/lang/zh.ts",
+		"src/lang/en.ts",
+		"src/lang/id.ts",
 		// for the test folder
 		"src/test/",
 		//"src/views/test/",
