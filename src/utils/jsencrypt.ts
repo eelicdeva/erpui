@@ -10,7 +10,7 @@ import JSEncrypt from 'jsencrypt/bin/jsencrypt.min'
  * @param  {string} publicKey
  * @return {string} 
  */
-export const encrypt = (txt: string, publicKey:string): string => {
+export const encrypt = (txt: string, publicKey?:string): string => {
   const encryptor = new JSEncrypt()
   encryptor.setPublicKey(publicKey) // 设置公钥
   return encryptor.encrypt(txt) // 对数据

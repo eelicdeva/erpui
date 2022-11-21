@@ -174,11 +174,10 @@
    </div>
 </template>
 
-<script setup name="Notice">
+<script setup lang="ts" name="Notice">
 import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/system/notice";
 import i18n from '@/lang/index';
-import LangSelect from "@/components/LangSelect";
-
+import { reactive, ref, toRefs } from "vue";
 
 const {t} = i18n.global;
 
