@@ -74,7 +74,7 @@
 <script>
 // import mbti from 'assets/data.json'
 import mbti from '@/assets/demodata.json'
-import Btn from '@/components/Mbti/Btn'
+import Btn from '@/views/erp/hr/mbti/components/Mbti/Btn' 
 import { addMbti } from "@/api/hr/mbti";
 
 export default {

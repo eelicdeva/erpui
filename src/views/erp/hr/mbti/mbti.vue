@@ -9,9 +9,9 @@
   </template>
   
   <script>
-  import Header from '@/components/Mbti/Header'
-  import Name from '@/components/Mbti/Name'
-  import Mbti from '@/components/Mbti/'
+  import Header from '@/views/erp/hr/mbti/components/Mbti/Header'
+  import Name from '@/views/erp/hr/mbti/components/Mbti/Name'
+  import Mbti from '@/views/erp/hr/mbti/components/Mbti/'
   import useAppStore from "@/stores/modules/app";
   
   export default {

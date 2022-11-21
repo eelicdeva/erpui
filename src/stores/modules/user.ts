@@ -23,8 +23,6 @@ const useUserStore = defineStore('user', {
             const code = userInfo.code
             const uuid = userInfo.uuid
             const lang = userInfo.lang
-            console.log(userInfo.password)
-            console.log(password)
             login(username, password, code, uuid, lang).then(res => {
               setToken(res.token)
               this.token = res.token

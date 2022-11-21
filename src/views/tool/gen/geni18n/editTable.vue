@@ -150,6 +150,9 @@
       <el-tab-pane :label="$t('genTable.GenerateInfo')" name="genInfo">
         <gen-info-form ref="genInfo" :info="info" />
       </el-tab-pane>
+      <el-tab-pane label="view" name="view">
+        <view-form></view-form>
+      </el-tab-pane>
     </el-tabs>
     <el-form label-width="100px">
       <div style="text-align: center;margin-left:-100px;margin-top:10px;">
@@ -166,6 +169,8 @@ import { optionselect as getDictOptionselect } from "@/api/system/dict/type";
 import basicInfoForm from "./basicInfoForm";
 import genInfoForm from "./genInfoForm";
 import genChartForm from "./genChartForm";
+import viewForm from "./viewForm";
+
 import useAppStore from "@/stores/modules/app";
 
 const route = useRoute();
