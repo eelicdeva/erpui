@@ -22,9 +22,9 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import i18n from '@/lang/index';
-
+import { ref } from 'vue';
 const {t} = i18n.global;
 const props = defineProps({
   showSearch: {

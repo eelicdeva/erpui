@@ -13,16 +13,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
 import Sidebar from './components/Sidebar/index.vue'
 import { AppMain, Navbar, Settings, TagsView } from './components'
-import defaultSettings from '@/settings'
-
+//import defaultSettings from '@/settings'
 import useAppStore from '@/stores/modules/app'
 import useSettingsStore from '@/stores/modules/settings'
 
-import { onMounted } from 'vue'
+import { computed, onMounted, watchEffect, ref } from 'vue'
 
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme);
@@ -63,22 +62,11 @@ function setLayout() {
   settingRef.value.openSetting();
 }
 onMounted(() => {
-  let MutationObserver =
-      window.MutationObserver ||
-      window.WebKitMutationObserver ||
-      window.MozMutationObserver;
-    let observer = new MutationObserver(() => {
-      let sidebar = document.getElementsByClassName("sidebar-container")[0];
-
-
-
-      let width = sidebar.offsetWidth;// to-do:  error when setting TopNav
-
-
-
-      
-      document.getElementsByClassName("main-container")[0].style.marginLeft = `${width}px`;
-    });
+  let MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+  let observer = new MutationObserver(() => {
+  let sidebar = document.getElementsByClassName("sidebar-container")[0];
+  let width = sidebar.offsetWidth;// to-do:  error when setting TopNav
+  document.getElementsByClassName("main-container")[0].style.marginLeft = `${width}px`;});
     observer.observe(document.getElementsByClassName("sidebar-container")[0], {
       attributes: true,
       characterData: true,

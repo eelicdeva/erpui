@@ -27,10 +27,11 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { isExternal } from '@/utils/validate'
-import AppLink from './Link'
+import AppLink from './Link.vue'
 import { getNormalPath } from '@/utils/ruoyi'
+import { ref } from 'vue';
 
 const props = defineProps({
   // route object
@@ -78,7 +79,7 @@ function hasOneShowingChild(children = [], parent) {
   return false
 };
 
-function resolvePath(routePath, routeQuery) {
+function resolvePath(routePath: string, routeQuery?: string) {
   if (isExternal(routePath)) {
     return routePath
   }

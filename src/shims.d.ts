@@ -9,5 +9,11 @@ declare module "*.vue" {
 };
 const Component: ReturnType<typeof defineComponent>;
 
+
+declare module '*.scss' {
+	const css: string;
+	export default css;
+}
+
 // declare module 'xxx' path | name || 声明引入js文件路径或者模块名
 declare module "jsencrypt/bin/jsencrypt.min"; 

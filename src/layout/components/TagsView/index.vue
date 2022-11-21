@@ -47,7 +47,7 @@ import { getNormalPath } from '@/utils/ruoyi'
 import useTagsViewStore from '@/stores/modules/tagsView'
 import useSettingsStore from '@/stores/modules/settings'
 import usePermissionStore from '@/stores/modules/permission'
-import { computed, getCurrentInstance, onMounted, ref, watch } from 'vue'
+import { ComponentInternalInstance, computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const visible = ref(false);
@@ -57,7 +57,7 @@ const selectedTag = ref({});
 const affixTags = ref([]);
 const scrollPaneRef = ref(null);
 
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const route = useRoute();
 const router = useRouter();
 

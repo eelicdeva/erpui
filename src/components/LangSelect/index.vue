@@ -22,6 +22,10 @@
  <script lang="ts" name="selectLang">
 import useAppStore from "@/stores/modules/app";
 import { updateLang } from "@/api/system/user";
+import i18n from '@/lang/index';
+
+const {t} = i18n.global;
+
 export default {
   computed: {
     language() {
@@ -33,7 +37,7 @@ export default {
     isActive: {
     type: Boolean,
     default: false
-  },
+    },
   },
   created() {
     let langStore = useAppStore().lang;
@@ -43,9 +47,11 @@ export default {
   
   methods: {
     handleSetLanguage(lang: string) {
-      //useAppStore().setdisableValidate(true)
       this.$i18n.locale = lang
       useAppStore().setLanguage(lang)
+      console.log('this')
+      console.log(this)
+      console.log(this.isActive)
       if(this.isActive){
         updateLang(lang);
         this.$modal.loading("正在设置语言 | Setting language...");
@@ -53,13 +59,9 @@ export default {
       }else{
         this.$emit('selectLangEvent');
       }
-      this.$message({
-        message: this.$t('login.setlanguage'),
-        type: 'success'
-      })     
+      this.$modal.msgSuccess(t('login.setlanguage'));
     }
   }
- 
 }
 </script>
 
