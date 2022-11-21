@@ -175,7 +175,7 @@ import { getAllBook } from "@/api/hr/book";
 import { listCategory } from "@/api/hr/category";
 import i18n from '@/lang/index';
 import useAppStore from "@/stores/modules/app";
-import addCategory from '@/components/AddCategory/index.vue';
+import addCategory from '@/views/erp/hr/book/category/AddCategory';
 import { getCurrentInstance, reactive, ref, toRefs } from "vue";
 
 
