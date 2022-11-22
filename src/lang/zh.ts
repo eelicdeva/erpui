@@ -658,6 +658,11 @@ export default {
     updateTimePlaceholder: '选择更新时间',
     remark: '备注',
     remarkPlaceholder: '请选择备注'
+ },
+ Error: {
+   401: '401错误!',
+   h2401: '您没有访问权限！',
+   h6401: '对不起，您没有访问权限，请不要进行非法操作！您可以返回主页面',
+   Home: '回首页'
  }
-
 }

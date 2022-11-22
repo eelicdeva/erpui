@@ -660,5 +660,11 @@ export default {
     updateTimePlaceholder: '选择更新时间',
     remark: '备注',
     remarkPlaceholder: '请选择备注'
+  },
+  Error: {
+    401: '401 error!',
+    h2401: 'You don\'t have access! ',
+    h6401: 'Sorry, you don\'t have access rights, please don\'t do illegal operations! you can return to the main page',
+    Home: 'Home'
   }
 }
