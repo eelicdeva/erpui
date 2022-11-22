@@ -53,15 +53,15 @@
 
 <script setup lang="ts">
 import { ElMessageBox } from 'element-plus'
-import Breadcrumb from '@/components/Breadcrumb'
-import TopNav from '@/components/TopNav'
-import Hamburger from '@/components/Hamburger'
-import Screenfull from '@/components/Screenfull'
-import LangSelect from "@/components/LangSelect";
-import SizeSelect from '@/components/SizeSelect'
-import HeaderSearch from '@/components/HeaderSearch'
-import RuoYiGit from '@/components/EELIC/Git'
-import RuoYiDoc from '@/components/EELIC/Doc'
+import Breadcrumb from '@/components/Breadcrumb/index.vue'
+import TopNav from '@/components/TopNav/index.vue'
+import Hamburger from '@/components/Hamburger/index.vue'
+import Screenfull from '@/components/Screenfull/index.vue'
+import LangSelect from "@/components/LangSelect/index.vue";
+import SizeSelect from '@/components/SizeSelect/index.vue'
+import HeaderSearch from '@/components/HeaderSearch/index.vue'
+import RuoYiGit from '@/components/EELIC/Git/index.vue'
+import RuoYiDoc from '@/components/EELIC/Doc/index.vue'
 import useAppStore from '@/stores/modules/app'
 import useUserStore from '@/stores/modules/user'
 import useSettingsStore from '@/stores/modules/settings'
@@ -72,8 +72,8 @@ const appStore = useAppStore()
 const userStore = useUserStore()
 const settingsStore = useSettingsStore()
 
-function toggleSideBar() {
-  appStore.toggleSideBar()
+function toggleSideBar(withoutAnimation: boolean) {
+  appStore.toggleSideBar(withoutAnimation)
 }
 
 function handleCommand(command) {

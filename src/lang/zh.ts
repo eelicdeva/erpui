@@ -324,7 +324,7 @@ export default {
     cancelauthall: '是否取消选中用户授权数据项?',
   },
   menu:{
-    frontPage: '首页4',
+    frontPage: '首页',
     main: '主类目',
     name: '菜单名称',
     MenuPlaceholder: '请输入菜单名称',

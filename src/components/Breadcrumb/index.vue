@@ -2,7 +2,9 @@
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
-        <span v-if="item.redirect === 'noRedirect' || index == levelList.length - 1" class="no-redirect">{{ item.meta.title }}</span>
+        <span v-if="item.redirect === 'noRedirect' || index == levelList.length - 1" class="no-redirect">
+          {{ item.meta.title }}
+        </span>
         <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
       </el-breadcrumb-item>
     </transition-group>
@@ -10,35 +12,65 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, watchEffect } from 'vue';
+import { RouteLocationMatched,RouteLocationRaw,useRoute, useRouter } from 'vue-router';
+import i18n from '@/lang/index';
 
+const {t} = i18n.global;
 const route = useRoute();
 const router = useRouter();
-const levelList = ref([])
+const levelList = ref<Array<PartialRouteLocationMatched>>([]) // ||导航列表 存放matched里筛选的路由记录
+
+type PartialRouteLocationMatched = Partial<RouteLocationMatched>
 
 function getBreadcrumb() {
-  // only show routes with meta.title
-  let matched = route.matched.filter(item => item.meta && item.meta.title);
+  // only show routes with meta.title || 过滤掉没有title属性的路由，没有title就无法作为面包屑导航
+  let matched = route.matched.filter(item => item.meta && item.meta.title) as PartialRouteLocationMatched[];
+  // ||获取第一个匹配路由记录
   const first = matched[0]
-  // 判断是否为首页
+  // ||判断是否为首页
+  // ||我们要把dashboard(index)作为首页 始终固定在面包屑导航第一个
+  // ||如果第一个匹配到的路由记录不是dashboard 我们自己就把它放在记录数组的第一项
   if (!isDashboard(first)) {
-    matched = [{ path: '/index', meta: { title: '首页' } }].concat(matched)
+    matched = ([{ path: '/index', 
+                  meta: { title: t('menu.frontPage') } 
+                }] as PartialRouteLocationMatched[]).concat(matched).concat(matched)
   }
 
   levelList.value = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
 }
-function isDashboard(route) {
+
+// ||判断是不是Dashboard路由
+function isDashboard(routeroute?: PartialRouteLocationMatched) {
   const name = route && route.name
   if (!name) {
     return false
   }
-  return name.trim() === 'Index'
+  return (
+    (name as string).trim().toLocaleLowerCase() ===
+    'Index'.toLocaleLowerCase()
+  )
+ // return name.trim() === 'Index'
 }
-function handleLink(item) {
+/** 
+    // 点击面包屑导航可跳转
+  const handleLink = (route: RouteLocationMatched) => {
+    const { path, redirect } = route
+    // 如果是重定向路由 就走重定向路径
+    if (redirect) {
+      router.push(redirect as RouteLocationRaw)
+      return
+    }
+    router.push(path)
+  }
+  */
+
+// ||点击面包屑导航可跳转
+function handleLink(item: RouteLocationMatched) {
   const { redirect, path } = item
+  // ||如果是重定向路由 就走重定向路径
   if (redirect) {
-    router.push(redirect)
+    router.push(redirect as RouteLocationRaw)
     return
   }
   router.push(path)
@@ -50,7 +82,7 @@ watchEffect(() => {
     return
   }
   getBreadcrumb()
-})
+});
 getBreadcrumb();
 </script>
 

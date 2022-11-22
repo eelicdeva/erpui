@@ -28,9 +28,11 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { ComponentInternalInstance, computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue';
 
-const { proxy } = getCurrentInstance();
+
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const props = defineProps({
   /* 配置项 */

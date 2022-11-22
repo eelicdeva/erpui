@@ -17,11 +17,10 @@
 import { useWindowSize } from '@vueuse/core'
 import Sidebar from './components/Sidebar/index.vue'
 import { AppMain, Navbar, Settings, TagsView } from './components'
-//import defaultSettings from '@/settings'
+import defaultSettings from '@/settings'
 import useAppStore from '@/stores/modules/app'
 import useSettingsStore from '@/stores/modules/settings'
-
-import { computed, onMounted, watchEffect, ref } from 'vue'
+import { computed, onMounted, ref, watchEffect } from 'vue'
 
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme);

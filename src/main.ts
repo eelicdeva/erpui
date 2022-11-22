@@ -23,7 +23,7 @@ import router from './router';
 import i18n from '@/lang';
 
 // svg custom icons 
-import 'virtual:svg-icons-register';
+import 'virtual:svg-icons-register'; // || vite 
 import SvgIcon from '@/components/SvgIcon/index.vue';
 
 // Plugins register / 注册指令
@@ -51,7 +51,6 @@ import ImagePreview from "@/components/ImagePreview/index.vue";
 import TreeSelect from '@/components/TreeSelect/index.vue';
 // 字典标签组件
 import DictTag from '@/components/DictTag/index.vue';
-
 
 const app = createApp(App);
 const pinia = createPinia();

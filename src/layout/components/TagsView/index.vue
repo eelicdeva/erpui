@@ -163,27 +163,27 @@ function moveToCurrentTag() {
   })
 }
 function refreshSelectedTag(view) {
-  proxy.$tab.refreshPage(view);
+  proxy?.$tab.refreshPage(view);
   if (route.meta.link) {
     useTagsViewStore().delIframeView(route);
   };
 }
 function closeSelectedTag(view) {
-  proxy.$tab.closePage(view).then(({ visitedViews }) => {
+  proxy?.$tab.closePage(view).then(({ visitedViews }) => {
     if (isActive(view)) {
       toLastView(visitedViews, view)
     }
   })
 }
 function closeRightTags() {
-  proxy.$tab.closeRightPage(selectedTag.value).then(visitedViews => {
+  proxy?.$tab.closeRightPage(selectedTag.value).then(visitedViews => {
     if (!visitedViews.find(i => i.fullPath === route.fullPath)) {
       toLastView(visitedViews)
     }
   })
 }
 function closeLeftTags() {
-  proxy.$tab.closeLeftPage(selectedTag.value).then(visitedViews => {
+  proxy?.$tab.closeLeftPage(selectedTag.value).then(visitedViews => {
     if (!visitedViews.find(i => i.fullPath === route.fullPath)) {
       toLastView(visitedViews)
     }
@@ -191,12 +191,12 @@ function closeLeftTags() {
 }
 function closeOthersTags() {
   router.push(selectedTag.value).catch(() => { });
-  proxy.$tab.closeOtherPage(selectedTag.value).then(() => {
+  proxy?.$tab.closeOtherPage(selectedTag.value).then(() => {
     moveToCurrentTag()
   })
 }
 function closeAllTags(view) {
-  proxy.$tab.closeAllPage().then(({ visitedViews }) => {
+  proxy?.$tab.closeAllPage().then(({ visitedViews }) => {
     if (affixTags.value.some(tag => tag.path === route.path)) {
       return
     }
@@ -220,8 +220,8 @@ function toLastView(visitedViews, view) {
 }
 function openMenu(tag, e) {
   const menuMinWidth = 105
-  const offsetLeft = proxy.$el.getBoundingClientRect().left // container margin left
-  const offsetWidth = proxy.$el.offsetWidth // container width
+  const offsetLeft = proxy?.$el.getBoundingClientRect().left // container margin left
+  const offsetWidth = proxy?.$el.offsetWidth // container width
   const maxLeft = offsetWidth - menuMinWidth // left boundary
   const l = e.clientX - offsetLeft + 15 // 15: margin right
 
