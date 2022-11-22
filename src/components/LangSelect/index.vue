@@ -19,7 +19,7 @@
   </el-dropdown>
 </template>
 
- <script lang="ts" name="selectLang">
+<script lang="ts" name="selectLang">
 import useAppStore from "@/stores/modules/app";
 import { updateLang } from "@/api/system/user";
 import i18n from '@/lang/index';
@@ -39,6 +39,7 @@ export default {
     default: false
     },
   },
+
   created() {
     let langStore = useAppStore().lang;
     this.$i18n.locale = langStore;
@@ -49,12 +50,9 @@ export default {
     handleSetLanguage(lang: string) {
       this.$i18n.locale = lang
       useAppStore().setLanguage(lang)
-      console.log('this')
-      console.log(this)
-      console.log(this.isActive)
       if(this.isActive){
         updateLang(lang);
-        this.$modal.loading("正在设置语言 | Setting language...");
+        this.$modal.loading("正在设置语言 | Setting language | Bahasa Setting...");
         setTimeout("window.location.reload()", 500);      
       }else{
         this.$emit('selectLangEvent');
@@ -70,4 +68,4 @@ export default {
     font-size: 18px;
     line-height: 50px;
   }
-  </style>
+</style>

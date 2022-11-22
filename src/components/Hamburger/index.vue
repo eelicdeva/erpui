@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineProps({
   isActive: {
     type: Boolean,
@@ -21,7 +21,7 @@ defineProps({
   }
 })
 
-const emit = defineEmits()
+const emit = defineEmits(['toggleClick'])
 const toggleClick = () => {
   emit('toggleClick');
 }
