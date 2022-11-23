@@ -664,5 +664,11 @@ export default {
     updateTimePlaceholder: '选择更新时间',
     remark: '备注',
     remarkPlaceholder: '请选择备注'
+  },
+  Error: {
+    401: 'Kesalahan 401!',
+    h2401: 'Anda tidak punya hak akses! ',
+    h6401: 'Maaf, Anda tidak memiliki hak akses, tolong jangan melakukan operasi ilegal! Anda dapat kembali ke halaman utama',
+    Home: 'Beranda'
   }
 }
