@@ -9,7 +9,6 @@ declare module "*.vue" {
 };
 const Component: ReturnType<typeof defineComponent>;
 
-
 declare module '*.scss' {
 	const css: string;
 	export default css;

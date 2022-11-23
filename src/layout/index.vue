@@ -13,10 +13,10 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="Layout">
 import { useWindowSize } from '@vueuse/core'
 import Sidebar from './components/Sidebar/index.vue'
-import { AppMain, Navbar, Settings, TagsView } from './components'
+import { AppMain, Navbar, TagsView } from './components'
 import defaultSettings from '@/settings'
 import useAppStore from '@/stores/modules/app'
 import useSettingsStore from '@/stores/modules/settings'
@@ -56,15 +56,16 @@ function handleClickOutside() {
   useAppStore().closeSideBar({ withoutAnimation: false })
 }
 
-const settingRef = ref(null);
+const settingRef = ref({});
 function setLayout() {
   settingRef.value.openSetting();
 }
 onMounted(() => {
   let MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
   let observer = new MutationObserver(() => {
-  let sidebar = document.getElementsByClassName("sidebar-container")[0];
-  let width = sidebar.offsetWidth;// to-do:  error when setting TopNav
+  let sidebar = document.getElementsByClassName("sidebar-container")[0] as HTMLElement;
+  console.log(sidebar)
+  let width = sidebar?.offsetWidth //?? 54;   // to-do:  fake solution, error when setting TopNav  
   document.getElementsByClassName("main-container")[0].style.marginLeft = `${width}px`;});
     observer.observe(document.getElementsByClassName("sidebar-container")[0], {
       attributes: true,

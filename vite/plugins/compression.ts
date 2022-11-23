@@ -1,8 +1,8 @@
 import compression from 'vite-plugin-compression'
 
 export default function createCompression(env) {
-    const { VITE_BUILD_COMPRESS } = env
-    const plugin = []
+    const { VITE_BUILD_COMPRESS } = env;
+    const plugin: any[] = []; 
     if (VITE_BUILD_COMPRESS) {
         const compressList = VITE_BUILD_COMPRESS.split(',')
         if (compressList.includes('gzip')) {
@@ -13,16 +13,15 @@ export default function createCompression(env) {
                     deleteOriginFile: false
                 })
             )
-        }
+        };
         if (compressList.includes('brotli')) {
-            plugin.push(
-                compression({
+            plugin.push(compression({
                     ext: '.br',
                     algorithm: 'brotliCompress',
                     deleteOriginFile: false
                 })
             )
-        }
-    }
+        };
+    };
     return plugin
 }

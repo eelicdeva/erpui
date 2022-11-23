@@ -7,7 +7,7 @@ function authPermission(permission: string | any[]) {
   if (permission && permission.length > 0) {
     return permissions.some(v => {
       return all_permission === v || v === permission
-    })
+    }) //some(): boolean
   } else {
     return false
   }
@@ -19,7 +19,7 @@ function authRole(role: string | any[]) {
   if (role && role.length > 0) {
     return roles.some(v => {
       return super_admin === v || v === role
-    })
+    }) //some(): boolean
   } else {
     return false
   }

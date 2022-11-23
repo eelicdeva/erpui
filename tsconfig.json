@@ -61,16 +61,13 @@
 		"skipLibCheck": true, // || 跳过声明文件的类型检查
     "removeComments": false, /* 用于指定是否将编译后的文件注释删掉，设为true的话即删除注释，默认为false */
 
-
-
-
 		// ||输出目录
 		"outDir": "./",
 		// ||解析非相对模块名的基准目录
 		"baseUrl": ".",
 		// ||模块名到基于 baseUrl 的路径映射的列表。
-		"paths": {
-			"~": ["./"],
+		"paths": {  // ||扩展商店安装插件 - Path Intellisense
+			"~": ["./"], 
 			"@": ["./src"],
 			"@/*": ["./src/*"],
 			"vue-i18n": ["vue-i18n/dist/vue-i18n.cjs.js"]
@@ -93,7 +90,12 @@
    * 比如"./src"即表示要编译src文件夹下的所有文件以及子文件夹的文件
    */ 
 	"include": [// exec include folder | file || 编译包含目录|文件
+		"env.d.ts", // for ts comment use
+		"shims.d.ts", // common file setting detail
+		"shims.vue.d.ts",// vue setting detail
+		//"src/components.d.ts", // vue components setting
 		"vite.config.ts",
+		"vite/**/*.ts",
 		"src/**/*.ts", 
 		"src/**/*.d.ts", 
 		"src/**/*.tsx", 

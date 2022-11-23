@@ -15,7 +15,7 @@ const useUserStore = defineStore('user', {
     actions: {
       // 登录
       login(userInfo: { username: string; password: string; code: string; uuid: string; lang: string; }) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
           getPublicKey().then(res => {
             let publicKey = res.publicKey
             const username = userInfo.username.trim()
@@ -40,11 +40,11 @@ const useUserStore = defineStore('user', {
             const user = res.user
             const avatar = (user.avatar == "" || user.avatar == null) ? defAva : import.meta.env.VITE_APP_BASE_API + user.avatar;
 
-            if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+            if (res.roles && res.roles.length > 0) { // ||验证返回的roles是否是一个非空数组
               this.roles = res.roles
               this.permissions = res.permissions
             } else {
-              this.roles = ['ROLE_DEFAULT']
+              this.roles = []; // ||to-do ['ROLE_DEFAULT'] only setting here
             }
             this.name = user.userName
             this.avatar = avatar;
@@ -57,12 +57,12 @@ const useUserStore = defineStore('user', {
       // 退出系统
       logOut() {
         return new Promise((resolve, reject) => {
-          logout(this.token).then(() => {
+          logout().then(() => {
             this.token = ''
             this.roles = []
             this.permissions = []
             removeToken()
-            resolve()
+            resolve('')
           }).catch(error => {
             reject(error)
           })

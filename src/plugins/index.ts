@@ -1,3 +1,4 @@
+import { App } from 'vue';
 import tab from './tab'
 import auth from './auth'
 import cache from './cache'
@@ -7,26 +8,60 @@ import { RouteLocationRaw } from 'vue-router'
 //to-do check again $tab
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
+    // ||页签操作 to-do need check
     $tab: {
       // ||刷新当前$tab页签
-      refreshPage(obj: { name?: string; path: any; query: any } | undefined): [],
+      refreshPage(obj: { name?: string; path: any; query: any } | undefined): any,
       // ||关闭当前tab页签，打开新页签
-      closeOpenPage(obj: { path: string }): [],
+      closeOpenPage(obj: { path: string }): any,
       // ||关闭指定tab页签
-      closePage(obj: undefined):[],
+      closePage(obj: undefined):any,
       // ||关闭所有tab页签
-      closeAllPage(): [],
+      closeAllPage(): any,
       // 关闭左侧tab页签
-      closeLeftPage(obj: any): [],
+      closeLeftPage(obj: any): any,
       // 关闭右侧tab页签
-      closeRightPage(obj: any): [],
+      closeRightPage(obj: any): any,
       // 打开tab页签
-      openPage(url: RouteLocationRaw): [],
-      updatePage(obj: any): []
+      openPage(url: RouteLocationRaw): any,
+      updatePage(obj: any): any
+    };
+    // ||认证对象
+    $auth: {
+      // ||验证用户是否具备某权限  
+      hasPermi(permission: string | any[]): boolean,
+      // ||验证用户是否含有指定权限，只需包含其中一个
+      hasPermiOr(permissions: any[]): boolean,
+      // ||验证用户是否含有指定权限，必须全部拥有
+      hasPermiAnd(permissions: any[]): boolean,
+      // ||验证用户是否具备某角色
+      hasRole(role: string | any[]): boolean,
+      // ||验证用户是否含有指定角色，只需包含其中一个
+      hasRoleOr(roles: any[]): boolean,
+      // ||验证用户是否含有指定角色，必须全部拥有
+      hasRoleAnd(roles: any[]): boolean                           
     };
 
-    $auth: any;
-    $cache: any;
+    // ||缓存对象 to-do check
+    $cache: {
+
+      /**
+   * 会话级缓存
+  session: sessionCache,
+
+      sessionCache: {
+        set (key: string | null, value: string | null): void
+        get (key: string | null): (key | null)
+        setJSON (key: string | null, jsonValue: { url: string | undefined; data: any; time: number } | null): void,
+        getJSON(key: string | null): any,
+        remove(key: string): void
+      },
+         * 本地缓存
+
+  local: localCache
+ */
+    };
+
     $modal: {  
         // || 消息提示
         msg(content: string): void,
@@ -65,7 +100,7 @@ declare module '@vue/runtime-core' {
   } 
 };
 
-export default function installPlugins(app: any){
+export default function installPlugins(app: App): void {
   // 页签操作
   app.config.globalProperties.$tab = tab;
   // 认证对象
