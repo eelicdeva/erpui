@@ -669,6 +669,10 @@ export default {
     401: 'Kesalahan 401!',
     h2401: 'Anda tidak punya hak akses! ',
     h6401: 'Maaf, Anda tidak memiliki hak akses, tolong jangan melakukan operasi ilegal! Anda dapat kembali ke halaman utama',
-    Home: 'Beranda'
+    Home: 'Beranda',
+    404: 'Kesalahan 404!',
+    info404: 'Mohon maaf, halaman yang Anda cari tidak ada. Coba periksa URL apakah ada kesalahan, lalu tekan tombol segarkan di browser Anda atau coba temukan yang lain di aplikasi kami.',
+    BacktoHome: 'Kembali ke Beranda',
+    Pagenotfound: 'Halaman tidak ditemukan!'
   }
 }
