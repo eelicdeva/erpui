@@ -245,7 +245,7 @@ function handleGenTable(row) {
       proxy.$modal.msgSuccess("成功生成到自定义路径：" + row.genPath);
     });
   } else {
-    proxy.$download.zip("/tool/geni18n/batchGenCode?tables=" + tbNames, "eelic");
+    proxy.$download.zip("/tool/geni18n/batchGenCode?tables=" + tbNames, "eelic.zip");
   }
 }
 /** 同步数据库操作 */
