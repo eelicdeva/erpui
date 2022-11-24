@@ -45,8 +45,10 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { getToken } from "@/utils/auth";
+import { ElUpload, ElIcon, ElDialog } from "element-plus";
+import { ComponentInternalInstance, computed, getCurrentInstance, ref, watch } from "vue";
 
 const props = defineProps({
   modelValue: [String, Object, Array],
@@ -72,7 +74,7 @@ const props = defineProps({
   },
 });
 
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const emit = defineEmits();
 const number = ref(0);
 const uploadList = ref([]);

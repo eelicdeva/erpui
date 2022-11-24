@@ -292,17 +292,16 @@
    </div>
 </template>
 
-<script lang="ts" setupname="Menu" >
+<script setup name="Menu">//typescript error can not get proxy
 import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/menu";
-import SvgIcon from "@/components/SvgIcon/index.vue";
-import IconSelect from "@/components/IconSelect/index.vue";
+import SvgIcon from "@/components/SvgIcon";
+import IconSelect from "@/components/IconSelect";
 import { ClickOutside as vClickOutside } from 'element-plus'
 import i18n from '@/lang/index';
-import { ComponentInternalInstance, getCurrentInstance, nextTick, reactive, ref, toRefs } from "vue";
 
 const {t} = i18n.global;
 
-const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { proxy } = getCurrentInstance();
 const { sys_show_hide, sys_normal_disable } = proxy.useDict("sys_show_hide", "sys_normal_disable");
 
 const menuList = ref([]);
@@ -389,7 +388,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy?.resetForm("queryRef");
+  proxy.resetForm("queryRef");
   handleQuery();
 }
 /** 新增按钮操作 */
@@ -428,13 +427,13 @@ function submitForm() {
     if (valid) {
       if (form.value.menuId != undefined) {
         updateMenu(form.value).then(response => {
-          proxy?.$modal.msgSuccess(t('button.successModify'));
+          proxy.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addMenu(form.value).then(response => {
-          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
+          proxy.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -444,11 +443,11 @@ function submitForm() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  proxy?.$modal.confirm(t('menu.confirmDelete1') + row.menuName + t('menu.confirmDelete2')).then(function() {
+  proxy.$modal.confirm(t('menu.confirmDelete1') + row.menuName + t('menu.confirmDelete2')).then(function() {
     return delMenu(row.menuId);
   }).then(() => {
     getList();
-    proxy?.$modal.msgSuccess(t('user.succesDeleted'));
+    proxy.$modal.msgSuccess(t('user.succesDeleted'));
   }).catch(() => {});
 }
 

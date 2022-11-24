@@ -1,9 +1,5 @@
 import { defineStore } from "pinia";
 
-interface useDictStore {
-//dict: [];
-}
-
 const useDictStore = defineStore(
   'dict',
   {
