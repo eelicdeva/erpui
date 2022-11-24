@@ -28,8 +28,8 @@
 		"noImplicitAny": false,                 /* Raise error on expressions and declarations with an implied 'any' type. ||如果开启该值，当有隐含any类型时，会报错。建议初次上手TypeScript，把该选项设置为false。 */
 		// "strictNullChecks": true,              /* Enable strict null checks. || 正式项目 开启此项*/
 	/**Vue3 setting true*/
-		"noImplicitThis": true,                /* Vue3 ask setting true -> Raise error on 'this' expressions with an implied 'any' type. || vue3 必须开启*/
-		"isolatedModules": true,               // ||Vue3 应该设置为true ->无条件地为未解决的文件发出导入。使用选项式 API，需要将 compilerOptions.strict 设置为 true (或者至少开启 compilerOptions.noImplicitThis，它是 strict 模式的一部分)
+		"noImplicitThis": true,                /* Vue3 setting true -> Raise error on 'this' expressions with an implied 'any' type. || vue3 必须开启*/
+		"isolatedModules": true,               // ||Vue3 选项式API，应该设置为true ->无条件地为未解决的文件发出导入。使用选项式 API，需要将 compilerOptions.strict 设置为 true (或者至少开启 compilerOptions.noImplicitThis，它是 strict 模式的一部分)
 		/* to-do || 开启以下编译配置 */
 
 

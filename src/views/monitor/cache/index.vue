@@ -66,7 +66,7 @@
   </div>
 </template>
 
-<script setup name="Cache">
+<script lang="ts" setup name="Cache">
 import { getCache } from '@/api/monitor/cache';
 import * as echarts from 'echarts';
 

@@ -17,7 +17,7 @@
 <script lang="ts" setup name="Pageination">
 import { scrollTo } from '@/utils/scroll-to'
 import { computed } from 'vue';
-interface PropsPagination {
+export interface PropsPagination {
   total: number; // required
   page?: number;
   limit?: number;
