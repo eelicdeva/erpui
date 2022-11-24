@@ -75,22 +75,23 @@
     <el-button type="primary" plain icon="DocumentAdd" @click="saveSetting">{{ $t('settings.save') }}</el-button>
     <el-button plain icon="Refresh" @click="resetSetting">{{ $t('settings.reset') }}</el-button>
   </el-drawer>
+
 </template>
 
-<script setup lang="ts">
+<script setup>
 // to-do change to "ts" error
-import variables from '@/assets/styles/variables.module.scss';
-import originElementPlus from '/element-plus/theme-chalk/index.css';
-import axios from 'axios';
-//import { ElLoading, ElMessage } from 'element-plus';
-import { useDynamicTitle } from '@/utils/dynamicTitle';
-import useAppStore from '@/stores/modules/app';
-import useSettingsStore from '@/stores/modules/settings';
-import usePermissionStore from '@/stores/modules/permission';
+import variables from '@/assets/styles/variables.module.scss'
+import originElementPlus from 'element-plus/theme-chalk/index.css'
+import axios from 'axios'
+import { ElLoading, ElMessage } from 'element-plus'
+import { useDynamicTitle } from '@/utils/dynamicTitle'
+import useAppStore from '@/stores/modules/app'
+import useSettingsStore from '@/stores/modules/settings'
+import usePermissionStore from '@/stores/modules/permission'
 import i18n from '@/lang/index';
-import { ComponentInternalInstance, computed, getCurrentInstance, ref } from 'vue';
+
 const {t} = i18n.global;
-const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { proxy } = getCurrentInstance();
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
@@ -151,7 +152,7 @@ function handleTheme(val) {
   sideTheme.value = val;
 }
 function saveSetting() {
-  proxy?.$modal.loading(t('settings.loading'));
+  proxy.$modal.loading(t('settings.loading'));
   let layoutSetting = {
     "topNav": storeSettings.value.topNav,
     "tagsView": storeSettings.value.tagsView,
@@ -162,10 +163,10 @@ function saveSetting() {
     "theme": storeSettings.value.theme
   };
   localStorage.setItem("layout-setting", JSON.stringify(layoutSetting));
-  setTimeout(proxy?.$modal.closeLoading(), 1000)
+  setTimeout(proxy.$modal.closeLoading(), 1000)
 }
 function resetSetting() {
-  proxy?.$modal.loading(t('settings.loadingreset'));
+  proxy.$modal.loading(t('settings.loadingreset'));
   localStorage.removeItem("layout-setting")
   setTimeout("window.location.reload()", 1000)
 }
