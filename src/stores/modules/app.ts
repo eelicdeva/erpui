@@ -41,7 +41,7 @@ const useAppStore = defineStore('app', {
       },
       setSize(size: string) {
         this.size = size;
-        Cookies.set('size', size)
+        Cookies.set('size', size, { expires: 30 })
       },
       toggleSideBarHide(status: boolean) {
         this.sidebar.hide = status

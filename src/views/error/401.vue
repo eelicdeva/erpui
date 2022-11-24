@@ -25,18 +25,19 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import errImage from "@/assets/401_images/401.gif";
+import { ComponentInternalInstance, getCurrentInstance, ref } from "vue";
 
-let { proxy } = getCurrentInstance();
+let { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const errGif = ref(errImage + "?" + +new Date());
 
 function back() {
-  if (proxy.$route.query.noGoBack) {
+  if (proxy?.$route.query.noGoBack) {
     proxy.$router.push({ path: "/" });
   } else {
-    proxy.$router.go(-1);
+    proxy?.$router.go(-1);
   }
 }
 </script>

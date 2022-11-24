@@ -1,10 +1,9 @@
 import { parseTime } from '@/utils/ruoyi'
 
  /**
-  * || 表格时间格式化
-  * 
+  * day time format || 表格时间格式化
   * @param  {string|number|Date} cellValue
-  * @returns seconds
+  * @returns {string} time format : 2022-11-23 18:30
   */
  export const formatDate = (cellValue: string | number | Date) => {
 	if (!cellValue) {
@@ -103,12 +102,12 @@ export function byteLength(str: string) {
   return s
 }
 
-/**
+/** to-do  
  * @param {Array} actual
  * @returns {Array}
  */
 export function cleanArray(actual: string | any[]) {
-  const newArray = []
+  const newArray: any = []
   for (let i = 0; i < actual.length; i++) {
     if (actual[i]) {
       newArray.push(actual[i])
@@ -219,13 +218,42 @@ export function getTime(type: string) {
   }
 }
 
+
 /**
- * @param {Function} func
- * @param {number} wait
- * @param {boolean} immediate
- * @return {*}
+ * 防抖函数
+ * @param fn 需要执行的函数
+ * @param time 间隔时间
+ * @returns fn | fn(){timeout}
+ *  
  */
-export function debounce(func, wait, immediate) {
+export function debounce(fn: () => void, time = 300) {
+      let timeout: number | null = null;
+      return function () {
+        timeout && clearTimeout(timeout);
+        timeout = window.setTimeout(fn, time);
+      };
+    }
+
+/**
+ * 节流函数
+ * @param fn 需要执行的函数
+ * @param time 间隔时间
+ * @returns 
+ */
+export function throttle(fn: () => void, time = 700) {
+  let canRun: boolean = true;
+  return function () {
+    if (!canRun) return;
+    canRun = false;
+    setTimeout(() => {
+      fn()
+      canRun = true;
+    }, time);
+  };
+}
+
+/**
+export function debounce1(func, wait, immediate) {
   let timeout, args, context, timestamp, result
 
   const later = function() {
@@ -244,7 +272,6 @@ export function debounce(func, wait, immediate) {
       }
     }
   }
-
   return function(...args) {
     context = this
     timestamp = +new Date()
@@ -259,6 +286,8 @@ export function debounce(func, wait, immediate) {
     return result
   }
 }
+*/
+
 
 /**
  * This is just a simple version of deep copy
@@ -269,7 +298,7 @@ export function debounce(func, wait, immediate) {
  */
 export function deepClone(source) {
   if (!source && typeof source !== 'object') {
-    throw new Error('error arguments', 'deepClone')
+    throw new Error('error arguments:deepClone')
   }
   const targetObj = source.constructor === Array ? [] : {}
   Object.keys(source).forEach(keys => {
@@ -295,7 +324,7 @@ export function uniqueArr(arr) {
  */
 export function createUniqueString() {
   const timestamp = +new Date() + ''
-  const randomNum = parseInt((1 + Math.random()) * 65536) + ''
+  const randomNum = parseInt(((1 + Math.random()) * 65536).toString()) + ''
   return (+(randomNum + timestamp)).toString(32)
 }
 

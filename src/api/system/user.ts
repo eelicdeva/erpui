@@ -11,7 +11,12 @@ export function listUser(query: string) {
 }
 
 // 查询用户详细
-export function getUser(userId: string) {
+/**
+ * @function getUser
+ * @param  { string | undefined | null} userId
+ * @return request({url: string, method: string})
+ */
+export function getUser(userId: string | undefined | null) {
   return request({
     url: '/system/user/' + parseStrEmpty(userId),
     method: 'get'

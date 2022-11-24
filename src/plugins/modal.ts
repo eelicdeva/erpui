@@ -14,7 +14,9 @@ export default {
   msgError(content: string) {
     ElMessage.error(content)
   },
-  // 成功消息
+
+ 
+  // Sucess message || 成功消息
   msgSuccess(content: string) {
     ElMessage.success(content)
   },

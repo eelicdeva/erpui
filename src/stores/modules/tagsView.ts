@@ -4,9 +4,9 @@ const useTagsViewStore = defineStore(
   'tags-view',
   {
     state: () => ({
-      visitedViews: [],
-      cachedViews: [],
-      iframeViews: []
+      visitedViews: [] as any[],
+      cachedViews: [] as any[],
+      iframeViews: [] as any[]
     }),
     actions: {
       addView(view) {

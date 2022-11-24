@@ -134,8 +134,13 @@ export function sprintf(str) {
   return flag ? str : '';
 }
 
-// 转换字符串，undefined,null等转化为""
-export function parseStrEmpty(str) {
+// 
+/**
+ * @function str: string | undefined | null => str: string ||转换字符串，undefined,null等转化为""
+ * @param  {string|undefined|null} str;
+ * @return str: string;
+ */
+export function parseStrEmpty(str: string | undefined | null): string {
   if (!str || str == "undefined" || str == "null") {
     return "";
   }

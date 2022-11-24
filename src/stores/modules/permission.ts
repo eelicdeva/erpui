@@ -14,30 +14,30 @@ const usePermissionStore = defineStore(
   'permission',
   {
     state: () => ({
-      routes: [],
-      addRoutes: [],
-      defaultRoutes: [],
-      topbarRouters: [],
-      sidebarRouters: []
+      routes: [] as any,
+      addRoutes: [] as any,
+      defaultRoutes: [] as any,
+      topbarRouters: [] as any,
+      sidebarRouters: [] as any
     }),
     actions: {
-      setRoutes(routes) {
+      setRoutes(routes: any) {
         this.addRoutes = routes
         this.routes = constantRoutes.concat(routes)
       },
-      setDefaultRoutes(routes) {
+      setDefaultRoutes(routes: any) {
         this.defaultRoutes = constantRoutes.concat(routes)
       },
-      setTopbarRoutes(routes) {
+      setTopbarRoutes(routes: any) {
         this.topbarRouters = routes
       },
-      setSidebarRouters(routes) {
+      setSidebarRouters(routes: any) {
         this.sidebarRouters = routes
       },
-      generateRoutes(roles) {
+      generateRoutes(roles?: string[]) {
         return new Promise(resolve => {
           // 向后端请求路由数据
-          getRouters().then(res => {
+          getRouters().then((res: any) => {
             const sdata = JSON.parse(JSON.stringify(res.data))
             const rdata = JSON.parse(JSON.stringify(res.data))
             const defaultData = JSON.parse(JSON.stringify(res.data))
@@ -85,12 +85,12 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
   })
 }
 
-function filterChildren(childrenMap, lastRouter = false) {
-  var children = []
+function filterChildren(childrenMap: any[], lastRouter ?: any) {
+  var children: any[] = []
   childrenMap.forEach((el, index) => {
     if (el.children && el.children.length) {
       if (el.component === 'ParentView' && !lastRouter) {
-        el.children.forEach(c => {
+        el.children.forEach((c:any) => {
           c.path = el.path + '/' + c.path
           if (c.children && c.children.length) {
             children = children.concat(filterChildren(c.children, c))
@@ -110,9 +110,9 @@ function filterChildren(childrenMap, lastRouter = false) {
 }
 
 // 动态路由遍历，验证是否具备权限
-export function filterDynamicRoutes(routes) {
-  const res = []
-  routes.forEach(route => {
+export function filterDynamicRoutes(routes: any) {
+  const res: any[] = []
+  routes.forEach((route: any) => {
     if (route.permissions) {
       if (auth.hasPermiOr(route.permissions)) {
         res.push(route)

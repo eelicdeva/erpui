@@ -38,8 +38,9 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { getToken } from "@/utils/auth";
+import { ComponentInternalInstance, computed, getCurrentInstance, ref, watch } from "vue";
 
 const props = defineProps({
   modelValue: [String, Object, Array],
@@ -65,7 +66,7 @@ const props = defineProps({
   }
 });
 
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const emit = defineEmits();
 const number = ref(0);
 const uploadList = ref([]);
@@ -73,6 +74,7 @@ const baseUrl = import.meta.env.VITE_APP_BASE_API;
 const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload"); // 上传文件服务器地址
 const headers = ref({ Authorization: "Bearer " + getToken() });
 const fileList = ref([]);
+
 const showTip = computed(
   () => props.isShowTip && (props.fileType || props.fileSize)
 );
@@ -104,7 +106,7 @@ function handleBeforeUpload(file) {
     const fileExt = fileName[fileName.length - 1];
     const isTypeOk = props.fileType.indexOf(fileExt) >= 0;
     if (!isTypeOk) {
-      proxy.$modal.msgError(`文件格式不正确, 请上传${props.fileType.join("/")}格式文件!`);
+      proxy?.$modal.msgError(`文件格式不正确, 请上传${props.fileType.join("/")}格式文件!`);
       return false;
     }
   }
@@ -112,23 +114,23 @@ function handleBeforeUpload(file) {
   if (props.fileSize) {
     const isLt = file.size / 1024 / 1024 < props.fileSize;
     if (!isLt) {
-      proxy.$modal.msgError(`上传文件大小不能超过 ${props.fileSize} MB!`);
+      proxy?.$modal.msgError(`上传文件大小不能超过 ${props.fileSize} MB!`);
       return false;
     }
   }
-  proxy.$modal.loading("正在上传文件，请稍候...");
+  proxy?.$modal.loading("正在上传文件，请稍候...");
   number.value++;
   return true;
 }
 
 // 文件个数超出
 function handleExceed() {
-  proxy.$modal.msgError(`上传文件数量不能超过 ${props.limit} 个!`);
+  proxy?.$modal.msgError(`上传文件数量不能超过 ${props.limit} 个!`);
 }
 
 // 上传失败
 function handleUploadError(err) {
-  proxy.$modal.msgError("上传文件失败");
+  proxy?.$modal.msgError("上传文件失败");
 }
 
 // 上传成功回调
@@ -138,8 +140,8 @@ function handleUploadSuccess(res, file) {
     uploadedSuccessfully();
   } else {
     number.value--;
-    proxy.$modal.closeLoading();
-    proxy.$modal.msgError(res.msg);
+    proxy?.$modal.closeLoading();
+    proxy?.$modal.msgError(res.msg);
     proxy.$refs.fileUpload.handleRemove(file);
     uploadedSuccessfully();
   }

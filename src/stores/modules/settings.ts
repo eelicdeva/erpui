@@ -5,8 +5,7 @@ import { useDynamicTitle } from '@/utils/dynamicTitle'
 
 const { sideTheme, showSettings, topNav, tagsView, fixedHeader, sidebarLogo, dynamicTitle } = defaultSettings
 
-const storageSetting = JSON.parse(localStorage.getItem('layout-setting') || '{}') || ''
-//test
+const storageSetting = JSON.parse(localStorage.getItem('layout-setting') || '{}' ) //|| ''
 
 const useSettingsStore = defineStore(
   'settings',
@@ -26,10 +25,10 @@ const useSettingsStore = defineStore(
       // 修改布局设置
       
       changeSetting(data: { key: string; value: string | boolean}) {
-// { key: sideTheme, value: theme-light / theme-dark
-        const { key, value } = data
+        // { key: sideTheme, value: theme-light / theme-dark }
+        const { key, value } = data;
         if (this.hasOwnProperty(key)) {
-          (this as any)[key]= value
+          (this as any)[key]= value;
         }
       },
       // 设置网页标题

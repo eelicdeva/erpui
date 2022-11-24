@@ -44,30 +44,37 @@ declare module '@vue/runtime-core' {
 
     // ||缓存对象 to-do check
     $cache: {
-
-      /**
-   * 会话级缓存
-  session: sessionCache,
-
-      sessionCache: {
-        set (key: string | null, value: string | null): void
-        get (key: string | null): (key | null)
-        setJSON (key: string | null, jsonValue: { url: string | undefined; data: any; time: number } | null): void,
-        getJSON(key: string | null): any,
-        remove(key: string): void
+      session: {
+        set(key: string | null, value: string | null): void;
+        get(key: string | null): string | null;
+        setJSON(key: string | null, jsonValue: {
+            url: string | undefined;
+            data: any;
+            time: number;
+        } | null): void;
+        getJSON(key: string | null): any;
+        remove(key: string): void;
       },
-         * 本地缓存
-
-  local: localCache
- */
+      local: {
+        set(key: any, value: any): void;
+        get(key: any): string | null;
+        setJSON(key: any, jsonValue: any): void;
+        getJSON(key: any): any;
+        remove(key: any): void;
+      }
     };
 
     $modal: {  
-        // || 消息提示
+        /**
+         * Notification || 消息提示
+         */ 
         msg(content: string): void,
         // || 错误消息
         msgError(content: string): void,
-        // || 成功消息
+        /**
+         * @function success message || 成功消息
+         * @param  {string} content: custom success message;
+         */
         msgSuccess(content: string): void,
         // || 警告消息
         msgWarning(content: string): void,
@@ -96,8 +103,17 @@ declare module '@vue/runtime-core' {
         // || 关闭遮罩层
         closeLoading(): void
       };
-      $download: any;
-  } 
+    $download: any;
+  /*    
+    $download: {  
+      name(name: string, isDelete: boolean): void,
+      resource(resource: string): void,
+      zip(url: string, name: string): void,
+      saveAs(text: any, name: string, opts?: any): void,
+      async function printErrMsg(data: { text: () => any }): void 
+    };
+  */
+  }
 };
 
 export default function installPlugins(app: App): void {

@@ -6,8 +6,8 @@ import createVitePlugins from './vite/plugins'
 
 // https://vitejs.dev/config/ || https://cn.vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
-  const env = loadEnv(mode, process.cwd())
-  const { VITE_APP_ENV } = env
+  const env = loadEnv(mode, process.cwd());
+  const { VITE_APP_ENV } = env;
   return {
     // ||部署生产环境和开发环境下的URL。
     // ||默认情况下，vite 会假设你的应用是被部署在一个域名的根路径上
