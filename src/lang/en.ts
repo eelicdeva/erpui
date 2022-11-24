@@ -665,6 +665,10 @@ export default {
     401: '401 error!',
     h2401: 'You don\'t have access! ',
     h6401: 'Sorry, you don\'t have access rights, please don\'t do illegal operations! you can return to the main page',
-    Home: 'Home'
+    Home: 'Home',
+    404: '404 error!',
+    info404: 'Sorry, the page you\'re looking for doesn\'t exist. Try checking the URL for errors and pressing the refresh button on your browser or try to find something else in our app.',
+    BacktoHome: 'Back to Home',
+    Pagenotfound: 'Page not found!'
   }
 }
