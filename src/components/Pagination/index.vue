@@ -17,7 +17,7 @@
 <script lang="ts" setup name="Pageination">
 import { scrollTo } from '@/utils/scroll-to'
 import { computed } from 'vue';
-interface Props {
+interface PropsPagination {
   total: number; // required
   page?: number;
   limit?: number;
@@ -29,7 +29,7 @@ interface Props {
   hidden?: boolean;
 };
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<PropsPagination>(), {
   total: 0,
   page: 1,
   limit: 20,
@@ -42,12 +42,12 @@ const props = withDefaults(defineProps<Props>(), {
   hidden: false
 });
 
-interface Emit{
+interface EmitPagination{
   (e: 'update:page', page: number): void; 
   (e: 'update:limit', limit: number): void;  
   (e: 'pagination', { page, limit }): void;  
 }
-const emit = defineEmits<Emit>()
+const emit = defineEmits<EmitPagination>()
 // to-do: check again https://www.mybj123.com/17272.html
 const currentPage = computed({
   get() {
