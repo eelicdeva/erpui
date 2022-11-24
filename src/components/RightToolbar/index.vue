@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import i18n from '@/lang/index';
 import { ref } from 'vue';
 const {t} = i18n.global;

@@ -174,7 +174,7 @@
    </div>
 </template>
 
-<script setup lang="ts" name="Notice">
+<script lang="ts" setup name="Notice">
 import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/system/notice";
 import i18n from '@/lang/index';
 import { reactive, ref, toRefs } from "vue";

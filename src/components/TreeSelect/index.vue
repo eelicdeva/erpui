@@ -28,7 +28,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup >
 import { ComponentInternalInstance, computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue';
 
 

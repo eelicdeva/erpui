@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="App">
+<script lang="ts" setup name="App">
 import { computed } from 'vue';
 import useAppStore from './stores/modules/app';
 import zh from 'element-plus/lib/locale/lang/zh-cn'

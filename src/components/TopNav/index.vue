@@ -27,12 +27,14 @@
   </el-menu>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { constantRoutes } from "@/router"
 import { isHttp } from '@/utils/validate'
 import useAppStore from '@/stores/modules/app'
 import useSettingsStore from '@/stores/modules/settings'
 import usePermissionStore from '@/stores/modules/permission'
+import { computed, onBeforeUnmount, onMounted, ref } from "vue"
+import { useRoute, useRouter } from "vue-router"
 
 // 顶部栏初始数
 const visibleNumber = ref(null);

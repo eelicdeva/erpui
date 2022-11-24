@@ -4,7 +4,7 @@
       </el-tooltip>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 /**  show/hide extend info
  * components golbal installed
  * dom use: v-show="showExtend"

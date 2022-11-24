@@ -192,7 +192,7 @@
    </div>
 </template>
 
-<script setup lang="ts" name="Data">
+<script lang="ts" setup name="Data">
 import { optionselect as getDictOptionselect, getType } from "@/api/system/dict/type";
 import { listData, getData, delData, addData, updateData } from "@/api/system/dict/data";
 import useAppStore from "@/stores/modules/app";

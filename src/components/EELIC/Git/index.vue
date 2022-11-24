@@ -4,7 +4,9 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { ref } from 'vue';
+
 const url = ref('http://109.106.255.153:3000/eason/erp-ui-dev.git');
 
 function goto() {

@@ -181,7 +181,7 @@
    </div>
 </template>
 
-<script setup lang="ts" name="Dict">
+<script lang="ts" setup name="Dict">
 import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/dict/type";
 import { getCurrentInstance, reactive, ref, toRefs } from "vue";
 

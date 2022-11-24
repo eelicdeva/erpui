@@ -188,7 +188,7 @@
   </div>
 </template>
 
-<script setup name="Book" lang="ts">
+<script lang="ts" setup name="Book">
 import { listBook, getBook, delBook, addBook, updateBook, changeCdStatus } from "@/api/hr/book";
 import { listCategory } from "@/api/hr/category";
 import { listLocation } from "@/api/hr/location";

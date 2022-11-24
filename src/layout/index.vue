@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup >
 import { useWindowSize } from '@vueuse/core'
 import Sidebar from './components/Sidebar/index.vue'
 import { AppMain, Navbar, Settings, TagsView } from './components'
@@ -59,12 +59,13 @@ function handleClickOutside() {
 }
 
 const settingRef = ref();
+/*
 const openSetting = () => {
   settingRef.value.openSetting();
 }
-
+*/
 function setLayout() {
-  openSetting;
+  settingRef.value.openSetting();
 }
 </script>
 

@@ -396,7 +396,7 @@
     </div>
   </template>
   
-<script setup lang="ts" name="Productdemo">
+<script lang="ts" setup name="Productdemo">
 import { listProductdemo, getProductdemo, delProductdemo, addProductdemo, updateProductdemo } from "@/api/demo/productdemo";
 import i18n from '@/lang/index';
 import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } from "vue";

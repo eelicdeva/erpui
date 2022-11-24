@@ -155,13 +155,14 @@
    </div>
 </template>
 
-<script setup name="Dept">
+<script lang="ts" setup name="Dept">
 import { listDept, getDept, delDept, addDept, updateDept, listDeptExcludeChild } from "@/api/system/dept";
 import i18n from '@/lang/index';
+import { ComponentInternalInstance, getCurrentInstance, nextTick, reactive, ref } from "vue";
 
 const {t} = i18n.global;
 
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
 const deptList = ref([]);
@@ -264,13 +265,13 @@ function submitForm() {
     if (valid) {
       if (form.value.deptId != undefined) {
         updateDept(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.successModify'));
+          proxy?.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addDept(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.AddSuccess'));
+          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -280,7 +281,7 @@ function submitForm() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  proxy.$modal.confirm(t('menu.confirmDelete1') + row.deptName + t('menu.confirmDelete2')).then(function() {
+  proxy?.$modal.confirm(t('menu.confirmDelete1') + row.deptName + t('menu.confirmDelete2')).then(function() {
     return delDept(row.deptId);
   }).then(() => {
     getList();

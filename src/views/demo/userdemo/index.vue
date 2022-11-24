@@ -331,7 +331,7 @@
    </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { getToken } from "@/utils/auth";
 import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser, deptTreeSelect } from "@/api/system/user";
 import i18n from '@/lang/index';

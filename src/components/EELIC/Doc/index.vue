@@ -4,7 +4,9 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { ref } from 'vue';
+
 const url = ref('http://doc.ruoyi.vip/ruoyi-vue');
 
 function goto() {

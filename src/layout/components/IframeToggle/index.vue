@@ -10,7 +10,7 @@
   </transition-group>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import InnerLink from "@/layout/components/InnerLink/index.vue"
 import useTagsViewStore from '@/stores/modules/tagsView'
 import { useRoute } from "vue-router";

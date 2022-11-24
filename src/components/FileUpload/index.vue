@@ -38,7 +38,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { getToken } from "@/utils/auth";
 import { ComponentInternalInstance, computed, getCurrentInstance, ref, watch } from "vue";
 

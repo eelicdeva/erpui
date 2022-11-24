@@ -25,7 +25,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import errImage from "@/assets/401_images/401.gif";
 import { ComponentInternalInstance, getCurrentInstance, ref } from "vue";
 

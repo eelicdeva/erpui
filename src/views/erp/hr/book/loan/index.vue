@@ -169,7 +169,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="Loan">
+<script lang="ts" setup name="Loan">
 import { listLoan, getLoan, delLoan, addLoan, updateLoan } from "@/api/hr/loan";
 import { getAllBook } from "@/api/hr/book";
 import { listCategory } from "@/api/hr/category";

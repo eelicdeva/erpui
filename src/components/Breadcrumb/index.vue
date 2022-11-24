@@ -11,7 +11,7 @@
   </el-breadcrumb>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ref, watchEffect } from 'vue';
 import { RouteLocationMatched,RouteLocationRaw,useRoute, useRouter } from 'vue-router';
 import i18n from '@/lang/index';

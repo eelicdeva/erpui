@@ -15,9 +15,12 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import useAppStore from "@/stores/modules/app";
 import i18n from '@/lang';
+import { useRoute, useRouter } from "vue-router";
+import { computed, getCurrentInstance, ref } from "vue";
+import { ElDropdown, ElDropdownMenu, ElDropdownItem } from "element-plus";
 
 const {t} = i18n.global;
 const appStore = useAppStore();

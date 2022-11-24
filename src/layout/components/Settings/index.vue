@@ -89,6 +89,7 @@ import useAppStore from '@/stores/modules/app'
 import useSettingsStore from '@/stores/modules/settings'
 import usePermissionStore from '@/stores/modules/permission'
 import i18n from '@/lang/index';
+import { ref } from 'vue'
 
 const {t} = i18n.global;
 const { proxy } = getCurrentInstance();

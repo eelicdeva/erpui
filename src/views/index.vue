@@ -810,7 +810,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="Index">
+<script lang="ts" setup name="Index">
 import { ref } from 'vue';
 
 const version = ref('1.0.5')

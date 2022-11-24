@@ -185,7 +185,7 @@
 <script lang="ts">
 export default { name: 'noticeDemo' };
 </script>
-<script setup lang="ts" name="Notice">
+<script lang="ts" setup name="Notice">
 import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/system/notice";
 import i18n from '@/lang';
 import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } from "vue";

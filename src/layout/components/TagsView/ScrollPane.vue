@@ -11,7 +11,7 @@
   </el-scrollbar>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import useTagsViewStore from '@/stores/modules/tagsView'
 import { ComponentInternalInstance, computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue';
 
