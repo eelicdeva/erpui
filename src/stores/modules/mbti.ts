@@ -1,9 +1,13 @@
 import { defineStore } from "pinia";
 
+interface UseMbtiStore {
+  usernameMbti: string;
+};
+
 const useMbtiStore = defineStore(
   'mbti', {
 
-    state: () => ({
+    state: (): UseMbtiStore => ({
       usernameMbti: ''
     }),
 

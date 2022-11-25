@@ -6,7 +6,9 @@ import Layout from '@/layout/index.vue'
 import ParentView from '@/components/ParentView/index.vue'
 import InnerLink from '@/layout/components/InnerLink/index.vue'
 
-
+interface UsePermissionStore{
+ // routers: 
+};
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue')
 
@@ -14,11 +16,11 @@ const usePermissionStore = defineStore(
   'permission',
   {
     state: () => ({
-      routes: [] as any[],
-      addRoutes: [] as any[],
-      defaultRoutes: [] as any[],
-      topbarRouters: [] as any[],
-      sidebarRouters: [] as any[] // to-do roles
+      routes: [] ,
+      addRoutes: [],
+      defaultRoutes: [],
+      topbarRouters: [],
+      sidebarRouters: []// to-do roles
     }),
     actions: {
       setRoutes(routes: any) {

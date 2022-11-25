@@ -4,8 +4,18 @@ import Cookies from 'js-cookie'
 import { defineStore } from 'pinia';
 import { useAppStore } from '@/stores/interface'
 
+interface UseAppStore {
+  sidebar: { 
+    opened: boolean;
+    withoutAnimation: boolean;
+    hide: boolean;
+  },
+  device: string;
+  size: string;
+  lang: string; 
+};
 const useAppStore = defineStore('app', {
-    state: () => ({
+    state: (): UseAppStore => ({
       sidebar: {
         opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus')! : true,
         withoutAnimation: false,
@@ -14,14 +24,12 @@ const useAppStore = defineStore('app', {
       device: 'desktop',
       size: Cookies.get('size') || 'default',
       lang: Cookies.get('lang') || ( "zh.en.id".indexOf(navigator.language.substring(0,2))!=-1 ? navigator.language.substring(0,2) : 'en'),
-      userNameMbti : '',
     }),
     actions: {
       toggleSideBar(withoutAnimation: boolean) {
         if (this.sidebar.hide) {
           return false;
         }
-
         this.sidebar.opened = !this.sidebar.opened;
         this.sidebar.withoutAnimation = withoutAnimation;
 
@@ -31,7 +39,7 @@ const useAppStore = defineStore('app', {
           Cookies.set('sidebarStatus', "0")
         }
       },
-      closeSideBar(withoutAnimation) {
+      closeSideBar(withoutAnimation: boolean) {
         Cookies.set('sidebarStatus', "0")
         this.sidebar.opened = false
         this.sidebar.withoutAnimation = withoutAnimation
