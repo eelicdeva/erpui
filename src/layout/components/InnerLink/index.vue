@@ -11,16 +11,14 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import type { Ref } from 'vue';
+// to-do check again
+interface InnerLinkProps {
+  scr: string;
+  iframeId: string;
+};
 
-const props = defineProps({
-  src: {
-    type: String,
-    default: "/"
-  },
-  iframeId: {
-    type: String
-  }
-});
+const { src = '/', iframeId } = defineProps<InnerLinkProps>();
 
-const height = ref(document.documentElement.clientHeight - 94.5 + "px");
+const height: Ref<string> = ref(document.documentElement.clientHeight - 94.5 + "px");
 </script>

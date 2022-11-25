@@ -101,7 +101,9 @@ function logout() {
   }).catch(() => { });
 }
 
-const emits = defineEmits(['setLayout'])
+//const emits = defineEmits(['setLayout'])
+const emits = defineEmits<{(e: 'setLayout'): void}>()
+
 function setLayout() {
   emits('setLayout');
 }

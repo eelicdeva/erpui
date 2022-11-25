@@ -14,11 +14,11 @@ const usePermissionStore = defineStore(
   'permission',
   {
     state: () => ({
-      routes: [] as any,
-      addRoutes: [] as any,
-      defaultRoutes: [] as any,
-      topbarRouters: [] as any,
-      sidebarRouters: [] as any
+      routes: [] as any[],
+      addRoutes: [] as any[],
+      defaultRoutes: [] as any[],
+      topbarRouters: [] as any[],
+      sidebarRouters: [] as any[] // to-do roles
     }),
     actions: {
       setRoutes(routes: any) {
@@ -34,7 +34,7 @@ const usePermissionStore = defineStore(
       setSidebarRouters(routes: any) {
         this.sidebarRouters = routes
       },
-      generateRoutes(roles?: string[]) {
+      generateRoutes(roles: string[]) { //check roles data 
         return new Promise(resolve => {
           // 向后端请求路由数据
           getRouters().then((res: any) => {

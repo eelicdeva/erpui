@@ -94,12 +94,12 @@ export default {
   data() {
     return {
       loginForm: {
-        username: "admin",
-        password: "admin123",
-        rememberMe: false,
         code: "",
-        uuid: "",
+        password: "admin123",
         lang: "",
+        rememberMe: false,
+        username: "admin",
+        uuid: ""
       },
       codeUrl: "",
       loading: false,

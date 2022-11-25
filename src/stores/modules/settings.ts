@@ -3,23 +3,25 @@ import defaultSettings from '@/settings'
 import { useDynamicTitle } from '@/utils/dynamicTitle'
 
 
+
+
 const { sideTheme, showSettings, topNav, tagsView, fixedHeader, sidebarLogo, dynamicTitle } = defaultSettings
 
-const storageSetting = JSON.parse(localStorage.getItem('layout-setting') || '{}' ) //|| ''
+const storageSetting = JSON.parse(localStorage.getItem('layout-setting') || '{}' ) || ''
 
 const useSettingsStore = defineStore(
   'settings',
   {
     state: () => ({
-      title: '',
-      theme: storageSetting.theme || '#409EFF',
-      sideTheme: storageSetting.sideTheme || sideTheme,
-      showSettings: showSettings,
-      topNav: storageSetting.topNav === undefined ? topNav : storageSetting.topNav,
-      tagsView: storageSetting.tagsView === undefined ? tagsView : storageSetting.tagsView,
-      fixedHeader: storageSetting.fixedHeader === undefined ? fixedHeader : storageSetting.fixedHeader,
-      sidebarLogo: storageSetting.sidebarLogo === undefined ? sidebarLogo : storageSetting.sidebarLogo,
-      dynamicTitle: storageSetting.dynamicTitle === undefined ? dynamicTitle : storageSetting.dynamicTitle
+      title: '',// type ImportMetaEnv [key: string]: any ?is it string
+      theme: storageSetting.theme || '#409EFF', //string
+      sideTheme: storageSetting.sideTheme || sideTheme, //string
+      showSettings: showSettings, //boolean
+      topNav: storageSetting.topNav === undefined ? topNav : storageSetting.topNav,//boolean
+      tagsView: storageSetting.tagsView === undefined ? tagsView : storageSetting.tagsView, //boolean
+      fixedHeader: storageSetting.fixedHeader === undefined ? fixedHeader : storageSetting.fixedHeader, //boolean
+      sidebarLogo: storageSetting.sidebarLogo === undefined ? sidebarLogo : storageSetting.sidebarLogo, //boolean
+      dynamicTitle: storageSetting.dynamicTitle === undefined ? dynamicTitle : storageSetting.dynamicTitle //boolean
     }),
     actions: {
       // 修改布局设置
@@ -33,7 +35,7 @@ const useSettingsStore = defineStore(
       },
       // 设置网页标题
       setTitle(title: string) {
-        this.title = title
+        this.title = title;
         useDynamicTitle();
       }
     }

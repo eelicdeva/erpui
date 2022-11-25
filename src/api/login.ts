@@ -12,11 +12,11 @@ import request from '@/utils/request'
  */
 export function login(username: string, password: string, code: string, uuid: string, lang: string) {
   const data = {
-    username,
+		code,
+    lang,
     password,
-    code,
+    username,
     uuid,
-    lang
   }
   return request({
     url: '/login',

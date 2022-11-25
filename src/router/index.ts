@@ -1,7 +1,8 @@
-import { createWebHistory, createRouter } from 'vue-router'
 /* Layout */
-import Layout from '@/layout/index.vue'
+import { createWebHistory, createRouter } from 'vue-router';
+import Layout from '@/layout/index.vue';
 import i18n from '@/lang/index';
+import type { Router, RouteRecordRaw, RouterHistory } from 'vue-router';
 
 const {t} = i18n.global;
 
@@ -181,17 +182,22 @@ export const dynamicRoutes = [
     ]
   }
 ]
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes: constantRoutes,
-  scrollBehavior(to, from, savedPosition) {
+/**
+ * histroy: RouterHistory;
+ * routes: Readonly<RouteRecordRaw[]>;
+ * scrollBehavior(to: string, from: string, savedPosition: string | null): RouterScrollBehavior;
+ * to-do check scrollBehavior didn't used.
+ */
+const router: Router = createRouter({
+  history: createWebHistory() as RouterHistory,
+  routes: constantRoutes as Readonly<RouteRecordRaw[]>,// ||点击浏览器的前进后退或切换导航触发
+  scrollBehavior(to, from, savedPosition){  // ||return 期望滚动到哪个的位置
     if (savedPosition) {
       return savedPosition
     } else {
       return { top: 0 }
     }
-  },
+  }
 });
 
 export default router;

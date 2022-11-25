@@ -11,17 +11,19 @@
   </el-breadcrumb>
 </template>
 
-<script lang="ts" setup>
-import { ref, watchEffect } from 'vue';
+<script lang="ts" setup name="Breadcrumb">
+// ||Breadcrumb 面包屑# 显示当前页面的路径，快速返回之前的任意页面。
+// ||该组件接受一个 String 类型的参数 separator来作为分隔符。 默认值为 '/'。
+import { Ref, ref, watchEffect } from 'vue';
 import { RouteLocationMatched,RouteLocationRaw,useRoute, useRouter } from 'vue-router';
 import i18n from '@/lang/index';
 
 const {t} = i18n.global;
 const route = useRoute();
 const router = useRouter();
-const levelList = ref<Array<PartialRouteLocationMatched>>([]) // ||导航列表 存放matched里筛选的路由记录
+const levelList = ref([]) // ||导航列表 存放matched里筛选的路由记录
 
-type PartialRouteLocationMatched = Partial<RouteLocationMatched>
+type PartialRouteLocationMatched = Partial<RouteLocationMatched>// to-do check again
 
 function getBreadcrumb() {
   // only show routes with meta.title || 过滤掉没有title属性的路由，没有title就无法作为面包屑导航
@@ -41,7 +43,7 @@ function getBreadcrumb() {
 }
 
 // ||判断是不是Dashboard路由
-function isDashboard(routeroute?: PartialRouteLocationMatched) {
+function isDashboard(route?: PartialRouteLocationMatched) {
   const name = route && route.name
   if (!name) {
     return false
@@ -50,7 +52,7 @@ function isDashboard(routeroute?: PartialRouteLocationMatched) {
     (name as string).trim().toLocaleLowerCase() ===
     'Index'.toLocaleLowerCase()
   )
- // return name.trim() === 'Index'
+  return (name as string).trim() === 'Index'
 }
 /** 
     // 点击面包屑导航可跳转
