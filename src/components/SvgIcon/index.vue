@@ -7,6 +7,13 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 
+export interface IconProps{
+  iconClass: string;
+    className: string;
+    color: string;
+};
+// to-do check again
+//const props = withDefaults(defineProps<IconProps>(),{})
 export default defineComponent({
   props: {
     iconClass: {

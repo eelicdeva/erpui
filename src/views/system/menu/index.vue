@@ -292,30 +292,44 @@
    </div>
 </template>
 
-<script setup name="Menu">//typescript error can not get proxy
+<script lang="ts" setup name="Menu">
 import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/menu";
-import SvgIcon from "@/components/SvgIcon";
-import IconSelect from "@/components/IconSelect";
-import { ClickOutside as vClickOutside } from 'element-plus'
-import i18n from '@/lang/index';
+import SvgIcon from "@/components/SvgIcon/index.vue";
+import IconSelect from "@/components/IconSelect/index.vue";
+import { ClickOutside as vClickOutside } from 'element-plus';
+import i18n from "@/lang/index";
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } from "vue";
+import type { Ref } from "vue";
 
 const {t} = i18n.global;
 
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const { sys_show_hide, sys_normal_disable } = proxy.useDict("sys_show_hide", "sys_normal_disable");
 
-const menuList = ref([]);
-const open = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
-const title = ref("");
+const menuList: Ref<any[]> = ref([]);
+const open: Ref<boolean> = ref(false);
+const loading: Ref<boolean>  = ref(true);
+const showSearch: Ref<boolean>  = ref(true);
+const title: Ref<string>  = ref("");
 const menuOptions = ref([]);
-const isExpandAll = ref(false);
-const refreshTable = ref(true);
-const showChooseIcon = ref(false);
-const iconSelectRef = ref(null);
+const isExpandAll: Ref<boolean>  = ref(false);
+const refreshTable: Ref<boolean>  = ref(true);
+const showChooseIcon: Ref<boolean>  = ref(false);
+const iconSelectRef: Ref<any> = ref(null);
 
-const data = reactive({
+interface dataMenu {
+   form: {};
+  queryParams: {
+    menuName: string | undefined
+    visible: boolean | undefined
+  };
+  rules: {
+   menuName: any;
+   orderNum: any;
+   path: any;
+  }
+};   
+const data: dataMenu = reactive({
   form: {},
   queryParams: {
     menuName: undefined,

@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script lang="ts" setup >
+<script lang="ts" setup name="Layout">
 import { useWindowSize } from '@vueuse/core'
 import Sidebar from './components/Sidebar/index.vue'
 import { AppMain, Navbar, Settings, TagsView } from './components'
@@ -22,8 +22,8 @@ import defaultSettings from '@/settings'
 
 import useAppStore from '@/stores/modules/app'
 import useSettingsStore from '@/stores/modules/settings'
-import { computed, ref, watchEffect } from 'vue'
-
+import { computed, Ref, ref, watchEffect } from 'vue'
+//import { openSettings } from '@/layout/components/Settings/index.vue'
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme);
 const sideTheme = computed(() => settingsStore.sideTheme);
@@ -58,12 +58,14 @@ function handleClickOutside() {
   useAppStore().closeSideBar({ withoutAnimation: false })
 }
 
-const settingRef = ref();
+const settingRef: Ref<any> = ref(null);
 /*
+to-do check again error
 const openSetting = () => {
   settingRef.value.openSetting();
 }
 */
+//const openSetting = ref<InstanceType<typeof openSetting> | null> (null)
 function setLayout() {
   settingRef.value.openSetting();
 }

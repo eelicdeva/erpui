@@ -19,12 +19,15 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { ref } from 'vue';
+import { Ref } from 'vue';
 import icons from './requireIcons'
 
-const iconName = ref('');
+const iconName : Ref<string> = ref('');
 const iconList = ref(icons);
-const emit = defineEmits(['selected']);
+//const emit = defineEmits(['selected']);
+const emit = defineEmits<{(e: 'selected', name: string): void}>();
 
 function filterIcons() {
   iconList.value = icons

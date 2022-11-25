@@ -78,7 +78,7 @@
 
 </template>
 
-<script setup>
+<script setup name="Settings">
 // to-do change to "ts" error
 import variables from '@/assets/styles/variables.module.scss'
 import originElementPlus from 'element-plus/theme-chalk/index.css'
