@@ -1,13 +1,10 @@
 import { defineStore } from "pinia";
 
-interface UseDictStore{
-  dict: [];// to-do interface
-};
 const useDictStore = defineStore(
   'dict',
   {
     state: () => ({
-      dict: new Array()
+      dict: new Array() as any[]
     }),
     actions: {
       // 获取字典
@@ -26,7 +23,7 @@ const useDictStore = defineStore(
         }
       },
       // 设置字典
-      setDict(_key: string | null, value: any) {
+      setDict(_key: string, value: string) {
         if (_key !== null && _key !== "") {
           this.dict.push({
             key: _key,
@@ -35,7 +32,7 @@ const useDictStore = defineStore(
         }
       },
       // 删除字典
-      removeDict(_key: any) {
+      removeDict(_key: string) {
         var bln = false;
         try {
           for (let i = 0; i < this.dict.length; i++) {

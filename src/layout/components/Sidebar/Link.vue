@@ -4,7 +4,7 @@
   </component>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="Link">
 import { isExternal } from '@/utils/validate'
 import { computed } from 'vue';
 

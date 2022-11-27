@@ -36,7 +36,7 @@
 		// "strictBindCallApply": true,           /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
 		// "strictFunctionTypes": true,           /* Enable strict checking of function types. */
 		"strictPropertyInitialization": false,   /* Enable strict checking of property initialization in classes.  || 这样就不需要定义一个变量就必须赋有初始值。对使用vuex-class库的，建议请把这个值设为false，*/
-		// "noEmitOnError"：true,                   /* || 如果有报错将停止继续编译，也就是不输出编译文件。*/
+		"noEmitOnError": true,                   /* || 如果有报错将停止继续编译，也就是不输出编译文件。*/
 
 		/* || 以下编译配置已经确认 */ 
 		"allowJs": false, // ||允许编译javascript文件，设置为true，js后缀的文件也会被typescript进行编译。

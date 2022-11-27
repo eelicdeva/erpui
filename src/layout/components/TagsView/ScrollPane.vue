@@ -11,10 +11,10 @@
   </el-scrollbar>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="ScrollPane">
 import useTagsViewStore from '@/stores/modules/tagsView'
-import { ComponentInternalInstance, computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue';
-
+import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue';
+import type { ComponentInternalInstance} from 'vue';
 const tagAndTagSpacing = ref(4);
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 

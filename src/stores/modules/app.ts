@@ -2,7 +2,6 @@
 // to-do: check if navigator.language in dict lang list
 import Cookies from 'js-cookie'
 import { defineStore } from 'pinia';
-import { useAppStore } from '@/stores/interface'
 
 interface UseAppStore {
   sidebar: { 

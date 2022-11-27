@@ -1,6 +1,6 @@
 <template>
   <div v-if="!item.hidden">
-    <template v-if="hasOneShowingChild(item.children, item) && (!onlyOneChild.children || onlyOneChild.noShowingChildren) && !item.alwaysShow">
+    <template v-if="hasOneShowingChild(item.children, item) && (!onlyOneChild.children || onlyOneChild.alwaysShow) && !item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path, onlyOneChild.query)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{ 'submenu-title-noDropdown': !isNest }">
           <svg-icon :icon-class="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"/>
@@ -32,9 +32,10 @@ import { isExternal } from '@/utils/validate'
 import AppLink from './Link.vue'
 import { getNormalPath } from '@/utils/ruoyi'
 import { ref } from 'vue';
+import { _RouteRecordBase } from 'vue-router';
 
 const props = defineProps({
-  // route object
+  // to-do: 
   item: {
     type: Object,
     required: true
@@ -47,15 +48,15 @@ const props = defineProps({
     type: String,
     default: ''
   }
-})
+});
 
-const onlyOneChild = ref({});
+const onlyOneChild = ref( {} as _RouteRecordBase );
 
 function hasOneShowingChild(children = [], parent) {
   if (!children) {
     children = [];
   }
-  const showingChildren = children.filter(item => {
+  const showingChildren = children.filter(( item: _RouteRecordBase )=> {
     if (item.hidden) {
       return false
     } else {
@@ -72,7 +73,7 @@ function hasOneShowingChild(children = [], parent) {
 
   // Show parent if there are no child router to display
   if (showingChildren.length === 0) {
-    onlyOneChild.value = { ...parent, path: '', noShowingChildren: true }
+    onlyOneChild.value = { ...parent, path: '', alwaysShow: true }
     return true
   }
 

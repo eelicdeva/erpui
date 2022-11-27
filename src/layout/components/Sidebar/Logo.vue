@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script lang="ts" setup >
+<script lang="ts" setup name="Logo">
 import variables from '@/assets/styles/variables.module.scss'
 import logo from '@/assets/logo/logo.png'
 import useSettingsStore from '@/stores/modules/settings'

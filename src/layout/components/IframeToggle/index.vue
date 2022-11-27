@@ -10,11 +10,10 @@
   </transition-group>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="IframeToggle">
 import InnerLink from "@/layout/components/InnerLink/index.vue"
 import useTagsViewStore from '@/stores/modules/tagsView'
 import { useRoute } from "vue-router";
-
 
 const route = useRoute();
 const tagsViewStore = useTagsViewStore()

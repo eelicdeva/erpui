@@ -54,8 +54,8 @@
 	return time_str;
 };
 
-// 表单重置
-export function resetForm(refName) {
+// 表单重置 to-do this: any
+export function resetForm(this: any, refName) {
   if (this.$refs[refName]) {
     this.$refs[refName].resetFields();
   }
@@ -77,7 +77,7 @@ export function addDateRange(params, dateRange, propName) {
 }
 
 // 回显数据字典
-export function selectDictLabel(datas, value) {
+export function selectDictLabel(datas: { [x: string]: { label: any; }; }, value: string | undefined) {
   if (value === undefined) {
     return "";
   }
@@ -241,8 +241,12 @@ export function tansParams(params: { [x: string]: any }) {
 }
 
 
-// 返回项目路径
-export function getNormalPath(p) {
+// ||返回项目路径
+/**
+ * @param  {string} p
+ * @return '' | p.replace('//', '/'): string
+ */
+export function getNormalPath(p: string ) {
   if (p.length === 0 || !p || p == 'undefined') {
     return p
   };

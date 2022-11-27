@@ -41,15 +41,16 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import ScrollPane from './ScrollPane.vue'
-import { getNormalPath } from '@/utils/ruoyi'
-import useTagsViewStore from '@/stores/modules/tagsView'
-import useSettingsStore from '@/stores/modules/settings'
-import usePermissionStore from '@/stores/modules/permission'
-import { ComponentInternalInstance, computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-
+<script lang="ts" setup name="TagsView">
+import ScrollPane from './ScrollPane.vue';
+import { getNormalPath } from '@/utils/ruoyi';
+import useTagsViewStore from '@/stores/modules/tagsView';
+import useSettingsStore from '@/stores/modules/settings';
+import usePermissionStore from '@/stores/modules/permission';
+import { computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue';
+import type { ComponentInternalInstance } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import type { RouteMeta, _RouteRecordBase } from 'vue-router';
 const visible = ref(false);
 const top = ref(0);
 const left = ref(0);
@@ -108,24 +109,31 @@ function isLastView() {
     return false
   }
 }
+interface Tag {
+  fullPath: string;
+  path: string;
+  name: string;
+  meta: RouteMeta;
+};
+
 function filterAffixTags(routes, basePath = '') {
-  let tags = []
-  routes.forEach(route => {
+  let tags: Array<Tag> = []; //to-do tags interface
+  routes.forEach((route: _RouteRecordBase ) => {
     if (route.meta && route.meta.affix) {
-      const tagPath = getNormalPath(basePath + '/' + route.path)
+      const tagPath = getNormalPath(basePath + '/' + route.path);
       tags.push({
         fullPath: tagPath,
         path: tagPath,
-        name: route.name,
+        name: route.name as string,
         meta: { ...route.meta }
       })
-    }
+    };
     if (route.children) {
       const tempTags = filterAffixTags(route.children, route.path)
       if (tempTags.length >= 1) {
         tags = [...tags, ...tempTags]
-      }
-    }
+      };
+    };
   })
   return tags
 }

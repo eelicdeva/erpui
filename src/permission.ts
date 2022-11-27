@@ -11,7 +11,7 @@ import usePermissionStore from '@/stores/modules/permission'
 
 NProgress.configure({ showSpinner: false });
 
-const whiteList = ['/login', '/auth-redirect', '/bind', '/register', '/mbti'];
+const whiteList = ['/login', '/auth-redirect', '/bind', '/register', '/mbti','/demo'];
 
 router.beforeEach((to, from, next) => {
   NProgress.start()

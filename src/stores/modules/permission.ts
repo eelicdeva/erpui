@@ -5,9 +5,15 @@ import { getRouters } from '@/api/menu'
 import Layout from '@/layout/index.vue'
 import ParentView from '@/components/ParentView/index.vue'
 import InnerLink from '@/layout/components/InnerLink/index.vue'
+import type { RouteRecordRaw } from 'vue-router'
+// to-do router
 
-interface UsePermissionStore{
- // routers: 
+export interface UsePermissionStore{
+  routes: Array<RouteRecordRaw>;
+  addRoutes: Array<RouteRecordRaw>;
+  defaultRoutes: Array<RouteRecordRaw>;
+  topbarRouters: Array<RouteRecordRaw>;
+  sidebarRouters: Array<RouteRecordRaw>;
 };
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue')
@@ -15,31 +21,31 @@ const modules = import.meta.glob('./../../views/**/*.vue')
 const usePermissionStore = defineStore(
   'permission',
   {
-    state: () => ({
-      routes: [] ,
+    state: (): UsePermissionStore => ({
+      routes: [],
       addRoutes: [],
       defaultRoutes: [],
       topbarRouters: [],
-      sidebarRouters: []// to-do roles
+      sidebarRouters: []
     }),
     actions: {
-      setRoutes(routes: any) {
+      setRoutes(routes) {
         this.addRoutes = routes
         this.routes = constantRoutes.concat(routes)
       },
-      setDefaultRoutes(routes: any) {
+      setDefaultRoutes(routes) {
         this.defaultRoutes = constantRoutes.concat(routes)
       },
-      setTopbarRoutes(routes: any) {
+      setTopbarRoutes(routes) {
         this.topbarRouters = routes
       },
-      setSidebarRouters(routes: any) {
+      setSidebarRouters(routes) {
         this.sidebarRouters = routes
       },
-      generateRoutes(roles: string[]) { //check roles data 
+      generateRoutes(roles) { //check roles data 
         return new Promise(resolve => {
           // 向后端请求路由数据
-          getRouters().then((res: any) => {
+          getRouters().then((res) => {
             const sdata = JSON.parse(JSON.stringify(res.data))
             const rdata = JSON.parse(JSON.stringify(res.data))
             const defaultData = JSON.parse(JSON.stringify(res.data))
@@ -128,7 +134,7 @@ export function filterDynamicRoutes(routes: any) {
   return res
 }
 
-export const loadView = (view) => {
+export const loadView = (view: string) => {
   let res;
   for (const path in modules) {
     const dir = path.split('views/')[1].split('.vue')[0];
