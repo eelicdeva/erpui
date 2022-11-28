@@ -95,18 +95,15 @@
          </el-table-column>
          <el-table-column :label="$t('user.operate')" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
-               <el-button
-                  type="text"
-                  icon="Edit"
-                  @click="handleUpdate(scope.row)"
-                  v-hasPermi="['system:post:edit']"
-               >{{ $t('button.edit') }}</el-button>
-               <el-button
-                  type="text"
-                  icon="Delete"
-                  @click="handleDelete(scope.row)"
-                  v-hasPermi="['system:post:remove']"
-               >{{ $t('button.delete') }}</el-button>
+               <el-button                  
+                  v-for="button in buttons"
+                  :key="button.text"
+                  :type="button.type"
+                  :icon="button.icon"
+                  @click="handleButtonText(scope.row,button.act)"
+                  :v-hasPermi="button.permi"
+                  link
+                >{{ button.text }}</el-button>
             </template>
          </el-table-column>
       </el-table>
@@ -154,7 +151,7 @@
    </div>
 </template>
 
-<script setup name="Post">
+<script lang="ts" setup name="Post">
 import { listPost, addPost, delPost, getPost, updatePost } from "@/api/system/post";
 import i18n from '@/lang/index';
 
@@ -189,6 +186,20 @@ const data = reactive({
 });
 
 const { queryParams, form, rules } = toRefs(data);
+
+const buttons = [
+   {type: 'primary', text: t('button.edit'), icon: 'Edit', act : 'edit', permi: ['system:post:edit']}, 
+   {type: 'primary', text: t('button.delete'), icon: 'Delete', act : 'delete', permi: ['system:post:remove']},
+] as const
+
+function handleButtonText(row, act: string) {
+    if( act == "edit" ){
+      return handleUpdate(row);
+    }
+    if( act == "delete" ){
+      return handleDelete(row);
+    }
+}
 
 /** 查询岗位列表 */
 function getList() {

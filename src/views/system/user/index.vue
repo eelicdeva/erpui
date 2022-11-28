@@ -155,34 +155,38 @@
                   <template #default="scope">
                      <el-tooltip :content="$t('button.edit')" placement="top" v-if="scope.row.userId !== 1">
                         <el-button
-                           type="text"
+                           :type="buttonType"
                            icon="Edit"
                            @click="handleUpdate(scope.row)"
                            v-hasPermi="['system:user:edit']"
+                           link
                         ></el-button>
                      </el-tooltip>
                      <el-tooltip :content="$t('button.delete')" placement="top" v-if="scope.row.userId !== 1">
                         <el-button
-                           type="text"
+                           :type="buttonType"
                            icon="Delete"
                            @click="handleDelete(scope.row)"
                            v-hasPermi="['system:user:remove']"
+                           link
                         ></el-button>
                      </el-tooltip>
                      <el-tooltip :content="$t('button.resetPW')" placement="top" v-if="scope.row.userId !== 1">
                         <el-button
-                           type="text"
+                           :type="buttonType"
                            icon="Key"
                            @click="handleResetPwd(scope.row)"
                            v-hasPermi="['system:user:resetPwd']"
+                           link
                         ></el-button>
                      </el-tooltip>
                      <el-tooltip :content="$t('button.authRole')" placement="top" v-if="scope.row.userId !== 1">
                         <el-button
-                           type="text"
+                           :type="buttonType"
                            icon="CircleCheck"
                            @click="handleAuthRole(scope.row)"
                            v-hasPermi="['system:user:edit']"
+                           link
                         ></el-button>
                      </el-tooltip>
                   </template>
@@ -377,6 +381,7 @@ const deptOptions = ref(undefined);
 const initPassword = ref(undefined);
 const postOptions = ref([]);
 const roleOptions = ref([]);
+const buttonType = "primary";
 /*** 用户导入参数 */
 const upload = reactive({
   // 是否显示弹出层（用户导入）

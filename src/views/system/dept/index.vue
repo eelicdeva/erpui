@@ -69,24 +69,14 @@
          <el-table-column :label="$t('user.operate')" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-button
-                  type="text"
-                  icon="Edit"
-                  @click="handleUpdate(scope.row)"
-                  v-hasPermi="['system:dept:edit']"
-               >{{ $t('button.edit') }}</el-button>
-               <el-button
-                  type="text"
-                  icon="Plus"
-                  @click="handleAdd(scope.row)"
-                  v-hasPermi="['system:dept:add']"
-               >{{ $t('button.add') }}</el-button>
-               <el-button
-                  v-if="scope.row.parentId != 0"
-                  type="text"
-                  icon="Delete"
-                  @click="handleDelete(scope.row)"
-                  v-hasPermi="['system:dept:remove']"
-               >{{ $t('button.delete') }}</el-button>
+                  v-for="button in buttons"
+                  :key="button.text"
+                  :type="button.type"
+                  :icon="button.icon"
+                  @click="handleButtonText(scope.row, button.act)"
+                  :v-hasPermi="button.permi"
+                  link
+                  >{{ button.text }}</el-button>
             </template>
          </el-table-column>
       </el-table>
@@ -190,6 +180,24 @@ const data = reactive({
 });
 
 const { queryParams, form, rules } = toRefs(data);
+
+const buttons = [
+   {type: 'primary', text: t('button.edit'), icon: 'Edit', act : 'edit', permi: ['system:dept:edit']}, 
+   {type: 'primary', text: t('button.add'), icon: 'Plus', act : 'add', permi: ['system:dept:add']},
+   {type: 'primary', text: t('button.delete'), icon: 'Delete', act : 'delete', permi: ['system:dept:remove']},
+] as const
+
+function handleButtonText(row, act: string) {
+    if( act == "edit" ){
+      return handleUpdate(row);
+    }
+    if( act == "add" ){
+      return handleAdd(row);
+    }
+    if( act == "delete" ){
+      return handleDelete(row);
+    }
+}
 
 /** 查询部门列表 */
 function getList() {

@@ -117,34 +117,38 @@
             <template #default="scope">
               <el-tooltip :content="$t('button.edit')" placement="top" v-if="scope.row.roleId !== 1">
                 <el-button
-                  type="text"
+                  :type="buttonType"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
                   v-hasPermi="['system:role:edit']"
+                  link
                 ></el-button>
               </el-tooltip>
               <el-tooltip :content="$t('button.delete')" placement="top" v-if="scope.row.roleId !== 1">
                 <el-button
-                  type="text"
+                  :type="buttonType"
                   icon="Delete"
                   @click="handleDelete(scope.row)"
                   v-hasPermi="['system:role:remove']"
+                  link
                 ></el-button>
               </el-tooltip>
               <el-tooltip :content="$t('button.dataPerms')" placement="top" v-if="scope.row.roleId !== 1">
                 <el-button
-                  type="text"
+                  :type="buttonType"
                   icon="CircleCheck"
                   @click="handleDataScope(scope.row)"
                   v-hasPermi="['system:role:edit']"
+                  link
                 ></el-button>
               </el-tooltip>
               <el-tooltip :content="$t('button.AssignUser')" placement="top" v-if="scope.row.roleId !== 1">
                 <el-button
-                  type="text"
+                  :type="buttonType"
                   icon="User"
                   @click="handleAuthUser(scope.row)"
                   v-hasPermi="['system:role:edit']"
+                  link
                 ></el-button>
               </el-tooltip>
             </template>
@@ -295,6 +299,7 @@ const deptOptions = ref([]);
 const openDataScope = ref(false);
 const menuRef = ref(null);
 const deptRef = ref(null);
+const buttonType = "primary";
 
 /** 数据范围选项*/
 const dataScopeOptions = ref([
