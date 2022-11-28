@@ -29,7 +29,7 @@ const usePermissionStore = defineStore(
       sidebarRouters: []
     }),
     actions: {
-      setRoutes(routes) {
+      setRoutes(routes) { //check routes: ConcatArray<RouteRecordRaw>
         this.addRoutes = routes
         this.routes = constantRoutes.concat(routes)
       },
@@ -42,7 +42,7 @@ const usePermissionStore = defineStore(
       setSidebarRouters(routes) {
         this.sidebarRouters = routes
       },
-      generateRoutes(roles) { //check roles data 
+      generateRoutes(_roles?: any) { //check roles data 
         return new Promise(resolve => {
           // 向后端请求路由数据
           getRouters().then((res) => {
@@ -65,8 +65,8 @@ const usePermissionStore = defineStore(
     }
   })
 
-// 遍历后台传来的路由字符串，转换为组件对象
-function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
+// ||遍历后台传来的路由字符串，转换为组件对象
+function filterAsyncRouter(asyncRouterMap: any[], _lastRouter = false, type = false) {
   return asyncRouterMap.filter(route => {
     if (type && route.children) {
       route.children = filterChildren(route.children)
@@ -95,7 +95,7 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
 
 function filterChildren(childrenMap: any[], lastRouter ?: any) {
   var children: any[] = []
-  childrenMap.forEach((el, index) => {
+  childrenMap.forEach((el, _index) => {
     if (el.children && el.children.length) {
       if (el.component === 'ParentView' && !lastRouter) {
         el.children.forEach((c:any) => {
@@ -117,7 +117,7 @@ function filterChildren(childrenMap: any[], lastRouter ?: any) {
   return children
 }
 
-// 动态路由遍历，验证是否具备权限
+// ||动态路由遍历，验证是否具备权限
 export function filterDynamicRoutes(routes: any) {
   const res: any[] = []
   routes.forEach((route: any) => {

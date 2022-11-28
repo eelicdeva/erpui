@@ -42,6 +42,7 @@
 import { getToken } from "@/utils/auth";
 import { ComponentInternalInstance, computed, getCurrentInstance, ref, watch } from "vue";
 
+// to-do check {transition} router.isReady().then(()=>app.mount('#app'));
 const props = defineProps({
   modelValue: [String, Object, Array],
   // 数量限制

@@ -100,7 +100,7 @@ const useTagsViewStore = defineStore(
           resolve([...this.cachedViews])
         })
       },
-      delAllViews(view) {
+      delAllViews(view?: any) {
         return new Promise(resolve => {
           this.delAllVisitedViews(view)
           this.delAllCachedViews(view)

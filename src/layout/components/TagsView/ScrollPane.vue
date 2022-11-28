@@ -13,9 +13,8 @@
 
 <script lang="ts" setup name="ScrollPane">
 import useTagsViewStore from '@/stores/modules/tagsView'
-import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue';
-import type { ComponentInternalInstance} from 'vue';
-const tagAndTagSpacing = ref(4);
+import { ComponentInternalInstance, computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue';
+import type { } from 'vue';const tagAndTagSpacing = ref(4);
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const scrollWrapper = computed(() => proxy.$refs.scrollContainer.$refs.wrap$);

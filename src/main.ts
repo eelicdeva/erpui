@@ -93,4 +93,6 @@ app.use(ElementPlus, {
  //message: default
 });
 
-app.mount('#app');
+// to-do check
+// app.mount('#app')
+router.isReady().then(()=>app.mount('#app'));

@@ -1,10 +1,39 @@
 import useTagsViewStore from "@/stores/modules/tagsView";
 import router from "@/router";
-import { RouteLocationRaw } from "vue-router";
-
+import type { RouteRecordRaw } from "vue-router";
+/*
+interface Obj {
+  // fullPath?: string; // interface _RouteLocationBase extends Pick<MatcherLocation, 'name' | 'path' | 'params' | 'meta'>
+  query?: Record<string, string |string[]>;
+  matched?: RouteRecordNormalized[];
+  meta?: RouteMeta;
+  path: string;
+  lastPath: ;
+}
+*/
 export default {
-  // 刷新当前tab页签
-  refreshPage(obj: { name?: string; path: any; query: any } | undefined) {
+  // ||刷新当前tab页签
+  /**
+   * @param obj  
+   * readonly currentRoute: Ref<RouteLocationNormalizedLoaded>;
+   * 
+   *  declare type RouteLocationRaw = string | RouteLocationPathRaw | RouteLocationNamedRaw;
+   * 
+   * interface RouteLocationNormalizedLoaded extends _RouteLocationBase
+   * matched: RouteLocationMatched[];
+   * interface RouteLocationMatched extends RouteRecordNormalized {
+   *     components: Record<string, RouteComponent> | null | undefined; }
+   * RouteRecordNormalized.components
+   * ViewComponent from matchedRoute.components
+   * matchedRoute = matchedRouteRef.value
+   * atchedRouteRef from routeToDisplay
+   * declare type RouteComponent = Component | DefineComponent;
+   * declare type Component<Props = any, RawBindings = any, D = any, 
+   * C extends ComputedOptions = ComputedOptions, M extends MethodOptions = MethodOptions
+   * > = ConcreteComponent<Props, RawBindings, D, C, M> | ComponentPublicInstanceConstructor<Props>;
+   * 
+   */
+  refreshPage(obj: RouteRecordRaw  | undefined ) {
     const { path, query, matched } = router.currentRoute.value;
     if (obj === undefined) {
       matched.forEach((m) => {
@@ -18,7 +47,7 @@ export default {
     return useTagsViewStore()
       .delCachedView(obj)
       .then(() => {
-        const { path, query } = obj;
+        const { path, query } = obj ;
         router.replace({
           path: "/redirect" + path,
           query: query,
@@ -26,14 +55,14 @@ export default {
       });
   },
   // 关闭当前tab页签，打开新页签
-  closeOpenPage(obj: RouteLocationRaw | undefined) {
+  closeOpenPage(obj) {
     useTagsViewStore().delView(router.currentRoute.value);
     if (obj !== undefined) {
       return router.push(obj);
     }
   },
   // 关闭指定tab页签
-  closePage(obj: undefined) {
+  closePage(obj) {
     if (obj === undefined) {
       return useTagsViewStore()
         .delView(router.currentRoute.value)
@@ -48,15 +77,15 @@ export default {
     return useTagsViewStore().delAllViews();
   },
   // 关闭左侧tab页签
-  closeLeftPage(obj: any) {
+  closeLeftPage(obj) {
     return useTagsViewStore().delLeftTags(obj || router.currentRoute.value);
   },
   // 关闭右侧tab页签
-  closeRightPage(obj: any) {
+  closeRightPage(obj) {
     return useTagsViewStore().delRightTags(obj || router.currentRoute.value);
   },
   // 关闭其他tab页签
-  closeOtherPage(obj: any) {
+  closeOtherPage(obj) {
     return useTagsViewStore().delOthersViews(obj || router.currentRoute.value);
   },
   // 打开tab页签
@@ -64,7 +93,7 @@ export default {
     return router.push(url);
   },
   // 修改tab页签
-  updatePage(obj: any) {
+  updatePage(obj) {
     return useTagsViewStore().updateVisitedView(obj);
   },
 };

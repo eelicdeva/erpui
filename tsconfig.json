@@ -15,7 +15,6 @@
     // 从 tslib 导入辅助工具函数（比如 __extends， __rest等）
     "importHelpers": true,
 		
-
     /**
      * 是否启用实验性的装饰器特性,装饰器的语法是ES7的实验性语法, 不打开可能会出现如下错误：
      * Experimental support for decorators is a feature that is subject to change in a future release. Set the 'experimentalDecorators' option to remove this warning.
@@ -93,7 +92,6 @@
 		"env.d.ts", // for ts comment use
 		"shims.d.ts", // common file setting detail
 		"shims.vue.d.ts",// vue setting detail
-		//"src/components.d.ts", // vue components setting
 		"vite.config.ts",
 		"vite/**/*.ts",
 		"src/**/*.ts", 

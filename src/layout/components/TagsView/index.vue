@@ -47,10 +47,9 @@ import { getNormalPath } from '@/utils/ruoyi';
 import useTagsViewStore from '@/stores/modules/tagsView';
 import useSettingsStore from '@/stores/modules/settings';
 import usePermissionStore from '@/stores/modules/permission';
-import { computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue';
-import type { ComponentInternalInstance } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import type { RouteMeta, _RouteRecordBase } from 'vue-router';
+import { ComponentInternalInstance, computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue';
+import { RouteRecordRaw, useRoute, useRouter } from 'vue-router';
+import type { RouteLocation, RouteMeta, _RouteRecordBase } from 'vue-router';
 const visible = ref(false);
 const top = ref(0);
 const left = ref(0);
@@ -109,6 +108,7 @@ function isLastView() {
     return false
   }
 }
+// to-do check tags,
 interface Tag {
   fullPath: string;
   path: string;
@@ -116,15 +116,15 @@ interface Tag {
   meta: RouteMeta;
 };
 
-function filterAffixTags(routes, basePath = '') {
-  let tags: Array<Tag> = []; //to-do tags interface
-  routes.forEach((route: _RouteRecordBase ) => {
+function filterAffixTags(routes: Array<RouteRecordRaw>, basePath = '') {
+  let tags: Array<RouteLocation> = []; //to-do tags interface
+  routes.forEach((route) => {
     if (route.meta && route.meta.affix) {
-      const tagPath = getNormalPath(basePath + '/' + route.path);
+      const tagPath: string = getNormalPath(basePath + '/' + route.path);
       tags.push({
         fullPath: tagPath,
         path: tagPath,
-        name: route.name as string,
+        name: route.name,
         meta: { ...route.meta }
       })
     };

@@ -8,12 +8,18 @@ import { isRelogin } from '@/utils/request'
 import useUserStore from '@/stores/modules/user'
 import useSettingsStore from '@/stores/modules/settings'
 import usePermissionStore from '@/stores/modules/permission'
+import type { RouteLocationNormalized, RouteRecordRaw } from 'vue-router'
 
 NProgress.configure({ showSpinner: false });
 
 const whiteList = ['/login', '/auth-redirect', '/bind', '/register', '/mbti','/demo'];
-
-router.beforeEach((to, from, next) => {
+/**
+ * router.beforeEach
+ * interface NavigationGuardWithThis<T> {(this: T, to: RouteLocationNormalized, 
+ *    from: RouteLocationNormalized, next: NavigationGuardNext
+ *    ): NavigationGuardReturn | Promise<NavigationGuardReturn>;
+ */
+router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next): void => {
   NProgress.start()
   if (getToken()) {
     to.meta.title && useSettingsStore().setTitle(to.meta.title)
@@ -24,17 +30,17 @@ router.beforeEach((to, from, next) => {
     } else {
       if (useUserStore().roles.length === 0) {
         isRelogin.show = true
-        // 判断当前用户是否已拉取完user_info信息
+        // ||判断当前用户是否已拉取完user_info信息
         useUserStore().getInfo().then(() => {
           isRelogin.show = false
-          usePermissionStore().generateRoutes().then(accessRoutes => {
-            // 根据roles权限生成可访问的路由表
-            accessRoutes.forEach(route => {
+          usePermissionStore().generateRoutes().then((accessRoutes: ConcatArray<RouteRecordRaw>) => { //to-do accessRoutes
+            // ||根据roles权限生成可访问的路由表
+            accessRoutes.forEach((route: RouteRecordRaw) => {
               if (!isHttp(route.path)) {
-                router.addRoute(route) // 动态添加可访问路由表
+                router.addRoute(route) // ||动态添加可访问路由表
               }
             })
-            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+            next({ ...to, replace: true }) // ||hack方法 确保addRoutes已完成
           })
         }).catch(err => {
           useUserStore().logOut().then(() => {

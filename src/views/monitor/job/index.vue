@@ -305,7 +305,7 @@
    </div>
 </template>
 
-<script setup name="Job">
+<script lang="ts" setup name="Job">
 import { listJob, getJob, delJob, addJob, updateJob, runJob, changeJobStatus } from "@/api/monitor/job";
 
 const router = useRouter();

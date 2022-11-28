@@ -1,12 +1,12 @@
 /* Layout */
-import { createWebHistory, createRouter, _RouteRecordBase } from 'vue-router';
+import { createWebHistory, createRouter } from 'vue-router';
 import Layout from '@/layout/index.vue';
 import i18n from '@/lang/index';
-import type { RouteRecordRaw, Router, RouterHistory } from 'vue-router';
+import type { RouteRecordRaw, Router, _RouteRecordBase, RouteLocationNormalized } from 'vue-router';
 const {t} = i18n.global;
-
 /**
  * Note: Coustom router setting || 路由配置项
+ *
  *
  * hidden: true                     // coustom ||当设置 true 的时候该路由不会再侧边栏出现 如401，login等页面，或者如一些编辑页面/edit/1
  * alwaysShow: true                 // coustom ||当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面
@@ -19,16 +19,36 @@ const {t} = i18n.global;
  * roles: ['admin', 'common']       // coustom||访问路由的角色权限
  * permissions: ['a:a:a', 'b:b:b']  // coustom||访问路由的菜单权限
  * meta : {
-    noCache: true                   // 如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
-    title: 'title'                  // 设置该路由在侧边栏和面包屑中展示的名字
-    icon: 'svg-name'                // 设置该路由的图标，对应路径src/assets/icons/svg
-    breadcrumb: false               // 如果设置为false，则不会在breadcrumb面包屑中显示
-    activeMenu: '/system/user'      // 当路由设置了该属性，则会高亮相对应的侧边栏。
-  }
+ *   noCache: true                   // 如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
+ *   title: 'title'                  // 设置该路由在侧边栏和面包屑中展示的名字
+ *   icon: 'svg-name'                // 设置该路由的图标，对应路径src/assets/icons/svg
+ *   breadcrumb: false               // 如果设置为false，则不会在breadcrumb面包屑中显示
+ *   activeMenu: '/system/user'      // 当路由设置了该属性，则会高亮相对应的侧边栏。
+ * }
  */
 
-// 公共路由
-export const constantRoutes: Array<RouteRecordRaw> = [
+/**
+ * Coustom router setting || 定制路由配置项;
+ * 
+ * // constantRouters setting detail ||设置公共路由;
+ * @import type { RouteRecordRaw, _RouteRecordBase } from 'vue-router';
+ * @custom declare module 'vue-router': {_RouteRecordBase, RouteMeta}  in '@/vue-router.d.ts';
+ * @property { string } path -required; 
+ * @property { object } component -required 
+ * @property { boolean } hidden -option ?: custom setting  || 根据使用情况灵活设置
+ * @property { string } redirect -option ?: with redirect | without redirect
+ * @property { object } children -required type: Array<RouteRecordRaw>
+ * children {Array<RouteRecordRaw>} detail:
+ * @property { string } children.path -required; 
+ * @property { object } children.component -required 
+ * @property { string } children.name -required
+ * @property { object } children.meta -required
+ * @property { string } children.meta.title -required
+ * @property { string } children.meta.icon -required
+ * @property { boolean } children.meta.affix -option ?: with homepage | without others
+ * @note component type: {RouteRecordSingleViewWithChildren.component?: RawRouteComponent | null | undefined};
+ */
+export const constantRoutes: Readonly<Array<RouteRecordRaw>> = [
   {
     path: '/redirect',
     component: Layout,
@@ -104,8 +124,27 @@ export const constantRoutes: Array<RouteRecordRaw> = [
   }
 ]
 
-// 动态路由，基于用户权限动态去加载
-export const dynamicRoutes = [
+/**
+ * Coustom router setting || 定制路由配置项;
+ * 
+ * // dynamicRoutes coustom setting detail || 定制动态路由，基于用户权限动态去加载;
+ * import type {RouteRecordRaw} from 'vue-router';
+ * @custom declare module 'vue-router': {_RouteRecordBase, RouteMeta}  in '@/vue-router.d.ts';
+ * @property { string } path -required; 
+ * @property { object } component -required 
+ * @property { boolean } hidden -option ?: with children | without children ||主路由含子路由时不使用该属性
+ * @property { string } permissions -required 
+ * @property { object } children -required type: Array<RouteRecordRaw>
+ * children {Array<RouteRecordRaw>} detail:
+ * @property { string } children.path -required; 
+ * @property { object } children.component -required 
+ * @property { string } children.name -required
+ * @property { object } children.meta -required
+ * @property { string } children.meta.title -required
+ * @property { string } children.meta.activeMenu -required
+ * @note component type: {RouteRecordSingleViewWithChildren.component?: RawRouteComponent | null | undefined};
+ */
+export const dynamicRoutes: Readonly<Array<RouteRecordRaw>>  = [
   {
     path: '/system/user-auth',
     component: Layout,
@@ -191,16 +230,70 @@ export const dynamicRoutes = [
     ]
   }
 ]
+
 /**
- * histroy: RouterHistory;
- * routes: Readonly<RouteRecordRaw[]>;
- * scrollBehavior(to: string, from: string, savedPosition: string | null): RouterScrollBehavior;
- * to-do check scrollBehavior didn't used.
+ *  Coustom router setting - router || 定制路由配置项： router;
+ * @import { createWebHistory, createRouter, _RouteRecordBase } from 'vue-router'
+ * @param { function } histroy: createWebHistory(base?: string) as RouterHistory;
+ * @param { object } routes: Readonly<Array<RouteRecordRaw>>;
+ * @param { function } scrollBehavior(to: string, from: string, savedPosition: string | null): RouterScrollBehavior;
+ * @result router: Router
+ * declare function createRouter(options: RouterOptions): Router;
+ * interface RouterOptions extends PathParserOptions
+ * @param RouterOptions
+ * @param RouterOptions.history : RouterHistory;
+ * @param RouterOptions.routes: Readonly<RouteRecordRaw[]>;
+ * @property { RouteRecordRaw }  RouteRecordRaw = RouteRecordSingleView | RouteRecordSingleViewWithChildren 
+ *              | RouteRecordMultipleViews | RouteRecordMultipleViewsWithChildren | RouteRecordRedirect;
+ *  RouteRecordSingleView extends _RouteRecordBase
+ *  RouteRecordSingleViewWithChildren extends _RouteRecordBase
+ *  RouteRecordMultipleViews extends _RouteRecordBase
+ *  RouteRecordMultipleViewsWithChildren extends _RouteRecordBase
+ *  RouteRecordRedirect extends _RouteRecordBase
+ * @param { RotuerScrollBehavior} scrollBehavior?: RouterScrollBehavior;
+ * interface RouterScrollBehavior {
+     * @param to - Route location where we are navigating to
+     * @param from - Route location where we are navigating from
+     * @param savedPosition - saved position if it exists, `null` otherwise
+     *(to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded, savedPosition: _ScrollPositionNormalized | null): Awaitable<ScrollPosition | false | void>;
+ *   }
+ * @return router: Router - declare interface Router
+ * @property { object } router.currentRoute - readonly currentRoute>: Ref<RouteLocationNormalizedLoaded>;
+ * 
+ * @property { object } router.options readonly options: RouterOptions;
+ * interface RouterOptions extends PathParserOptions
+ * @property { object } router.options.history: RouterHistory;
+ * interface RouterHistory
+ * @property { array } router.options.history.routes: Readonly<RouteRecordRaw[]>;
+ * @property { string } router.options.history.base -readonly: Base path that is prepended to every url 
+ * @property { string } router.options.history.location -readonly: HistoryLocation, -Current History location
+ * @property { array } router.options.history.state -readonly: HistoryState, -Current History state
+ * declare interface HistoryState
+ * declare type HistoryStateValue = string | number | boolean | null | undefined | HistoryState | HistoryStateArray;
+ * @property { any } router.options.history.state[x] -[x: number]: HistoryStateValue;
+ * @property { any } router.options.history.state[x] -[x: string]: HistoryStateValue;
+ * @property { function } router.options.history.push(to: HistoryLocation, data?: HistoryState): void;
+ * @property { function } router.options.history.replace(to: HistoryLocation, data?: HistoryState): void;
+ * @property { function } router.options.history.go(delta: number, triggerListeners?: boolean): void;
+ * @property { function } router.options.history.listen(callback: NavigationCallback): () => void;
+ * @property { function } router.options.history.createHref(location: HistoryLocation): string;
+ * @property { function } router.options.history.destroy(): void;
+ * declare interface RouterScrollBehavior
+ * @property { object } router.options.scrollBehavior?: RouterScrollBehavior;
+ * the other router.options
+ * @property { any } router.options....other check Router document
+ * @property { boolean } router.listening: boolean;
+ * @property { void } router.beforeEach(guard: NavigationGuardWithThis<undefined>): () => void;
+ * declare interface NavigationGuardWithThis<T> {(this: T, to: RouteLocationNormalized, 
+ *                              from: RouteLocationNormalized, next: NavigationGuardNext
+ *                           ): NavigationGuardReturn | Promise<NavigationGuardReturn>;}
+ * @property { functions } router.addRoute() ...functions check Router document
+ * @property { any } router.... ...the others check Router document
  */
 const router: Router = createRouter({
-  history: createWebHistory() as RouterHistory,
-  routes: constantRoutes, // Coustom Router ||点击浏览器的前进后退或切换导航触发
-  scrollBehavior(to, from, savedPosition){  // ||return 期望滚动到哪个的位置
+  history: createWebHistory(),// RouterHistory,
+  routes : constantRoutes, // Coustom Router: Readonly<Array<RouteRecordRaw>>  ||点击浏览器的前进后退或切换导航触发
+  scrollBehavior(to: RouteLocationNormalized, from: RouteLocationNormalized, savedPosition){  // ||return 期望滚动到哪个的位置
     if (savedPosition) {
       return savedPosition
     } else {
