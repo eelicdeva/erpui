@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="Screenfull">
 import { useFullscreen } from '@vueuse/core'
 
 const { isFullscreen, enter, exit, toggle } = useFullscreen();

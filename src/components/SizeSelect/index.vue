@@ -15,11 +15,12 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="SizeSelect">
 import useAppStore from "@/stores/modules/app";
 import i18n from '@/lang';
 import { useRoute, useRouter } from "vue-router";
 import { computed, getCurrentInstance, ref } from "vue";
+import type { ComponentInternalInstance } from "vue";
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from "element-plus";
 
 const {t} = i18n.global;
@@ -27,7 +28,7 @@ const appStore = useAppStore();
 const size = computed(() => appStore.size);
 const route = useRoute();
 const router = useRouter();
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const sizeOptions = ref([
   { label: t('components.sizeSelect.sizeLarge'), value: "large" },
   { label: t('components.sizeSelect.sizeDefault'), value: "default" },
@@ -35,7 +36,7 @@ const sizeOptions = ref([
 ]);
 
 function handleSetSize(size) {
-  proxy.$modal.loading(t('components.sizeSelect.setSize'));
+  proxy?.$modal.loading(t('components.sizeSelect.setSize'));
   appStore.setSize(size);
   setTimeout("window.location.reload()", 1000);
 }

@@ -8,7 +8,9 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup name="iFrame">
+import { computed, onMounted, ref } from 'vue';
+
 const props = defineProps({
   src: {
     type: String,

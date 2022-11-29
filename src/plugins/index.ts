@@ -18,5 +18,5 @@ export default function installPlugins(app: App): void {
   // 下载文件
   app.config.globalProperties.$download = download;
   // axios
-  app.config.globalProperties.$axios = axios // to-do check main.ts
+  app.config.globalProperties.$axios = axios; // to-do check main.ts
 }

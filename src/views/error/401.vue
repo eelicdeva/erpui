@@ -27,8 +27,8 @@
 
 <script lang="ts" setup>
 import errImage from "@/assets/401_images/401.gif";
-import { ComponentInternalInstance, getCurrentInstance, ref } from "vue";
-
+import { getCurrentInstance, ref } from "vue";
+import type { ComponentInternalInstance } from "vue";
 let { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const errGif = ref(errImage + "?" + +new Date());

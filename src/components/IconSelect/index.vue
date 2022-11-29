@@ -19,9 +19,9 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="IconSelect">
 import { ref } from 'vue';
-import { Ref } from 'vue';
+import type { Ref } from 'vue';
 import icons from './requireIcons'
 
 const iconName : Ref<string> = ref('');
@@ -36,7 +36,7 @@ function filterIcons() {
   }
 }
 
-function selectedIcon(name) {
+function selectedIcon(name: string) {
   emit('selected', name)
   document.body.click()
 }
