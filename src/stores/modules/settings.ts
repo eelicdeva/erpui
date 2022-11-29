@@ -32,10 +32,10 @@ const useSettingsStore = defineStore(
       dynamicTitle: storageSetting.dynamicTitle === undefined ? dynamicTitle : storageSetting.dynamicTitle //boolean
     }),
     actions: {
-      // 修改布局设置
+      // ||修改布局设置
       
       changeSetting(data: { key: string; value: string | boolean}) {
-        // { key: sideTheme, value: theme-light / theme-dark }
+        // ||{ key: sideTheme, value: theme-light / theme-dark }
         const { key, value } = data;
         if (this.hasOwnProperty(key)) {
           this[key]= value;

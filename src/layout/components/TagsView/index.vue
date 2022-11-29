@@ -48,8 +48,8 @@ import useTagsViewStore from '@/stores/modules/tagsView';
 import useSettingsStore from '@/stores/modules/settings';
 import usePermissionStore from '@/stores/modules/permission';
 import { ComponentInternalInstance, computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue';
-import { RouteRecordRaw, useRoute, useRouter } from 'vue-router';
-import type { RouteLocation, RouteMeta, _RouteRecordBase } from 'vue-router';
+import { RouteRecordRaw, useRoute, useRouter, _RouteLocationBase } from 'vue-router';
+import type { RouteMeta, _RouteRecordBase } from 'vue-router';
 const visible = ref(false);
 const top = ref(0);
 const left = ref(0);
@@ -116,8 +116,8 @@ interface Tag {
   meta: RouteMeta;
 };
 
-function filterAffixTags(routes: Array<RouteRecordRaw>, basePath = '') {
-  let tags: Array<RouteLocation> = []; //to-do tags interface
+function filterAffixTags(routes: _RouteLocationBase[], basePath = '') {
+  let tags: Array<Tag> = []; //to-do tags interface
   routes.forEach((route) => {
     if (route.meta && route.meta.affix) {
       const tagPath: string = getNormalPath(basePath + '/' + route.path);
@@ -125,7 +125,9 @@ function filterAffixTags(routes: Array<RouteRecordRaw>, basePath = '') {
         fullPath: tagPath,
         path: tagPath,
         name: route.name,
-        meta: { ...route.meta }
+        meta: { 
+          ...route.meta 
+        }
       })
     };
     if (route.children) {

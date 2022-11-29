@@ -8,7 +8,7 @@ import InnerLink from '@/layout/components/InnerLink/index.vue'
 import type { RouteRecordRaw } from 'vue-router'
 // to-do router
 
-export interface UsePermissionStore{
+interface UsePermissionStore{
   routes: Array<RouteRecordRaw>;
   addRoutes: Array<RouteRecordRaw>;
   defaultRoutes: Array<RouteRecordRaw>;
@@ -29,17 +29,17 @@ const usePermissionStore = defineStore(
       sidebarRouters: []
     }),
     actions: {
-      setRoutes(routes) { //check routes: ConcatArray<RouteRecordRaw>
+      setRoutes(routes: Array<RouteRecordRaw>) { //check routes: ConcatArray<RouteRecordRaw>
         this.addRoutes = routes
         this.routes = constantRoutes.concat(routes)
       },
-      setDefaultRoutes(routes) {
+      setDefaultRoutes(routes: Array<RouteRecordRaw>) {
         this.defaultRoutes = constantRoutes.concat(routes)
       },
-      setTopbarRoutes(routes) {
+      setTopbarRoutes(routes: Array<RouteRecordRaw>) {
         this.topbarRouters = routes
       },
-      setSidebarRouters(routes) {
+      setSidebarRouters(routes: Array<RouteRecordRaw>) {
         this.sidebarRouters = routes
       },
       generateRoutes(_roles?: any) { //check roles data 
@@ -66,7 +66,7 @@ const usePermissionStore = defineStore(
   })
 
 // ||遍历后台传来的路由字符串，转换为组件对象
-function filterAsyncRouter(asyncRouterMap: any[], _lastRouter = false, type = false) {
+function filterAsyncRouter(asyncRouterMap: any[], lastRouter = false, type = false) {
   return asyncRouterMap.filter(route => {
     if (type && route.children) {
       route.children = filterChildren(route.children)
@@ -92,13 +92,13 @@ function filterAsyncRouter(asyncRouterMap: any[], _lastRouter = false, type = fa
     return true
   })
 }
-
+// to-do defined any
 function filterChildren(childrenMap: any[], lastRouter ?: any) {
-  var children: any[] = []
+  var children: RouteRecordRaw[] = []
   childrenMap.forEach((el, _index) => {
     if (el.children && el.children.length) {
       if (el.component === 'ParentView' && !lastRouter) {
-        el.children.forEach((c:any) => {
+        el.children.forEach((c:RouteRecordRaw) => {
           c.path = el.path + '/' + c.path
           if (c.children && c.children.length) {
             children = children.concat(filterChildren(c.children, c))
@@ -118,9 +118,9 @@ function filterChildren(childrenMap: any[], lastRouter ?: any) {
 }
 
 // ||动态路由遍历，验证是否具备权限
-export function filterDynamicRoutes(routes: any) {
-  const res: any[] = []
-  routes.forEach((route: any) => {
+export function filterDynamicRoutes(routes: Array<RouteRecordRaw>) {
+  const res: RouteRecordRaw[] = []
+  routes.forEach((route: RouteRecordRaw) => {
     if (route.permissions) {
       if (auth.hasPermiOr(route.permissions)) {
         res.push(route)

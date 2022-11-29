@@ -1,6 +1,6 @@
 import useTagsViewStore from "@/stores/modules/tagsView";
 import router from "@/router";
-import type { RouteRecordRaw } from "vue-router";
+
 /*
 interface Obj {
   // fullPath?: string; // interface _RouteLocationBase extends Pick<MatcherLocation, 'name' | 'path' | 'params' | 'meta'>
@@ -33,7 +33,7 @@ export default {
    * > = ConcreteComponent<Props, RawBindings, D, C, M> | ComponentPublicInstanceConstructor<Props>;
    * 
    */
-  refreshPage(obj: RouteRecordRaw  | undefined ) {
+  refreshPage(obj) {
     const { path, query, matched } = router.currentRoute.value;
     if (obj === undefined) {
       matched.forEach((m) => {
@@ -89,7 +89,7 @@ export default {
     return useTagsViewStore().delOthersViews(obj || router.currentRoute.value);
   },
   // 打开tab页签
-  openPage(url: RouteLocationRaw) {
+  openPage(url) {
     return router.push(url);
   },
   // 修改tab页签

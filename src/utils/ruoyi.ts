@@ -1,6 +1,35 @@
 /**
  * 通用js方法封装处理
  * Copyright (c) 2019 ruoyi
+ * 日期格式化
+ * @const parseTime = (time: string | number | Date, pattern: string) => {	
+ * ...return const formatObj = { y, m, d, h,	i, s, a }   }
+ * @const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result: string, key: string) => {...return time_str;}
+ * //||表单重置
+ * @function resetForm(this: any, refName) {}: void
+ * //||添加日期范围
+ * @function addDateRange(params, dateRange, propName) {...return search}
+ * //|| 回显数据字典
+ * @function selectDictLabel(datas: { [x: string]: { label: any; }; }, value: string | undefined){...returns }
+ * @return "" | true | actions.push(value) | actions.join('')
+ * // ||回显数据字典（字符串数组）
+ * @function selectDictLabels(datas, value, separator) { ...returns }
+ * @return "" | actions.join('').substring(0, actions.join('').length - 1)
+ * // || 字符串格式化(%s )
+ * @function sprintf(str) {...returns '' | arg |  flag ? str : '' } 
+ * str: string ||转换字符串，undefined,null等转化为""
+ * // ||转换字符串，undefined,null等转化为""
+ * @function parseStrEmpty(str: string | undefined | null): string {}
+ * //||数据合并
+ * @function mergeRecursive(source, target) { ...return source}
+ * //||构造树型结构数据
+ * @function handleTree(data, id, parentId, children) {...return tree}
+ * //||参数处理
+ * @function tansParams(params: { [x: string]: any }){...return result}
+ * //||返回项目路径
+ * @function getNormalPath(p: string ) { ...return res}
+ * //||验证是否为blob格式
+ * @const blobValidate = async (data: any )=> { ...return boolean }
  */
 
 /**
@@ -76,8 +105,8 @@ export function addDateRange(params, dateRange, propName) {
   return search;
 }
 
-// 回显数据字典
-export function selectDictLabel(datas: { [x: string]: { label: any; }; }, value: string | undefined) {
+// ||回显数据字典
+export function selectDictLabel(datas, value) {
   if (value === undefined) {
     return "";
   }
@@ -94,7 +123,7 @@ export function selectDictLabel(datas: { [x: string]: { label: any; }; }, value:
   return actions.join('');
 }
 
-// 回显数据字典（字符串数组）
+// ||回显数据字典（字符串数组）
 export function selectDictLabels(datas, value, separator) {
   if (value === undefined || value.length ===0) {
     return "";
@@ -120,7 +149,7 @@ export function selectDictLabels(datas, value, separator) {
   return actions.join('').substring(0, actions.join('').length - 1);
 }
 
-// 字符串格式化(%s )
+// ||字符串格式化(%s )
 export function sprintf(str) {
   var args = arguments, flag = true, i = 1;
   str = str.replace(/%s/g, function () {
@@ -148,7 +177,7 @@ export function parseStrEmpty(str: string | undefined | null): string {
 }
 
 // 数据合并
-export function mergeRecursive(source, target) {
+export function mergeRecursive(source: { [x: string]: any; }, target: { [x: string]: any; }) {
   for (var p in target) {
     try {
       if (target[p].constructor == Object) {

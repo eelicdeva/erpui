@@ -19,32 +19,6 @@ axios.defaults.headers.put['Content-Type'] = 'application/json;charset=utf-8';
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
 axios.defaults.headers.patch['Content-Type'] = 'application/json;charset=utf-8';
 
-
-// 处理  类型“AxiosResponse<any, any>”上不存在属性“errorinfo”。ts(2339)
-/*
-declare module "axios" {
-
-  interface AxiosResponse<T = any> {
-   // to-do define detail....
-    token: string; // ||追加不存在属性的参数(token)
-    publicKey: string; // ||追加不存在属性的参数(publickey)
-    user: {searchValue: string | null, 
-           avatar: string,
-           userName: string
-          };
-    roles: [],
-    permissions: []
-
-  }
-    export function create(config?: AxiosRequestConfig): AxiosInstance;
-}
-*/
-declare module 'axios' {
-  interface AxiosInstance {
-    (config: AxiosRequestConfig): Promise<any>
-  }
-}
-  
 // create axios instance || 创建axios实例;
 const service = axios.create({
   // || axios中请求配置有baseURL选项，表示请求URL公共部分;

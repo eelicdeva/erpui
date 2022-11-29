@@ -2,6 +2,34 @@
 import axios from 'axios'
 import { RouteLocationRaw } from 'vue-router'
 // 全局自定义属性
+
+
+// 处理  类型“AxiosResponse<any, any>”上不存在属性“errorinfo”。ts(2339)
+/*
+declare module "axios" {
+
+  interface AxiosResponse<T = any> {
+   // to-do define detail....
+    token: string; // ||追加不存在属性的参数(token)
+    publicKey: string; // ||追加不存在属性的参数(publickey)
+    user: {searchValue: string | null, 
+           avatar: string,
+           userName: string
+          };
+    roles: [],
+    permissions: []
+
+  }
+    export function create(config?: AxiosRequestConfig): AxiosInstance;
+}
+*/
+
+declare module 'axios' {
+  interface AxiosInstance {
+    (config: AxiosRequestConfig): Promise<any>
+  }
+}
+
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $axios: AxiosInstance; // to-do check again

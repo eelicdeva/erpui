@@ -8,7 +8,7 @@ import { isRelogin } from '@/utils/request'
 import useUserStore from '@/stores/modules/user'
 import useSettingsStore from '@/stores/modules/settings'
 import usePermissionStore from '@/stores/modules/permission'
-import type { RouteLocationNormalized, RouteRecordRaw } from 'vue-router'
+import type { RouteLocationNormalized, RouteRecordNormalized } from 'vue-router'
 
 NProgress.configure({ showSpinner: false });
 
@@ -33,9 +33,10 @@ router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, n
         // ||判断当前用户是否已拉取完user_info信息
         useUserStore().getInfo().then(() => {
           isRelogin.show = false
-          usePermissionStore().generateRoutes().then((accessRoutes: ConcatArray<RouteRecordRaw>) => { //to-do accessRoutes
+          //to-do accessRoutes : ConcatArray<RouteRecordRaw>
+          usePermissionStore().generateRoutes().then((accessRoutes) => { 
             // ||根据roles权限生成可访问的路由表
-            accessRoutes.forEach((route: RouteRecordRaw) => {
+            accessRoutes.forEach((route: RouteRecordNormalized) => {
               if (!isHttp(route.path)) {
                 router.addRoute(route) // ||动态添加可访问路由表
               }

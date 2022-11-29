@@ -4,8 +4,15 @@ import { getToken, setToken, removeToken } from '@/utils/auth';
 import defAva from '@/assets/images/profile.jpg';
 import { encrypt } from "@/utils/jsencrypt";
 
+interface UseUserStore {
+  token: string | undefined;
+  name: string;
+  avatar: string;
+  roles: string[];
+  permissions: string[];
+}
 const useUserStore = defineStore('user', {
-    state: () => ({
+    state: (): UseUserStore => ({
       token: getToken(),
       name: '',
       avatar: '',
@@ -54,7 +61,7 @@ const useUserStore = defineStore('user', {
           })
         })
       },
-      // 退出系统
+      // ||退出系统
       logOut() {
         return new Promise((resolve, reject) => {
           logout().then(() => {

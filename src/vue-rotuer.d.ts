@@ -7,10 +7,29 @@ import { _RouteRecordBase, RouteMeta } from 'vue-router';
  *@param alwaysShow?:boolean | string | number; // coustom ||当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面
  */
 declare module 'vue-router'{
+
+
+/**
+ * 
+ * @property  { string } path; // default setting 
+ * @property  { object } redirect?: RouteRecordRedirectOption; // default setting
+ * type RouteRecordRedirectOption = RouteLocationRaw | ((to: RouteLocation) => RouteLocationRaw)
+ * @property  { string | string[] } alias?: string | string[]; // default setting 
+ * @property { string | symbol } name?: RouteRecordName; // default setting 
+ *  declare type RouteRecordName = string | symbol;
+ * @property { object } beforeEnter?: NavigationGuardWithThis<undefined> | NavigationGuardWithThis<undefined>[]; // defaut setting
+ * @property { object } meta?: RouteMeta; -meta detail custom setting 
+ * @property { RouteRecordRaw[] } children?: RouteRecordRaw[]; // default setting
+ * @property  { object } props?: _RouteRecordProps | Record<string, _RouteRecordProps>; // default setting
+ * interface RouteRecordSingleView extends _RouteRecordBase
+ * interface RouteRecordRedirect extends _RouteRecordBase 
+ * 
+ * RouteRecordRaw =  extends _RouteRecordBase
+ */
   interface _RouteRecordBase{
     // path: string; // default setting 
     // redirect?: RouteRecordRedirectOption; // default setting 
-    //  alias?: string | string[]; // default setting 
+    // alias?: string | string[]; // default setting 
     // name?: RouteRecordName; // default setting 
     // beforeEnter?: NavigationGuardWithThis<undefined> | NavigationGuardWithThis<undefined>[]; // defaut setting
     // meta?: RouteMeta; // default setting 
@@ -33,9 +52,16 @@ declare module 'vue-router'{
     link?: boolean;      //
     affix?:  boolean;   // home { title: t('menu.frontPage'), icon: 'dashboard', affix: true } || 首页设置
   };
+  //costom to-do check this
+  /**
+  interface _RouteLocationBase{
+    lastPath: string;
+
+  }  
+   */
 }
 
-//_RouteLocationBase to-do check this
+
 
 /**
  * router custom setting detail

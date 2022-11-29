@@ -135,7 +135,7 @@ export const constantRoutes: Readonly<Array<RouteRecordRaw>> = [
  * @property { boolean } hidden -option ?: with children | without children ||主路由含子路由时不使用该属性
  * @property { string } permissions -required 
  * @property { object } children -required type: Array<RouteRecordRaw>
- * children {Array<RouteRecordRaw>} detail:
+ * children { RouteRecordRaw[]} detail:
  * @property { string } children.path -required; 
  * @property { object } children.component -required 
  * @property { string } children.name -required
@@ -144,7 +144,7 @@ export const constantRoutes: Readonly<Array<RouteRecordRaw>> = [
  * @property { string } children.meta.activeMenu -required
  * @note component type: {RouteRecordSingleViewWithChildren.component?: RawRouteComponent | null | undefined};
  */
-export const dynamicRoutes: Readonly<Array<RouteRecordRaw>>  = [
+export const dynamicRoutes: Array<RouteRecordRaw> = [
   {
     path: '/system/user-auth',
     component: Layout,
