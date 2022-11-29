@@ -21,16 +21,22 @@
   </div>
 </template>
 
-<script lang="ts" setup >
-import { computed } from 'vue';
-
+<script lang="ts" setup name="DictTag">
+import { computed} from 'vue';
+import type { PropType } from 'vue';
+export interface OptionProps {
+  label: string; //dictLabel
+  value: string; //dictCode
+  elTagType: string; //cssClass
+  elTagClass: string; // dictClass
+}
 const props = defineProps({
-  // 数据
+  // ||数据
   options: {
-    type: Array,
+    type: Array as PropType<OptionProps[]>,
     default: null,
   },
-  // 当前的值
+  // ||当前的值
   value: [Number, String, Array],
 })
 

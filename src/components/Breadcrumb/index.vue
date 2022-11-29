@@ -14,65 +14,60 @@
 <script lang="ts" setup name="Breadcrumb">
 // ||Breadcrumb 面包屑# 显示当前页面的路径，快速返回之前的任意页面。
 // ||该组件接受一个 String 类型的参数 separator来作为分隔符。 默认值为 '/'。
-import { Ref, ref, watchEffect } from 'vue';
-import { RouteLocationMatched,RouteLocationRaw,useRoute, useRouter } from 'vue-router';
+import { ref, watchEffect } from 'vue';
+import type { Ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import type { RouteMeta } from 'vue-router';
 import i18n from '@/lang/index';
 
+interface LevelList {
+  path: string;
+  redirect?: string;
+  meta: {
+    title: string;
+  }
+}
 const {t} = i18n.global;
 const route = useRoute();
 const router = useRouter();
-const levelList = ref([]) // ||导航列表 存放matched里筛选的路由记录
+const levelList: Ref<LevelList[]> = ref([]); // ||导航列表 存放matched里筛选的路由记录
 
-type PartialRouteLocationMatched = Partial<RouteLocationMatched>// to-do check again
-
+interface Matched {
+  path: string;
+  meta: RouteMeta;
+}
 function getBreadcrumb() {
   // only show routes with meta.title || 过滤掉没有title属性的路由，没有title就无法作为面包屑导航
-  let matched = route.matched.filter(item => item.meta && item.meta.title) as PartialRouteLocationMatched[];
+  let matched: Matched[]  = route.matched.filter(item => item.meta && item.meta.title);
   // ||获取第一个匹配路由记录
-  const first = matched[0]
+  const first = matched[0] 
   // ||判断是否为首页
   // ||我们要把dashboard(index)作为首页 始终固定在面包屑导航第一个
   // ||如果第一个匹配到的路由记录不是dashboard 我们自己就把它放在记录数组的第一项
   if (!isDashboard(first)) {
     matched = ([{ path: '/index', 
                   meta: { title: t('menu.frontPage') } 
-                }] as PartialRouteLocationMatched[]).concat(matched).concat(matched)
+                }]).concat(matched).concat(matched)
   }
 
   levelList.value = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
 }
 
 // ||判断是不是Dashboard路由
-function isDashboard(route?: PartialRouteLocationMatched) {
+function isDashboard(route) {
   const name = route && route.name
   if (!name) {
     return false
   }
-  return (
-    (name as string).trim().toLocaleLowerCase() ===
-    'Index'.toLocaleLowerCase()
-  )
-  return (name as string).trim() === 'Index'
+    return (name as string).trim() === 'Index'
 }
-/** 
-    // 点击面包屑导航可跳转
-  const handleLink = (route: RouteLocationMatched) => {
-    const { path, redirect } = route
-    // 如果是重定向路由 就走重定向路径
-    if (redirect) {
-      router.push(redirect as RouteLocationRaw)
-      return
-    }
-    router.push(path)
-  }
-  */
 
 // ||点击面包屑导航可跳转
-function handleLink(item: RouteLocationMatched) {
+function handleLink(item: LevelList) {
   const { redirect, path } = item
   // ||如果是重定向路由 就走重定向路径
   if (redirect) {
-    router.push(redirect as RouteLocationRaw)
+    router.push(redirect)
     return
   }
   router.push(path)
