@@ -537,12 +537,19 @@ export default {
     choose: 'Pilih',
     error: 'Format file salah, harap unggah jenis gambar, seperti: JPG, file akhiran PNG.',
   },
-  uploadImage: {
+  upload: {
     tip1: 'Ukuran',
     tip2: 'file tidak boleh lebih dari',
     tip3: ' dan harus dalam format',
     tip4: '',
-
+    selectFile: 'Pilih file',
+    fileType1: 'Format file salah, harap unggah file berformat ',
+    fileType2: '!',
+    fileSize: 'Ukuran file unggahan tidak boleh melebihi ',
+    loading: 'Harap tunggu, sedang mengunggah file...',
+    handleExceed1: 'Jumlah file yang diunggah tidak boleh lebih dari',
+    handleExceed2: '!',
+    uploadError: 'Gagal mengunggah file'
   },
   genTable: {
    generate : 'Hasilkan',

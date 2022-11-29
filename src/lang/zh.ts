@@ -136,7 +136,7 @@ export default {
       sizeSmall: '稍小'
   }
 
-},
+  },
   utils: {
     errorCode: {
       err401: '认证失败，无法访问系统资源!',
@@ -531,11 +531,19 @@ export default {
     choose: '选择',
     error: '文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。',
   },
-  uploadImage: {
+  upload: {
     tip1: '请上传',
     tip2: '大小不超过',
     tip3: '格式为',
     tip4: '的文件',
+    selectFile: '选取文件',
+    fileType1: '文件格式不正确, 请上传 ',
+    fileType2: '格式文件!',
+    fileSize: '上传文件大小不能超过 ',
+    loading: '正在上传文件，请稍候...',
+    handleExceed1: '上传文件数量不能超过',
+    handleExceed2: '个!',
+    uploadError: '上传文件失败'
 
   },
   genTable: {
@@ -658,8 +666,8 @@ export default {
     updateTimePlaceholder: '选择更新时间',
     remark: '备注',
     remarkPlaceholder: '请选择备注'
- },
- Error: {
+  },
+  Error: {
    401: '401错误!',
    h2401: '您没有访问权限！',
    h6401: '对不起，您没有访问权限，请不要进行非法操作！您可以返回主页面',
@@ -668,7 +676,5 @@ export default {
    info404: '对不起，您正在寻找的页面不存在。尝试检查URL的错误，然后按浏览器上的刷新按钮或尝试在我们的应用程序中找到其他内容。',
    BacktoHome: '返回首页',
    Pagenotfound: '找不到网页！'
-
-
- }
+  }  
 }

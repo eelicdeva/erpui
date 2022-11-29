@@ -21,14 +21,14 @@
     </el-upload>
     <!-- 上传提示 -->
     <div class="el-upload__tip" v-if="showTip">
-      {{ $t('uploadImage.tip1') }}
+      {{ $t('upload.tip1') }}
       <template v-if="fileSize">
-      {{ $t('uploadImage.tip2') }} <b style="color: #f56c6c">{{ fileSize }}MB</b>
+      {{ $t('upload.tip2') }} <b style="color: #f56c6c">{{ fileSize }}MB</b>
       </template>
       <template v-if="fileType">
-      {{ $t('uploadImage.tip3') }} <b style="color: #f56c6c">{{ fileType.join("/") }}</b>
+      {{ $t('upload.tip3') }} <b style="color: #f56c6c">{{ fileType.join("/") }}</b>
       </template>
-      {{ $t('uploadImage.tip4') }}
+      {{ $t('upload.tip4') }}
     </div>
 
     <el-dialog

@@ -15,14 +15,14 @@
       ref="fileUpload"
     >
       <!-- 上传按钮 -->
-      <el-button type="primary">选取文件</el-button>
+      <el-button type="primary">{{ $t('upload.selectFile') }}</el-button>
     </el-upload>
     <!-- 上传提示 -->
     <div class="el-upload__tip" v-if="showTip">
-      请上传
-      <template v-if="fileSize"> 大小不超过 <b style="color: #f56c6c">{{ fileSize }}MB</b> </template>
-      <template v-if="fileType"> 格式为 <b style="color: #f56c6c">{{ fileType.join("/") }}</b> </template>
-      的文件
+      {{ $t('upload.tip1') }}
+      <template v-if="fileSize"> {{ $t('upload.tip2') }} <b style="color: #f56c6c">{{ fileSize }}MB</b> </template>
+      <template v-if="fileType"> {{ $t('upload.tip3') }} <b style="color: #f56c6c">{{ fileType.join("/") }}</b> </template>
+      {{ $t('upload.tip4') }}
     </div>
     <!-- 文件列表 -->
     <transition-group class="upload-file-list el-upload-list el-upload-list--text" name="el-fade-in-linear" tag="ul">
@@ -31,7 +31,7 @@
           <span class="el-icon-document"> {{ getFileName(file.name) }} </span>
         </el-link>
         <div class="ele-upload-list__item-content-action">
-          <el-link :underline="false" @click="handleDelete(index)" type="danger">删除</el-link>
+          <el-link :underline="false" @click="handleDelete(index)" type="danger">{{ $t('button.delete') }}</el-link>
         </div>
       </li>
     </transition-group>
@@ -41,7 +41,10 @@
 <script lang="ts" setup>
 import { getToken } from "@/utils/auth";
 import { ComponentInternalInstance, computed, getCurrentInstance, ref, watch } from "vue";
+import i18n from '@/lang/index';
 
+
+const {t} = i18n.global;
 // to-do check {transition} router.isReady().then(()=>app.mount('#app'));
 const props = defineProps({
   modelValue: [String, Object, Array],
@@ -107,7 +110,7 @@ function handleBeforeUpload(file) {
     const fileExt = fileName[fileName.length - 1];
     const isTypeOk = props.fileType.indexOf(fileExt) >= 0;
     if (!isTypeOk) {
-      proxy?.$modal.msgError(`文件格式不正确, 请上传${props.fileType.join("/")}格式文件!`);
+      proxy?.$modal.msgError( t('upload.fileType1') + props.fileType.join("/") + t('upload.fileType2'));
       return false;
     }
   }
@@ -115,23 +118,23 @@ function handleBeforeUpload(file) {
   if (props.fileSize) {
     const isLt = file.size / 1024 / 1024 < props.fileSize;
     if (!isLt) {
-      proxy?.$modal.msgError(`上传文件大小不能超过 ${props.fileSize} MB!`);
+      proxy?.$modal.msgError( t('upload.fileSize') + props.fileSize + ' MB!');
       return false;
     }
   }
-  proxy?.$modal.loading("正在上传文件，请稍候...");
+  proxy?.$modal.loading(t('upload.loading'));
   number.value++;
   return true;
 }
 
 // 文件个数超出
 function handleExceed() {
-  proxy?.$modal.msgError(`上传文件数量不能超过 ${props.limit} 个!`);
+  proxy?.$modal.msgError(t('upload.handleExceed1') + props.limit + t('upload.handleExceed2'));
 }
 
 // 上传失败
 function handleUploadError(err) {
-  proxy?.$modal.msgError("上传文件失败");
+  proxy?.$modal.msgError(t('upload.uploadError'));
 }
 
 // 上传成功回调

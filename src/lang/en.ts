@@ -533,12 +533,20 @@ export default {
     choose: 'Choose',
     error: 'The file format is incorrect, please upload the image type, such as: JPG, PNG suffixed files.',
   },
-
-  uploadImage: {
+  upload: {
     tip1: 'Please upload',
     tip2: 'a file with size no larger than',
     tip3: ' in',
     tip4: 'format',
+    selectFile: 'Select file',
+    fileType1: 'The file format is incorrect, please upload a ',
+    fileType2: ' format file!',
+    fileSize: 'Upload file size cannot exceed ',
+    loading: 'Please wait, uploading file...',
+    handleExceed1: 'The number of uploaded files cannot exceed',
+    handleExceed2: '!',
+    uploadError: 'Failed to upload file'
+    
   },
   genTable: {
    generate : 'Generate',
