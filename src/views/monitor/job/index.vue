@@ -112,42 +112,47 @@
             <template #default="scope">
                <el-tooltip content="修改" placement="top">
                   <el-button
-                     type="text"
+                     type="primary"
                      icon="Edit"
                      @click="handleUpdate(scope.row)"
                      v-hasPermi="['monitor:job:edit']"
+                     link
                   ></el-button>
                </el-tooltip>
                <el-tooltip content="删除" placement="top">
                   <el-button
-                     type="text"
+                     type="primary"
                      icon="Delete"
                      @click="handleDelete(scope.row)"
                      v-hasPermi="['monitor:job:remove']"
+                     link
                   ></el-button>
                </el-tooltip>
                <el-tooltip content="执行一次" placement="top">
                   <el-button
-                     type="text"
+                     type="primary"
                      icon="CaretRight"
                      @click="handleRun(scope.row)"
                      v-hasPermi="['monitor:job:changeStatus']"
+                     link
                   ></el-button>
                </el-tooltip>
                <el-tooltip content="任务详细" placement="top">
                   <el-button
-                     type="text"
+                     type="primary"
                      icon="View"
                      @click="handleView(scope.row)"
                      v-hasPermi="['monitor:job:query']"
+                     link
                   ></el-button>
                </el-tooltip>
                <el-tooltip content="调度日志" placement="top">
                   <el-button
-                     type="text"
+                     type="primary"
                      icon="Operation"
                      @click="handleJobLog(scope.row)"
                      v-hasPermi="['monitor:job:query']"
+                     link
                   ></el-button>
                </el-tooltip>
             </template>
