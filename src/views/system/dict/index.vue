@@ -123,20 +123,17 @@
                <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
          </el-table-column>
-         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+         <el-table-column :label="$t('user.operate')" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
-               <el-button
-                  type="text"
-                  icon="Edit"
-                  @click="handleUpdate(scope.row)"
-                  v-hasPermi="['system:dict:edit']"
-               >修改</el-button>
-               <el-button
-                  type="text"
-                  icon="Delete"
-                  @click="handleDelete(scope.row)"
-                  v-hasPermi="['system:dict:remove']"
-               >删除</el-button>
+               <el-button                  
+                  v-for="button in buttons"
+                  :key="button.text"
+                  :type="button.type"
+                  :icon="button.icon"
+                  @click="handleButtonText(scope.row,button.act)"
+                  :v-hasPermi="button.permi"
+                  link
+                >{{ button.text }}</el-button>
             </template>
          </el-table-column>
       </el-table>
@@ -184,7 +181,9 @@
 <script lang="ts" setup name="Dict">
 import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/dict/type";
 import { getCurrentInstance, reactive, ref, toRefs } from "vue";
+import i18n from '@/lang/index';
 
+const {t} = i18n.global;
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
@@ -215,6 +214,20 @@ const data = reactive({
 });
 
 const { queryParams, form, rules } = toRefs(data);
+
+const buttons = [
+   {type: 'primary', text: t('button.edit'), icon: 'Edit', act : 'edit', permi: ['system:dict:edit']}, 
+   {type: 'primary', text: t('button.delete'), icon: 'Delete', act : 'delete', permi: ['system:dict:remove']},
+] as const
+
+function handleButtonText(row, act: string) {
+    if( act == "edit" ){
+      return handleUpdate(row);
+    }
+    if( act == "delete" ){
+      return handleDelete(row);
+    }
+}
 
 /** 查询字典类型列表 */
 function getList() {

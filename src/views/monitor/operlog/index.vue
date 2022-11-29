@@ -119,13 +119,14 @@
                <span>{{ parseTime(scope.row.operTime) }}</span>
             </template>
          </el-table-column>
-         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+         <el-table-column :label="$t('user.operate')" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-button
-                  type="text"
+                  type="primary"
                   icon="View"
                   @click="handleView(scope.row, scope.index)"
                   v-hasPermi="['system:operlog:query']"
+                  link
                >详细</el-button>
             </template>
          </el-table-column>

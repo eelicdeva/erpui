@@ -115,18 +115,16 @@
          </el-table-column>
          <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
             <template #default="scope">
-               <el-button
-                  type="text"
-                  icon="Edit"
-                  @click="handleUpdate(scope.row)"
-                  v-hasPermi="['system:config:edit']"
-               >修改</el-button>
-               <el-button
-                  type="text"
-                  icon="Delete"
-                  @click="handleDelete(scope.row)"
-                  v-hasPermi="['system:config:remove']"
-               >删除</el-button>
+
+               <el-button                  
+                  v-for="button in buttons"
+                  :key="button.text"
+                  :type="button.type"
+                  :icon="button.icon"
+                  @click="handleButtonText(scope.row,button.act)"
+                  :v-hasPermi="button.permi"
+                  link
+                >{{ button.text }}</el-button>
             </template>
          </el-table-column>
       </el-table>
@@ -174,9 +172,11 @@
    </div>
 </template>
 
-<script setup name="Config">
+<script lang="ts" setup name="Config">
 import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from "@/api/system/config";
+import i18n from '@/lang/index';
 
+const {t} = i18n.global;
 const { proxy } = getCurrentInstance();
 const { sys_yes_no } = proxy.useDict("sys_yes_no");
 
@@ -208,6 +208,20 @@ const data = reactive({
 });
 
 const { queryParams, form, rules } = toRefs(data);
+
+const buttons = [
+   {type: 'primary', text: t('button.edit'), icon: 'Edit', act : 'edit', permi: ['system:config:edit']}, 
+   {type: 'primary', text: t('button.delete'), icon: 'Delete', act : 'delete', permi: ['system:config:remove']},
+] as const
+
+function handleButtonText(row, act: string) {
+    if( act == "edit" ){
+      return handleUpdate(row);
+    }
+    if( act == "delete" ){
+      return handleDelete(row);
+    }
+}
 
 /** 查询参数列表 */
 function getList() {
