@@ -11,7 +11,7 @@ import Cookies from 'js-cookie';
 import '@/assets/styles/index.scss';
 // element plus
 import ElementPlus from 'element-plus';
-// locale language
+// locale language -to-do check again App.vue
 import locale from 'element-plus/lib/locale/lang/id';
 // element icons
 import elementIcons from '@/components/SvgIcon/svgicon';
@@ -52,8 +52,8 @@ import TreeSelect from '@/components/TreeSelect/index.vue';
 // 字典标签组件
 import DictTag from '@/components/DictTag/index.vue';
 
-const app = createApp(App);
 const pinia = createPinia();
+const app = createApp(App);
 
 // global Properties/全局方法挂载
 app.config.globalProperties.useDict = useDict;
