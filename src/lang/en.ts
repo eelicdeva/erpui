@@ -134,6 +134,9 @@ export default {
       sizeLarge: 'Large',
       sizeDefault: 'Default',
       sizeSmall: 'Small'
+    }, 
+    topNav:{
+      moreMenu:  'More Menu'
     }
   },
   utils: {
@@ -175,7 +178,7 @@ export default {
 
   },
   register: {
-    title: 'Ruoyi background management system',
+    title: 'EELIC system',
     confirmPassword: 'Confirm Password',
     Register: 'Register',
     login: 'Log in with an existing account',

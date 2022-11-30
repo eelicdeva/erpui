@@ -14,25 +14,26 @@
   </el-image>
 </template>
 
-<script setup>
+<script lang="ts" setup name="ImagePreview">
 import { isExternal } from "@/utils/validate";
+import { computed } from "vue";
 
-const props = defineProps({
-  src: {
-    type: String,
-    required: true
-  },
-  width: {
-    type: [Number, String],
-    default: ""
-  },
-  height: {
-    type: [Number, String],
-    default: ""
-  }
-});
+interface ImagePreviewProps {
+  src: string;
+  width?: [Number, String] | string;
+  height?: [Number, String] | string;
+}
+
+const props = withDefaults(defineProps<ImagePreviewProps>(),{
+  src: "",
+  width:  "",
+  height: ""
+})
 
 const realSrc = computed(() => {
+  if (!props.src) {
+    return;
+  }
   let real_src = props.src.split(",")[0];
   if (isExternal(real_src)) {
     return real_src;
@@ -40,12 +41,15 @@ const realSrc = computed(() => {
   return import.meta.env.VITE_APP_BASE_API + real_src;
 });
 
-const realSrcList = computed(() => {
+const realSrcList = computed(() : string[] | undefined=> {
+  if (!props.src) {
+    return;
+  }
   let real_src_list = props.src.split(",");
-  let srcList = [];
+  let srcList = [] as string[];
   real_src_list.forEach(item => {
     if (isExternal(item)) {
-      return srcList.push(item);
+      return srcList.push(item); 
     }
     return srcList.push(import.meta.env.VITE_APP_BASE_API + item);
   });

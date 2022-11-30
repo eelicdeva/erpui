@@ -25,8 +25,10 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup name="404">
 import i18n from '@/lang/index';
+import { computed } from 'vue';
+
 const {t} = i18n.global
 let message = computed(() => {
   return t('Error.Pagenotfound')

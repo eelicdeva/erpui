@@ -134,8 +134,10 @@ export default {
       sizeLarge: '较大',
       sizeDefault: '默认',
       sizeSmall: '稍小'
-  }
-
+    },
+    topNav:{
+      moreMenu:  '更多菜单'
+    }
   },
   utils: {
     errorCode: {

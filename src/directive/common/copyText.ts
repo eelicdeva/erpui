@@ -2,6 +2,12 @@
 * v-copyText 复制文本内容
 * Copyright (c) 2022 ruoyi
 */
+/**
+ * * v-copyText 复制文本内容
+ * Copyright (c) 2022 ruoyi
+ * // eason to-do
+ * Edit to Typescript, without() document.execCommand )
+ */
 
 export default {
   beforeMount(el, { value, arg }) {

@@ -135,7 +135,10 @@ export default {
       sizeLarge: "Besar",
       sizeDefault: 'Default',
       sizeSmall: 'Kecil'
-    } 
+    }, 
+    topNav:{
+      moreMenu:  'Menu More'
+    }
   },
   utils: {
     errorCode: {
@@ -176,7 +179,7 @@ export default {
     passwordError: 'Password Error',
   },
   register: {
-    title: 'Sistem manajemen latar belakang Ruoyi',
+    title: 'Sistem EELIC',
     confirmPassword: 'Konfirmasi Kata Sandi',
     Register: 'Daftar',
     login: 'Masuk dengan akun yang sudah ada',
