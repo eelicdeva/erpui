@@ -23,7 +23,7 @@ const useSettingsStore = defineStore(
   {
     state: (): UseSettingsStore => ({
       title: '',// type ImportMetaEnv [key: string]: any ?is it string
-      backgroundImage: storageSetting.backgroundImage || 'src/assets/images/WALLPAPER IT 01.jpg',
+      backgroundImage: storageSetting.backgroundImage || 'src/assets/images/login-background1.jpg',
       theme: storageSetting.theme || '#409EFF', //string
       sideTheme: storageSetting.sideTheme || sideTheme, //string
       showSettings: showSettings, //boolean

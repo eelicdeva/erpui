@@ -28,22 +28,18 @@
     <div class="drawer-item">
       <span>{{ $t('settings.theme') }}</span>
       <span class="comp-style">
-        <el-color-picker v-model="theme" :predefine="predefineColors" @change="themeChange"/>
+        <el-color-picker v-model="theme" :predefine="predefineColors" @change="themeChange" />
       </span>
     </div>
-    <span>Background Image</span>
-    <span class="comp-style">
-      <el-select v-model="backgroundImage" placeholder="Please select" @change="backgroundImageChange" >
-        <el-option 
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-          <span> {{ item.label }}  </span>
-          <el-image :src=item.value style="height:32px;float: right"/>
-        </el-option>
-      </el-select>
-    </span>
+    <div class="drawer-item">
+      <span>Background Image</span>
+    </div>
+    <el-select v-model="backgroundImage" placeholder="Please select" @change="backgroundImageChange">
+      <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+        <span> {{ item.label }} </span>
+        <el-image :src=item.value style="height:32px;float: right" />
+      </el-option>
+    </el-select>
     <el-divider />
 
     <h3 class="drawer-title">{{ $t('settings.config') }}</h3>
@@ -104,7 +100,7 @@ import usePermissionStore from '@/stores/modules/permission'
 import i18n from '@/lang/index';
 import { ref, watch } from 'vue'
 
-const {t} = i18n.global;
+const { t } = i18n.global;
 const { proxy } = getCurrentInstance();
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
@@ -114,19 +110,18 @@ const theme = ref(settingsStore.theme);
 const sideTheme = ref(settingsStore.sideTheme);
 const storeSettings = computed(() => settingsStore);
 const predefineColors = ref(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"]);
-const backgroundImage = ref();
+const backgroundImage = ref(settingsStore.backgroundImage);
 const options = ref([
-  {value: 'src/assets/images/WALLPAPER IT 01.jpg', label: 'Background 1',},
-  {value: 'src/assets/images/WALLPAPER IT 02.jpg', label: 'Background 2',},
-  {value: 'src/assets/images/WALLPAPER IT 03.jpg', label: 'Background 3',},
-  {value: 'src/assets/images/WALLPAPER IT 04.jpg', label: 'Background 4',},
-  {value: 'src/assets/images/WALLPAPER IT 05.jpg', label: 'Background 5',},
-  {value: 'src/assets/images/WALLPAPER IT 06.jpg', label: 'Background 6',},
-  {value: 'src/assets/images/WALLPAPER IT 07.jpg', label: 'Background 7',},
-  {value: 'src/assets/images/WALLPAPER IT 08.jpg', label: 'Background 8',},
-  {value: 'src/assets/images/WALLPAPER IT 09.jpg', label: 'Background 9',},
-  {value: 'src/assets/images/WALLPAPER IT 10.jpg', label: 'Background 10',},
-  {value: 'src/assets/images/login-background.jpg', label: 'Background 11',},
+  { value: 'src/assets/images/login-background1.jpg', label: 'Background 1', },
+  { value: 'src/assets/images/login-background2.jpg', label: 'Background 2', },
+  { value: 'src/assets/images/login-background3.jpg', label: 'Background 3', },
+  { value: 'src/assets/images/login-background4.jpg', label: 'Background 4', },
+  { value: 'src/assets/images/login-background5.jpg', label: 'Background 5', },
+  { value: 'src/assets/images/login-background6.jpg', label: 'Background 6', },
+  { value: 'src/assets/images/login-background7.jpg', label: 'Background 7', },
+  { value: 'src/assets/images/login-background8.jpg', label: 'Background 8', },
+  { value: 'src/assets/images/login-background9.jpg', label: 'Background 9', },
+  { value: 'src/assets/images/login-background10.jpg', label: 'Background 10', },
 ]);
 
 /** 是否需要topnav */
@@ -211,7 +206,7 @@ function openSetting() {
 defineExpose({
   openSetting,
 })
-watch(backgroundImage, () => {console.log(backgroundImage.value)})
+watch(backgroundImage, () => { console.log(backgroundImage.value) })
 </script>
 
 <style lang='scss' scoped>
@@ -220,10 +215,12 @@ watch(backgroundImage, () => {console.log(backgroundImage.value)})
   color: rgba(0, 0, 0, 0.85);
   line-height: 22px;
   font-weight: bold;
+
   .drawer-title {
     font-size: 14px;
   }
 }
+
 .setting-drawer-block-checbox {
   display: flex;
   justify-content: flex-start;
