@@ -518,9 +518,10 @@ export default {
     submit: '确 定',
     submit2: '提交',
     success: '成功',
-    successModify: '修改成功'
-
-    
+    successModify: '修改成功',
+    iconSelectPlaceholder: '请输入图标名称',
+    hasPermi: '请设置操作权限标签值',
+    hasRole: '请设置角色权限标签值',
   },
   navbar: {
     personalCenter: '个人中心',
@@ -545,8 +546,14 @@ export default {
     loading: '正在上传文件，请稍候...',
     handleExceed1: '上传文件数量不能超过',
     handleExceed2: '个!',
-    uploadError: '上传文件失败'
-
+    uploadError: '上传文件失败',
+    imageType1: '文件格式不正确, 请上传 ',
+    imageType2: ' 图片格式文件! ',
+    avatarType: '上传头像图片大小不能超过 ',
+    imageloading: '正在上传图片，请稍候...',
+    imageExceed1: '上传文件数量不能超过  ',
+    imageExceed2: ' 个!',
+    imageFailed: '上传图片失败',
   },
   genTable: {
    generate : '生成',
