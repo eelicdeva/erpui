@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+    <div class="login" :style="{'background-image': 'url(' + backgroundImage + ')'}">
     <!-- :rules="loginRules" -->
     <el-form ref="loginRef" 
     :model="loginForm" 
@@ -85,6 +85,8 @@ import { getCodeImg, getPublicKey } from "@/api/login";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 import useUserStore from "@/stores/modules/user";
 import LangSelect from "@/components/LangSelect/index.vue";
+import useSettingsStore from '@/stores/modules/settings';
+import { throwStatement } from "@babel/types";
 //import ElForm from "element-plus/es/components/form";
 
 //const loginRef = ref([] as Array<HTMLElement>)
@@ -110,9 +112,10 @@ export default {
   },
    setup() {  
     const userStore = useUserStore();
+    const settingsStore = useSettingsStore();
     const router = useRouter();
     return {
-      userStore, router
+      userStore, settingsStore, router
     }
   },
   computed: {
@@ -134,6 +137,9 @@ export default {
         ],
       };
     },
+    backgroundImage: function () {
+      return this.settingsStore.backgroundImage
+    }
   },
   watch: {
     // $route: {
@@ -142,7 +148,6 @@ export default {
     //   },
     //   immediate: true,
     // },
-    
   },
   created() {
       this.getCode();
@@ -199,8 +204,6 @@ export default {
     },
     getPublic() {
       getPublicKey().then((res) => {
-
-
       });
     },
 
@@ -224,7 +227,6 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-image: url("../assets/images/login-background.jpg");
   background-size: cover;
 }
 .title {

@@ -31,6 +31,19 @@
         <el-color-picker v-model="theme" :predefine="predefineColors" @change="themeChange"/>
       </span>
     </div>
+    <span>Background Image</span>
+    <span class="comp-style">
+      <el-select v-model="backgroundImage" placeholder="Please select" @change="backgroundImageChange" >
+        <el-option 
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+          <span> {{ item.label }}  </span>
+          <el-image :src=item.value style="height:32px;float: right"/>
+        </el-option>
+      </el-select>
+    </span>
     <el-divider />
 
     <h3 class="drawer-title">{{ $t('settings.config') }}</h3>
@@ -89,7 +102,7 @@ import useAppStore from '@/stores/modules/app'
 import useSettingsStore from '@/stores/modules/settings'
 import usePermissionStore from '@/stores/modules/permission'
 import i18n from '@/lang/index';
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const {t} = i18n.global;
 const { proxy } = getCurrentInstance();
@@ -101,6 +114,20 @@ const theme = ref(settingsStore.theme);
 const sideTheme = ref(settingsStore.sideTheme);
 const storeSettings = computed(() => settingsStore);
 const predefineColors = ref(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"]);
+const backgroundImage = ref();
+const options = ref([
+  {value: 'src/assets/images/WALLPAPER IT 01.jpg', label: 'Background 1',},
+  {value: 'src/assets/images/WALLPAPER IT 02.jpg', label: 'Background 2',},
+  {value: 'src/assets/images/WALLPAPER IT 03.jpg', label: 'Background 3',},
+  {value: 'src/assets/images/WALLPAPER IT 04.jpg', label: 'Background 4',},
+  {value: 'src/assets/images/WALLPAPER IT 05.jpg', label: 'Background 5',},
+  {value: 'src/assets/images/WALLPAPER IT 06.jpg', label: 'Background 6',},
+  {value: 'src/assets/images/WALLPAPER IT 07.jpg', label: 'Background 7',},
+  {value: 'src/assets/images/WALLPAPER IT 08.jpg', label: 'Background 8',},
+  {value: 'src/assets/images/WALLPAPER IT 09.jpg', label: 'Background 9',},
+  {value: 'src/assets/images/WALLPAPER IT 10.jpg', label: 'Background 10',},
+  {value: 'src/assets/images/login-background.jpg', label: 'Background 11',},
+]);
 
 /** 是否需要topnav */
 const topNav = computed({
@@ -152,6 +179,11 @@ function handleTheme(val) {
   settingsStore.changeSetting({ key: 'sideTheme', value: val })
   sideTheme.value = val;
 }
+
+function backgroundImageChange(val) {
+  settingsStore.changeSetting({ key: 'backgroundImage', value: val })
+  backgroundImage.value = val;
+}
 function saveSetting() {
   proxy.$modal.loading(t('settings.loading'));
   let layoutSetting = {
@@ -161,7 +193,8 @@ function saveSetting() {
     "sidebarLogo": storeSettings.value.sidebarLogo,
     "dynamicTitle": storeSettings.value.dynamicTitle,
     "sideTheme": storeSettings.value.sideTheme,
-    "theme": storeSettings.value.theme
+    "theme": storeSettings.value.theme,
+    "backgroundImage": storeSettings.value.backgroundImage
   };
   localStorage.setItem("layout-setting", JSON.stringify(layoutSetting));
   setTimeout(proxy.$modal.closeLoading(), 1000)
@@ -178,6 +211,7 @@ function openSetting() {
 defineExpose({
   openSetting,
 })
+watch(backgroundImage, () => {console.log(backgroundImage.value)})
 </script>
 
 <style lang='scss' scoped>
