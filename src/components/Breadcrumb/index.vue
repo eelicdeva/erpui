@@ -47,7 +47,7 @@ function getBreadcrumb() {
   if (!isDashboard(first)) {
     matched = ([{ path: '/index', 
                   meta: { title: t('menu.frontPage') } 
-                }]).concat(matched).concat(matched)
+                }]).concat(matched)
   }
 
   levelList.value = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)

@@ -12,22 +12,32 @@
       class="header-search-select"
       @change="change"
     >
-      <el-option v-for="option in options" :key="option.item.path" :value="option.item" :label="option.item.title.join(' > ')" />
+      <el-option v-for="option in options" :key="option.item.path" :value="option.item" :label="option.item.title + (' > ')" />
     </el-select>
   </div>
 </template>
 
-<script setup>
-import Fuse from 'fuse.js'
-import { getNormalPath } from '@/utils/ruoyi'
-import { isHttp } from '@/utils/validate'
-import usePermissionStore from '@/stores/modules/permission'
+<script lang="ts" setup name="HeaderSearch">
+import Fuse from 'fuse.js'; // ||fuse.js没有依赖关系,模糊搜索
+import { getNormalPath } from '@/utils/ruoyi';
+import { isHttp } from '@/utils/validate';
+import usePermissionStore from '@/stores/modules/permission';
+import { computed, nextTick, onMounted, ref, watch, watchEffect } from 'vue';
+import type { Ref } from 'vue';
+import { useRouter, _RouteRecordBase } from 'vue-router';
 
+interface Option {
+  item:  {
+    path: string;
+    title: string[];
+  }  
+}
 const search = ref('');
-const options = ref([]);
+const options: Ref<Option[]> = ref([]);
 const searchPool = ref([]);
 const show = ref(false);
 const fuse = ref(undefined);
+console.log(fuse)
 const headerSearchSelectRef = ref(null);
 const router = useRouter();
 const routes = computed(() => usePermissionStore().routes);
@@ -110,7 +120,7 @@ function generateRoutes(routes, basePath = '', prefixTitle = []) {
   }
   return res
 }
-function querySearch(query) {
+function querySearch(query: string) {
   if (query !== '') {
     options.value = fuse.value.search(query)
   } else {

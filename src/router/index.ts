@@ -2,7 +2,6 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import Layout from '@/layout/index.vue';
 import i18n from '@/lang/index';
-import type { RouteRecordRaw, Router, _RouteRecordBase, RouteLocationNormalized } from 'vue-router';
 const {t} = i18n.global;
 /**
  * Note: Coustom router setting || 路由配置项
@@ -48,7 +47,7 @@ const {t} = i18n.global;
  * @property { boolean } children.meta.affix -option ?: with homepage | without others
  * @note component type: {RouteRecordSingleViewWithChildren.component?: RawRouteComponent | null | undefined};
  */
-export const constantRoutes: Readonly<Array<RouteRecordRaw>> = [
+export const constantRoutes = [
   {
     path: '/redirect',
     component: Layout,
@@ -144,7 +143,7 @@ export const constantRoutes: Readonly<Array<RouteRecordRaw>> = [
  * @property { string } children.meta.activeMenu -required
  * @note component type: {RouteRecordSingleViewWithChildren.component?: RawRouteComponent | null | undefined};
  */
-export const dynamicRoutes: Array<RouteRecordRaw> = [
+export const dynamicRoutes = [
   {
     path: '/system/user-auth',
     component: Layout,
@@ -290,10 +289,10 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
  * @property { functions } router.addRoute() ...functions check Router document
  * @property { any } router.... ...the others check Router document
  */
-const router: Router = createRouter({
+const router = createRouter({
   history: createWebHistory(),// RouterHistory,
   routes : constantRoutes, // Coustom Router: Readonly<Array<RouteRecordRaw>>  ||点击浏览器的前进后退或切换导航触发
-  scrollBehavior(to: RouteLocationNormalized, from: RouteLocationNormalized, savedPosition){  // ||return 期望滚动到哪个的位置
+  scrollBehavior(to, from, savedPosition){  // ||return 期望滚动到哪个的位置
     if (savedPosition) {
       return savedPosition
     } else {

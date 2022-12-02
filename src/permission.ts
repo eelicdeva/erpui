@@ -34,7 +34,7 @@ router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, n
         useUserStore().getInfo().then(() => {
           isRelogin.show = false
           //to-do accessRoutes : ConcatArray<RouteRecordRaw>
-          usePermissionStore().generateRoutes().then((accessRoutes) => { 
+          usePermissionStore().generateRoutes().then((accessRoutes: any) => { 
             // ||根据roles权限生成可访问的路由表
             accessRoutes.forEach((route: RouteRecordNormalized) => {
               if (!isHttp(route.path)) {

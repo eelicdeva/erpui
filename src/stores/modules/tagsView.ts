@@ -1,6 +1,4 @@
 import { defineStore } from 'pinia'
-import { RouteLocationNormalizedLoaded } from 'vue-router';
-// to-do check item.name again
 
 interface VisitedView {
   name: string; 
@@ -9,12 +7,14 @@ interface VisitedView {
     title: string; 
     link: string;
     affix: boolean;
+    noCache: boolean;
   }
 }
 interface IframeView {
   path: string;
   meta: {
     title: string;
+    link: string;
   }
 }
 
@@ -47,13 +47,13 @@ const useTagsViewStore = defineStore(
           })
         )
       },
-      addCachedView(view) {
+      addCachedView(view: VisitedView) {
         if (this.cachedViews.includes(view.name)) return
         if (!view.meta.noCache) {
           this.cachedViews.push(view.name)
         }
       },
-      delView(view) {
+      delView(view: VisitedView ) {
         return new Promise(resolve => {
           this.delVisitedView(view)
           this.delCachedView(view)
@@ -63,7 +63,7 @@ const useTagsViewStore = defineStore(
           })
         })
       },
-      delVisitedView(view) {
+      delVisitedView(view: VisitedView) {
         return new Promise(resolve => {
           for (const [i, v] of this.visitedViews.entries()) {
             if (v.path === view.path) {
@@ -81,7 +81,7 @@ const useTagsViewStore = defineStore(
           resolve([...this.iframeViews])
         })
       },
-      delCachedView(view: VisitedView) {   // to-do check the defined string
+      delCachedView(view: VisitedView) {  
         return new Promise(resolve => {
           const index = this.cachedViews.indexOf(view.name)
           index > -1 && this.cachedViews.splice(index, 1)
@@ -142,7 +142,7 @@ const useTagsViewStore = defineStore(
           resolve([...this.cachedViews])
         })
       },
-      updateVisitedView(view: RouteLocationNormalizedLoaded) {   //check definded RouteLocationNormalizedLoaded
+      updateVisitedView(view: VisitedView ) {   //check definded RouteLocationNormalizedLoaded
         for (let v of this.visitedViews) {
           if (v.path === view.path) {
             v = Object.assign(v, view)

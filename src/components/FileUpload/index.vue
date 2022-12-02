@@ -38,9 +38,10 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="FileUpload">
 import { getToken } from "@/utils/auth";
-import { ComponentInternalInstance, computed, getCurrentInstance, ref, watch } from "vue";
+import { computed, getCurrentInstance, ref, watch } from "vue";
+import type { ComponentInternalInstance } from "vue";
 import i18n from '@/lang/index';
 
 

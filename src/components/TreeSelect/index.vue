@@ -28,9 +28,9 @@
   </div>
 </template>
 
-<script lang="ts" setup >
-import { ComponentInternalInstance, computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue';
-
+<script lang="ts" setup name="TreeSelect">
+import { computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue';
+import type { ComponentInternalInstance } from 'vue';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 

@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="InnerLink">
 import { ref } from 'vue';
 import type { Ref } from 'vue';
 

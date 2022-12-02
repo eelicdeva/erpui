@@ -45,11 +45,11 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="ImageUpload">
 import { getToken } from "@/utils/auth";
 import { ElUpload, ElIcon, ElDialog } from "element-plus";
-import { ComponentInternalInstance, computed, getCurrentInstance, ref, watch } from "vue";
-
+import { computed, getCurrentInstance, ref, watch } from "vue";
+import type { ComponentInternalInstance } from "vue";
 const props = defineProps({
   modelValue: [String, Object, Array],
   // 图片数量限制
