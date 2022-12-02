@@ -49,7 +49,9 @@
 import { getToken } from "@/utils/auth";
 import { ElUpload, ElIcon, ElDialog } from "element-plus";
 import { computed, getCurrentInstance, ref, watch } from "vue";
-import type { ComponentInternalInstance } from "vue";
+import type { ComponentInternalInstance } from "vue";import i18n from '@/lang/index';
+
+const {t} = i18n.global;
 const props = defineProps({
   modelValue: [String, Object, Array],
   // 图片数量限制
@@ -145,29 +147,29 @@ function handleBeforeUpload(file) {
   }
   if (!isImg) {
     proxy.$modal.msgError(
-      `文件格式不正确, 请上传${props.fileType.join("/")}图片格式文件!`
+      t('upload.imageType1') + props.fileType.join("/") + t('upload.imageType2')
     );
     return false;
   }
   if (props.fileSize) {
     const isLt = file.size / 1024 / 1024 < props.fileSize;
     if (!isLt) {
-      proxy.$modal.msgError(`上传头像图片大小不能超过 ${props.fileSize} MB!`);
+      proxy.$modal.msgError(t('upload.avatarType') + props.fileSize + "MB!");
       return false;
     }
   }
-  proxy.$modal.loading("正在上传图片，请稍候...");
+  proxy.$modal.loading(t('upload.imageloading'));
   number.value++;
 }
 
 // 文件个数超出
 function handleExceed() {
-  proxy.$modal.msgError(`上传文件数量不能超过 ${props.limit} 个!`);
+  proxy.$modal.msgError(t('upload.imageExceed1') + props.limit + t('upload.imageExceed2'));
 }
 
 // 上传失败
 function handleUploadError() {
-  proxy.$modal.msgError("上传图片失败");
+  proxy.$modal.msgError(t('upload.imageFailed'));
   proxy.$modal.closeLoading();
 }
 

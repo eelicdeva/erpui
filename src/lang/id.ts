@@ -525,9 +525,10 @@ export default {
     submit: 'OK',
     submit2: 'Kirim',
     success: 'Berhasil',
-    successModify:'Berhasil diubah'
-
-
+    successModify:'Berhasil diubah',
+    iconSelectPlaceholder: 'Masukkan nama ikon',
+    hasPermi: 'Harap tetapkan nilai label izin operasi',
+    hasRole: 'Harap tetapkan nilai label izin peran',
   },
   navbar: {
     personalCenter: 'Pusat Pribadi',
@@ -552,7 +553,14 @@ export default {
     loading: 'Harap tunggu, sedang mengunggah file...',
     handleExceed1: 'Jumlah file yang diunggah tidak boleh lebih dari',
     handleExceed2: '!',
-    uploadError: 'Gagal mengunggah file'
+    uploadError: 'Gagal mengunggah file',
+    imageType1: 'Format file salah, harap unggah file format gambar ',
+    imageType2: '!',
+    avatarType: 'Ukuran gambar avatar yang diunggah tidak boleh melebihi ',
+    imageloading: 'Harap tunggu, mengunggah gambar...',
+    imageExceed1: 'Jumlah file yang diunggah tidak boleh lebih dari ',
+    imageExceed2: '!',
+    imageFailed: 'Gagal mengunggah gambar',
   },
   genTable: {
    generate : 'Hasilkan',

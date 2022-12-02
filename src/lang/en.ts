@@ -523,7 +523,10 @@ export default {
     submit: 'OK',
     submit2: 'Submit',
     success: 'Success',
-    successModify:'Successfully modified'
+    successModify:'Successfully modified',
+    iconSelectPlaceholder: 'Please enter an icon name',
+    hasPermi: 'Please set the operation permission label value',
+    hasRole: 'Please set the role permission label value',
   },
   navbar: {
     personalCenter: 'Personal Center',
@@ -548,8 +551,14 @@ export default {
     loading: 'Please wait, uploading file...',
     handleExceed1: 'The number of uploaded files cannot exceed',
     handleExceed2: '!',
-    uploadError: 'Failed to upload file'
-    
+    uploadError: 'Failed to upload file',
+    imageType1: 'The file format is incorrect, please upload ',
+    imageType2: ' image format file!',
+    avatarType: 'The size of the uploaded avatar image cannot exceed ',
+    imageloading: 'Please wait, uploading image...',
+    imageExceed1: 'The number of uploaded files cannot exceed ',
+    imageExceed2: '!',
+    imageFailed: 'Failed to upload image',
   },
   genTable: {
    generate : 'Generate',

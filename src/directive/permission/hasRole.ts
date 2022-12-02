@@ -4,12 +4,14 @@
  */
  
 import useUserStore from '@/stores/modules/user'
+import i18n from '@/lang/index'
 
 export default {
   mounted(el, binding, vnode) {
     const { value } = binding
     const super_admin = "admin";
     const roles = useUserStore().roles
+    const {t} = i18n.global
 
     if (value && value instanceof Array && value.length > 0) {
       const roleFlag = value
@@ -22,7 +24,7 @@ export default {
         el.parentNode && el.parentNode.removeChild(el)
       }
     } else {
-      throw new Error(`请设置角色权限标签值"`)
+      throw new Error(t('button.hasRole'))
     }
   }
 }

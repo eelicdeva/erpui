@@ -4,7 +4,7 @@
       v-model="iconName"
       style="position: relative;"
       clearable
-      placeholder="请输入图标名称"
+      :placeholder="$t('button.iconSelectPlaceholder')"
       @clear="filterIcons"
       @input="filterIcons"
     >
