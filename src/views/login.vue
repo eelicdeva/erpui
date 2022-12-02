@@ -86,9 +86,7 @@ import { encrypt, decrypt } from "@/utils/jsencrypt";
 import useUserStore from "@/stores/modules/user";
 import LangSelect from "@/components/LangSelect/index.vue";
 import useSettingsStore from '@/stores/modules/settings';
-import { throwStatement } from "@babel/types";
 //import ElForm from "element-plus/es/components/form";
-
 //const loginRef = ref([] as Array<HTMLElement>)
 export default {
   name: "login",
@@ -156,11 +154,12 @@ export default {
   },
   methods: {
     langListen() {      
-      this.$refs.loginRef.clearValidate();
-      this.$nextTick(() => this.$refs.loginRef.validate(()=>{}));
+      const loginRef: any = this.$refs.loginRef;
+      loginRef.clearValidate();
+      this.$nextTick(() => loginRef.validate(()=>{})); //
    },
     handleLogin() {    
-      this.$refs.loginRef.validate((valid) => {
+      (this.$refs.loginRef as any).validate((valid) => {
         if (valid) {
          
           this.loading = true;
@@ -177,7 +176,7 @@ export default {
           }
 
           if (this.loginForm.lang != Cookies.get("lang")) {
-            this.loginForm.lang = Cookies.get("lang");          
+            (this.loginForm.lang as any) = Cookies.get("lang");          
           };
 
           // 调用action的登录方法

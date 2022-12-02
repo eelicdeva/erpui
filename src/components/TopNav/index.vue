@@ -13,7 +13,7 @@
     </template>
 
     <!-- 顶部菜单超出数量折叠 -->
-    <el-sub-menu :style="{'--theme': theme}" index="more" v-if="topMenus.length > visibleNumber">
+    <el-sub-menu :style="{'--theme': theme}" index="more" v-if="topMenus.length >  visibleNumber">
       <template #title>{{ $t('components.topNav.moreMenu') }}</template>
       <template v-for="(item, index) in topMenus">
         <el-menu-item
@@ -37,11 +37,11 @@ import usePermissionStore from '@/stores/modules/permission';
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-// 顶部栏初始数
-var visibleNumber: number = ref(null) ;
-// 当前激活菜单的 index
-const currentIndex = ref(null);
-// 隐藏侧边栏路由
+// ||顶部栏初始数
+var visibleNumber = ref(0); 
+// ||当前激活菜单的 index
+const currentIndex = ref('');
+// ||隐藏侧边栏路由
 const hideList = ['/index', '/user/profile'];
 
 const appStore = useAppStore()
@@ -49,44 +49,48 @@ const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
 const route = useRoute(); // instance RouteLocationNormalizedLoaded
 const router = useRouter(); // instance Router
-
-// 主题颜色
+// ||主题颜色
 const theme = computed(() => settingsStore.theme);
-// 所有的路由信息
-const routers = computed(() => permissionStore.topbarRouters);
-
+// ||所有的路由信息
+const routers = computed(() => permissionStore.topbarRouters) ;
+console.log(routers)
 interface TopMenu {
-  parentPath: string;
   name: string;   
+  parentPath?: string;
   path: string;
-  hidden: boolean;
+  hidden?: boolean;
   redirect?: string;
   component: string | any; 
   alwaysShow?: boolean;
   permissions?: string[];
   roles?: string[];  
-  meta: MetaMenu
+  meta: MetaMenu;
+  children?: TopMenu[];
 };
  
 interface MetaMenu {
     title: string;       // ||设置该路由在侧边栏和面包屑中展示的名字
-    icon: string;        // || 设置该路由的图标，对应路径src/assets/icons/svg 
-    noCache: boolean;   // || true:则不会被 <keep-alive> 缓存(默认 false)
-    link: string;      // ||外部链接
+    icon?: string;        // || 设置该路由的图标，对应路径src/assets/icons/svg 
+    noCache?: boolean;   // || true:则不会被 <keep-alive> 缓存(默认 false)
+    link?: string;      // ||外部链接
     activeMenu?: string;  // is it need?
     affix?: boolean;    // for the tagsview
     breadcrumb?: boolean;  // for the Breadrumb
   };
 
+  console.log("router: ")
+  console.log(routers)
 // 顶部显示菜单
-const topMenus = computed(() => {
-  let topMenus: TopMenu[] = [];
-  routers.value.map((menu) => {
-    if (menu.hidden !== true) {
+const topMenus = computed<TopMenu[]>(() => {
+  let topMenus = [] as TopMenu[];
+   
+  routers.value.map((menu ) => {
+    if (menu.hidden !== true) {   //|| http外链接的情况
       // ||兼容顶部栏一级菜单内部跳转
-      if (menu.path === "/") {
-        if (!menu.children===undefined){ //!menu.children===undefined
-          topMenus.push(menu.children[0]);}  //to-do check
+      if (menu.path === "/") {  // || 没有子路由的情况
+                                           // ||普通嵌套子路由 !menu.children===undefined
+        topMenus.push((menu.children as TopMenu[])[0])
+          //to-do check
       } else {
           topMenus.push(menu);
       }
@@ -94,9 +98,6 @@ const topMenus = computed(() => {
   })
   return topMenus;
 })
-console.log('topMenus: ')
-console.log( topMenus)
-
 
 // 设置子路由
 const childrenMenus = computed(() => {
@@ -130,7 +131,7 @@ const activeMenu = computed(() => {
     if (!route.meta.link) {
         appStore.toggleSideBarHide(false);
     }
-  } else if(!route.children) {
+  } else { //  if(!route.hasOwnProperty("children"))   to-do route didn't has children
     activePath = path;
     appStore.toggleSideBarHide(true);
   }
@@ -142,16 +143,16 @@ const activeMenu = computed(() => {
 
 function setVisibleNumber() {
   const width = document.body.getBoundingClientRect().width / 3;
-  visibleNumber = parseInt(String(width / 85));
+  visibleNumber.value = parseInt(String(width / 85));
 }
 
-function handleSelect(key, keyPath) {
+function handleSelect(key: string, keyPath: string) {
   currentIndex.value = key;
   const route = routers.value.find(item => item.path === key);
   if (isHttp(key)) {
     // http(s):// 路径新窗口打开
     window.open(key, "_blank");
-  } else if (!route || !route.children) {
+  } else if (!route || !route.children) {   
     // 没有子路由路径内部打开
     router.push({ path: key });
     appStore.toggleSideBarHide(true);

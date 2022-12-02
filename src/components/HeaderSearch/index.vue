@@ -23,21 +23,25 @@ import { getNormalPath } from '@/utils/ruoyi';
 import { isHttp } from '@/utils/validate';
 import usePermissionStore from '@/stores/modules/permission';
 import { computed, nextTick, onMounted, ref, watch, watchEffect } from 'vue';
-import type { Ref } from 'vue';
 import { useRouter, _RouteRecordBase } from 'vue-router';
 
-interface Option {
-  item:  {
+interface OptionData {
+  item:{  
     path: string;
     title: string[];
-  }  
+  }
 }
+
+interface SearchData {
+  path:  string;
+  title: string[];
+}
+
 const search = ref('');
-const options: Ref<Option[]> = ref([]);
-const searchPool = ref([]);
+const options = ref([] as OptionData[]);
+const searchPool = ref([] as SearchData[]) ;
 const show = ref(false);
-const fuse = ref(undefined);
-console.log(fuse)
+const fuse = ref() ;
 const headerSearchSelectRef = ref(null);
 const router = useRouter();
 const routes = computed(() => usePermissionStore().routes);
@@ -45,20 +49,20 @@ const routes = computed(() => usePermissionStore().routes);
 function click() {
   show.value = !show.value
   if (show.value) {
-    headerSearchSelectRef.value && headerSearchSelectRef.value.focus()
+    headerSearchSelectRef.value && (headerSearchSelectRef.value as HTMLSelectElement).focus()
   }
 };
 function close() {
-  headerSearchSelectRef.value && headerSearchSelectRef.value.blur()
+  headerSearchSelectRef.value && (headerSearchSelectRef.value as HTMLSelectElement).blur()
   options.value = []
   show.value = false
 }
-function change(val) {
+function change(val: { path: string; }) {
   const path = val.path;
   if (isHttp(path)) {
     // http(s):// 路径新窗口打开
     const pindex = path.indexOf("http");
-    window.open(path.substr(pindex, path.length), "_blank");
+    window.open(path.slice(pindex, path.length), "_blank");
   } else {
     router.push(path)
   }
@@ -75,7 +79,7 @@ function initFuse(list) {
     threshold: 0.4,
     location: 0,
     distance: 100,
-    maxPatternLength: 32,
+    //maxPatternLength: 32, // fuse Added ability to search patterns longer > 32 characters remove this setting.
     minMatchCharLength: 1,
     keys: [{
       name: 'title',
@@ -86,22 +90,22 @@ function initFuse(list) {
     }]
   })
 }
+
 // Filter out the routes that can be displayed in the sidebar
 // And generate the internationalized title
-function generateRoutes(routes, basePath = '', prefixTitle = []) {
-  let res = []
-
+function generateRoutes(routes, basePath = '', prefixTitle= [] ) {
+  let res: SearchData[] = [] ;
   for (const r of routes) {
     // skip hidden router
     if (r.hidden) { continue }
     const p = r.path.length > 0 && r.path[0] === '/' ? r.path : '/' + r.path;
     const data = {
-      path: !isHttp(r.path) ? getNormalPath(basePath + p) : r.path,
-      title: [...prefixTitle]
+      path: !isHttp(r.path) ? getNormalPath(basePath + p) : r.path as string,
+      title: [...prefixTitle ] as string[]
     }
 
     if (r.meta && r.meta.title) {
-      data.title = [...data.title, r.meta.title]
+      (data).title = [...data.title, r.meta.title]
 
       if (r.redirect !== 'noRedirect') {
         // only push the routes with title
@@ -112,7 +116,7 @@ function generateRoutes(routes, basePath = '', prefixTitle = []) {
 
     // recursive child routes
     if (r.children) {
-      const tempRoutes = generateRoutes(r.children, data.path, data.title)
+      const tempRoutes = generateRoutes(r.children, data.path, data.title=[])
       if (tempRoutes.length >= 1) {
         res = [...res, ...tempRoutes]
       }

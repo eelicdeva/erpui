@@ -43,6 +43,8 @@ declare module 'vue-router'{
     permissions?: string[];                 // coustom permissions: ['a:a:a', 'b:b:b']||访问路由的菜单权限
     roles?: string[];                       // coustom ['admin', 'common'] ||访问路由的角色权限
     alwaysShow?: boolean;                   // coustom true = nochildren||当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面    
+    permissions?: string[];
+    roles?: string[];  
   };
   interface RouteMeta {
     title: string;       // 设置该路由在侧边栏和面包屑中展示的名字

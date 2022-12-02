@@ -8,16 +8,16 @@ import InnerLink from '@/layout/components/InnerLink/index.vue'
 import { RouteRecordRaw } from 'vue-router'
 
 interface BasicRouter {
-  parentPath: string; // to-do check is it need?
   name: string;   
   path: string;
-  hidden: boolean;
+  parentPath?: string; 
+  hidden?: boolean;
   redirect?: string;
   component: string | any; 
   alwaysShow?: boolean;
   permissions?: string[];
   roles?: string[];     
-  meta?: CustomMeta;
+  meta: CustomMeta;
 }
 
 interface  CustomRoute extends BasicRouter{   
@@ -26,9 +26,9 @@ interface  CustomRoute extends BasicRouter{
 
 interface CustomMeta {
   title: string;       // ||设置该路由在侧边栏和面包屑中展示的名字
-  icon: string;        // || 设置该路由的图标，对应路径src/assets/icons/svg 
-  noCache: boolean;   // || true:则不会被 <keep-alive> 缓存(默认 false)
-  link: string;      // ||外部链接
+  icon?: string;        // || 设置该路由的图标，对应路径src/assets/icons/svg 
+  noCache?: boolean;   // || true:则不会被 <keep-alive> 缓存(默认 false)
+  link?: string;      // ||外部链接
   activeMenu?: string;  // is it need?
   affix?: boolean;    // for the tagsview
   breadcrumb?: boolean;  // for the Breadrumb

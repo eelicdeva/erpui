@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { RouteLocationRaw } from 'vue-router'
+import Fuse from 'fuse.js'
 // 全局自定义属性
 // 处理  类型“AxiosResponse<any, any>”上不存在属性“errorinfo”。ts(2339)
 /*
@@ -20,6 +21,7 @@ declare module "axios" {
     export function create(config?: AxiosRequestConfig): AxiosInstance;
 }
 */
+declare module 'fuse.js' ;
 
 declare module 'axios' {
   interface AxiosInstance {

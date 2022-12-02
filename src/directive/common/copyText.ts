@@ -41,7 +41,7 @@ function copyTextToClipboard(input, { target = document.body } = {}) {
   element.style.left = '-9999px';
   element.style.fontSize = '12pt'; // Prevent zooming on iOS
 
-  const selection = document.getSelection();
+  const selection = document.getSelection() as Selection ;
   const originalRange = selection.rangeCount > 0 && selection.getRangeAt(0);
 
   target.append(element);
@@ -65,7 +65,7 @@ function copyTextToClipboard(input, { target = document.body } = {}) {
 
   // Get the focus back on the previously focused element, if any
   if (previouslyFocusedElement) {
-    previouslyFocusedElement.focus();
+    (previouslyFocusedElement as HTMLTextAreaElement).focus();
   }
 
   return isSuccess;
