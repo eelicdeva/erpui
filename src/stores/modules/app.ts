@@ -16,7 +16,8 @@ interface UseAppStore {
 const useAppStore = defineStore('app', {
     state: (): UseAppStore => ({
       sidebar: {
-        opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus')! : true,
+        // 0:false? !!(not null undefined & '' run)
+        opened: Cookies.get('sidebarStatus') ? !!+Number(Cookies.get('sidebarStatus')) : true,
         withoutAnimation: false,
         hide: false
       },

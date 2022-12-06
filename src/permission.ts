@@ -8,18 +8,22 @@ import { isRelogin } from '@/utils/request'
 import useUserStore from '@/stores/modules/user'
 import useSettingsStore from '@/stores/modules/settings'
 import usePermissionStore from '@/stores/modules/permission'
-import type { RouteLocationNormalized, RouteRecordNormalized } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 
 NProgress.configure({ showSpinner: false });
 
 const whiteList = ['/login', '/auth-redirect', '/bind', '/register', '/mbti','/demo'];
 /**
  * router.beforeEach
- * interface NavigationGuardWithThis<T> {(this: T, to: RouteLocationNormalized, 
- *    from: RouteLocationNormalized, next: NavigationGuardNext
- *    ): NavigationGuardReturn | Promise<NavigationGuardReturn>;
+ * interface NavigationGuardWithThis<T> {(
+ * this: T, 
+ * to: RouteLocationNormalized, 
+ * from: RouteLocationNormalized,
+ * next: NavigationGuardNext
+ * ): NavigationGuardReturn | Promise<NavigationGuardReturn>;
+ * 
  */
-router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next): void => {
+router.beforeEach((to, from, next): void => {  // router: Resrouter?
   NProgress.start()
   if (getToken()) {
     to.meta.title && useSettingsStore().setTitle(to.meta.title)
@@ -34,11 +38,11 @@ router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, n
         useUserStore().getInfo().then(() => {
           isRelogin.show = false
           //to-do accessRoutes : ConcatArray<RouteRecordRaw>
-          usePermissionStore().generateRoutes().then((accessRoutes: any) => { 
+          usePermissionStore().generateRoutes().then((accessRoutes) => { 
             // ||根据roles权限生成可访问的路由表
-            accessRoutes.forEach((route: RouteRecordNormalized) => {
+            (accessRoutes as RouteRecordRaw[]).forEach((route: RouteRecordRaw) => { 
               if (!isHttp(route.path)) {
-                router.addRoute(route) // ||动态添加可访问路由表
+                router.addRoute(route) // vue-router addRoute ||动态添加可访问路由表
               }
             })
             next({ ...to, replace: true }) // ||hack方法 确保addRoutes已完成
@@ -56,10 +60,10 @@ router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, n
   } else {
     // 没有token
     if (whiteList.indexOf(to.path) !== -1) {
-      // 在免登录白名单，直接进入
+      // ||在免登录白名单，直接进入
       next()
     } else {
-      next(`/login?redirect=${to.fullPath}`) // 否则全部重定向到登录页
+      next(`/login?redirect=${to.fullPath}`) // ||否则全部重定向到登录页
       NProgress.done()
     }
   }

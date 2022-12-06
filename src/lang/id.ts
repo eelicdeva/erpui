@@ -204,6 +204,8 @@ export default {
   settings: {
     title: 'Pengaturan gaya tema',
     theme: 'Warna Tema',
+    icon: 'icon: check',
+    loginImage:'Image Login',    
     config: 'Konfigurasi Tata Letak Sistem',
     topNav: 'Buka TopNav',
     tagsView: 'Buka Tag-Tampilan',

@@ -1,5 +1,6 @@
 /* Layout */
-import { createWebHistory, createRouter } from 'vue-router';
+import { createWebHistory, createRouter, RouteComponent } from 'vue-router';
+import type { RouteRecordRaw }  from 'vue-router'; 
 import Layout from '@/layout/index.vue';
 import i18n from '@/lang/index';
 const {t} = i18n.global;
@@ -25,12 +26,54 @@ const {t} = i18n.global;
  *   activeMenu: '/system/user'      // 当路由设置了该属性，则会高亮相对应的侧边栏。
  * }
  */
+ interface DynamicRoute {
+  component?: RouteComponent | (() => Promise<RouteComponent>) | null | undefined;  
+  alwaysShow?: boolean;
+  name?: string;  // to-do check
+  path: string;
+  hidden: boolean;
+  redirect?: string;
+  permissions: string[];
+  roles?: string[]; 
+  children?: [{
+    path: string;
+    component: RouteComponent | (() => Promise<RouteComponent>) | null | undefined;   
+    name: string;
+    meta?: {
+      title: string;
+      icon?: string;
+      affix?: boolean;
+      link?: string;
+      noCache?: boolean
+      activeMenu?: string;
+    };
+  }];
+}
+
+ interface ConstantRoute {
+  component: RouteComponent | (() => Promise<RouteComponent>) | null | undefined;
+  hidden?: boolean;
+  path: string;
+  parentpath?: string;
+  alwaysShow?: boolean;
+  children?: ConstantRoute[];
+  meta?: {
+    title: string;
+    icon: string;
+    affix?: boolean;
+    link?: string;
+    noCache?: boolean
+  }
+  name?: string;
+  redirect?: string;
+}
 
 /**
  * Coustom router setting || 定制路由配置项;
  * 
  * // constantRouters setting detail ||设置公共路由;
- * @import type { RouteRecordRaw, _RouteRecordBase } from 'vue-router';
+ * @import type { RouteRecordRaw } from 'vue-router';
+ * constantRoutes need to match: Readonly<Array<RouteRecordRaw>> 
  * @custom declare module 'vue-router': {_RouteRecordBase, RouteMeta}  in '@/vue-router.d.ts';
  * @property { string } path -required; 
  * @property { object } component -required 
@@ -39,15 +82,15 @@ const {t} = i18n.global;
  * @property { object } children -required type: Array<RouteRecordRaw>
  * children {Array<RouteRecordRaw>} detail:
  * @property { string } children.path -required; 
- * @property { object } children.component -required 
+ * @property { RouteComponent | (() => Promise<RouteComponent>) | null | undefined; } children.component -required 
  * @property { string } children.name -required
- * @property { object } children.meta -required
+ * @property { RouteMeta } children.meta -required
  * @property { string } children.meta.title -required
  * @property { string } children.meta.icon -required
  * @property { boolean } children.meta.affix -option ?: with homepage | without others
  * @note component type: {RouteRecordSingleViewWithChildren.component?: RawRouteComponent | null | undefined};
  */
-export const constantRoutes = [
+export const constantRoutes: ConstantRoute[] = [
   {
     path: '/redirect',
     component: Layout,
@@ -87,7 +130,7 @@ export const constantRoutes = [
       {
         path: '/index',
         component: () => import('@/views/index.vue'),
-        name: 'Index',
+        name: 'Dashboard',
         meta: { title: t('menu.frontPage'), icon: 'dashboard', affix: true }
       }
     ]
@@ -115,11 +158,6 @@ export const constantRoutes = [
     path: '/demo',
     component: () => import('@/views/demo/demo.vue'),
     hidden: true
-  },
-  {
-    path: '/test',
-    component: () => import('@/views/test/test.vue'),
-    hidden: true
   }
 ]
 
@@ -129,6 +167,7 @@ export const constantRoutes = [
  * // dynamicRoutes coustom setting detail || 定制动态路由，基于用户权限动态去加载;
  * import type {RouteRecordRaw} from 'vue-router';
  * @custom declare module 'vue-router': {_RouteRecordBase, RouteMeta}  in '@/vue-router.d.ts';
+ * @property { string } fullPath -required; 
  * @property { string } path -required; 
  * @property { object } component -required 
  * @property { boolean } hidden -option ?: with children | without children ||主路由含子路由时不使用该属性
@@ -143,7 +182,7 @@ export const constantRoutes = [
  * @property { string } children.meta.activeMenu -required
  * @note component type: {RouteRecordSingleViewWithChildren.component?: RawRouteComponent | null | undefined};
  */
-export const dynamicRoutes = [
+export const dynamicRoutes: DynamicRoute[] = [
   {
     path: '/system/user-auth',
     component: Layout,
@@ -232,24 +271,21 @@ export const dynamicRoutes = [
 
 /**
  *  Coustom router setting - router || 定制路由配置项： router;
- * @import { createWebHistory, createRouter, _RouteRecordBase } from 'vue-router'
- * @param { function } histroy: createWebHistory(base?: string) as RouterHistory;
- * @param { object } routes: Readonly<Array<RouteRecordRaw>>;
- * @param { function } scrollBehavior(to: string, from: string, savedPosition: string | null): RouterScrollBehavior;
+ * @function createRouter (options: RouterOptions): Router
+ * @interface RouterOptions extends PathParserOptions
+ * @param histroy: RouterHistory; 
+ * @param routes: Readonly<Array<RouteRecordRaw>>;
+ * @param scrollBehavior (to: string, from: string, savedPosition: string | null): RouterScrollBehavior;
  * @result router: Router
- * declare function createRouter(options: RouterOptions): Router;
- * interface RouterOptions extends PathParserOptions
  * @param RouterOptions
  * @param RouterOptions.history : RouterHistory;
  * @param RouterOptions.routes: Readonly<RouteRecordRaw[]>;
- * @property { RouteRecordRaw }  RouteRecordRaw = RouteRecordSingleView | RouteRecordSingleViewWithChildren 
- *              | RouteRecordMultipleViews | RouteRecordMultipleViewsWithChildren | RouteRecordRedirect;
- *  RouteRecordSingleView extends _RouteRecordBase
- *  RouteRecordSingleViewWithChildren extends _RouteRecordBase
- *  RouteRecordMultipleViews extends _RouteRecordBase
- *  RouteRecordMultipleViewsWithChildren extends _RouteRecordBase
- *  RouteRecordRedirect extends _RouteRecordBase
- * @param { RotuerScrollBehavior} scrollBehavior?: RouterScrollBehavior;
+ * @property { RouteRecordRaw }  RouteRecordRaw = (RouteRecordSingleView | RouteRecordSingleViewWithChildren 
+ *              | RouteRecordMultipleViews | RouteRecordMultipleViewsWithChildren | RouteRecordRedirect);
+ * @property {_RouteRecordBase} RouteRecordRaw =（R1 | R2 | R3 | R4 | R5）-> all extends _RouteRecordBase
+ * @property RouteLocationRaw = string | RouteLocationPathRaw | RouteLocationNamedRaw;
+ * @RouteRecordRedirectOption = RouteLocationRaw | ((to: RouteLocation) => RouteLocationRaw);
+ * @param RouterOptions.scrollBehavior?: RouterScrollBehavior;
  * interface RouterScrollBehavior {
      * @param to - Route location where we are navigating to
      * @param from - Route location where we are navigating from
@@ -291,7 +327,8 @@ export const dynamicRoutes = [
  */
 const router = createRouter({
   history: createWebHistory(),// RouterHistory,
-  routes : constantRoutes, // Coustom Router: Readonly<Array<RouteRecordRaw>>  ||点击浏览器的前进后退或切换导航触发
+  // constantRoutes need to match: Readonly<Array<RouteRecordRaw>>  ||点击浏览器的前进后退或切换导航触发
+  routes : constantRoutes as  Readonly<Array<RouteRecordRaw>>, 
   scrollBehavior(to, from, savedPosition){  // ||return 期望滚动到哪个的位置
     if (savedPosition) {
       return savedPosition

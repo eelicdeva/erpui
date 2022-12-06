@@ -1,9 +1,9 @@
 /**
  * 判断url是否是http或https 
- * @param {string} path
+ * @param {string} url path
  * @returns {Boolean}
  */
- export function isHttp(url) {
+ export function isHttp(url: string ): boolean {
   return url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1
 }
 

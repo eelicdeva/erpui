@@ -6,7 +6,7 @@
   
       <el-card class="update-log">
       <div class="body">
-      <!-- Begin View test 2 output : -->
+      <!-- Begin View Demo output : -->
   
   
   
@@ -24,7 +24,7 @@
   
   
   
-      <!--  End View test 2 output : -->
+      <!--  End View Demo output : -->
       </div>
       </el-card>
   </div> 

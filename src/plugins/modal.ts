@@ -3,7 +3,7 @@ import i18n from '@/lang/index';
 
 const {t} = i18n.global;
 
-let loadingInstance: { close: () => void };
+let loadingInstance;
 
 export default {
   // 消息提示

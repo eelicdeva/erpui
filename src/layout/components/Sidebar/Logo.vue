@@ -19,12 +19,10 @@ import logo from '@/assets/logo/logo.png'
 import useSettingsStore from '@/stores/modules/settings'
 import { computed, ref } from 'vue';
 
-defineProps({
-  collapse: {
-    type: Boolean,
-    required: true
-  }
-})
+interface LogoProps {
+  collapse: boolean;
+};
+const props = defineProps<LogoProps>();
 
 const title = ref('EELIC SYSTEM');
 const settingsStore = useSettingsStore();

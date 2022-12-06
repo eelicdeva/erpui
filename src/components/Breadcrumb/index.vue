@@ -59,7 +59,7 @@ function isDashboard(route) {
   if (!name) {
     return false
   }
-    return (name as string).trim() === 'Index'
+    return (name as string).trim() === 'Dashboard'
 }
 
 // ||点击面包屑导航可跳转

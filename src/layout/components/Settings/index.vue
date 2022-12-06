@@ -7,7 +7,7 @@
       <div class="setting-drawer-block-checbox-item" @click="handleTheme('theme-dark')">
         <img src="@/assets/images/dark.svg" alt="dark" />
         <div v-if="sideTheme === 'theme-dark'" class="setting-drawer-block-checbox-selectIcon" style="display: block;">
-          <i aria-label="图标: check" class="anticon anticon-check">
+          <i :aria-label="$t('settings.icon')" class="anticon anticon-check">
             <svg viewBox="64 64 896 896" data-icon="check" width="1em" height="1em" :fill="theme" aria-hidden="true" focusable="false" class>
               <path d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z" />
             </svg>
@@ -17,7 +17,7 @@
       <div class="setting-drawer-block-checbox-item" @click="handleTheme('theme-light')">
         <img src="@/assets/images/light.svg" alt="light" />
         <div v-if="sideTheme === 'theme-light'" class="setting-drawer-block-checbox-selectIcon" style="display: block;">
-          <i aria-label="图标: check" class="anticon anticon-check">
+          <i :aria-label="$t('settings.icon')" class="anticon anticon-check">
             <svg viewBox="64 64 896 896" data-icon="check" width="1em" height="1em" :fill="theme" aria-hidden="true" focusable="false" class>
               <path d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z" />
             </svg>
@@ -31,9 +31,11 @@
         <el-color-picker v-model="theme" :predefine="predefineColors" @change="themeChange" />
       </span>
     </div>
+
     <div class="drawer-item">
-      <span>Background Image</span>
+      <span>{{ $t('settings.loginImage') }}</span>
     </div>
+
     <el-select v-model="backgroundImage" placeholder="Please select" @change="backgroundImageChange">
       <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
         <span> {{ item.label }} </span>
@@ -90,39 +92,51 @@
 <script setup name="Settings">
 // to-do change to "ts" error
 import variables from '@/assets/styles/variables.module.scss'
-import originElementPlus from 'element-plus/theme-chalk/index.css'
-import axios from 'axios'
-import { ElLoading, ElMessage } from 'element-plus'
-import { useDynamicTitle } from '@/utils/dynamicTitle'
-import useAppStore from '@/stores/modules/app'
-import useSettingsStore from '@/stores/modules/settings'
-import usePermissionStore from '@/stores/modules/permission'
+import originElementPlus from 'element-plus/theme-chalk/index.css';
+import axios from 'axios';
+import { ElLoading, ElMessage } from 'element-plus';
+import { useDynamicTitle } from '@/utils/dynamicTitle';
+import useAppStore from '@/stores/modules/app';
+import useSettingsStore from '@/stores/modules/settings';
+import usePermissionStore from '@/stores/modules/permission';
+import { handleThemeStyle } from '@/utils/theme'
 import i18n from '@/lang/index';
-import { ref, watch } from 'vue'
+import { computed, getCurrentInstance, ref, watch } from 'vue';
+//import type { ComponentInternalInstance } from 'vue';
 
 const { t } = i18n.global;
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() //as ComponentInternalInstance;
+/**
+ * Check Stores data loading order
+ * 
+ * 
+ */
+
+
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
+
 const showSettings = ref(false);
 const theme = ref(settingsStore.theme);
+
+const options = ref([ // check-router setting need to definded before stores used.
+  { value: 'src/assets/images/login-background1.jpg', label: 'Background 1' },
+  { value: 'src/assets/images/login-background2.jpg', label: 'Background 2' },
+  { value: 'src/assets/images/login-background3.jpg', label: 'Background 3' },
+  { value: 'src/assets/images/login-background4.jpg', label: 'Background 4' },
+  { value: 'src/assets/images/login-background5.jpg', label: 'Background 5' },
+  { value: 'src/assets/images/login-background6.jpg', label: 'Background 6' },
+  { value: 'src/assets/images/login-background7.jpg', label: 'Background 7' },
+  { value: 'src/assets/images/login-background8.jpg', label: 'Background 8' },
+  { value: 'src/assets/images/login-background9.jpg', label: 'Background 9' },
+  { value: 'src/assets/images/login-background10.jpg', label: 'Background 10' },
+]);
+
 const sideTheme = ref(settingsStore.sideTheme);
+const backgroundImage = ref(settingsStore.backgroundImage);
 const storeSettings = computed(() => settingsStore);
 const predefineColors = ref(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"]);
-const backgroundImage = ref(settingsStore.backgroundImage);
-const options = ref([
-  { value: 'src/assets/images/login-background1.jpg', label: 'Background 1', },
-  { value: 'src/assets/images/login-background2.jpg', label: 'Background 2', },
-  { value: 'src/assets/images/login-background3.jpg', label: 'Background 3', },
-  { value: 'src/assets/images/login-background4.jpg', label: 'Background 4', },
-  { value: 'src/assets/images/login-background5.jpg', label: 'Background 5', },
-  { value: 'src/assets/images/login-background6.jpg', label: 'Background 6', },
-  { value: 'src/assets/images/login-background7.jpg', label: 'Background 7', },
-  { value: 'src/assets/images/login-background8.jpg', label: 'Background 8', },
-  { value: 'src/assets/images/login-background9.jpg', label: 'Background 9', },
-  { value: 'src/assets/images/login-background10.jpg', label: 'Background 10', },
-]);
 
 /** 是否需要topnav */
 const topNav = computed({
@@ -149,19 +163,19 @@ const fixedHeader = computed({
     settingsStore.changeSetting({ key: 'fixedHeader', value: val })
   }
 })
-/**是否需要侧边栏的logo */
+/**||是否需要侧边栏的logo */
 const sidebarLogo = computed({
   get: () => storeSettings.value.sidebarLogo,
   set: (val) => {
     settingsStore.changeSetting({ key: 'sidebarLogo', value: val })
   }
 })
-/**是否需要侧边栏的动态网页的title */
+/**||是否需要侧边栏的动态网页的title */
 const dynamicTitle = computed({
   get: () => storeSettings.value.dynamicTitle,
   set: (val) => {
     settingsStore.changeSetting({ key: 'dynamicTitle', value: val })
-    // 动态设置网页标题
+    // ||动态设置网页标题
     useDynamicTitle()
   }
 })
@@ -170,6 +184,7 @@ function themeChange(val) {
   settingsStore.changeSetting({ key: 'theme', value: val })
   theme.value = val;
 }
+
 function handleTheme(val) {
   settingsStore.changeSetting({ key: 'sideTheme', value: val })
   sideTheme.value = val;
@@ -179,6 +194,7 @@ function backgroundImageChange(val) {
   settingsStore.changeSetting({ key: 'backgroundImage', value: val })
   backgroundImage.value = val;
 }
+
 function saveSetting() {
   proxy.$modal.loading(t('settings.loading'));
   let layoutSetting = {
@@ -204,7 +220,7 @@ function openSetting() {
 }
 
 defineExpose({
-  openSetting,
+  openSetting
 })
 watch(backgroundImage, () => { console.log(backgroundImage.value) })
 </script>

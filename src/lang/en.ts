@@ -204,6 +204,8 @@ export default {
   settings: {
     title: 'Page style setting',
     theme: 'Theme Color',
+    icon: 'icon: check',
+    loginImage:'Login Image',  
     config: 'System Layout Configuration',
     topNav: 'Open TopNav',
     tagsView: 'Open Tags-View',

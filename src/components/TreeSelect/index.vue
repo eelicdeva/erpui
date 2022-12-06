@@ -78,12 +78,15 @@ const valueId = computed({
     emit('update:value', val)
   }
 });
+
+
+
 const valueTitle = ref('');
 const defaultExpandedKey = ref([]);
 
 function initHandle() {
   nextTick(() => {
-    const selectedValue = valueId.value;
+    const selectedValue  = valueId.value; 
     if(selectedValue !== null && typeof (selectedValue) !== 'undefined') {
       const node = proxy.$refs.selectTree.getNode(selectedValue)
       if (node) {
@@ -96,15 +99,16 @@ function initHandle() {
     }
   })
 }
+
 function handleNodeClick(node) {
   valueTitle.value = node[props.objMap.label]
   valueId.value = node[props.objMap.value];
   defaultExpandedKey.value = [];
-  proxy.$refs.treeSelect.blur()
+  ( proxy?.$refs.treeSelect as HTMLSelectElement).blur()
   selectFilterData('')
 }
 function selectFilterData(val) {
-  proxy.$refs.selectTree.filter(val)
+  ( proxy?.$refs.treeSelect ).filter(val)
 }
 function filterNode(value, data) {
   if (!value) return true

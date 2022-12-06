@@ -39,12 +39,12 @@ const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
 
 const sidebarRouters =  computed(() => permissionStore.sidebarRouters);
-const showLogo = computed(() => settingsStore.sidebarLogo);
-const sideTheme = computed(() => settingsStore.sideTheme);
-const theme = computed(() => settingsStore.theme);
-const isCollapse = computed(() => !appStore.sidebar.opened);
+const showLogo = computed<boolean>(() => settingsStore.sidebarLogo);
+const sideTheme = computed<string>(() => settingsStore.sideTheme);
+const theme = computed<string>(() => settingsStore.theme);
+const isCollapse = computed<boolean>(() => !appStore.sidebar.opened);
 
-const activeMenu = computed(() => {
+const activeMenu = computed<string>(() => {
   const { meta, path } = route;
   // if set path, the sidebar will highlight the path you set
   if (meta.activeMenu) {

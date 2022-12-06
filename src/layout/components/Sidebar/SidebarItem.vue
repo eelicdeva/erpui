@@ -27,15 +27,66 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="SidebarItem">
 import { isExternal } from '@/utils/validate'
 import AppLink from './Link.vue'
 import { getNormalPath } from '@/utils/ruoyi'
 import { ref } from 'vue';
-import { _RouteRecordBase } from 'vue-router';
 
+interface OnlyOneChild {
+  path: string;
+  hidden?: boolean;
+  redirect?: string;
+  component: string | any; 
+  alwaysShow?: boolean;
+  permissions?: string[];
+  roles?: string[];  
+  meta: ItemMeta;
+  
+  query: string;
+  item:  any;
+
+  children: OnlyOneChild[];
+};
+
+interface ItemMenu {
+  name: string;   
+  parentPath?: string;
+  path: string;
+  hidden?: boolean;
+  redirect?: string;
+  component: string | any; 
+  alwaysShow?: boolean;
+  permissions?: string[];
+  roles?: string[];  
+  meta: ItemMeta;
+  children?: ItemMenu[];
+};
+ 
+interface ItemMeta {
+  title: string;       // ||设置该路由在侧边栏和面包屑中展示的名字
+  icon?: string;        // || 设置该路由的图标，对应路径src/assets/icons/svg 
+  noCache?: boolean;   // || true:则不会被 <keep-alive> 缓存(默认 false)
+  link?: string;      // ||外部链接
+  activeMenu?: string;  // is it need?
+  affix?: boolean;    // for the tagsview
+  breadcrumb?: boolean;  // for the Breadrumb
+};
+
+interface ItemProps {
+  item: ItemMenu;
+  isNest?: boolean;
+  basePath?: string;
+}
+/*
+const props = withDefaults(defineProps<ItemProps>(), {
+  //item: {},
+  isNest: false,
+  basePath: ''
+});
+*/
 const props = defineProps({
-  // to-do: 
+  // route object
   item: {
     type: Object,
     required: true
@@ -48,15 +99,18 @@ const props = defineProps({
     type: String,
     default: ''
   }
-});
+})
 
-const onlyOneChild = ref( {} as _RouteRecordBase );
 
-function hasOneShowingChild(children = [], parent) {
+
+
+const onlyOneChild = ref( {} as OnlyOneChild );
+
+function hasOneShowingChild(children: ItemMenu[] | undefined , parent: ItemMenu) {
   if (!children) {
     children = [];
   }
-  const showingChildren = children.filter(( item: _RouteRecordBase )=> {
+  const showingChildren = children.filter(( item : ItemMenu )=> {
     if (item.hidden) {
       return false
     } else {

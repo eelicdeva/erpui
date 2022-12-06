@@ -22,8 +22,13 @@ import defaultSettings from '@/settings'
 
 import useAppStore from '@/stores/modules/app'
 import useSettingsStore from '@/stores/modules/settings'
-import { computed, Ref, ref, watchEffect } from 'vue'
-//import { openSettings } from '@/layout/components/Settings/index.vue'
+import { openSetting } from '@/layout/components/Settings/index.vue' // to-do check export explose
+import { computed, onMounted, ref, watchEffect } from 'vue'
+/**
+ * Store data Loading Order
+ * useSettingStore
+ * 
+ */
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme);
 const sideTheme = computed(() => settingsStore.sideTheme);
@@ -58,7 +63,7 @@ function handleClickOutside() {
   useAppStore().closeSideBar(false)
 }
 
-const settingRef: Ref<any> = ref(null);
+const settingRef = ref(null);
 /*
 to-do check again error
 const openSetting = () => {
@@ -69,6 +74,32 @@ const openSetting = () => {
 function setLayout() {
   settingRef.value.openSetting();
 }
+
+onMounted(() => {
+  let MutationObserver = window.MutationObserver //  ||window.WebKitMutationObserver || window.MozMutationObserver;
+    let observer = new MutationObserver(() => {
+      let sidebar = document.getElementsByClassName("sidebar-container")[0];
+      let width = sidebar.offsetWidth  ; // to-do offsetwidth error
+      /**
+      let width: number;
+        if(sidebar === undefined) { // to-do error when setting topnav element without sidebar
+          width = 0;
+        } else {
+        width = sidebar.offsetWidth;
+      }
+       */
+      document.getElementsByClassName("main-container")[0].style.marginLeft = `${width}px`;
+    });
+    observer.observe(document.getElementsByClassName("sidebar-container")[0], {
+      attributes: true,
+      characterData: true,
+      childList: true,
+      subtree: true,
+      attributeOldValue: true,
+      characterDataOldValue: true,
+    });
+})
+
 </script>
 
 <style lang="scss" scoped>

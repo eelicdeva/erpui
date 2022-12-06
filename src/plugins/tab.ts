@@ -1,4 +1,4 @@
-import useTagsViewStore from "@/stores/modules/tagsView";
+import useTagsViewStore, { VisitedView } from "@/stores/modules/tagsView";
 import router from "@/router";
 
 /*
@@ -15,25 +15,8 @@ export default {
   // ||刷新当前tab页签
   /**
    * @param obj  
-   * readonly currentRoute: Ref<RouteLocationNormalizedLoaded>;
-   * 
-   *  declare type RouteLocationRaw = string | RouteLocationPathRaw | RouteLocationNamedRaw;
-   * 
-   * interface RouteLocationNormalizedLoaded extends _RouteLocationBase
-   * matched: RouteLocationMatched[];
-   * interface RouteLocationMatched extends RouteRecordNormalized {
-   *     components: Record<string, RouteComponent> | null | undefined; }
-   * RouteRecordNormalized.components
-   * ViewComponent from matchedRoute.components
-   * matchedRoute = matchedRouteRef.value
-   * atchedRouteRef from routeToDisplay
-   * declare type RouteComponent = Component | DefineComponent;
-   * declare type Component<Props = any, RawBindings = any, D = any, 
-   * C extends ComputedOptions = ComputedOptions, M extends MethodOptions = MethodOptions
-   * > = ConcreteComponent<Props, RawBindings, D, C, M> | ComponentPublicInstanceConstructor<Props>;
-   * 
    */
-  refreshPage(obj) {
+  refreshPage(obj: VisitedView) {
     const { path, query, matched } = router.currentRoute.value;
     if (obj === undefined) {
       matched.forEach((m) => {

@@ -38,6 +38,11 @@ export default {
   dynamicTitle: false,
 
   /**
+   * 默认登录背景图  to-do check
+   */
+  backgroundImage: 'src/assets/images/login-background9.jpg',
+
+  /**
    * @type {string | array} 'production' | ['production', 'development']
    * @description Need show err logs component.
    * The default is only used in the production env

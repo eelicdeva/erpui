@@ -52,7 +52,9 @@
           <img :src="codeUrl" @click="getCode" class="login-code-img" />
         </div>
       </el-form-item>
-
+      <!-- to-do checkbox error loginForm 
+      <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
+      -->  
       <el-form-item style="width: 100%">
         <el-button
           :loading="loading"
@@ -64,6 +66,7 @@
           <span v-if="!loading">{{ $t("login.logIn") }}</span>
           <span v-else>{{ $t("login.logloading") }}</span>
         </el-button>
+
         <div style="float: right" v-if="register">
           <router-link class="link-type" :to="'/register'">{{
             $t("login.signupnow")
@@ -88,6 +91,16 @@ import LangSelect from "@/components/LangSelect/index.vue";
 import useSettingsStore from '@/stores/modules/settings';
 //import ElForm from "element-plus/es/components/form";
 //const loginRef = ref([] as Array<HTMLElement>)
+
+interface LoginForm {
+  code?: string;
+  password: string;
+  lang?: string;
+  rememberMe?: boolean,
+  username: string;
+  uuid?: string;
+}
+
 export default {
   name: "login",
   'components': { LangSelect },
@@ -154,7 +167,7 @@ export default {
   },
   methods: {
     langListen() {      
-      const loginRef: any = this.$refs.loginRef;
+      const loginRef = this.$refs.loginRef;
       loginRef.clearValidate();
       this.$nextTick(() => loginRef.validate(()=>{})); //
    },
@@ -173,10 +186,14 @@ export default {
             Cookies.remove("username");
             Cookies.remove("password");
             Cookies.remove("rememberMe");
+          };
+          let langSet =  Cookies.get("lang");
+          if (langSet === undefined) {
+            langSet = "zh.en.id".indexOf(navigator.language.substring(0,2))!=-1 ? navigator.language.substring(0,2) : 'en'
+            Cookies.set("lang",langSet);
           }
-
           if (this.loginForm.lang != Cookies.get("lang")) {
-            (this.loginForm.lang as any) = Cookies.get("lang");          
+            this.loginForm.lang = langSet;          
           };
 
           // 调用action的登录方法
@@ -206,7 +223,7 @@ export default {
       });
     },
 
-    getCookie() {
+    getCookie() { 
       const username = Cookies.get("username");
       const password = Cookies.get("password");
       const rememberMe = Cookies.get("rememberMe");

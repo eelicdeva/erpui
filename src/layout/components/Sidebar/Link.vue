@@ -8,6 +8,17 @@
 import { isExternal } from '@/utils/validate'
 import { computed } from 'vue';
 
+/*
+interface LinkProps {
+  to: [ string,{
+                href: string;
+                target: string;
+                rel: string;
+               }];
+};
+const props = defineProps<LinkProps>()
+*/
+
 const props = defineProps({
   to: {
     type: [String, Object],
@@ -19,7 +30,7 @@ const isExt = computed(() => {
   return isExternal(props.to)
 })
 
-const type = computed(() => {
+const type = computed<string>(() => {
   if (isExt.value) {
     return 'a'
   }

@@ -201,6 +201,8 @@ export default {
   settings: {
     title: '系统布局配置',
     theme: '主题色',
+    icon: '图标: check',
+    loginImage:'登录背景',
     config: '系统布局配置',
     topNav: '开启 TopNav',
     tagsView: '开启 Tags-View',

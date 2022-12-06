@@ -47,23 +47,35 @@ import { getNormalPath } from '@/utils/ruoyi';
 import useTagsViewStore from '@/stores/modules/tagsView';
 import useSettingsStore from '@/stores/modules/settings';
 import usePermissionStore from '@/stores/modules/permission';
-import { ComponentInternalInstance, computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue';
-import { RouteRecordRaw, useRoute, useRouter, _RouteLocationBase } from 'vue-router';
-import type { RouteMeta, _RouteRecordBase } from 'vue-router';
+import { computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import type { VisitedView as Tag } from '@/stores/modules/tagsView';
+import type { CustomRoute as Routes } from '@/stores/modules/permission';
+import type { ComponentInternalInstance } from 'vue';
+
 const visible = ref(false);
 const top = ref(0);
 const left = ref(0);
-const selectedTag = ref({});
-const affixTags = ref([]);
+const selectedTag = ref({} as Tag);
+const affixTags = ref([] as Tag[]);
 const scrollPaneRef = ref(null);
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const route = useRoute();
+const route = useRoute(); // current page
 const router = useRouter();
 
 const visitedViews = computed(() => useTagsViewStore().visitedViews);
-const routes = computed(() => usePermissionStore().routes);
+const routes = computed<Routes[]>(() => usePermissionStore().routes);
 const theme = computed(() => useSettingsStore().theme);
+
+console.log("Tags: ")
+console.log(visitedViews)
+console.log("routes: ")
+console.log(routes)
+console.log("route: ")
+console.log(route)
+console.log("router: ")
+console.log(router)
 
 watch(route, () => {
   addTags()
@@ -81,17 +93,17 @@ onMounted(() => {
   addTags()
 })
 
-function isActive(r) {
+function isActive(r: Tag) {
   return r.path === route.path
 }
-function activeStyle(tag) {
+function activeStyle( tag: Tag ) {
   if (!isActive(tag)) return {};
   return {
     "background-color": theme.value,
     "border-color": theme.value
   };
 }
-function isAffix(tag) {
+function isAffix(tag: Tag ) {
   return tag.meta && tag.meta.affix
 }
 function isFirstView() {
@@ -108,18 +120,26 @@ function isLastView() {
     return false
   }
 }
-// to-do check tags,
+/** to-do check tags,
 interface Tag {
   fullPath: string;
   path: string;
   name: string;
-  meta: RouteMeta;
-};
+  meta: {
+    affix?: boolean;
+    icon: string;  
+    title: string; 
+    link: string;
+    noCache?: boolean;
+  };
+}
 
-function filterAffixTags(routes: _RouteLocationBase[], basePath = '') {
-  let tags: Array<Tag> = []; //to-do tags interface
+*/
+
+function filterAffixTags(routes: Routes[], basePath = '') {
+  let tags = [] as Tag[]; //to-do tags interface
   routes.forEach((route) => {
-    if (route.meta && route.meta.affix) {
+    if (!route.hidden && route.meta && route.meta.affix) {
       const tagPath: string = getNormalPath(basePath + '/' + route.path);
       tags.push({
         fullPath: tagPath,
@@ -172,13 +192,13 @@ function moveToCurrentTag() {
     }
   })
 }
-function refreshSelectedTag(view) {
+function refreshSelectedTag(view: Tag) {
   proxy?.$tab.refreshPage(view);
   if (route.meta.link) {
     useTagsViewStore().delIframeView(route);
   };
 }
-function closeSelectedTag(view) {
+function closeSelectedTag(view: Tag) {
   proxy?.$tab.closePage(view).then(({ visitedViews }) => {
     if (isActive(view)) {
       toLastView(visitedViews, view)
@@ -186,7 +206,7 @@ function closeSelectedTag(view) {
   })
 }
 function closeRightTags() {
-  proxy?.$tab.closeRightPage(selectedTag.value).then(visitedViews => {
+  proxy?.$tab.closeRightPage(selectedTag.value).then((visitedViews: Tag[]) => {
     if (!visitedViews.find(i => i.fullPath === route.fullPath)) {
       toLastView(visitedViews)
     }
@@ -194,7 +214,7 @@ function closeRightTags() {
 }
 function closeLeftTags() {
   proxy?.$tab.closeLeftPage(selectedTag.value).then(visitedViews => {
-    if (!visitedViews.find(i => i.fullPath === route.fullPath)) {
+    if (!visitedViews.find((i: Tag) => i.fullPath === route.fullPath)) {
       toLastView(visitedViews)
     }
   })
@@ -205,7 +225,7 @@ function closeOthersTags() {
     moveToCurrentTag()
   })
 }
-function closeAllTags(view) {
+function closeAllTags(view: Tag) {
   proxy?.$tab.closeAllPage().then(({ visitedViews }) => {
     if (affixTags.value.some(tag => tag.path === route.path)) {
       return
@@ -213,7 +233,7 @@ function closeAllTags(view) {
     toLastView(visitedViews, view)
   })
 }
-function toLastView(visitedViews, view) {
+function toLastView(visitedViews: Tag[], view: Tag) {
   const latestView = visitedViews.slice(-1)[0]
   if (latestView) {
     router.push(latestView.fullPath)
@@ -228,10 +248,10 @@ function toLastView(visitedViews, view) {
     }
   }
 }
-function openMenu(tag, e) {
+function openMenu(tag: Tag, e) {
   const menuMinWidth = 105
   const offsetLeft = proxy?.$el.getBoundingClientRect().left // container margin left
-  const offsetWidth = proxy?.$el.offsetWidth // container width
+  const offsetWidth = proxy?.$el.offsetWidth || 40// todo-check container width || 检查缩放的时候无法弹出侧面菜单
   const maxLeft = offsetWidth - menuMinWidth // left boundary
   const l = e.clientX - offsetLeft + 15 // 15: margin right
 

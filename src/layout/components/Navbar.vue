@@ -8,7 +8,7 @@
         <header-search id="header-search" class="right-menu-item" />
 
         <el-tooltip :content="$t('button.sourceAddress')" effect="dark" placement="bottom">
-          <ruo-yi-git id="eelic-git" class=" right-menu-item hover-effect" />
+          <EELIC-git id="eelic-git" class=" right-menu-item hover-effect" />
         </el-tooltip>
         
         <el-tooltip :content="$t('button.language')" effect="dark" placement="bottom">
@@ -16,7 +16,7 @@
         </el-tooltip>
 
         <el-tooltip :content="$t('button.documentAddress')" effect="dark" placement="bottom">
-          <ruo-yi-doc id="eelic-doc" class="right-menu-item hover-effect" />
+          <EELIC-doc id="eelic-doc" class="right-menu-item hover-effect" />
         </el-tooltip>
         
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
@@ -51,7 +51,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="Navbar">
 import { ElMessageBox } from 'element-plus'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import TopNav from '@/components/TopNav/index.vue'
@@ -60,8 +60,8 @@ import Screenfull from '@/components/Screenfull/index.vue'
 import LangSelect from "@/components/LangSelect/index.vue";
 import SizeSelect from '@/components/SizeSelect/index.vue'
 import HeaderSearch from '@/components/HeaderSearch/index.vue'
-import RuoYiGit from '@/components/EELIC/Git/index.vue'
-import RuoYiDoc from '@/components/EELIC/Doc/index.vue'
+import EELICGit from '@/components/EELIC/Git/index.vue'
+import EELICDoc from '@/components/EELIC/Doc/index.vue'
 import useAppStore from '@/stores/modules/app'
 import useUserStore from '@/stores/modules/user'
 import useSettingsStore from '@/stores/modules/settings'

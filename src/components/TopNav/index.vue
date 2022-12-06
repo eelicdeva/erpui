@@ -36,7 +36,7 @@ import useSettingsStore from '@/stores/modules/settings';
 import usePermissionStore from '@/stores/modules/permission';
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-
+import type { RouteComponent } from "vue-router";
 // ||顶部栏初始数
 var visibleNumber = ref(0); 
 // ||当前激活菜单的 index
@@ -53,14 +53,14 @@ const router = useRouter(); // instance Router
 const theme = computed(() => settingsStore.theme);
 // ||所有的路由信息
 const routers = computed(() => permissionStore.topbarRouters) ;
-console.log(routers)
+
 interface TopMenu {
   name: string;   
   parentPath?: string;
   path: string;
   hidden?: boolean;
   redirect?: string;
-  component: string | any; 
+  component: string | ( RouteComponent | (() => Promise<RouteComponent>) | null | undefined); 
   alwaysShow?: boolean;
   permissions?: string[];
   roles?: string[];  
@@ -70,16 +70,14 @@ interface TopMenu {
  
 interface MetaMenu {
     title: string;       // ||设置该路由在侧边栏和面包屑中展示的名字
-    icon?: string;        // || 设置该路由的图标，对应路径src/assets/icons/svg 
+    icon?: string;        // || 'svg-name' 设置该路由的图标，对应路径src/assets/icons/svg 
     noCache?: boolean;   // || true:则不会被 <keep-alive> 缓存(默认 false)
     link?: string;      // ||外部链接
-    activeMenu?: string;  // is it need?
+    activeMenu?: string;  // '/system/user'
     affix?: boolean;    // for the tagsview
     breadcrumb?: boolean;  // for the Breadrumb
   };
 
-  console.log("router: ")
-  console.log(routers)
 // 顶部显示菜单
 const topMenus = computed<TopMenu[]>(() => {
   let topMenus = [] as TopMenu[];

@@ -1,68 +1,97 @@
 import { defineStore } from 'pinia'
 import auth from '@/plugins/auth'
-import router , { constantRoutes, dynamicRoutes } from '@/router'
+import router, { constantRoutes, dynamicRoutes } from '@/router'
 import { getRouters } from '@/api/menu'
 import Layout from '@/layout/index.vue'
 import ParentView from '@/components/ParentView/index.vue'
 import InnerLink from '@/layout/components/InnerLink/index.vue'
-import { RouteRecordRaw } from 'vue-router'
+import type { RouteComponent, RouteRecordRaw } from 'vue-router'
 
-interface BasicRouter {
-  name: string;   
+export interface CustomRoute {
+  component: RouteComponent | (() => Promise<RouteComponent>) | null | undefined;
   path: string;
-  parentPath?: string; 
+  parentpath?: string;
+  hidden?: boolean;
+  alwaysShow?: boolean;
+  children?: CustomRoute[];
+  meta?: {
+    title: string;
+    icon: string;
+    affix?: boolean;
+    link?: string;
+    noCache?: boolean
+  }
+  name?: string;
+  redirect?: string;
+}
+
+interface DynamicRoute {
+  component?: RouteComponent | (() => Promise<RouteComponent>) | null | undefined;  
+  alwaysShow?: boolean;
+  name?: string;  // to-do check
+  path: string;
+  hidden: boolean;
+  redirect?: string;
+  permissions: string[];
+  roles?: string[]; 
+  children?: [{
+    path: string;
+    component: RouteComponent | (() => Promise<RouteComponent>) | null | undefined;   
+    name: string;
+    meta?: {
+      title: string;
+      icon?: string;
+      affix?: boolean;
+      link?: string;
+      noCache?: boolean
+      activeMenu?: string;
+    };
+  }];
+}
+
+interface ResData {
+  name: string;
+  path: string;
   hidden?: boolean;
   redirect?: string;
-  component: string | any; 
+  component: string | ( RouteComponent | (() => Promise<RouteComponent>) | null | undefined);
   alwaysShow?: boolean;
-  permissions?: string[];
-  roles?: string[];     
-  meta: CustomMeta;
-}
-
-interface  CustomRoute extends BasicRouter{   
-  children?:  CustomRoute[];
-}
-
-interface CustomMeta {
-  title: string;       // ||设置该路由在侧边栏和面包屑中展示的名字
-  icon?: string;        // || 设置该路由的图标，对应路径src/assets/icons/svg 
-  noCache?: boolean;   // || true:则不会被 <keep-alive> 缓存(默认 false)
-  link?: string;      // ||外部链接
-  activeMenu?: string;  // is it need?
-  affix?: boolean;    // for the tagsview
-  breadcrumb?: boolean;  // for the Breadrumb
-}
-
-interface DynamicRoute extends CustomRoute {
-  permissions: string[];
-  roles: string[];
+  meta:{
+    title: string;
+    icon: string;
+    noCache: boolean
+    link: string;
+  };
+  children?: ResData[]
 }
 
 interface UsePermissionStore{
-  routes: DynamicRoute[];
-  addRoutes: DynamicRoute[];
+  routes: CustomRoute[];
+  addRoutes: CustomRoute[];
   defaultRoutes:  CustomRoute[];
   topbarRouters: CustomRoute[];
   sidebarRouters: CustomRoute[];
+  asyncRoutes: any
 };
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue')
+
 
 const usePermissionStore = defineStore(
   'permission',
   {
     state: (): UsePermissionStore => ({
-      routes: [],
-      addRoutes: [],
+      routes: [],  // constantRoutes + resRouters
+      addRoutes: [], // res user routers
       defaultRoutes: [],
       topbarRouters: [],
-      sidebarRouters: []
+      sidebarRouters: [],
+      asyncRoutes: undefined
     }),
     actions: {
-      setRoutes(routes: DynamicRoute[]) { 
+      setRoutes(routes: CustomRoute[]) { 
         this.addRoutes = routes
-        this.routes = (constantRoutes as DynamicRoute[]).concat(routes)
+        this.routes = constantRoutes.concat(routes)  // routers: constantRoutes + rewriteRoutes
       },
       setDefaultRoutes(routes: CustomRoute[]) {
         this.defaultRoutes = (constantRoutes as CustomRoute[]).concat(routes)
@@ -73,20 +102,25 @@ const usePermissionStore = defineStore(
       setSidebarRouters(routes: CustomRoute[]) {
         this.sidebarRouters = routes
       },
-      generateRoutes(_roles?: string[]) { //check roles data 
+      setAsyncRoutes(routes: any) {
+        this.asyncRoutes = routes
+      },    
+      generateRoutes(roles?:string[]) { //to-do check roles data 
         return new Promise(resolve => {
           // ||向后端请求路由数据
           getRouters().then((res) => {
-            const sdata = JSON.parse(JSON.stringify(res.data))
-            const rdata = JSON.parse(JSON.stringify(res.data))
-            const defaultData = JSON.parse(JSON.stringify(res.data))
-            const sidebarRoutes = filterAsyncRouter(sdata)
-            const rewriteRoutes = filterAsyncRouter(rdata, false, true )
-            const defaultRoutes = filterAsyncRouter(defaultData)
-            const asyncRoutes = filterDynamicRoutes(dynamicRoutes as DynamicRoute[])
-            asyncRoutes.forEach((route) => { router.addRoute(route as RouteRecordRaw) })
-            this.setRoutes(rewriteRoutes as DynamicRoute[])
-            this.setSidebarRouters((constantRoutes as  CustomRoute[]).concat(sidebarRoutes))
+            const sdata: ResData[] = JSON.parse(JSON.stringify(res.data))
+            const rdata: ResData[] = JSON.parse(JSON.stringify(res.data))
+            const defaultData: ResData[] = JSON.parse(JSON.stringify(res.data))
+            // for component ResData: string -> route.component: ( RouteComponent | (() => Promise<RouteComponent>) | null | undefined);
+            const sidebarRoutes = filterAsyncRouter(sdata) as CustomRoute[]
+            const rewriteRoutes = filterAsyncRouter(rdata, false, true ) as CustomRoute[]
+            const defaultRoutes = filterAsyncRouter(defaultData) as CustomRoute[]
+            const asyncRoutes = filterDynamicRoutes(dynamicRoutes) as RouteRecordRaw[]
+            // addRoute(route: RouteRecordRaw): () => void;
+            asyncRoutes.forEach((route) => { return router.addRoute(route) }) // router: Router, route: dynamicRoutes                       
+            this.setRoutes(rewriteRoutes) // rewriteRoutes: constantRoutes + rewriteRoutes  
+            this.setSidebarRouters((constantRoutes as CustomRoute[]).concat(sidebarRoutes))
             this.setDefaultRoutes(sidebarRoutes)
             this.setTopbarRoutes(defaultRoutes)
             resolve(rewriteRoutes)
@@ -96,22 +130,22 @@ const usePermissionStore = defineStore(
     }
   })
 
-// ||遍历后台传来的路由字符串，转换为组件对象
-function filterAsyncRouter(asyncRouterMap: CustomRoute[], lastRouter=false, type=false ) { //to-do lastRouter setting false
-   return asyncRouterMap.filter(route => {
-    if (type && route.children) { //type -> false: data with folder | type -> true: data without folder,
-      route.children = filterChildren(route.children) 
+// ||遍历后台传来的路由字符串，路径转换为组件对象，下级子路由转换成一级子路由。
+function filterAsyncRouter(asyncRouterMap: ResData[], lastRouter=false, type=false) { //to-do lastRouter setting false
+   return asyncRouterMap.filter((route) => {
+    if (type && route.children) { //rewriteRoutes => type -> true: data with children,
+       route.children = filterChildren(route.children) 
     }
     if (route.component) {
       // Layout ParentView 组件特殊处理
       if (route.component === 'Layout') {
-        route.component = Layout
+        (route as CustomRoute).component = Layout
       } else if (route.component === 'ParentView') {
-        route.component = ParentView
+        (route as CustomRoute).component = ParentView
       } else if (route.component === 'InnerLink') {
-        route.component = InnerLink
+        (route as CustomRoute).component = InnerLink
       } else {
-        route.component = loadView(route.component)
+        (route as CustomRoute).component = loadView(route.component as string)
       }
     }
     if (route.children != null && route.children && route.children.length) {
@@ -123,9 +157,9 @@ function filterAsyncRouter(asyncRouterMap: CustomRoute[], lastRouter=false, type
     return true
   })
 }
-
-function filterChildren( childrenMap: CustomRoute[], lastRouter = false) {
-  var children: CustomRoute[] = [];
+// ||遍历下级子路由，拼接path，
+function filterChildren( childrenMap: ResData[], lastRouter = false) {
+  var children = [] as ResData[];
   childrenMap.forEach((el, _index) => {
     if (el.children && el.children.length) { // has child      
       if (el.component === 'ParentView' && !lastRouter) { 
@@ -148,8 +182,8 @@ function filterChildren( childrenMap: CustomRoute[], lastRouter = false) {
 };
 
 // ||动态路由遍历，验证是否具备权限
-export function filterDynamicRoutes(routes: CustomRoute[] ) {
-  const res: CustomRoute[] = []
+export function filterDynamicRoutes(routes: DynamicRoute[]) {
+  const res = [] as DynamicRoute[];
   routes.forEach((route ) => {
     if (route.permissions) {
       if (auth.hasPermiOr(route.permissions)) {
@@ -163,9 +197,9 @@ export function filterDynamicRoutes(routes: CustomRoute[] ) {
   })
   return res
 }
-
+// loadView: ResRouter.component
 export const loadView = (view: string) => {
-  let res;
+  let res: ( RouteComponent | (() => Promise<RouteComponent>) | null | undefined);
   for (const path in modules) {
     const dir = path.split('views/')[1].split('.vue')[0];
     if (dir === view) {

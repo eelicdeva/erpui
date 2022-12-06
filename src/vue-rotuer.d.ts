@@ -7,10 +7,7 @@ import { _RouteRecordBase, RouteMeta } from 'vue-router';
  *@param alwaysShow?:boolean | string | number; // coustom ||当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面
  */
 declare module 'vue-router'{
-
-
 /**
- * 
  * @property  { string } path; // default setting 
  * @property  { object } redirect?: RouteRecordRedirectOption; // default setting
  * type RouteRecordRedirectOption = RouteLocationRaw | ((to: RouteLocation) => RouteLocationRaw)
@@ -36,9 +33,9 @@ declare module 'vue-router'{
     // children?: RouteRecordRaw[]; // default setting
     // props?: _RouteRecordProps | Record<string, _RouteRecordProps>; // default setting
 
-    //fullPath: string; // default setting //check selectedTag.value.fullPath === 
+    //fullPath: string; // default setting //check selectedTag.value.fullPath === _RouteLocationBase with fullPath
     parentPath?: string;     // to-do check TopNav setting
-    query?: string;                         // custom example '{"id": 1, "name": "eelic"}' || 访问路由的默认传递参数  
+    query?: string;                         // to-do check custom example '{"id": 1, "name": "eelic"}' || 访问路由的默认传递参数  
     hidden?: boolean | string | number;     // coustom ||当设置 true 的时候该路由不会再侧边栏出现 如401，login等页面，或者如一些编辑页面/edit/1
     permissions?: string[];                 // coustom permissions: ['a:a:a', 'b:b:b']||访问路由的菜单权限
     roles?: string[];                       // coustom ['admin', 'common'] ||访问路由的角色权限

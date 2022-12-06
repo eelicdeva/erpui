@@ -1,37 +1,50 @@
 import { defineStore } from 'pinia'
+import { LocationQuery, RouteLocationNormalizedLoaded } from 'vue-router';
 
-interface VisitedView {
+export interface VisitedView {
+  fullPath: string; //check log  fullPath: tag.fullPath  need to check, not suit for vue-router
+  //hash: string;// check log
+  params: Object; // check log
+  //redirectedFrom: {} check log
+  query: LocationQuery;// check log check string
+  //active: string;
+  title: string // check log
   name: string; 
   path: string;
   meta: {
+    affix?: boolean;
+    icon: string;  // check log
     title: string; 
-    link: string;
-    affix: boolean;
-    noCache: boolean;
+    link?: string;
+    noCache?: boolean;
   }
 }
-interface IframeView {
+export interface IframeView {
   path: string;
   meta: {
     title: string;
-    link: string;
   }
 }
 
+interface UseTagsViewStore {
+  visitedViews: VisitedView[];
+  cachedViews: string[];
+  iframeViews: IframeView[];
+}
 const useTagsViewStore = defineStore(
   'tags-view',
   {
-    state: () => ({
-      visitedViews: [] as VisitedView[], 
-      cachedViews: [] as string[],
-      iframeViews: [] as IframeView[]
+    state: (): UseTagsViewStore => ({
+      visitedViews: [], 
+      cachedViews: [],
+      iframeViews: []
     }),
     actions: {
-      addView(view: VisitedView) {
+      addView( view: VisitedView ) {
         this.addVisitedView(view)
         this.addCachedView(view)
       },
-      addIframeView(view: IframeView ) { 
+      addIframeView( view: VisitedView ) { 
         if (this.iframeViews.some(v => v.path === view.path)) return
         this.iframeViews.push(
           Object.assign({}, view, {
@@ -88,7 +101,7 @@ const useTagsViewStore = defineStore(
           resolve([...this.cachedViews])
         })
       },
-      delOthersViews(view: { path: string; name: string; }) {
+      delOthersViews(view: VisitedView) {
         return new Promise(resolve => {
           this.delOthersVisitedViews(view)
           this.delOthersCachedViews(view)
@@ -98,7 +111,7 @@ const useTagsViewStore = defineStore(
           })
         })
       },
-      delOthersVisitedViews(view: { path: string; }) {
+      delOthersVisitedViews(view: VisitedView) {
         return new Promise(resolve => {
           this.visitedViews = this.visitedViews.filter(v => {
             return v.meta.affix || v.path === view.path
@@ -107,7 +120,7 @@ const useTagsViewStore = defineStore(
           resolve([...this.visitedViews])
         })
       },
-      delOthersCachedViews(view: { name: string; }) {
+      delOthersCachedViews(view: VisitedView) {
         return new Promise(resolve => {
           const index = this.cachedViews.indexOf(view.name)
           if (index > -1) {
@@ -142,7 +155,7 @@ const useTagsViewStore = defineStore(
           resolve([...this.cachedViews])
         })
       },
-      updateVisitedView(view: VisitedView ) {   //check definded RouteLocationNormalizedLoaded
+      updateVisitedView(view: RouteLocationNormalizedLoaded ) {   //check definded RouteLocationNormalizedLoaded
         for (let v of this.visitedViews) {
           if (v.path === view.path) {
             v = Object.assign(v, view)
@@ -150,7 +163,7 @@ const useTagsViewStore = defineStore(
           }
         }
       },
-      delRightTags(view: { path: string; }) {
+      delRightTags(view: VisitedView) {
         return new Promise(resolve => {
           const index = this.visitedViews.findIndex(v => v.path === view.path)
           if (index === -1) {
@@ -174,7 +187,7 @@ const useTagsViewStore = defineStore(
           resolve([...this.visitedViews])
         })
       },
-      delLeftTags(view: { path: string; }) {
+      delLeftTags(view: VisitedView) {
         return new Promise(resolve => {
           const index = this.visitedViews.findIndex(v => v.path === view.path)
           if (index === -1) {
