@@ -355,7 +355,7 @@ export default {
     content2: 'Alamat perutean akses, seperti: `user`, jika alamat jaringan eksternal memerlukan akses tautan internal, itu dimulai dengan `http(s)://`',
     content3: 'Akses jalur komponen, seperti: `system/user/index`, default di direktori `views`',
     content4: "Karakter izin yang ditentukan dalam pengontrol, seperti: {'@'}PreAuthorize(`{'@'}ss.hasPermi(\'system:user:list\')`)",
-    content5: 'Parameter default yang diteruskan dari rute akses, seperti: `{"id": 1, "name": "ry"}`',
+    content5: 'Parameter default yang diteruskan dari rute akses, seperti: ',
     content6: 'Jika ya, itu akan di-cache oleh `keep-alive`, dan `name` serta alamat komponen yang cocok harus konsisten',
     content7: 'Pilih Sembunyikan dan rute tidak akan muncul di bilah sisi, tetapi tetap dapat diakses',
     content8: 'Memilih keluar dan rute tidak akan muncul di bilah sisi dan tidak dapat diakses',
