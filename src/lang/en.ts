@@ -354,7 +354,7 @@ export default {
     content2: 'The routing address of the access, such as: `user`, if the external network address needs internal link access, it starts with `http(s)://`',
     content3: 'Access component path, such as: `system/user/index`, default in the `views` directory',
     content4: "Permission characters defined in the controller, such as: {'@'}PreAuthorize(`{'@'}ss.hasPermi(\'system:user:list\')`)",
-    content5: "The default passed parameters of the access route, such as: `{'{'}'id': 1, 'name': 'ry'{'}'}`",
+    content5: "The default passed parameters of the access route, such as: `{'{'}''id'': 1, ''name'': ''ry''{'}'}`",
     content6: 'If yes, it will be cached by `keep-alive`, and the `name` and address of the matching component need to be consistent',
     content7: 'Select Hide and the route will not appear in the sidebar, but will still be accessible',
     content8: 'Opt out and the route will not appear in the sidebar and cannot be accessed',
