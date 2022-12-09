@@ -209,7 +209,7 @@
                      <el-input v-model="form.query" :placeholder="$t('menu.paramPlaceholder')" maxlength="255" />
                      <template #label>
                         <span>
-                           <el-tooltip :content="$t('menu.content5') + '`{\u0022id\u0022: 1, \u0022name\u0022: \u0022ry\u0022}`' " placement="top">
+                           <el-tooltip :content="$t('menu.content5')" placement="top">
                               <el-icon><question-filled /></el-icon>
                            </el-tooltip>
                            {{ $t('menu.param') }}

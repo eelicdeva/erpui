@@ -7,7 +7,7 @@
 
 ## web router whitelist permission: 
 ### @/router/index.ts
-export const constantRoutes = [ 
+export const whiteSingleView = [ 
   {
     path: '/demo',
     component: () => import('@/views/demo/demo.vue'),

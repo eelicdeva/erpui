@@ -1,4 +1,4 @@
-// to-do check any[]
+// to-do check string[]
 import useUserStore from '@/stores/modules/user'
 
 function authPermission(permission: string | string[]) {

@@ -13,7 +13,7 @@
         mode="vertical"
       >
         <sidebar-item
-          v-for="(route, index) in sidebarRouters"
+          v-for="(route, index) in sidebarMenus"
           :key="route.path + index"
           :item="route"
           :base-path="route.path"
@@ -38,13 +38,13 @@ const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
 
-const sidebarRouters =  computed(() => permissionStore.sidebarRouters);
+const sidebarMenus =  computed(() => permissionStore.sidebarMenus);
 const showLogo = computed<boolean>(() => settingsStore.sidebarLogo);
 const sideTheme = computed<string>(() => settingsStore.sideTheme);
 const theme = computed<string>(() => settingsStore.theme);
 const isCollapse = computed<boolean>(() => !appStore.sidebar.opened);
 
-const activeMenu = computed<string>(() => {
+const activeMenu = computed(() => {
   const { meta, path } = route;
   // if set path, the sidebar will highlight the path you set
   if (meta.activeMenu) {

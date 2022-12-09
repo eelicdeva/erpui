@@ -12,7 +12,7 @@ import type { RouteRecordRaw } from 'vue-router'
 
 NProgress.configure({ showSpinner: false });
 
-const whiteList = ['/login', '/auth-redirect', '/bind', '/register', '/mbti','/demo'];
+const whiteList = ['/login', '/auth-redirect', '/bind', '/register', '/mbti','/demo']; // to-do check '/auth-redirect' /bind
 /**
  * router.beforeEach
  * interface NavigationGuardWithThis<T> {(
@@ -26,7 +26,7 @@ const whiteList = ['/login', '/auth-redirect', '/bind', '/register', '/mbti','/d
 router.beforeEach((to, from, next): void => {  // router: Resrouter?
   NProgress.start()
   if (getToken()) {
-    to.meta.title && useSettingsStore().setTitle(to.meta.title)
+    to.meta.title && useSettingsStore().setTitle(to.meta.title)//||设置网页标题
     /* has token*/
     if (to.path === '/login') {
       next({ path: '/' })
@@ -40,7 +40,7 @@ router.beforeEach((to, from, next): void => {  // router: Resrouter?
           //to-do accessRoutes : ConcatArray<RouteRecordRaw>
           usePermissionStore().generateRoutes().then((accessRoutes) => { 
             // ||根据roles权限生成可访问的路由表
-            (accessRoutes as RouteRecordRaw[]).forEach((route: RouteRecordRaw) => { 
+            (accessRoutes as RouteRecordRaw[]).forEach((route) => { 
               if (!isHttp(route.path)) {
                 router.addRoute(route) // vue-router addRoute ||动态添加可访问路由表
               }

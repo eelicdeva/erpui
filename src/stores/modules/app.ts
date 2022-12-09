@@ -9,7 +9,7 @@ interface UseAppStore {
     withoutAnimation: boolean;
     hide: boolean;
   },
-  device: string;
+  device: 'mobile' | 'desktop';
   size: string;
   lang: string; 
 };
@@ -44,7 +44,7 @@ const useAppStore = defineStore('app', {
         this.sidebar.opened = false
         this.sidebar.withoutAnimation = withoutAnimation
       },
-      toggleDevice(device: string) {
+      toggleDevice(device: 'desktop') {
         this.device = device
       },
       setSize(size: string) {

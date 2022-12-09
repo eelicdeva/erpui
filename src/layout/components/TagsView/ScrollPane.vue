@@ -12,12 +12,14 @@
 </template>
 
 <script lang="ts" setup name="ScrollPane">
-import useTagsViewStore from '@/stores/modules/tagsView'
-import { ComponentInternalInstance, computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue';
-import type { } from 'vue';const tagAndTagSpacing = ref(4);
+import useTagsViewStore, { VisitedView } from '@/stores/modules/tagsView';
+import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue';
+import type { ComponentInternalInstance } from 'vue';
+
+const tagAndTagSpacing = ref(4);
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
-const scrollWrapper = computed(() => proxy.$refs.scrollContainer.$refs.wrap$);
+const scrollWrapper = computed(() => ( proxy?.$refs.scrollContainer.$refs.wrap$));
 
 onMounted(() => {
   scrollWrapper.value.addEventListener('scroll', emitScroll, true)
@@ -32,7 +34,7 @@ onBeforeUnmount(() => {
  * 
  * @return number
  */
-function handleScroll(e) {
+function handleScroll(e: { wheelDelta: number; deltaY: number; }) {
   // wheelDelta：获取滚轮滚动方向，向上120，向下-120，但为常量，与滚轮速率无关
   // deltaY：垂直滚动幅度，正值向下滚动。电脑鼠标滚轮垂直行数默认值是3
   // wheelDelta只有部分浏览器支持，deltaY几乎所有浏览器都支持
@@ -53,10 +55,10 @@ const emitScroll = () => {
 
 
 const tagsViewStore = useTagsViewStore()
-const visitedViews = computed(() => tagsViewStore.visitedViews);
+const visitedViews = computed<VisitedView[]>(() => tagsViewStore.visitedViews);
 
 function moveToTarget(currentTag) {
-  const $container = proxy.$refs.scrollContainer.$el
+  const $container = (proxy.$refs.scrollContainer ).$el
   const $containerWidth = $container.offsetWidth
   const $scrollWrapper = scrollWrapper.value;
 
@@ -65,7 +67,7 @@ function moveToTarget(currentTag) {
 
   // find first tag and last tag
   if (visitedViews.value.length > 0) {
-    firstTag = visitedViews.value[0]
+    firstTag = visitedViews.value[0];
     lastTag = visitedViews.value[visitedViews.value.length - 1]
   }
 

@@ -24,6 +24,7 @@ const {t} = i18n.global;
  *   icon: 'svg-name'                // 设置该路由的图标，对应路径src/assets/icons/svg
  *   breadcrumb: false               // 如果设置为false，则不会在breadcrumb面包屑中显示
  *   activeMenu: '/system/user'      // 当路由设置了该属性，则会高亮相对应的侧边栏。
+ *   affix: ture                     // 固定显示
  * }
  */
  interface DynamicRoute {
@@ -34,7 +35,7 @@ const {t} = i18n.global;
   hidden: boolean;
   redirect?: string;
   permissions: string[];
-  roles?: string[]; 
+  roles?: string[]; // to-do check
   children?: [{
     path: string;
     component: RouteComponent | (() => Promise<RouteComponent>) | null | undefined;   
@@ -50,80 +51,88 @@ const {t} = i18n.global;
   }];
 }
 
- interface ConstantRoute {
-  component: RouteComponent | (() => Promise<RouteComponent>) | null | undefined;
-  hidden?: boolean;
-  path: string;
-  parentpath?: string;
-  alwaysShow?: boolean;
-  children?: ConstantRoute[];
-  meta?: {
-    title: string;
-    icon: string;
-    affix?: boolean;
-    link?: string;
-    noCache?: boolean
-  }
-  name?: string;
-  redirect?: string;
-}
-
 /**
- * Coustom router setting || 定制路由配置项;
+ * Coustom Menu setting || 菜单配置项;
  * 
- * // constantRouters setting detail ||设置公共路由;
  * @import type { RouteRecordRaw } from 'vue-router';
  * constantRoutes need to match: Readonly<Array<RouteRecordRaw>> 
  * @custom declare module 'vue-router': {_RouteRecordBase, RouteMeta}  in '@/vue-router.d.ts';
- * @property { string } path -required; 
- * @property { object } component -required 
- * @property { boolean } hidden -option ?: custom setting  || 根据使用情况灵活设置
- * @property { string } redirect -option ?: with redirect | without redirect
- * @property { object } children -required type: Array<RouteRecordRaw>
- * children {Array<RouteRecordRaw>} detail:
- * @property { string } children.path -required; 
- * @property { RouteComponent | (() => Promise<RouteComponent>) | null | undefined; } children.component -required 
- * @property { string } children.name -required
- * @property { RouteMeta } children.meta -required
- * @property { string } children.meta.title -required
- * @property { string } children.meta.icon -required
- * @property { boolean } children.meta.affix -option ?: with homepage | without others
- * @note component type: {RouteRecordSingleViewWithChildren.component?: RawRouteComponent | null | undefined};
+ * @property { string } name?: -option  menu name;
+ * @property { string } path: -required; 
+ * @property { string } component?: -option resData with component; 
+ * @property { boolean } hidden?: -option true for menu hide; 
+ * @property { string } redirect?: -option"noRedirect"  for the menu folder;
+ * @property { MenuData } children?: for children menu;
+ * @property { MenuMeta } meta?: for menu meta
+ * @property { string } meta.title: -required for menu title
+ * @property { string } meta.icon: -required for menu icon
+ * @property { boolean } meta.noCache: -required for <keep-alive> catch defalt: false;  to-do is it needed?
+ * @property { string | null } meta.link: -required default null, string for external link;
+ * @property { boolean } meta.affix?: -option: with homepage | without others; to-do is it needed?
+ * @note component: (RouteComponent | (() => Promise<RouteComponent>) | null | undefined) for menu data filter; 
  */
-export const constantRoutes: ConstantRoute[] = [
-  {
-    path: '/redirect',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: '/redirect/:path(.*)',
-        component: () => import('@/views/redirect/index.vue')
-      }
-    ]
-  },
+export interface MenuData {
+  name?: string; 
+  path: string;  
+  component?: string; 
+  redirect?: string;
+  hidden?: boolean;  //||当设置 true 的时候该菜单不在侧边栏出现 如401，login等页面，或者如一些编辑页面/edit/1
+  meta?: {
+    title: string;       // ||设置该路由在侧边栏和面包屑中展示的名字
+    icon: string;        // ||设置该路由的图标，对应路径src/assets/icons/svg 
+    noCache: boolean;   // ||如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
+    link: string | null;      // ||外部链接
+    affix?:  boolean;  //首页固定
+    //breadcrumb?: boolean; // ||如果设置为false，则不会在breadcrumb面包屑中显示
+    //activeMenu?: string;  // ||当路由设置了该属性，则会高亮相对应的侧边栏。     
+  }
+  children?: MenuData[];
+  alwaysShow?: boolean;      // ||当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面    
+  query?: string;
+  //parentPath?: string;       // custom to-do check TopNav setting    
+  //permissions?: string[];    // custom permissions: ['a:a:a', 'b:b:b']||访问路由的菜单权限
+  //roles?: string[];          // custom ['admin', 'common'] ||访问路由的角色权限
+  // alias?: string | string[]; // default setting 
+};
+
+//RouteRecordSingleView[]
+const whiteSingleView: RouteRecordRaw[] = [ //hidden: true
   {
     path: '/login',
     component: () => import('@/views/login.vue'),
-    hidden: true
+    //hidden: true
   },
   {
     path: '/register',
     component: () => import('@/views/register.vue'),
-    hidden: true
+    //hidden: true
   },
   {
     path: "/:pathMatch(.*)*",
     component: () => import('@/views/error/404.vue'),
-    hidden: true
+    //hidden: true
   },
   {
     path: '/401',
     component: () => import('@/views/error/401.vue'),
-    hidden: true
+    //hidden: true
   },
   {
-    path: '',
+    path: '/mbti',
+    component: () => import('@/views/erp/hr/mbti/mbti.vue'),
+    //hidden: true
+  },
+  {
+    path: '/demo',
+    component: () => import('@/views/demo/demo.vue'),
+    //hidden: ture
+  }
+];
+// RouteRecordRedirect[]
+// show in the main manu, hidden = false;
+const redirectIndexViewWithChildren: RouteRecordRaw[] = [ 
+  {
+    path: '',// to-do check'/redirect' can it be ''.
     component: Layout,
     redirect: '/index',
     children: [
@@ -131,36 +140,73 @@ export const constantRoutes: ConstantRoute[] = [
         path: '/index',
         component: () => import('@/views/index.vue'),
         name: 'Dashboard',
-        meta: { title: t('menu.frontPage'), icon: 'dashboard', affix: true }
+        meta: { title: t('menu.frontPage'), icon: 'dashboard', noCache: false, link: null, affix: true } 
+      }
+    ]
+  }
+];
+// RouteRecordSingleViewWithChildren[]
+// use as component inside routeView;
+// for the main menu: hidden: true;
+const componentSingleViewWithChildren: RouteRecordRaw[]  = [
+  {
+    path: '',
+    component: Layout,
+    //hidden: true,
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        component: () => import('@/views/redirect/index.vue')
       }
     ]
   },
-  {
-    path: '/user',
+  {  
+    path: '/user', //hidden: true
     component: Layout,
-    hidden: true,
-    redirect: 'noredirect',
+    //redirect: 'noredirect',
     children: [
       {
         path: 'profile',
         component: () => import('@/views/system/user/profile/index.vue'),
         name: 'Profile',
-        meta: { title:  t('navbar.personalCenter'), icon: 'user' }
+        meta: { title:  t('navbar.personalCenter'), icon: 'user', noCache: false, link: null }
       }
-    ]
-  },
-  {
-    path: '/mbti',
-    component: () => import('@/views/erp/hr/mbti/mbti.vue'),
-    hidden: true
-  },
-  {
-    path: '/demo',
-    component: () => import('@/views/demo/demo.vue'),
-    hidden: true
+    ]  
   }
-]
+];
 
+// noRedirect = true => Folder Menu 
+/**
+ * @function menuDatas: menuData[] filter 
+ * add?: redirect: 'noRedirect' for the menu folder
+ * add?: hidden = true for hidden menu
+ * @param  {RouteRecordRaw[]} routerDatas
+ * @param  {boolean} hidden?: true => not show in the main menu
+ */
+function filterMenusWithChildren(routerDatas: RouteRecordRaw[], hidden?: boolean): MenuData[] {
+  routerDatas.forEach((menuData)=>{
+      if (menuData.component){
+        delete routerDatas['component']
+        if (hidden){
+          (menuData as MenuData).hidden = true;
+        };
+      /*  
+        if ((menuData as MenuData).children) {
+          //menuData.redirect = 'noRedirect';
+        }
+      */ 
+      }
+      if (menuData.children) {
+        filterMenusWithChildren(menuData.children)
+      }
+    }
+  )
+  return routerDatas as MenuData[]
+};
+
+export const constantMenus = filterMenusWithChildren(redirectIndexViewWithChildren, true ).concat( filterMenusWithChildren(componentSingleViewWithChildren, true));
+
+const prepareRoutes = whiteSingleView.concat(redirectIndexViewWithChildren, componentSingleViewWithChildren);
 /**
  * Coustom router setting || 定制路由配置项;
  * 
@@ -268,67 +314,19 @@ export const dynamicRoutes: DynamicRoute[] = [
     ]
   }
 ]
-
 /**
- *  Coustom router setting - router || 定制路由配置项： router;
+ * Coustom router setting - router || 定制路由配置项： router;
  * @function createRouter (options: RouterOptions): Router
  * @interface RouterOptions extends PathParserOptions
  * @param histroy: RouterHistory; 
  * @param routes: Readonly<Array<RouteRecordRaw>>;
  * @param scrollBehavior (to: string, from: string, savedPosition: string | null): RouterScrollBehavior;
  * @result router: Router
- * @param RouterOptions
- * @param RouterOptions.history : RouterHistory;
- * @param RouterOptions.routes: Readonly<RouteRecordRaw[]>;
- * @property { RouteRecordRaw }  RouteRecordRaw = (RouteRecordSingleView | RouteRecordSingleViewWithChildren 
- *              | RouteRecordMultipleViews | RouteRecordMultipleViewsWithChildren | RouteRecordRedirect);
- * @property {_RouteRecordBase} RouteRecordRaw =（R1 | R2 | R3 | R4 | R5）-> all extends _RouteRecordBase
- * @property RouteLocationRaw = string | RouteLocationPathRaw | RouteLocationNamedRaw;
- * @RouteRecordRedirectOption = RouteLocationRaw | ((to: RouteLocation) => RouteLocationRaw);
- * @param RouterOptions.scrollBehavior?: RouterScrollBehavior;
- * interface RouterScrollBehavior {
-     * @param to - Route location where we are navigating to
-     * @param from - Route location where we are navigating from
-     * @param savedPosition - saved position if it exists, `null` otherwise
-     *(to: RouteLocationNormalized, from: RouteLocationNormalizedLoaded, savedPosition: _ScrollPositionNormalized | null): Awaitable<ScrollPosition | false | void>;
- *   }
- * @return router: Router - declare interface Router
- * @property { object } router.currentRoute - readonly currentRoute>: Ref<RouteLocationNormalizedLoaded>;
- * 
- * @property { object } router.options readonly options: RouterOptions;
- * interface RouterOptions extends PathParserOptions
- * @property { object } router.options.history: RouterHistory;
- * interface RouterHistory
- * @property { array } router.options.history.routes: Readonly<RouteRecordRaw[]>;
- * @property { string } router.options.history.base -readonly: Base path that is prepended to every url 
- * @property { string } router.options.history.location -readonly: HistoryLocation, -Current History location
- * @property { array } router.options.history.state -readonly: HistoryState, -Current History state
- * declare interface HistoryState
- * declare type HistoryStateValue = string | number | boolean | null | undefined | HistoryState | HistoryStateArray;
- * @property { any } router.options.history.state[x] -[x: number]: HistoryStateValue;
- * @property { any } router.options.history.state[x] -[x: string]: HistoryStateValue;
- * @property { function } router.options.history.push(to: HistoryLocation, data?: HistoryState): void;
- * @property { function } router.options.history.replace(to: HistoryLocation, data?: HistoryState): void;
- * @property { function } router.options.history.go(delta: number, triggerListeners?: boolean): void;
- * @property { function } router.options.history.listen(callback: NavigationCallback): () => void;
- * @property { function } router.options.history.createHref(location: HistoryLocation): string;
- * @property { function } router.options.history.destroy(): void;
- * declare interface RouterScrollBehavior
- * @property { object } router.options.scrollBehavior?: RouterScrollBehavior;
- * the other router.options
- * @property { any } router.options....other check Router document
- * @property { boolean } router.listening: boolean;
- * @property { void } router.beforeEach(guard: NavigationGuardWithThis<undefined>): () => void;
- * declare interface NavigationGuardWithThis<T> {(this: T, to: RouteLocationNormalized, 
- *                              from: RouteLocationNormalized, next: NavigationGuardNext
- *                           ): NavigationGuardReturn | Promise<NavigationGuardReturn>;}
- * @property { functions } router.addRoute() ...functions check Router document
- * @property { any } router.... ...the others check Router document
  */
 const router = createRouter({
   history: createWebHistory(),// RouterHistory,
-  // constantRoutes need to match: Readonly<Array<RouteRecordRaw>>  ||点击浏览器的前进后退或切换导航触发
-  routes : constantRoutes as  Readonly<Array<RouteRecordRaw>>, 
+  // prepareRoutes need to match: Readonly<Array<RouteRecordRaw>>  ||点击浏览器的前进后退或切换导航触发
+  routes : prepareRoutes, 
   scrollBehavior(to, from, savedPosition){  // ||return 期望滚动到哪个的位置
     if (savedPosition) {
       return savedPosition

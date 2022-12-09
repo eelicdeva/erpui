@@ -16,7 +16,7 @@ const sessionCache = {
     }
     return sessionStorage.getItem(key)
   },
-  setJSON (key: string | null, jsonValue: { url: string | undefined; data: any; time: number } | null) {
+  setJSON (key: string | null, jsonValue) {
     if (jsonValue != null) {
       this.set(key, JSON.stringify(jsonValue))
     }
@@ -32,7 +32,7 @@ const sessionCache = {
   }
 }
 const localCache = {
-  set (key, value) {
+  set (key: string | null, value: string | null) {
     if (!localStorage) {
       return
     }
@@ -40,7 +40,7 @@ const localCache = {
       localStorage.setItem(key, value)
     }
   },
-  get (key) {
+  get (key: string | null) {
     if (!localStorage) {
       return null
     }
@@ -49,18 +49,18 @@ const localCache = {
     }
     return localStorage.getItem(key)
   },
-  setJSON (key, jsonValue) {
+  setJSON (key: string | null, jsonValue: string | null) {
     if (jsonValue != null) {
       this.set(key, JSON.stringify(jsonValue))
     }
   },
-  getJSON (key) {
+  getJSON (key: string | null) {
     const value = this.get(key)
     if (value != null) {
       return JSON.parse(value)
     }
   },
-  remove (key) {
+  remove (key: string) {
     localStorage.removeItem(key);
   }
 }

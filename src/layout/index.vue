@@ -1,4 +1,3 @@
-
 <template>
   <div :class="classObj" class="app-wrapper" :style="{ '--current-color': theme }">
     <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
@@ -24,6 +23,7 @@ import useAppStore from '@/stores/modules/app'
 import useSettingsStore from '@/stores/modules/settings'
 import { openSetting } from '@/layout/components/Settings/index.vue' // to-do check export explose
 import { computed, onMounted, ref, watchEffect } from 'vue'
+import { ElementLoading } from 'element-plus/es/components/loading/src/directive'
 /**
  * Store data Loading Order
  * useSettingStore
@@ -52,7 +52,7 @@ watchEffect(() => {
     useAppStore().closeSideBar( false )
   }
   if (width.value - 1 < WIDTH) {
-    useAppStore().toggleDevice('mobile')
+    useAppStore().toggleDevice('desktop')
     useAppStore().closeSideBar( true )
   } else {
     useAppStore().toggleDevice('desktop')
@@ -75,11 +75,11 @@ function setLayout() {
   settingRef.value.openSetting();
 }
 
-onMounted(() => {
+onMounted(() => { //to-do if TopNav on, do not observer
   let MutationObserver = window.MutationObserver //  ||window.WebKitMutationObserver || window.MozMutationObserver;
     let observer = new MutationObserver(() => {
       let sidebar = document.getElementsByClassName("sidebar-container")[0];
-      let width = sidebar.offsetWidth  ; // to-do offsetwidth error
+      let width =  !!sidebar? (sidebar as HTMLDivElement).offsetWidth: 0; // to-do offsetwidth error
       /**
       let width: number;
         if(sidebar === undefined) { // to-do error when setting topnav element without sidebar
@@ -88,7 +88,7 @@ onMounted(() => {
         width = sidebar.offsetWidth;
       }
        */
-      document.getElementsByClassName("main-container")[0].style.marginLeft = `${width}px`;
+      (document.getElementsByClassName("main-container")[0] as HTMLDivElement).style.marginLeft = `${width}px`;
     });
     observer.observe(document.getElementsByClassName("sidebar-container")[0], {
       attributes: true,

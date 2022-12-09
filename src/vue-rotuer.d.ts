@@ -1,68 +1,55 @@
 import { _RouteRecordBase, RouteMeta } from 'vue-router';
 /**
- * custom vue-router: _RouteRecordBase
+ * Custom Data For Menu & Router Permi:
  *@param hidden?: { boolean | string | number }; // coustom ||当设置 true 的时候该路由不会再侧边栏出现 如401，login等页面，或者如一些编辑页面/edit/1
  *@param roles?: ['admin', 'common']       // coustom||访问路由的角色权限
  *@param permissions?: ['a:a:a', 'b:b:b']  // coustom||访问路由的菜单权限
  *@param alwaysShow?:boolean | string | number; // coustom ||当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面
  */
+
 declare module 'vue-router'{
 /**
- * @property  { string } path; // default setting 
- * @property  { object } redirect?: RouteRecordRedirectOption; // default setting
- * type RouteRecordRedirectOption = RouteLocationRaw | ((to: RouteLocation) => RouteLocationRaw)
- * @property  { string | string[] } alias?: string | string[]; // default setting 
- * @property { string | symbol } name?: RouteRecordName; // default setting 
- *  declare type RouteRecordName = string | symbol;
- * @property { object } beforeEnter?: NavigationGuardWithThis<undefined> | NavigationGuardWithThis<undefined>[]; // defaut setting
- * @property { object } meta?: RouteMeta; -meta detail custom setting 
- * @property { RouteRecordRaw[] } children?: RouteRecordRaw[]; // default setting
- * @property  { object } props?: _RouteRecordProps | Record<string, _RouteRecordProps>; // default setting
- * interface RouteRecordSingleView extends _RouteRecordBase
- * interface RouteRecordRedirect extends _RouteRecordBase 
- * 
- * RouteRecordRaw =  extends _RouteRecordBase
+ * Detail vue-router: 
+ * export declare function useRoute(): RouteLocationNormalizedLoaded;
+ * @funsion route = useRoute();
+ * @route: { fullpath, hash, matched, meta, name, pramas, path, query, redirectedFrom? }
+ * @property { RouteLocationMatched[] } matched: Array[]-> components 
+ * Array of {@link RouteLocationMatched} containing only plain components (any 
+ * lazy-loaded components have been loaded and were replaced inside the
+ * `components` object) so it can be directly used to display routes. It 
+ * cannot contain redirect records either;
+ * export declare interface RouteLocationMatched extends RouteRecordNormalized {
+ * components: Record<string, RouteComponent> | null | undefined; }
+ * _RouteRecordBase
+ * export declare interface _RouteLocationBase extends Pick<MatcherLocation, 'name' | 'path' | 'params' | 'meta'> {}
+ * // Pick<MatcherLocation, 'name' | 'path' | 'params' | 'meta'>
+ * //Name of the matched record;RouteRecordName = string | symbol;
+ * @property { (string | symbol) | null | undefined } name: RouteRecordName | null | undefined; 
+ * @property  { string } path: // Percentage encoded pathname section of the URL.
+ *     //export declare type RouteParams = Record<string, RouteParamValue | RouteParamValue[]>;
+ *     //export declare type RouteParamValue = string;
+ * @property { RouteParams } params:  //Object of decoded params extracted from the `path`.
+ * @property { RouteMeta } meta:  // Custom: Merged `meta` properties from all the matched route records.
+ * //_RouteLocationBase
+ * @property  { string } fullpath: // The whole location including the `search` and `hash`. This string is percentage encoded.
+ * @property  { string } query: // {"id": 1, "name": "eelic"} Object representation of the `search` property of the current location.
+ * @property  { string } hash: // Hash of the current location. If present, starts with a `#`.
+ * @property  { RouteLocation | undefined } redirectedFrom?: RouteLocation | undefined;
+ * //Array of {@link RouteRecord} containing components as they were
+ * //passed when adding records. It can also contain redirect records. This can't be used directly
+ * //export declare interface RouteLocation extends _RouteLocationBase {matched: RouteRecord[];}; 
  */
-  interface _RouteRecordBase{
-    // path: string; // default setting 
-    // redirect?: RouteRecordRedirectOption; // default setting 
-    // alias?: string | string[]; // default setting 
-    // name?: RouteRecordName; // default setting 
-    // beforeEnter?: NavigationGuardWithThis<undefined> | NavigationGuardWithThis<undefined>[]; // defaut setting
-    // meta?: RouteMeta; // default setting 
-    // children?: RouteRecordRaw[]; // default setting
-    // props?: _RouteRecordProps | Record<string, _RouteRecordProps>; // default setting
-
-    //fullPath: string; // default setting //check selectedTag.value.fullPath === _RouteLocationBase with fullPath
-    parentPath?: string;     // to-do check TopNav setting
-    query?: string;                         // to-do check custom example '{"id": 1, "name": "eelic"}' || 访问路由的默认传递参数  
-    hidden?: boolean | string | number;     // coustom ||当设置 true 的时候该路由不会再侧边栏出现 如401，login等页面，或者如一些编辑页面/edit/1
-    permissions?: string[];                 // coustom permissions: ['a:a:a', 'b:b:b']||访问路由的菜单权限
-    roles?: string[];                       // coustom ['admin', 'common'] ||访问路由的角色权限
-    alwaysShow?: boolean;                   // coustom true = nochildren||当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面    
-    permissions?: string[];
-    roles?: string[];  
-  };
+  // Custom RouteMeta
   interface RouteMeta {
-    title: string;       // 设置该路由在侧边栏和面包屑中展示的名字
-    icon?: string;        // 设置该路由的图标，对应路径src/assets/icons/svg 
-    noCache?: boolean;   // 如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
-    breadcrumb?: boolean; // 如果设置为false，则不会在breadcrumb面包屑中显示
-    activeMenu?: string;  // 当路由设置了该属性，则会高亮相对应的侧边栏。
-    link?: boolean;      //
-    affix?:  boolean;   // home { title: t('menu.frontPage'), icon: 'dashboard', affix: true } || 首页设置
+    title: string;       // ||设置该路由在侧边栏和面包屑中展示的名字
+    icon?: string;        // ||设置该路由的图标，对应路径src/assets/icons/svg 
+    noCache?: boolean;   // ||如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
+    breadcrumb?: boolean; // ||如果设置为false，则不会在breadcrumb面包屑中显示
+    //activeMenu?: string;  // ||to-do 和meta 无关，当路由设置了该属性，则会高亮相对应的侧边栏。
+    link?: string | null;      // ||外部链接
+    affix?:  boolean;   // ||home { title: t('menu.frontPage'), icon: 'dashboard', affix: true } || 首页设置 name 'Dashboard'
   };
-  //costom to-do check this
-  /**
-  interface _RouteLocationBase{
-    lastPath: string;
-
-  }  
-   */
 }
-
-
-
 /**
  * router custom setting detail
  * declare function createRouter(options: RouterOptions): Router;
@@ -113,3 +100,4 @@ declare module 'vue-router'{
  * @property { functions } router.addRoute() ...functions check Router document
  * @property { any } router.... ...the others check Router document
  */
+

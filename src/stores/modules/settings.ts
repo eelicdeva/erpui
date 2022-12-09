@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import defaultSettings from '@/settings'
 import { useDynamicTitle } from '@/utils/dynamicTitle'
 
-interface UseSettingsStore {
+export interface UseSettingsStore {
   backgroundImage: string;
   dynamicTitle: boolean;
   fixedHeader: boolean;
@@ -43,7 +43,7 @@ const useSettingsStore = defineStore(
           this[key]= value;
         }
       },
-      // 设置网页标题
+      // ||设置网页标题
       setTitle(title: string) {
         this.title = title;
         useDynamicTitle();

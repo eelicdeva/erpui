@@ -65,17 +65,54 @@ const route = useRoute(); // current page
 const router = useRouter();
 
 const visitedViews = computed(() => useTagsViewStore().visitedViews);
-const routes = computed<Routes[]>(() => usePermissionStore().routes);
+const routes = computed(() => usePermissionStore().routes);
 const theme = computed(() => useSettingsStore().theme);
 
-console.log("Tags: ")
-console.log(visitedViews)
-console.log("routes: ")
-console.log(routes)
-console.log("route: ")
-console.log(route)
-console.log("router: ")
-console.log(router)
+
+// check data router
+      // current route
+      console.log("route: ") //const route = useRoute(); // current page
+      console.log(route)
+      //Router manager
+      console.log("router.currentRoute: ")// const router = useRouter(); 
+      console.log(router.currentRoute)
+/**
+    //visitedViews: [], 
+      console.log("Tags: ")
+      console.log(visitedViews) //  useTagsViewStore().visitedViews;
+         // iframeViews: []
+      const iframeViews = computed(() => useTagsViewStore().iframeViews);
+      console.log("iframeViews: ")// const router = useRouter(); 
+      console.log(iframeViews)
+      //cachedViews: [],
+      const cachedViews = computed(() => useTagsViewStore().cachedViews);
+      console.log("cachedViews: ")// const router = useRouter(); 
+      console.log(cachedViews)
+
+      console.log("Tags: ")
+      console.log(visitedViews) //  useTagsViewStore().visitedViews;  
+
+    // custom routes data
+      console.log("routes: ")
+      console.log(routes) // routes route[]
+      //addMenus: [], // res user routers
+      const addMenus = computed(() => usePermissionStore().addMenus);
+      console.log("addMenus: ")
+      console.log(addMenus) // addMenus[]
+      //defaultRoutes: [],
+      const defaultRoutes = computed(() => usePermissionStore().defaultRoutes);
+      console.log("defaultRoutes: ")
+      console.log(defaultRoutes) // defaultRoute[]     
+      //topbarMenus: [],
+      const topbarMenus = computed(() => usePermissionStore().topbarMenus);
+      console.log("topbarMenus: ")
+      console.log(topbarMenus) // topbarMenus[]          
+      //sidebarMenus: []
+      const sidebarMenus = computed(() => usePermissionStore().sidebarMenus);
+      console.log("sidebarMenus: ")
+      console.log(sidebarMenus) // sidebarMenus[] 
+ */
+//check data router
 
 watch(route, () => {
   addTags()
@@ -133,7 +170,6 @@ interface Tag {
     noCache?: boolean;
   };
 }
-
 */
 
 function filterAffixTags(routes: Routes[], basePath = '') {

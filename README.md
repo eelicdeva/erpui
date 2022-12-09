@@ -50,6 +50,8 @@
 ## 备注
 * Vue3 中使用了 es6 的 ProxyAPI 对数据代理。
 
+## 注意事项
+* 1. router push replace 统一使用path方式跳转 尽量避免使用name，因为有重名可能。
 
 
 ```bash

@@ -40,12 +40,10 @@ interface OnlyOneChild {
   component: string | any; 
   alwaysShow?: boolean;
   permissions?: string[];
-  roles?: string[];  
+  roles?: string[];  // to-do check
   meta: ItemMeta;
   
-  query: string;
-  item:  any;
-
+  query: string | Object; // to-do check
   children: OnlyOneChild[];
 };
 
@@ -58,7 +56,7 @@ interface ItemMenu {
   component: string | any; 
   alwaysShow?: boolean;
   permissions?: string[];
-  roles?: string[];  
+  roles?: string[];  // to-do check
   meta: ItemMeta;
   children?: ItemMenu[];
 };
@@ -101,12 +99,9 @@ const props = defineProps({
   }
 })
 
-
-
-
 const onlyOneChild = ref( {} as OnlyOneChild );
 
-function hasOneShowingChild(children: ItemMenu[] | undefined , parent: ItemMenu) {
+function hasOneShowingChild(children: ItemMenu[], parent: ItemMenu) {
   if (!children) {
     children = [];
   }
@@ -134,7 +129,7 @@ function hasOneShowingChild(children: ItemMenu[] | undefined , parent: ItemMenu)
   return false
 };
 
-function resolvePath(routePath: string, routeQuery?: string) {
+function resolvePath(routePath?: string, routeQuery?: any) { //to-do check routeQuery
   if (isExternal(routePath)) {
     return routePath
   }

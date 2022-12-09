@@ -23,6 +23,7 @@ export interface IframeView {
   path: string;
   meta: {
     title: string;
+    link: string;
   }
 }
 
@@ -44,7 +45,7 @@ const useTagsViewStore = defineStore(
         this.addVisitedView(view)
         this.addCachedView(view)
       },
-      addIframeView( view: VisitedView ) { 
+      addIframeView( view ) { 
         if (this.iframeViews.some(v => v.path === view.path)) return
         this.iframeViews.push(
           Object.assign({}, view, {

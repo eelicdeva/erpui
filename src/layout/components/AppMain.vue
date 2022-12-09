@@ -11,7 +11,7 @@
   </section>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="AppMain">
 import iframeToggle from "./IframeToggle/index.vue"
 import useTagsViewStore from '@/stores/modules/tagsView'
 

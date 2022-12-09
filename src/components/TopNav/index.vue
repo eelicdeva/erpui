@@ -29,14 +29,14 @@
 </template>
 
 <script lang="ts" setup name="TopNav">
-import { constantRoutes } from "@/router";
+import { constantMenus } from "@/router";
 import { isHttp } from '@/utils/validate';
 import useAppStore from '@/stores/modules/app';
 import useSettingsStore from '@/stores/modules/settings';
 import usePermissionStore from '@/stores/modules/permission';
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import type { RouteComponent } from "vue-router";
+import type { MenuData } from '@/router';
 // ||顶部栏初始数
 var visibleNumber = ref(0); 
 // ||当前激活菜单的 index
@@ -52,50 +52,48 @@ const router = useRouter(); // instance Router
 // ||主题颜色
 const theme = computed(() => settingsStore.theme);
 // ||所有的路由信息
-const routers = computed(() => permissionStore.topbarRouters) ;
+const routers = computed(() => permissionStore.topbarMenus) ;
 
 interface TopMenu {
-  name: string;   
-  parentPath?: string;
+  component: string;
+  hidden: boolean;
+  name: string;
   path: string;
-  hidden?: boolean;
+  meta: {
+    title: string;
+    icon: string;
+    affix?: boolean; //without affix;
+    link: string;  
+    noCache: boolean
+  parentPath?: string;
   redirect?: string;
-  component: string | ( RouteComponent | (() => Promise<RouteComponent>) | null | undefined); 
-  alwaysShow?: boolean;
-  permissions?: string[];
-  roles?: string[];  
-  meta: MetaMenu;
+  alwaysShow?: boolean; 
+  query?: string;
   children?: TopMenu[];
-};
- 
-interface MetaMenu {
-    title: string;       // ||设置该路由在侧边栏和面包屑中展示的名字
-    icon?: string;        // || 'svg-name' 设置该路由的图标，对应路径src/assets/icons/svg 
-    noCache?: boolean;   // || true:则不会被 <keep-alive> 缓存(默认 false)
-    link?: string;      // ||外部链接
-    activeMenu?: string;  // '/system/user'
-    affix?: boolean;    // for the tagsview
-    breadcrumb?: boolean;  // for the Breadrumb
-  };
+  }
+}
 
-// 顶部显示菜单
+// ||顶部显示菜单
 const topMenus = computed<TopMenu[]>(() => {
   let topMenus = [] as TopMenu[];
    
-  routers.value.map((menu ) => {
+  routers.value.map((menu) => {
     if (menu.hidden !== true) {   //|| http外链接的情况
       // ||兼容顶部栏一级菜单内部跳转
       if (menu.path === "/") {  // || 没有子路由的情况
-                                           // ||普通嵌套子路由 !menu.children===undefined
-        topMenus.push((menu.children as TopMenu[])[0])
+        if (menu.children) {
+                                               
+          topMenus.push((menu.children)[0])// ||普通嵌套子路由 !menu.children===undefined
           //to-do check
+        }
       } else {
+         //@ts-ignore 
           topMenus.push(menu);
       }
     }
   })
   return topMenus;
-})
+});
 
 // 设置子路由
 const childrenMenus = computed(() => {
@@ -106,16 +104,16 @@ const childrenMenus = computed(() => {
         if(router.path === "/") {
           router.children[item].path = "/" + router.children[item].path;
         } else {
-          if(!isHttp(router.children[item].path)) {
+          if(!isHttp(router.children[item].path)) {// ||拼接children path '/system/user'
             router.children[item].path = router.path + "/" + router.children[item].path;
           }
         }
-        router.children[item].parentPath = router.path;
+        router.children[item].parentPath = router.path;// set children.parentPath
       }
       childrenMenus.push(router.children[item]);
     }
   })
-  return (constantRoutes as TopMenu[]).concat(childrenMenus);
+  return (constantMenus as MenuData[]).concat(childrenMenus as MenuData[]);
 })
 
 

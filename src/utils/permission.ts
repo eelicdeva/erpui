@@ -5,7 +5,7 @@ import useUserStore from '@/stores/modules/user'
  * @param {Array} value 校验值
  * @returns {Boolean}
  */
-export function checkPermi(value: string | string[] | null | undefined): boolean {
+export function checkPermi(value: string | string[] | null | undefined): boolean {  // to-do check
   if (value && value instanceof Array && value.length > 0) {
     const permissions = useUserStore().permissions
     const permissionDatas = value
