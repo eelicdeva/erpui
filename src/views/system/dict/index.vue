@@ -293,7 +293,7 @@ function submitForm() {
     if (valid) {
       if (form.value.dictId != undefined) {
         updateType(form.value).then(response => {
-          pxroy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess("修改成功");
           open.value = false;
           getList();
         });
