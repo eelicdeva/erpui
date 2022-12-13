@@ -78,7 +78,6 @@ const top = ref(0);
 const left = ref(0);
 const selectedTag = ref({} as SelectedTag);
 const affixTags = ref([] as Tag[]);
-//const scrollPaneRef = ref(null);
 const scrollPaneRef = ref<InstanceType<typeof ScrollPane> | null >(null)
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const route = useRoute(); // current route
@@ -297,7 +296,6 @@ function toLastView(visitedViews: Tag[], view?: string ) {//view:fullPath
   }
 }
 
-//to-do check
 function openMenu(fullPath: string, e: { clientX: number; clientY: number; }) {
   const menuMinWidth = 105
   const offsetLeft = proxy?.$el.getBoundingClientRect().left // container margin left

@@ -21,9 +21,8 @@ import defaultSettings from '@/settings'
 
 import useAppStore from '@/stores/modules/app'
 import useSettingsStore from '@/stores/modules/settings'
-import { openSetting } from '@/layout/components/Settings/index.vue' // to-do check export explose
 import { computed, onMounted, ref, watchEffect } from 'vue'
-import { ElementLoading } from 'element-plus/es/components/loading/src/directive'
+
 /**
  * Store data Loading Order
  * useSettingStore
@@ -31,7 +30,7 @@ import { ElementLoading } from 'element-plus/es/components/loading/src/directive
  */
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme);
-const sideTheme = computed(() => settingsStore.sideTheme);
+const sideTheme =  computed(() => settingsStore.sideTheme)
 const sidebar = computed(() => useAppStore().sidebar);
 const device = computed(() => useAppStore().device);
 const needTagsView = computed(() => settingsStore.tagsView);
@@ -63,31 +62,18 @@ function handleClickOutside() {
   useAppStore().closeSideBar(false)
 }
 
-const settingRef = ref(null);
-/*
-to-do check again error
-const openSetting = () => {
-  settingRef.value.openSetting();
-}
-*/
-//const openSetting = ref<InstanceType<typeof openSetting> | null> (null)
+const settingRef = ref<InstanceType<typeof Settings> | null >(null);
+
 function setLayout() {
   settingRef.value.openSetting();
 }
 
 onMounted(() => { //to-do if TopNav on, do not observer
+  if ( !needTagsView && !sidebar.value.opened  ) {
   let MutationObserver = window.MutationObserver //  ||window.WebKitMutationObserver || window.MozMutationObserver;
     let observer = new MutationObserver(() => {
       let sidebar = document.getElementsByClassName("sidebar-container")[0];
       let width =  !!sidebar? (sidebar as HTMLDivElement).offsetWidth: 0; // to-do offsetwidth error
-      /**
-      let width: number;
-        if(sidebar === undefined) { // to-do error when setting topnav element without sidebar
-          width = 0;
-        } else {
-        width = sidebar.offsetWidth;
-      }
-       */
       (document.getElementsByClassName("main-container")[0] as HTMLDivElement).style.marginLeft = `${width}px`;
     });
     observer.observe(document.getElementsByClassName("sidebar-container")[0], {
@@ -98,6 +84,7 @@ onMounted(() => { //to-do if TopNav on, do not observer
       attributeOldValue: true,
       characterDataOldValue: true,
     });
+  }
 })
 
 </script>

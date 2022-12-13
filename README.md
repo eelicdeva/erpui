@@ -51,7 +51,8 @@
 * Vue3 中使用了 es6 的 ProxyAPI 对数据代理。
 
 ## 注意事项
-* 1. router push replace 统一使用path方式跳转 尽量避免使用name，因为有重名可能。
+* 2. menu control used by 'fullPath'. if 'query' was used in front-end, need trans query string into 'fullPath'.
+* 1. router push replace by path, do not use name. 统一使用path方式跳转 尽量避免使用name，因为有重名可能。
 
 
 ```bash
