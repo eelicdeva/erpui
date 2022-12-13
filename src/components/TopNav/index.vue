@@ -36,7 +36,7 @@ import useSettingsStore from '@/stores/modules/settings';
 import usePermissionStore from '@/stores/modules/permission';
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import type { MenuData } from '@/router';
+
 // ||顶部栏初始数
 var visibleNumber = ref(0); 
 // ||当前激活菜单的 index
@@ -52,12 +52,12 @@ const router = useRouter(); // instance Router
 // ||主题颜色
 const theme = computed(() => settingsStore.theme);
 // ||所有的路由信息
-const routers = computed(() => permissionStore.topbarMenus) ;
+const menus = computed(() => permissionStore.topbarMenus) ;
 
 interface TopMenu {
-  component: string;
-  hidden: boolean;
-  name: string;
+  component?: string;
+  hidden?: boolean;
+  name?: string;
   path: string;
   meta: {
     title: string;
@@ -69,7 +69,7 @@ interface TopMenu {
   redirect?: string;
   alwaysShow?: boolean; 
   query?: string;
-  children?: TopMenu[];
+  children: TopMenu[];
   }
 }
 
@@ -77,12 +77,12 @@ interface TopMenu {
 const topMenus = computed<TopMenu[]>(() => {
   let topMenus = [] as TopMenu[];
    
-  routers.value.map((menu) => {
+  menus.value.map((menu) => {
     if (menu.hidden !== true) {   //|| http外链接的情况
       // ||兼容顶部栏一级菜单内部跳转
       if (menu.path === "/") {  // || 没有子路由的情况
         if (menu.children) {
-                                               
+          //@ts-ignore                                     
           topMenus.push((menu.children)[0])// ||普通嵌套子路由 !menu.children===undefined
           //to-do check
         }
@@ -98,25 +98,23 @@ const topMenus = computed<TopMenu[]>(() => {
 // 设置子路由
 const childrenMenus = computed(() => {
   let childrenMenus: TopMenu[] = [];
-  routers.value.map((router) => {
-    for (let item in router.children) {
-      if (router.children[item].parentPath === undefined) {
-        if(router.path === "/") {
-          router.children[item].path = "/" + router.children[item].path;
+  menus.value.map((menu) => {
+    for (let item in menu.children) {
+      if (menu.children[item].parentPath === undefined) {
+        if(menu.path === "/") {
+          menu.children[item].path = "/" + menu.children[item].path;
         } else {
-          if(!isHttp(router.children[item].path)) {// ||拼接children path '/system/user'
-            router.children[item].path = router.path + "/" + router.children[item].path;
+          if(!isHttp(menu.children[item].path)) {// ||拼接children path '/system/user'
+            menu.children[item].path = menu.path + "/" + menu.children[item].path;
           }
         }
-        router.children[item].parentPath = router.path;// set children.parentPath
+        menu.children[item].parentPath = menu.path;// set children.parentPath
       }
-      childrenMenus.push(router.children[item]);
+      childrenMenus.push(menu.children[item]);
     }
   })
-  return (constantMenus as MenuData[]).concat(childrenMenus as MenuData[]);
+  return (constantMenus as TopMenu[]).concat(childrenMenus as TopMenu[]);
 })
-
-
 // 默认激活的菜单
 const activeMenu = computed(() => {
   const path = route.path;
@@ -135,8 +133,6 @@ const activeMenu = computed(() => {
   return activePath;
 })
 
-
-
 function setVisibleNumber() {
   const width = document.body.getBoundingClientRect().width / 3;
   visibleNumber.value = parseInt(String(width / 85));
@@ -144,7 +140,7 @@ function setVisibleNumber() {
 
 function handleSelect(key: string, keyPath: string) {
   currentIndex.value = key;
-  const route = routers.value.find(item => item.path === key);
+  const route = menus.value.find(item => item.path === key);
   if (isHttp(key)) {
     // http(s):// 路径新窗口打开
     window.open(key, "_blank");
@@ -160,20 +156,21 @@ function handleSelect(key: string, keyPath: string) {
 }
 
 function activeRoutes(key: string) {
-  let routes: TopMenu[] = [];
+  let menus: TopMenu[] = [];
   if (childrenMenus.value && childrenMenus.value.length > 0) {
     childrenMenus.value.map((item) => {
+      //@ts-ignore
       if (key == item.parentPath || (key == "index" && "" == item.path)) {
-        routes.push(item);
+        menus.push(item);
       }
     });
   }
-  if(routes.length > 0) {
-    permissionStore.setSidebarRouters(routes);
+  if(menus.length > 0) {
+    permissionStore.setSidebarMenus(menus);
   } else {
     appStore.toggleSideBarHide(true);
   }
-  return routes;
+  return menus;
 }
 
 onMounted(() => {

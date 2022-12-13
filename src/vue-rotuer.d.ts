@@ -44,8 +44,8 @@ declare module 'vue-router'{
     title: string;       // ||设置该路由在侧边栏和面包屑中展示的名字
     icon?: string;        // ||设置该路由的图标，对应路径src/assets/icons/svg 
     noCache?: boolean;   // ||如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
-    breadcrumb?: boolean; // ||如果设置为false，则不会在breadcrumb面包屑中显示
-    //activeMenu?: string;  // ||to-do 和meta 无关，当路由设置了该属性，则会高亮相对应的侧边栏。
+    //breadcrumb?: boolean; // ||如果设置为false，则不会在breadcrumb面包屑中显示
+    activeMenu?: string;  // ||to-do 和meta 无关?，当路由设置了该属性，则会高亮相对应的侧边栏。
     link?: string | null;      // ||外部链接
     affix?:  boolean;   // ||home { title: t('menu.frontPage'), icon: 'dashboard', affix: true } || 首页设置 name 'Dashboard'
   };

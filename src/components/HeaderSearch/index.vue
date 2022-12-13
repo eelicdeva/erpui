@@ -24,7 +24,7 @@ import { isHttp } from '@/utils/validate';
 import usePermissionStore from '@/stores/modules/permission';
 import { computed, nextTick, onMounted, ref, watch, watchEffect } from 'vue';
 import { useRouter, _RouteRecordBase } from 'vue-router';
-
+import type { MenuData } from '@/router';
 interface OptionData {
   item:{  
     path: string;
@@ -44,7 +44,7 @@ const show = ref(false);
 const fuse = ref() ;
 const headerSearchSelectRef = ref(null);
 const router = useRouter();
-const routes = computed(() => usePermissionStore().routes);
+const menus = computed(() => usePermissionStore().defaultMenus);
 
 function click() {
   show.value = !show.value
@@ -91,13 +91,13 @@ function initFuse(list) {
   })
 }
 
-// Filter out the routes that can be displayed in the sidebar
+// Filter out the menus that can be displayed in the sidebar
 // And generate the internationalized title
-function generateRoutes(routes, basePath = '', prefixTitle= [] ) {
+function generateRoutes(menus: MenuData[], basePath = '', prefixTitle= [] ) {
   let res: SearchData[] = [] ;
-  for (const r of routes) {
+  for (const r of menus) {
     // skip hidden router
-    if (r.hidden) { continue }
+    if (r.hidden) { continue } //to-do check how to open logout/ profile
     const p = r.path.length > 0 && r.path[0] === '/' ? r.path : '/' + r.path;
     const data = {
       path: !isHttp(r.path) ? getNormalPath(basePath + p) : r.path as string,
@@ -108,13 +108,13 @@ function generateRoutes(routes, basePath = '', prefixTitle= [] ) {
       (data).title = [...data.title, r.meta.title]
 
       if (r.redirect !== 'noRedirect') {
-        // only push the routes with title
+        // only push the menus with title
         // special case: need to exclude parent router without redirect
         res.push(data)
       }
     }
 
-    // recursive child routes
+    // recursive child menus
     if (r.children) {
       const tempRoutes = generateRoutes(r.children, data.path, data.title=[])
       if (tempRoutes.length >= 1) {
@@ -133,11 +133,11 @@ function querySearch(query: string) {
 }
 
 onMounted(() => {
-  searchPool.value = generateRoutes(routes.value);
+  searchPool.value = generateRoutes(menus.value);
 })
 
 watchEffect(() => {
-  searchPool.value = generateRoutes(routes.value)
+  searchPool.value = generateRoutes(menus.value)
 })
 
 watch(show, (value) => {

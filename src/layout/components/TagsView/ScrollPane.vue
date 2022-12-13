@@ -16,10 +16,16 @@ import useTagsViewStore, { VisitedView } from '@/stores/modules/tagsView';
 import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue';
 import type { ComponentInternalInstance } from 'vue';
 
+export interface TagScroll {
+  fullPath: string;
+  offsetLeft: number;
+  offsetWidth: number;
+}
 const tagAndTagSpacing = ref(4);
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-
-const scrollWrapper = computed(() => ( proxy?.$refs.scrollContainer.$refs.wrap$));
+// el-scrollbar from element-plus by js
+// @ts-ignore
+const scrollWrapper = computed(() => (proxy?.$refs.scrollContainer.$refs.wrap$));
 
 onMounted(() => {
   scrollWrapper.value.addEventListener('scroll', emitScroll, true)
@@ -53,40 +59,41 @@ const emitScroll = () => {
   emits('scroll')
 }
 
-
 const tagsViewStore = useTagsViewStore()
 const visitedViews = computed<VisitedView[]>(() => tagsViewStore.visitedViews);
 
-function moveToTarget(currentTag) {
-  const $container = (proxy.$refs.scrollContainer ).$el
+function moveToTarget(currentTag: TagScroll) {
+  // el-scrollbar from  element-plus by js
+  // @ts-ignore 
+  const $container = proxy.$refs.scrollContainer.$el // : HTMLDivElement  
   const $containerWidth = $container.offsetWidth
   const $scrollWrapper = scrollWrapper.value;
 
-  let firstTag = null
-  let lastTag = null
+  let firstTag = {} as TagScroll; 
+  let lastTag = {} as TagScroll;
 
   // find first tag and last tag
   if (visitedViews.value.length > 0) {
-    firstTag = visitedViews.value[0];
-    lastTag = visitedViews.value[visitedViews.value.length - 1]
-  }
+    firstTag.fullPath = visitedViews.value[0].path
+    lastTag.fullPath = visitedViews.value[visitedViews.value.length - 1].path
+  }   
 
   if (firstTag === currentTag) {
     $scrollWrapper.scrollLeft = 0
   } else if (lastTag === currentTag) {
     $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
   } else {
-    const tagListDom = document.getElementsByClassName('tags-view-item');
-    const currentIndex = visitedViews.value.findIndex(item => item === currentTag)
-    let prevTag = null
-    let nextTag = null
+    const tagListDom = document.getElementsByClassName('tags-view-item');  
+    const currentIndex = visitedViews.value.findIndex(item => item.path === currentTag.fullPath)
+    let prevTag = {} as TagScroll;
+    let nextTag = {} as TagScroll;
     for (const k in tagListDom) {
-      if (k !== 'length' && Object.hasOwnProperty.call(tagListDom, k)) {
-        if (tagListDom[k].dataset.path === visitedViews.value[currentIndex - 1].path) {
-          prevTag = tagListDom[k];
-        }
-        if (tagListDom[k].dataset.path === visitedViews.value[currentIndex + 1].path) {
-          nextTag = tagListDom[k];
+      if (k !== 'length' && Object.hasOwnProperty.call(tagListDom, k)) {       
+        if ((tagListDom[k] as HTMLElement).dataset.path === visitedViews.value[currentIndex - 1].path) {  
+          prevTag.fullPath = visitedViews.value[currentIndex - 1].path;
+        }      
+        if ((tagListDom[k] as HTMLElement).dataset.path === visitedViews.value[currentIndex + 1].path) {
+          nextTag.fullPath = visitedViews.value[currentIndex + 1].path;
         }
       }
     }

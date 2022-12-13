@@ -145,7 +145,7 @@ const topNav = computed({
     settingsStore.changeSetting({ key: 'topNav', value: val })
     if (!val) {
       appStore.toggleSideBarHide(false);
-      permissionStore.setSidebarRouters(permissionStore.defaultRoutes);
+      permissionStore.setSidebarMenus(permissionStore.sidebarMenus);//to-do need to check
     }
   }
 })
@@ -222,6 +222,8 @@ function openSetting() {
 defineExpose({
   openSetting
 })
+
+//to-do check
 watch(backgroundImage, () => { console.log(backgroundImage.value) })
 </script>
 

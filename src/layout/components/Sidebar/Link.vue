@@ -19,8 +19,6 @@ interface To {
   }]
 }
 
-
-
 interface LinkProp {
 string,{
                 href: string;
@@ -31,6 +29,37 @@ string,{
 
 const props = defineProps<LinkProps>()
 */
+
+const props = defineProps({
+  to: { 
+    type: [String, Object],  // to-do  isit query? { (string | number ): ( string | number | boolean) }
+    required: true
+  }
+})
+
+const isExt = computed(() => {
+  return isExternal(props.to)
+})
+
+const type = computed<string>(() => {
+  if (isExt.value) {
+    return 'a'
+  }
+  return 'router-link'
+})
+
+function linkProps() {
+  if (isExt.value) {
+    return {
+      href: props.to,
+      target: '_blank',
+      rel: 'noopener'
+    }
+  }
+  return {
+    to: props.to
+  }
+}
 /**
  * declare interface RouterLinkOptions {to: RouteLocationRaw;replace?: boolean;} 
  * to: RouteLocationRaw;
@@ -72,34 +101,4 @@ const props = defineProps<LinkProps>()
  * export declare type RouteParamValueRaw = RouteParamValue | number | null | undefined;
  * export declare type RouteParamValue = string;
  */
-const props = defineProps({
-  to: { 
-    type: [String, Object],  // to-do  isit query? { (string | number ): ( string | number | boolean) }
-    required: true
-  }
-})
-
-const isExt = computed(() => {
-  return isExternal(props.to)
-})
-
-const type = computed<string>(() => {
-  if (isExt.value) {
-    return 'a'
-  }
-  return 'router-link'
-})
-
-function linkProps() {
-  if (isExt.value) {
-    return {
-      href: props.to,
-      target: '_blank',
-      rel: 'noopener'
-    }
-  }
-  return {
-    to: props.to
-  }
-}
 </script>

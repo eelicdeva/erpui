@@ -18,6 +18,7 @@ export interface IsActiveProps {
   isActive: boolean;
 }
 // with defaults prop
+
 const props = withDefaults(defineProps<IsActiveProps>(),{
   isActive: false
 })

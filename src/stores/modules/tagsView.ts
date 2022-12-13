@@ -1,30 +1,24 @@
 import { defineStore } from 'pinia'
-import { LocationQuery, RouteLocationNormalizedLoaded } from 'vue-router';
+import type { LocationQuery } from 'vue-router';
 
 export interface VisitedView {
   fullPath: string; //check log  fullPath: tag.fullPath  need to check, not suit for vue-router
-  //hash: string;// check log
-  params: Object; // check log
-  //redirectedFrom: {} check log
-  query: LocationQuery;// check log check string
-  //active: string;
-  title: string // check log
+  query?: LocationQuery;// check log check string
   name: string; 
   path: string;
   meta: {
     affix?: boolean;
-    icon: string;  // check log
+    icon?: string;   //for future use
     title: string; 
-    link?: string;
+    link?: string | null; // for iframe external link
     noCache?: boolean;
+    activeMenu?: string; // for inside link => highlight parent menu icon | title
   }
 }
+
 export interface IframeView {
-  path: string;
-  meta: {
-    title: string;
-    link: string;
-  }
+  path: string; //fullPath
+  title: string;
 }
 
 interface UseTagsViewStore {
@@ -45,10 +39,12 @@ const useTagsViewStore = defineStore(
         this.addVisitedView(view)
         this.addCachedView(view)
       },
-      addIframeView( view ) { 
+      addIframeView( view: VisitedView ) { 
         if (this.iframeViews.some(v => v.path === view.path)) return
         this.iframeViews.push(
+          //assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
           Object.assign({}, view, {
+            //@ts-ignore
             title: view.meta.title || 'no-name' 
           })
         )
@@ -57,19 +53,20 @@ const useTagsViewStore = defineStore(
         if (this.visitedViews.some(v => v.path === view.path)) return
         this.visitedViews.push(
           Object.assign({}, view, {
+            //@ts-ignore
             title: view.meta.title || 'no-name'
           })
         )
       },
       addCachedView(view: VisitedView) {
-        if (this.cachedViews.includes(view.name)) return
+        if (this.cachedViews.includes(view.fullPath)) return
         if (!view.meta.noCache) {
-          this.cachedViews.push(view.name)
+          this.cachedViews.push(view.fullPath)
         }
       },
-      delView(view: VisitedView ) {
-        return new Promise(resolve => {
-          this.delVisitedView(view)
+      delView(view: string ) { //view: fullPath
+        return new Promise(resolve => {          
+          this.delVisitedView(view)          
           this.delCachedView(view)
           resolve({
             visitedViews: [...this.visitedViews],
@@ -77,32 +74,32 @@ const useTagsViewStore = defineStore(
           })
         })
       },
-      delVisitedView(view: VisitedView) {
+      delVisitedView(view: string) { //view: fullPath
         return new Promise(resolve => {
           for (const [i, v] of this.visitedViews.entries()) {
-            if (v.path === view.path) {
+            if (v.fullPath === view) {
               this.visitedViews.splice(i, 1)
               break
             }
           }
-          this.iframeViews = this.iframeViews.filter(item => item.path !== view.path)
+          this.iframeViews = this.iframeViews.filter(item => item.path !== view)
           resolve([...this.visitedViews])
         })
       },
-      delIframeView(view: IframeView) {
+      delIframeView(view: string) { // fullPath
         return new Promise(resolve => {
-          this.iframeViews = this.iframeViews.filter(item => item.path !== view.path)
+          this.iframeViews = this.iframeViews.filter(item => item.path !== view)
           resolve([...this.iframeViews])
         })
       },
-      delCachedView(view: VisitedView) {  
+      delCachedView(tagFullPath: string) {  
         return new Promise(resolve => {
-          const index = this.cachedViews.indexOf(view.name)
+          const index = this.cachedViews.indexOf(tagFullPath)
           index > -1 && this.cachedViews.splice(index, 1)
           resolve([...this.cachedViews])
         })
       },
-      delOthersViews(view: VisitedView) {
+      delOthersViews(view: string) { //fullPath
         return new Promise(resolve => {
           this.delOthersVisitedViews(view)
           this.delOthersCachedViews(view)
@@ -112,18 +109,18 @@ const useTagsViewStore = defineStore(
           })
         })
       },
-      delOthersVisitedViews(view: VisitedView) {
+      delOthersVisitedViews(view: string) {//fullPath
         return new Promise(resolve => {
           this.visitedViews = this.visitedViews.filter(v => {
-            return v.meta.affix || v.path === view.path
+            return v.meta.affix || v.fullPath === view
           })
-          this.iframeViews = this.iframeViews.filter(item => item.path === view.path)
+          this.iframeViews = this.iframeViews.filter(item => item.path === view)
           resolve([...this.visitedViews])
         })
       },
-      delOthersCachedViews(view: VisitedView) {
+      delOthersCachedViews(view: string) {//fullPath
         return new Promise(resolve => {
-          const index = this.cachedViews.indexOf(view.name)
+          const index = this.cachedViews.indexOf(view)
           if (index > -1) {
             this.cachedViews = this.cachedViews.slice(index, index + 1)
           } else {
@@ -132,17 +129,17 @@ const useTagsViewStore = defineStore(
           resolve([...this.cachedViews])
         })
       },
-      delAllViews(view: VisitedView) { // to-do check the defined 
-        return new Promise(resolve => {
-          this.delAllVisitedViews(view)
-          this.delAllCachedViews(view)
+      delAllViews() { // to-do check the defined 
+        return new Promise(resolve => {         
+          this.delAllVisitedViews()
+          this.delAllCachedViews()         
           resolve({
             visitedViews: [...this.visitedViews],
             cachedViews: [...this.cachedViews]
           })
         })
       },
-      delAllVisitedViews(_view: VisitedView) {
+      delAllVisitedViews() {
         return new Promise(resolve => {
           const affixTags = this.visitedViews.filter(tag => tag.meta.affix)
           this.visitedViews = affixTags
@@ -150,13 +147,13 @@ const useTagsViewStore = defineStore(
           resolve([...this.visitedViews])
         })
       },
-      delAllCachedViews(_view: VisitedView) {
+      delAllCachedViews() {
         return new Promise(resolve => {
           this.cachedViews = []
           resolve([...this.cachedViews])
         })
       },
-      updateVisitedView(view: RouteLocationNormalizedLoaded ) {   //check definded RouteLocationNormalizedLoaded
+      updateVisitedView(view) {
         for (let v of this.visitedViews) {
           if (v.path === view.path) {
             v = Object.assign(v, view)
@@ -164,9 +161,9 @@ const useTagsViewStore = defineStore(
           }
         }
       },
-      delRightTags(view: VisitedView) {
+      delRightTags(view: string) {//view: fullPath
         return new Promise(resolve => {
-          const index = this.visitedViews.findIndex(v => v.path === view.path)
+          const index = this.visitedViews.findIndex(v => v.fullPath === view)
           if (index === -1) {
             return
           }
@@ -175,7 +172,7 @@ const useTagsViewStore = defineStore(
               return true
             }
 
-            const i = this.cachedViews.indexOf(item.name)
+            const i = this.cachedViews.indexOf(item.fullPath)
             if (i > -1) {
               this.cachedViews.splice(i, 1)
             }
@@ -188,9 +185,9 @@ const useTagsViewStore = defineStore(
           resolve([...this.visitedViews])
         })
       },
-      delLeftTags(view: VisitedView) {
+      delLeftTags(view: string) { //string fullPath
         return new Promise(resolve => {
-          const index = this.visitedViews.findIndex(v => v.path === view.path)
+          const index = this.visitedViews.findIndex(v => v.fullPath === view)
           if (index === -1) {
             return
           }
@@ -198,7 +195,7 @@ const useTagsViewStore = defineStore(
             if (idx >= index || (item.meta && item.meta.affix)) {
               return true
             }
-            const i = this.cachedViews.indexOf(item.name)
+            const i = this.cachedViews.indexOf(item.fullPath)
             if (i > -1) {
               this.cachedViews.splice(i, 1)
             }

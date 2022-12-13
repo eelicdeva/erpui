@@ -37,35 +37,38 @@ declare module '@vue/runtime-core' {
     // ||页签操作 to-do need check
     $tab: {
       // ||刷新当前$tab页签
-      refreshPage(obj: any | undefined): any,
+      refreshPage(obj),
       // ||关闭当前tab页签，打开新页签
-      closeOpenPage(obj: { path: string }): any,
+      closeOpenPage(obj),
       // ||关闭指定tab页签
-      closePage(obj: RouteLocationRaw | undefined):any,
+      closePage(obj),
       // ||关闭所有tab页签
-      closeAllPage(): any,
+      closeAllPage(),
       // 关闭左侧tab页签
-      closeLeftPage(obj: any): any,
+      closeLeftPage(obj),
       // 关闭右侧tab页签
-      closeRightPage(obj: any): any,
+      closeRightPage(obj),
+      // 关闭其他tab页签
+      closeOtherPage(obj) ,
       // 打开tab页签
-      openPage(url: RouteLocationRaw): any,
-      updatePage(obj: any): any
+      openPage(url),
+      // 修改tab页签
+      updatePage(obj)
     };
     // ||认证对象
     $auth: {
       // ||验证用户是否具备某权限  
-      hasPermi(permission: string | any[]): boolean,
+      hasPermi(permission: string | string[]): boolean,
       // ||验证用户是否含有指定权限，只需包含其中一个
-      hasPermiOr(permissions: any[]): boolean,
+      hasPermiOr(permissions: string[]): boolean,
       // ||验证用户是否含有指定权限，必须全部拥有
-      hasPermiAnd(permissions: any[]): boolean,
+      hasPermiAnd(permissions: string[]): boolean,
       // ||验证用户是否具备某角色
-      hasRole(role: string | any[]): boolean,
+      hasRole(role: string | string[]): boolean,
       // ||验证用户是否含有指定角色，只需包含其中一个
-      hasRoleOr(roles: any[]): boolean,
+      hasRoleOr(roles: string[]): boolean,
       // ||验证用户是否含有指定角色，必须全部拥有
-      hasRoleAnd(roles: any[]): boolean                           
+      hasRoleAnd(roles: string[]): boolean                           
     };
 
     // ||缓存对象 to-do check

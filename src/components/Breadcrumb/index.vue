@@ -21,6 +21,7 @@ import type { RouteMeta } from 'vue-router';
 import i18n from '@/lang/index';
 
 interface LevelList {
+  name?: string;
   path: string;
   redirect?: string;
   meta: {
@@ -37,7 +38,7 @@ interface Matched {
   meta: RouteMeta;
 }
 function getBreadcrumb() {
-  // only show routes with meta.title || 过滤掉没有title属性的路由，没有title就无法作为面包屑导航
+  // only show menus with meta.title || 过滤掉没有title属性的路由，没有title就无法作为面包屑导航
   let matched: Matched[]  = route.matched.filter(item => item.meta && item.meta.title);
   // ||获取第一个匹配路由记录
   const first = matched[0] 
@@ -49,17 +50,17 @@ function getBreadcrumb() {
                   meta: { title: t('menu.frontPage') } 
                 }]).concat(matched)
   }
-
+  // ||breadcrumb如果设置为false，则不会在breadcrumb面包屑中显示
   levelList.value = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
 }
 
 // ||判断是不是Dashboard路由
-function isDashboard(route) {
+function isDashboard(route: LevelList) { 
   const name = route && route.name
   if (!name) {
     return false
   }
-    return (name as string).trim() === 'Dashboard'
+    return (name as string).trim() === 'Dashboard' // for TagsView
 }
 
 // ||点击面包屑导航可跳转

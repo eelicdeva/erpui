@@ -21,7 +21,8 @@ export interface CustomRoute {
     icon: string;
     affix?: boolean;
     link?: string;  
-    noCache?: boolean
+    noCache?: boolean;
+    activeMenu?: string;
   }
   name?: string;
   redirect?: string;
@@ -35,52 +36,51 @@ interface DynamicRoute {
   name?: string;  // to-do check
   hidden?: boolean;
   redirect?: string;
-  permissions: string[];
-  roles?: string[]; // to-do check
+  permissions?: string[]; // ? option and for delete
+  roles?: string[]; // ? option and for delete
   meta?: {
     title: string;
-    icon?: string;
-    affix?: boolean;
-    link?: string;
-    noCache?: boolean
+    //icon?: string;
+    //affix?: boolean;
+    //link?: string;
+    //noCache?: boolean
     activeMenu?: string;
   };
   children?: DynamicRoute[]
 }
 interface UsePermissionStore{
   routes: MenuData[];
-  addMenus:  MenuData[];
-  defaultRoutes:  MenuData[];
+  addRoutes:  MenuData[];
+  defaultMenus:  MenuData[];
   topbarMenus: MenuData[];
-  sidebarMenus: MenuData[];
+  sidebarMenus: MenuData[]; 
 };
-// 匹配views里面所有的.vue文件
+// ||匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue')
-
 
 const usePermissionStore = defineStore(
   'permission',
   {
     state: (): UsePermissionStore => ({
       routes: [],  // constantMenus + resRouters
-      addMenus: [], // res user menus
-      defaultRoutes: [],
+      addRoutes: [], // res user menus
+      defaultMenus: [], // with hidden menu
       topbarMenus: [],
-      sidebarMenus: []
+      sidebarMenus: [] // changed according to topbarMenus
     }),
     actions: {
       setRoutes(routes: MenuData[]) { 
-        this.addMenus = routes
+        this.addRoutes = routes
         this.routes = (constantMenus as MenuData[]).concat(routes)  
       },
-      setDefaultRoutes(routes: MenuData[]) {
-        this.defaultRoutes = (constantMenus as MenuData[]).concat(routes) 
+      setDefaultMenus(menus: MenuData[]) {
+        this.defaultMenus = menus;//to-do need to check 
       },
-      setTopbarRoutes(routes: MenuData[]) { //resRoutes 
-        this.topbarMenus = routes
+      setTopbarMenus(menus: MenuData[]) { //resRoutes 
+        this.topbarMenus = menus
       },
-      setSidebarRouters(routes: MenuData[]) {
-        this.sidebarMenus = routes
+      setSidebarMenus(menus: MenuData[]) {
+        this.sidebarMenus = menus
       },
       generateRoutes() { //to-do check roles data 
         return new Promise(resolve => {
@@ -88,37 +88,46 @@ const usePermissionStore = defineStore(
           getRouters().then((res) => {
             const sdata: MenuData[] = JSON.parse(JSON.stringify(res.data)); // ||NaN 和 Infinity 格式的数值及 null 都会被当做 null。
             const rdata: MenuData[] = JSON.parse(JSON.stringify(res.data));
-            const defaultData: MenuData[] = JSON.parse(JSON.stringify(res.data));
-
-            const sidebarRoutes = filterAsyncMenus(sdata);
+            const defaultData: MenuData[] = JSON.parse(JSON.stringify(res.data));            
+            const sidebarMenus = filterMenus(sdata, true);            
             const rewriteRoutes = filterAsyncRouter(rdata, false, true );
-            const defaultRoutes = filterAsyncMenus(defaultData);
+            const defaultMenus = filterMenus(defaultData);
             const asyncRoutes = filterDynamicRoutes(dynamicRoutes) as RouteRecordRaw[];
             // addRoute(route: RouteRecordRaw): () => void;
             asyncRoutes.forEach((route) => { return router.addRoute(route) }) ;// router: Router, route: dynamicRoutes                       
             this.setRoutes(rewriteRoutes); // rewriteRoutes: constantMenus + rewriteRoutes  
-            this.setSidebarRouters(constantMenus.concat(sidebarRoutes));
-            this.setDefaultRoutes(sidebarRoutes);
-            this.setTopbarRoutes(defaultRoutes);
+            this.setSidebarMenus(filterMenus(constantMenus,true).concat(sidebarMenus));
+            this.setDefaultMenus(filterMenus(constantMenus).concat(defaultMenus));
+            this.setTopbarMenus(defaultMenus);
             resolve(rewriteRoutes);
           });
         });
       }
     }
   })
-  function filterAsyncMenus(asyncMenuMap: MenuData[], lastRouter=false) { //to-do lastRouter setting false
-    return asyncMenuMap.filter((menu) => {
-      if (menu.component) {
-        delete menu['component']
+
+function filterMenus(asyncMenuMap: MenuData[], hidden?: boolean) {
+  //delete hidden menu =>not show in main menu (topbar/sidebar) 
+  if (hidden) { 
+    for (const [i, m] of asyncMenuMap.entries()) {
+      if (m.hidden === true) {
+        asyncMenuMap.splice(i, 1)
       }
-      if (menu.children != null && menu.children && menu.children.length) {
-        menu.children = filterAsyncMenus(menu.children, false)
-      } else {
-        delete menu['children']
-        delete menu['redirect']
-      }
-      return true
-   })
+    }
+  } 
+
+  return asyncMenuMap.filter((menu) => {
+    if (menu.component) {
+      delete menu['component']
+    }
+    if (menu.children != null && menu.children && menu.children.length) {
+      menu.children = filterMenus(menu.children)
+    } else {
+      delete menu['children']
+      delete menu['redirect']
+    }
+    return true
+  })
  }
 
 // ||遍历后台传来的路由字符串，路径转换为组件对象。
@@ -173,11 +182,12 @@ function filterChildren( childrenMap: MenuData[], lastRouter = false) {
 };
 
 // ||动态路由遍历，验证是否具备权限
-export function filterDynamicRoutes(routes: DynamicRoute[]) {
+export function filterDynamicRoutes(menus: DynamicRoute[]) {
   const res = [] as DynamicRoute[];
-  routes.forEach((route ) => {
+  menus.forEach((route ) => {
     if (route.permissions) {
       if (auth.hasPermiOr(route.permissions)) {
+        delete route['permissions']
         res.push(route)
       }
     } else if (route.roles) {

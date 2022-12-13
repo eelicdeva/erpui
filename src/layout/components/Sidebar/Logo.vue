@@ -22,6 +22,7 @@ import { computed, ref } from 'vue';
 interface LogoProps {
   collapse: boolean;
 };
+//@ts-ignore
 const props = defineProps<LogoProps>();
 
 const title = ref('EELIC SYSTEM');

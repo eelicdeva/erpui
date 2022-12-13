@@ -81,10 +81,10 @@ export interface MenuData {
     title: string;       // ||设置该路由在侧边栏和面包屑中展示的名字
     icon: string;        // ||设置该路由的图标，对应路径src/assets/icons/svg 
     noCache: boolean;   // ||如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
-    link: string | null;      // ||外部链接
+    link: string | null;      // link for iframe || 外部链接
     affix?:  boolean;  //首页固定
-    //breadcrumb?: boolean; // ||如果设置为false，则不会在breadcrumb面包屑中显示
-    //activeMenu?: string;  // ||当路由设置了该属性，则会高亮相对应的侧边栏。     
+    breadcrumb?: boolean; // ||如果设置为false，则不会在breadcrumb面包屑中显示
+    activeMenu?: string;  // ||当页面内嵌套路由填入页面的路由字段，则会高亮该字段相对应的页面菜单图标或名称。     
   }
   children?: MenuData[];
   alwaysShow?: boolean;      // ||当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面    
@@ -183,28 +183,23 @@ const componentSingleViewWithChildren: RouteRecordRaw[]  = [
  * @param  {RouteRecordRaw[]} routerDatas
  * @param  {boolean} hidden?: true => not show in the main menu
  */
-function filterMenusWithChildren(routerDatas: RouteRecordRaw[], hidden?: boolean): MenuData[] {
+function filterMenus(routerDatas: RouteRecordRaw[], hidden?: boolean): MenuData[] {
   routerDatas.forEach((menuData)=>{
-      if (menuData.component){
-        delete routerDatas['component']
-        if (hidden){
-          (menuData as MenuData).hidden = true;
-        };
-      /*  
-        if ((menuData as MenuData).children) {
-          //menuData.redirect = 'noRedirect';
-        }
-      */ 
-      }
-      if (menuData.children) {
-        filterMenusWithChildren(menuData.children)
-      }
+    if (menuData.component){
+      delete routerDatas['component']
     }
-  )
+    if (hidden){
+      (menuData as MenuData).hidden = true;
+    };
+    if (menuData.children) {
+      filterMenus(menuData.children)
+      //menuData.redirect = 'noRedirect';
+    }
+  })
   return routerDatas as MenuData[]
 };
 
-export const constantMenus = filterMenusWithChildren(redirectIndexViewWithChildren, true ).concat( filterMenusWithChildren(componentSingleViewWithChildren, true));
+export const constantMenus = filterMenus(redirectIndexViewWithChildren, false ).concat( filterMenus(componentSingleViewWithChildren, true));
 
 const prepareRoutes = whiteSingleView.concat(redirectIndexViewWithChildren, componentSingleViewWithChildren);
 /**
@@ -225,7 +220,7 @@ const prepareRoutes = whiteSingleView.concat(redirectIndexViewWithChildren, comp
  * @property { string } children.name -required
  * @property { object } children.meta -required
  * @property { string } children.meta.title -required
- * @property { string } children.meta.activeMenu -required
+ * @property { string } children.meta.activeMenu -required => inside page router highlight parent menu icon | title
  * @note component type: {RouteRecordSingleViewWithChildren.component?: RawRouteComponent | null | undefined};
  */
 export const dynamicRoutes: DynamicRoute[] = [

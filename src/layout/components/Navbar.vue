@@ -12,7 +12,7 @@
         </el-tooltip>
         
         <el-tooltip :content="$t('button.language')" effect="dark" placement="bottom">
-          <lang-select :is-active="true" class="right-menu-item hover-effect" />
+         <lang-select :is-active="true" class="right-menu-item hover-effect" />
         </el-tooltip>
 
         <el-tooltip :content="$t('button.documentAddress')" effect="dark" placement="bottom">

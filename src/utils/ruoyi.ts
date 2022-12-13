@@ -273,9 +273,9 @@ export function tansParams(params: { [x: string]: any }) {
 // ||返回项目路径
 /**
  * @param  {string} p
- * @return '' | p.replace('//', '/'): string
+ * @return string: '' | p.replace('//', '/')
  */
-export function getNormalPath(p: string ) {
+export function getNormalPath(p: string ): string {
   if (p.length === 0 || !p || p == 'undefined') {
     return p
   };
