@@ -62,7 +62,7 @@ const emitScroll = () => {
 const tagsViewStore = useTagsViewStore()
 const visitedViews = computed<VisitedView[]>(() => tagsViewStore.visitedViews);
 
-function moveToTarget(currentTag: TagScroll) {
+function moveToTarget(currentTag: string) { //currentTag: fullPath
   // el-scrollbar from  element-plus by js
   // @ts-ignore 
   const $container = proxy.$refs.scrollContainer.$el // : HTMLDivElement  
@@ -78,13 +78,13 @@ function moveToTarget(currentTag: TagScroll) {
     lastTag.fullPath = visitedViews.value[visitedViews.value.length - 1].path
   }   
 
-  if (firstTag === currentTag) {
+  if (firstTag.fullPath === currentTag) {
     $scrollWrapper.scrollLeft = 0
-  } else if (lastTag === currentTag) {
+  } else if (lastTag.fullPath === currentTag) {
     $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
   } else {
     const tagListDom = document.getElementsByClassName('tags-view-item');  
-    const currentIndex = visitedViews.value.findIndex(item => item.path === currentTag.fullPath)
+    const currentIndex = visitedViews.value.findIndex(item => item.path === currentTag)
     let prevTag = {} as TagScroll;
     let nextTag = {} as TagScroll;
     for (const k in tagListDom) {

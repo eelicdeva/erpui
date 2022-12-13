@@ -19,22 +19,22 @@
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">
+      <li @click="refreshSelectedTag(selectedTag.fullPath)">
         <refresh-right style="width: 1em; height: 1em;" /> {{ $t('button.refresh') }}
       </li>
       <li v-if="!isAffix(selectedTag.fullPath)" @click="closeSelectedTag(selectedTag.fullPath)">
         <close style="width: 1em; height: 1em;" /> {{ $t('button.closecurrent') }}
       </li>
-      <li @click="closeOthersTags(selectedTag)">
+      <li @click="closeOthersTags(selectedTag.fullPath)">
         <circle-close style="width: 1em; height: 1em;" /> {{ $t('button.closeother') }}
       </li>
-      <li v-if="!isFirstView()" @click="closeLeftTags">
+      <li v-if="!isFirstView()" @click="closeLeftTags(selectedTag.fullPath)">
         <back style="width: 1em; height: 1em;" /> {{ $t('button.closeleft') }}
       </li>
-      <li v-if="!isLastView()" @click="closeRightTags">
+      <li v-if="!isLastView()" @click="closeRightTags(selectedTag.fullPath)">
         <right style="width: 1em; height: 1em;" /> {{ $t('button.closeright') }}
       </li>
-      <li @click="closeAllTags(selectedTag)">
+      <li @click="closeAllTags(selectedTag.fullPath)">
         <circle-close style="width: 1em; height: 1em;" /> {{ $t('button.closeall') }}
       </li>
     </ul>
@@ -69,28 +69,17 @@ interface Tag {
 }
 
 interface SelectedTag {
-  //query?: LocationQuery;
   fullPath: string;
   offsetLeft: number;
   offsetWidth: number;
-  //path: string;
- // name: string;
- // meta: {
- //   affix?: boolean;
-   // icon?: string;  // for future use
-   // title: string; 
-   // link?: string | null;
-   // noCache?: boolean;
-    //activeMenu?: string; // for future use
- // };
 }
 const visible = ref(false);
 const top = ref(0);
 const left = ref(0);
 const selectedTag = ref({} as SelectedTag);
 const affixTags = ref([] as Tag[]);
-const scrollPaneRef = ref(null);
-
+//const scrollPaneRef = ref(null);
+const scrollPaneRef = ref<InstanceType<typeof ScrollPane> | null >(null)
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const route = useRoute(); // current route
 const router = useRouter();
@@ -99,10 +88,6 @@ const visitedViews = computed(() => useTagsViewStore().visitedViews);
 const defaultMenus = computed(() => usePermissionStore().defaultMenus);  
 const theme = computed(() => useSettingsStore().theme);
 
-console.log ("visitedViews: ")
-console.log (visitedViews)
-console.log ("router.currentRoute: ")
-console.log (router.currentRoute)
 watch(router.currentRoute, () => {
   addTags() 
 })
@@ -207,8 +192,7 @@ function addTags() {
   const currentViewTag = {} as Tag;
 
   if (name !== null && name !== undefined) {
-    //@ts-ignore
-    currentViewTag.name = name;
+    currentViewTag.name = name as string;
     currentViewTag.fullPath = fullPath;
     currentViewTag.path = path;
 
@@ -223,13 +207,12 @@ function addTags() {
   }
   return false
 }
-// to-do check
+
 function moveToCurrentTag() {
   nextTick(() => {
     for (const r of visitedViews.value) {            
-      if (r.path === route.path) {           
-        //@ts-ignore            
-        scrollPaneRef.value.moveToTarget(r);
+      if (r.path === route.path) {                      
+        scrollPaneRef.value?.moveToTarget(r.fullPath);
         // when query is different then update
         if (r.fullPath !== route.fullPath) {
           const { fullPath, path, name, meta, query } = route;
@@ -249,7 +232,7 @@ function moveToCurrentTag() {
   })
 }
 
-function refreshSelectedTag(view: SelectedTag) {
+function refreshSelectedTag(view: string) {
   proxy?.$tab.refreshPage(view);
   const { fullPath } = route;
   if ( route.meta.link ) {
@@ -265,35 +248,35 @@ function closeSelectedTag(view: string) { // view: fullPath
   })
 }
 
-function closeRightTags() {
-  proxy?.$tab.closeRightPage(selectedTag.value).then((visitedViews) => {
+function closeRightTags(view: string) {// view: fullPath
+  proxy?.$tab.closeRightPage(view).then((visitedViews: VisitedView[]) => {
     if (!visitedViews.find((i: VisitedView) => i.fullPath === route.fullPath)) {
       toLastView(visitedViews)
     }
   })
 }
 
-function closeLeftTags() {
-  proxy?.$tab.closeLeftPage(selectedTag.value).then((visitedViews: VisitedView[]) => {
+function closeLeftTags(view: string) {
+  proxy?.$tab.closeLeftPage(view).then((visitedViews: VisitedView[]) => {
     if (!visitedViews.find((i: VisitedView) => i.fullPath === route.fullPath)) {
       toLastView(visitedViews)
     }
   })
 }
 
-function closeOthersTags(view: SelectedTag) { 
-  router.push(view.fullPath).catch(() => { });  
+function closeOthersTags(view: string) {//fullPath 
+  router.push(view).catch(() => { });  
   proxy?.$tab.closeOtherPage(view).then(() => {
     moveToCurrentTag()
   })
 }
 
-function closeAllTags(view: SelectedTag) {
+function closeAllTags(view: string) {
   proxy?.$tab.closeAllPage().then(({ visitedViews }) => {
     if (affixTags.value.some(tag => tag.path === route.path)) {
       return
     }
-    toLastView(visitedViews, view.fullPath)
+    toLastView(visitedViews, view)
   })
 }
 
