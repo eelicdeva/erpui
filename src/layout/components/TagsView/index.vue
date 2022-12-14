@@ -201,7 +201,9 @@ function addTags() {
     useTagsViewStore().addView( currentViewTag )
 
     if ( link !== null && link !== undefined){
-      useTagsViewStore().addIframeView( currentViewTag );
+      const { meta, path } = currentViewTag
+      const { title } = meta 
+      useTagsViewStore().addIframeView( { title, path } );
     }
   }
   return false

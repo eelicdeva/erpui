@@ -5,7 +5,7 @@
       :key="item.path"
       :iframeId="'iframe' + index"
       v-show="route.path === item.path"
-      :src="item.meta.link"
+      :src="item.path"
     ></inner-link>
   </transition-group>
 </template>

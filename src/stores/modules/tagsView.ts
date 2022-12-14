@@ -39,13 +39,13 @@ const useTagsViewStore = defineStore(
         this.addVisitedView(view)
         this.addCachedView(view)
       },
-      addIframeView( view: VisitedView ) { 
+      addIframeView( view: IframeView ) { // view: fullPath 
         if (this.iframeViews.some(v => v.path === view.path)) return
         this.iframeViews.push(
           //assign<T extends {}, U, V>(target: T, source1: U, source2: V): T & U & V;
           Object.assign({}, view, {
-            //@ts-ignore
-            title: view.meta.title || 'no-name' 
+            path: view.path,
+            title: (view.title || 'no-name'),
           })
         )
       },
