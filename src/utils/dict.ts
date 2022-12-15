@@ -16,13 +16,13 @@ import { ref, toRefs } from 'vue';
  */
  export function useDict(...args: string[]) {
   const res = ref({});
-  var lang : string = Cookies.get('lang') || "en";
+  var lang: string = Cookies.get('lang') || "en";
       return (() => { args.forEach((dictType: string, index) => {res.value[dictType] = []; 
           getDicts(dictType).then(resp => { res.value[dictType] = resp.data.map((
                 p: { 
-                     dictLabelId: number; 
                      dictLabel: string; 
                      dictLabelEn: string; 
+                     dictLabelId: string; 
                      dictValue: string; 
                      listClass: string; 
                      cssClass: string; 

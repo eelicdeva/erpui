@@ -17,38 +17,38 @@ declare module '@vue/runtime-core' {
     // ||页签操作 to-do need check
     $tab: {
       // ||刷新当前$tab页签
-      refreshPage(obj: string),
+      refreshPage(obj: string);
       // ||关闭当前tab页签，打开新页签
-      closeOpenPage(obj: string),
+      closeOpenPage(obj: string);
       // ||关闭指定tab页签
-      closePage(obj: string),
+      closePage(obj: string);
       // ||关闭所有tab页签
-      closeAllPage(),
+      closeAllPage();
       // 关闭左侧tab页签
-      closeLeftPage(obj: string),
+      closeLeftPage(obj: string);
       // 关闭右侧tab页签
-      closeRightPage(obj: string),
+      closeRightPage(obj: string);
       // 关闭其他tab页签
-      closeOtherPage(obj: string) ,
+      closeOtherPage(obj: string);
       // 打开tab页签
-      openPage(url: string),
+      openPage(url: string);
       // 修改tab页签
-      updatePage(obj: string)
+      updatePage(obj: string);
     };
     // ||认证对象
     $auth: {
       // ||验证用户是否具备某权限  
-      hasPermi(permission: string | string[]): boolean,
+      hasPermi(permission: string | string[]): boolean;
       // ||验证用户是否含有指定权限，只需包含其中一个
-      hasPermiOr(permissions: string[]): boolean,
+      hasPermiOr(permissions: string[]): boolean;
       // ||验证用户是否含有指定权限，必须全部拥有
-      hasPermiAnd(permissions: string[]): boolean,
+      hasPermiAnd(permissions: string[]): boolean;
       // ||验证用户是否具备某角色
-      hasRole(role: string | string[]): boolean,
+      hasRole(role: string | string[]): boolean;
       // ||验证用户是否含有指定角色，只需包含其中一个
-      hasRoleOr(roles: string[]): boolean,
+      hasRoleOr(roles: string[]): boolean;
       // ||验证用户是否含有指定角色，必须全部拥有
-      hasRoleAnd(roles: string[]): boolean                           
+      hasRoleAnd(roles: string[]): boolean;                          
     };
 
     // ||缓存对象 to-do check
@@ -77,40 +77,40 @@ declare module '@vue/runtime-core' {
         /**
          * Notification || 消息提示
          */ 
-        msg(content: string): void,
+        msg(content: string): void;
         // || 错误消息
-        msgError(content: string): void,
+        msgError(content: string): void;
         /**
          * @function success message || 成功消息
          * @param  {string} content: custom success message;
          */
-        msgSuccess(content: string): void,
+        msgSuccess(content: string): void;
         // || 警告消息
-        msgWarning(content: string): void,
+        msgWarning(content: string): void;
         // || 弹出提示
-        alert(content: string): void,
+        alert(content: string): void;
         // || 错误提示
-        alertError(content: string): void,
+        alertError(content: string): void;
         // || 成功提示
-        alertSuccess(content: string): void,
+        alertSuccess(content: string): void;
         // || 警告提示
-        alertWarning(content: string): void,
+        alertWarning(content: string): void;
         // || 通知提示
-        notify(content: string): void,
+        notify(content: string): void;
         // || 错误通知
-        notifyError(content: string): void,
+        notifyError(content: string): void;
         // || 成功通知
-        notifySuccess(content: string): void,
+        notifySuccess(content: string): void;
         // || 警告通知
-        notifyWarning(content: string): void,
+        notifyWarning(content: string): void;
         // || 确认窗体
-        confirm(content: string): void,
+        confirm(content: string): ElMessageBoxShortcutMethod;
         // || 提交内容
-        prompt(content: string): void,
+        prompt(content: string): ElMessageBoxShortcutMethod;
         // || 打开遮罩层
-        loading(content: string): void,
+        loading(content: string): void;
         // || 关闭遮罩层
-        closeLoading(): void
+        closeLoading(): void;
       };
     $download: any;
   /*    
