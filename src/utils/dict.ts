@@ -14,7 +14,7 @@ import { ref, toRefs } from 'vue';
  * todo delete cookies lang
  */
 export function useDict(...args: string[]) {
-  const res = ref({}); // to-do check how to defined ...args 
+  const res = ref({} as {T: string}); 
   var lang: string = Cookies.get('lang') || "en";
       return (() => { args.forEach((dictType: string, index) => {res.value[dictType] = []; 
           getDicts(dictType).then(resp => { res.value[dictType] = resp.data.map((
