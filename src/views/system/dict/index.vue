@@ -1,28 +1,28 @@
 <template>
    <div class="app-container">
       <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-         <el-form-item label="字典名称" prop="dictName">
+         <el-form-item :label="$t('dict.name')" prop="dictName">
             <el-input
                v-model="queryParams.dictName"
-               placeholder="请输入字典名称"
+               :placeholder="$t('dict.namePlaceholder')"
                clearable
                style="width: 240px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
-         <el-form-item label="字典类型" prop="dictType">
+         <el-form-item :label="$t('dict.type')" prop="dictType">
             <el-input
                v-model="queryParams.dictType"
-               placeholder="请输入字典类型"
+               :placeholder="$t('dict.typePlaceholder')"
                clearable
                style="width: 240px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
-         <el-form-item label="状态" prop="status">
+         <el-form-item :label="$t('user.status')" prop="status">
             <el-select
                v-model="queryParams.status"
-               placeholder="字典状态"
+               :placeholder="$t('dict.status')"
                clearable
                style="width: 240px"
             >
@@ -34,14 +34,14 @@
                />
             </el-select>
          </el-form-item>
-         <el-form-item label="创建时间" style="width: 308px">
+         <el-form-item :label="$t('user.creationtime')" style="width: 308px">
             <el-date-picker
                v-model="dateRange"
                value-format="YYYY-MM-DD"
                type="daterange"
                range-separator="-"
-               start-placeholder="开始日期"
-               end-placeholder="结束日期"
+               :start-placeholder="$t('user.startDate')"
+               :end-placeholder="$t('user.endDate')"
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
@@ -103,22 +103,22 @@
 
       <el-table v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
          <el-table-column type="selection" width="55" align="center" />
-         <el-table-column label="字典编号" align="center" prop="dictId" />
-         <el-table-column label="字典名称" align="center" prop="dictName" :show-overflow-tooltip="true"/>
-         <el-table-column label="字典类型" align="center" :show-overflow-tooltip="true">
+         <el-table-column :label="$t('dict.id')" align="center" prop="dictId" />
+         <el-table-column :label="$t('dict.name')" align="center" prop="dictName" :show-overflow-tooltip="true"/>
+         <el-table-column :label="$t('dict.type')" align="center" :show-overflow-tooltip="true">
             <template #default="scope">
                <router-link :to="'/system/dict-data/index/' + scope.row.dictId" class="link-type">
                   <span>{{ scope.row.dictType }}</span>
                </router-link>
             </template>
          </el-table-column>
-         <el-table-column label="状态" align="center" prop="status">
+         <el-table-column :label="$t('user.status')" align="center" prop="status">
             <template #default="scope">
                <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
             </template>
          </el-table-column>
-         <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
-         <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+         <el-table-column :label="$t('user.remark')" align="center" prop="remark" :show-overflow-tooltip="true" />
+         <el-table-column :label="$t('user.creationtime')" align="center" prop="createTime" width="180">
             <template #default="scope">
                <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
@@ -149,13 +149,13 @@
       <!-- 添加或修改参数配置对话框 -->
       <el-dialog :title="title" v-model="open" width="500px" append-to-body>
          <el-form ref="dictRef" :model="form" :rules="rules" label-width="80px">
-            <el-form-item label="字典名称" prop="dictName">
-               <el-input v-model="form.dictName" placeholder="请输入字典名称" />
+            <el-form-item :label="$t('dict.name')" prop="dictName">
+               <el-input v-model="form.dictName" :placeholder="$t('dict.namePlaceholder')" />
             </el-form-item>
-            <el-form-item label="字典类型" prop="dictType">
-               <el-input v-model="form.dictType" placeholder="请输入字典类型" />
+            <el-form-item :label="$t('dict.type')" prop="dictType">
+               <el-input v-model="form.dictType" :placeholder="$t('dict.typePlaceholder')" />
             </el-form-item>
-            <el-form-item label="状态" prop="status">
+            <el-form-item :label="$t('user.status')" prop="status">
                <el-radio-group v-model="form.status">
                   <el-radio
                      v-for="dict in sys_normal_disable"
@@ -164,14 +164,14 @@
                   >{{ dict.label }}</el-radio>
                </el-radio-group>
             </el-form-item>
-            <el-form-item label="备注" prop="remark">
-               <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
+            <el-form-item :label="$t('user.remark')" prop="remark">
+               <el-input v-model="form.remark" type="textarea" :placeholder="$t('user.remarkPlaceholder')"></el-input>
             </el-form-item>
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button type="primary" @click="submitForm">确 定</el-button>
-               <el-button @click="cancel">取 消</el-button>
+               <el-button type="primary" @click="submitForm">{{ $t('button.submit') }}</el-button>
+               <el-button @click="cancel">{{ $t('button.cancel') }}</el-button>
             </div>
          </template>
       </el-dialog>
@@ -208,8 +208,8 @@ const data = reactive({
     status: undefined
   },
   rules: {
-    dictName: [{ required: true, message: "字典名称不能为空", trigger: "blur" }],
-    dictType: [{ required: true, message: "字典类型不能为空", trigger: "blur" }]
+    dictName: [{ required: true, message: t('dict.nameRules'), trigger: "blur" }],
+    dictType: [{ required: true, message: t('dict.typeRules'), trigger: "blur" }]
   },
 });
 
@@ -269,7 +269,7 @@ function resetQuery() {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "添加字典类型";
+  title.value = t('dict.addDictType');
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
@@ -284,7 +284,7 @@ function handleUpdate(row) {
   getType(dictId).then(response => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改字典类型";
+    title.value = t('dict.modifyDictType');
   });
 }
 /** 提交按钮 */
@@ -293,13 +293,13 @@ function submitForm() {
     if (valid) {
       if (form.value.dictId != undefined) {
         updateType(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addType(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -310,11 +310,11 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const dictIds = row.dictId || ids.value;
-  proxy.$modal.confirm('是否确认删除字典编号为"' + dictIds + '"的数据项？').then(function() {
+  proxy.$modal.confirm(t('dict.confirmDelete') + dictIds + t('user.confirmDelete2')).then(function() {
     return delType(dictIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess(t('user.succesDeleted'));
   }).catch(() => {});
 }
 /** 导出按钮操作 */
@@ -326,7 +326,7 @@ function handleExport() {
 /** 刷新缓存按钮操作 */
 function handleRefreshCache() {
   refreshCache().then(() => {
-    proxy.$modal.msgSuccess("刷新成功");
+    proxy.$modal.msgSuccess(t('dict.refreshSuccess'));
   });
 }
 

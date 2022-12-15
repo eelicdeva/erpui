@@ -426,6 +426,39 @@ export default {
     addNotice: '添加公告',
     confirmDelete: '是否确认删除公告编号为"',
   },
+  dict: {
+    name: "字典名称",
+    namePlaceholder: "请输入字典名称",
+    type: "字典类型", 
+    typePlaceholder: "请输入字典类型",
+    status: "字典状态",
+    id: "字典编号",
+    tag: "字典标签",
+    tagPlaceholder: "请输入字典标签",
+    dataStatus: "数据状态",
+    code: "字典编码",
+    value: "字典键值",
+    sort: "字典排序",
+    addDictType: "添加字典类型",
+    modifyDictType: "修改字典类型",
+    confirmDelete: "是否确认删除字典编号为 '' ",
+    refreshSuccess: "刷新成功",
+    nameRules: "字典名称不能为空",
+    typeRules: "字典类型不能为空",
+    dataLabel: "数据标签",
+    dataValue: "数据键值",
+    dataLabelPlaceholder: "请输入数据标签",
+    dataValuePlaceholder: "请输入数据键值",
+    styleAttribute: "样式属性",
+    styleAttributePlaceholder: "请输入样式属性",
+    dictconfirmDelete: "是否确认删除字典编码为 '' ",
+    listClass: "回显样式",
+    modifyDictData: "修改字典数据",
+    addDictData: "添加字典数据",
+    dataLabelRules: "数据标签不能为空",
+    dataValueRules: "数据键值不能为空",
+    sortRules: "数据顺序不能为空",
+  },
   book:{
     title: '书籍名称',
     confirmDelete: '是否确认删除书编号为"',
@@ -687,5 +720,6 @@ export default {
    info404: '对不起，您正在寻找的页面不存在。尝试检查URL的错误，然后按浏览器上的刷新按钮或尝试在我们的应用程序中找到其他内容。',
    BacktoHome: '返回首页',
    Pagenotfound: '找不到网页！'
-  }  
+  }
+  
 }
