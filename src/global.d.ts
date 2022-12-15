@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { RouteLocationRaw } from 'vue-router'
 import Fuse from 'fuse.js'
+import { useDict } from "@/utils/dict";
 
 declare module 'fuse.js' ;
 
@@ -14,28 +15,51 @@ declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $axios: AxiosInstance; // to-do check again
 
-    // ||页签操作 to-do need check
+      /**
+       * tab operation ||页签操作
+       */
     $tab: {
-      // ||刷新当前$tab页签
-      refreshPage(obj: string);
-      // ||关闭当前tab页签，打开新页签
-      closeOpenPage(obj: string);
-      // ||关闭指定tab页签
-      closePage(obj: string);
-      // ||关闭所有tab页签
-      closeAllPage();
-      // 关闭左侧tab页签
-      closeLeftPage(obj: string);
-      // 关闭右侧tab页签
-      closeRightPage(obj: string);
-      // 关闭其他tab页签
-      closeOtherPage(obj: string);
-      // 打开tab页签
-      openPage(url: string);
-      // 修改tab页签
-      updatePage(obj: string);
+      /**
+       * refresh selected tab || 刷新当前tab页签
+       */
+      refreshPage(obj: string): void;
+      /**
+       * close selected tab and open a new tab || 关闭当前tab页签，打开新页签
+       */
+      closeOpenPage(obj: string): Promise<NavigationFailure | void | undefined>;
+      /**
+       * close selected tab || 关闭指定tab页签
+       */
+      closePage(obj: string): Promise<NavigationFailure | void | undefined>;
+     /**
+       * close all tab ||关闭所有tab页签
+       */
+      closeAllPage(): Promise<T>;
+     /**
+       * close all left tab || 关闭左侧tab页签
+       */
+      closeLeftPage(obj: string): Promise<T>;
+      /**
+       * close all right tab || 关闭右侧tab页签
+       */
+      closeRightPage(obj: string): Promise<T>;
+      /**
+       * close all other tab || 关闭其他tab页签
+       */
+      closeOtherPage(obj: string): Promise<T>;
+      /**
+       * open a tab || 打开tab页签
+       */
+      openPage(url: string): Promise<NavigationFailure | void | undefined>;
+       /**
+       * update selected tab || 修改tab页签
+       */
+      updatePage(obj: string): void;
     };
-    // ||认证对象
+
+    /**
+     *  auth object || 认证对象
+     */
     $auth: {
       // ||验证用户是否具备某权限  
       hasPermi(permission: string | string[]): boolean;
@@ -121,7 +145,8 @@ declare module '@vue/runtime-core' {
       saveAs(text: any, name: string, opts?: any): void,
       async function printErrMsg(data: { text: () => any }): void 
     };
-  */     
+  */
+    useDict(...args: string[]);
   }
 }
 

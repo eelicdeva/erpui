@@ -177,13 +177,14 @@ import type { QueryParams, AddParams } from "@/api/system/notice"
 import i18n from '@/lang/index';
 import { ComponentInternalInstance, getCurrentInstance, reactive, Ref, ref, toRefs } from "vue";
 import { ElForm } from "element-plus";
+import { parseTime } from "@/utils/ruoyi";
 const {t} = i18n.global;
-
-const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const { sys_notice_status, sys_notice_type } = proxy?.useDict("sys_notice_status", "sys_notice_type");
 
 const queryRef = ref<InstanceType<typeof ElForm>>()
 const noticeRef = ref<InstanceType<typeof ElForm>>()
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+//const { sys_notice_status, sys_notice_type } = proxy?.useDict("sys_notice_status", "sys_notice_type");
+const { sys_notice_status, sys_notice_type } = proxy?.useDict("sys_notice_status", "sys_notice_type");
 
 const noticeList: Ref<Row[]> = ref([]);
 const open = ref(false);
@@ -197,16 +198,16 @@ const title = ref("");
 
 interface Row {
    searchValue: string | null;
-   createBy:string;
-   createTime:string;
-   updateBy:string | null;
+   createBy: string;
+   createTime: string;
+   updateBy: string;
    updateTime: string | null;
    remark: string;
    params: QueryParams;
    noticeId: number;
    noticeTitle: string;
    noticeType: string;
-   noticeContent:string;
+   noticeContent: string;
    status: string;
 }
 
