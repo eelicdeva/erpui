@@ -52,7 +52,7 @@ import { LocationQuery, useRoute, useRouter } from 'vue-router';
 import type { VisitedView } from '@/stores/modules/tagsView';
 import type { ComponentInternalInstance } from 'vue';
 import { MenuData } from '@/router';
-// to-do check  :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+
 interface Tag {
   query?: LocationQuery;
   fullPath: string;

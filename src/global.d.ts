@@ -1,15 +1,19 @@
-import axios from 'axios'
-import { RouteLocationRaw } from 'vue-router'
-import Fuse from 'fuse.js'
+import Fuse from 'fuse.js';
+import axios from 'axios';
+import { VueCropper } from "vue-cropper";
+import { RouteLocationRaw } from 'vue-router';
 import { useDict } from "@/utils/dict";
 
-declare module 'fuse.js' ;
+
+declare module 'fuse.js';
+
+declare module 'vue-cropper';
 
 declare module 'axios' {
   interface AxiosInstance {
     (config: AxiosRequestConfig): Promise<any>
   }
-}
+};
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {

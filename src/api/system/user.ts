@@ -106,7 +106,7 @@ export function updateUserPwd(oldPassword: string, newPassword: string) {
 }
 
 // 用户头像上传
-export function uploadAvatar(data: string) {
+export function uploadAvatar(data: FormData) {
   return request({
     url: '/system/user/profile/avatar',
     method: 'post',

@@ -48,10 +48,27 @@
 <script lang="ts" setup name="ImageUpload">
 import { getToken } from "@/utils/auth";
 import { ElUpload, ElIcon, ElDialog } from "element-plus";
+import type { UploadUserFile } from "element-plus";
 import { computed, getCurrentInstance, ref, watch } from "vue";
-import type { ComponentInternalInstance } from "vue";import i18n from '@/lang/index';
+import type { ComponentInternalInstance } from "vue";
+import i18n from '@/lang/index';
 
 const {t} = i18n.global;
+interface PropsImageUpload {
+  modelValue: string | UploadUserFile[]; //String, Object, Array 
+  limit?: number;
+  fileSize?: number;  
+  fileType?: string[];
+  isShowTip?: boolean;  
+}
+
+const props = withDefaults(defineProps <PropsImageUpload> (),{
+  limit: 5,
+  fileSize: 5,
+  fileType: () => ["png", "jpg", "jpeg"],
+  isShowTip: true
+});
+/**
 const props = defineProps({
   modelValue: [String, Object, Array],
   // 图片数量限制
@@ -75,17 +92,20 @@ const props = defineProps({
     default: true
   },
 });
+ */
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const emit = defineEmits();
+const emit = defineEmits<{ (e: 'update:modelValue', str: string): void }>();
 const number = ref(0);
-const uploadList = ref([]);
+const uploadList = ref([] as UploadUserFile[] );
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
-const baseUrl = import.meta.env.VITE_APP_BASE_API;
+const baseUrl: string = import.meta.env.VITE_APP_BASE_API;
 const uploadImgUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload"); // 上传的图片服务器地址
 const headers = ref({ Authorization: "Bearer " + getToken() });
-const fileList = ref([]);
+// readonly fileList: import("./src/upload").UploadUserFile[];
+// export declare type UploadUserFile = Omit<UploadFile, 'status' | 'uid'> & Partial<Pick<UploadFile, 'status' | 'uid'>>;
+const fileList = ref([] as UploadUserFile[]);
 const showTip = computed(
   () => props.isShowTip && (props.fileType || props.fileSize)
 );
@@ -93,7 +113,7 @@ const showTip = computed(
 watch(() => props.modelValue, val => {
   if (val) {
     // 首先将值转为数组
-    const list = Array.isArray(val) ? val : props.modelValue.split(",");
+    const list = Array.isArray(val) ? val : (props.modelValue as String).split(",");
     // 然后将数组转为对象数组
     fileList.value = list.map(item => {
       if (typeof item === "string") {
@@ -124,13 +144,13 @@ function handleUploadSuccess(res) {
     fileList.value = fileList.value.filter(f => f.url !== undefined).concat(uploadList.value);
     uploadList.value = [];
     number.value = 0;
-    emit("update:modelValue", listToString(fileList.value));
-    proxy.$modal.closeLoading();
+    emit('update:modelValue', listToString(fileList.value));
+    proxy?.$modal.closeLoading();
   }
 }
 
 // 上传前loading加载
-function handleBeforeUpload(file) {
+function handleBeforeUpload(file) { // to-do check
   let isImg = false;
   if (props.fileType.length) {
     let fileExtension = "";
@@ -146,7 +166,7 @@ function handleBeforeUpload(file) {
     isImg = file.type.indexOf("image") > -1;
   }
   if (!isImg) {
-    proxy.$modal.msgError(
+    proxy?.$modal.msgError(
       t('upload.imageType1') + props.fileType.join("/") + t('upload.imageType2')
     );
     return false;
@@ -154,23 +174,23 @@ function handleBeforeUpload(file) {
   if (props.fileSize) {
     const isLt = file.size / 1024 / 1024 < props.fileSize;
     if (!isLt) {
-      proxy.$modal.msgError(t('upload.avatarType') + props.fileSize + "MB!");
+      proxy?.$modal.msgError(t('upload.avatarType') + props.fileSize + "MB!");
       return false;
     }
   }
-  proxy.$modal.loading(t('upload.imageloading'));
+  proxy?.$modal.loading(t('upload.imageloading'));
   number.value++;
 }
 
 // 文件个数超出
 function handleExceed() {
-  proxy.$modal.msgError(t('upload.imageExceed1') + props.limit + t('upload.imageExceed2'));
+  proxy?.$modal.msgError(t('upload.imageExceed1') + props.limit + t('upload.imageExceed2'));
 }
 
 // 上传失败
 function handleUploadError() {
-  proxy.$modal.msgError(t('upload.imageFailed'));
-  proxy.$modal.closeLoading();
+  proxy?.$modal.msgError(t('upload.imageFailed'));
+  proxy?.$modal.closeLoading();
 }
 
 // 预览
@@ -180,7 +200,7 @@ function handlePictureCardPreview(file) {
 }
 
 // 对象转成指定字符串分隔
-function listToString(list, separator) {
+function listToString(list, separator?: string ) {
   let strs = "";
   separator = separator || ",";
   for (let i in list) {
@@ -188,7 +208,8 @@ function listToString(list, separator) {
       strs += list[i].url.replace(baseUrl, "") + separator;
     }
   }
-  return strs != "" ? strs.substr(0, strs.length - 1) : "";
+  //return strs != "" ? strs.substr(0, strs.length - 1) : "";
+  return strs != "" ? strs.slice(0, strs.length - 1) : "";
 }
 </script>
 

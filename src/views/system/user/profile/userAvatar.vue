@@ -51,24 +51,40 @@
   </el-dialog>
 </template>
 
-<script setup>
+<script lang="ts" setup name="userAvatar">
 import "vue-cropper/dist/index.css";
 import { VueCropper } from "vue-cropper";
 import { uploadAvatar } from "@/api/system/user";
 import useUserStore from '@/stores/modules/user'
 import i18n from '@/lang/index';
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref } from "vue";
+
 
 const {t} = i18n.global;
-
-const userStore = useUserStore()
-const { proxy } = getCurrentInstance();
+const cropper = ref();
+const userStore = useUserStore();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const open = ref(false);
 const visible = ref(false);
 const title = ref(t('avatar.modifyAvatar'));
 
 //图片裁剪数据
-const options = reactive({
+interface Options {
+  img: string; // 裁剪图片的地址
+  autoCrop: boolean; // 是否默认生成截图框
+  autoCropWidth: number; // 默认生成截图框宽度
+  autoCropHeight: number;// 默认生成截图框高度
+  fixedBox: boolean; // 固定截图框大小 不允许改变
+  outputType: string; // 默认生成截图为PNG格式
+  visible?: boolean; 
+  previews: {
+    url?: string;
+    img?: string; //string | ArrayBuffer | null;
+  }; //预览数据
+};
+
+const options: Options = reactive({
   img: userStore.avatar, // 裁剪图片的地址
   autoCrop: true, // 是否默认生成截图框
   autoCropWidth: 200, // 默认生成截图框宽度
@@ -91,45 +107,49 @@ function requestUpload() {
 };
 /** 向左旋转 */
 function rotateLeft() {
-  proxy.$refs.cropper.rotateLeft();
+  //(proxy?.$refs.cropper).rotateLeft();
+  cropper.value?.rotateLeft();
 };
 /** 向右旋转 */
 function rotateRight() {
-  proxy.$refs.cropper.rotateRight();
+  //proxy?.$refs.cropper.rotateRight();
+  cropper.value?.rotateRight();
 };
 /** 图片缩放 */
 function changeScale(num) {
   num = num || 1;
-  proxy.$refs.cropper.changeScale(num);
+  //proxy?.$refs.cropper.changeScale(num);
+  cropper.value?.changeScale(num);
 };
 /** 上传预处理 */
-function beforeUpload(file) {
+function beforeUpload(file: Blob) {
   if (file.type.indexOf("image/") == -1) {
-    proxy.$modal.msgError(t('avatar.error'));
+    proxy?.$modal.msgError(t('avatar.error'));
   } else {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      options.img = reader.result;
+      options.img = reader.result as string; //result: readonly result: string | ArrayBuffer | null;
     };
   }
 };
 /** 上传图片 */
 function uploadImg() {
-  proxy.$refs.cropper.getCropBlob(data => {
+  //proxy?.$refs.cropper.getCropBlob(data => {
+    cropper.value?.getCropBlob((data: string | Blob) => { //to-do check data: string | Blob
     let formData = new FormData();
     formData.append("avatarfile", data);
     uploadAvatar(formData).then(response => {
       open.value = false;
       options.img = import.meta.env.VITE_APP_BASE_API + response.imgUrl;
       userStore.avatar = options.img;
-      proxy.$modal.msgSuccess(t('button.successModify'));
+      proxy?.$modal.msgSuccess(t('button.successModify'));
       visible.value = false;
     });
   });
 };
 /** 实时预览 */
-function realTime(data) {
+function realTime(data: {}) {
   options.previews = data;
 };
 /** 关闭窗口 */

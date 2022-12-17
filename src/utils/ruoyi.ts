@@ -123,8 +123,10 @@ export function selectDictLabel(datas, value) {
   return actions.join('');
 }
 
+// to-do not yet use?
 // ||回显数据字典（字符串数组）
-export function selectDictLabels(datas, value, separator) {
+export function selectDictLabels( datas, value, separator ) {
+  //debugger
   if (value === undefined || value.length ===0) {
     return "";
   }
@@ -150,7 +152,7 @@ export function selectDictLabels(datas, value, separator) {
 }
 
 // ||字符串格式化(%s )
-export function sprintf(str) {
+export function sprintf(str: string) {
   var args = arguments, flag = true, i = 1;
   str = str.replace(/%s/g, function () {
     var arg = args[i++];
