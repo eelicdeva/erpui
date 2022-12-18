@@ -43,10 +43,25 @@ import { getToken } from "@/utils/auth";
 import { computed, getCurrentInstance, ref, watch } from "vue";
 import type { ComponentInternalInstance } from "vue";
 import i18n from '@/lang/index';
-
+import type { ElForm, UploadUserFile } from "element-plus";
 
 const {t} = i18n.global;
 // to-do check {transition} router.isReady().then(()=>app.mount('#app'));
+
+interface PropsFileUpload {
+  modelValue: string | UploadUserFile[]; //String, Object, Array 
+  limit?: number;
+  fileSize?: number;  
+  fileType?: string[];
+  isShowTip?: boolean;  
+}
+const props = withDefaults(defineProps <PropsFileUpload> (),{
+  limit: 5,
+  fileSize: 5,
+  fileType: () => ["doc", "xls", "ppt", "txt", "pdf"],
+  isShowTip: true
+});
+/**
 const props = defineProps({
   modelValue: [String, Object, Array],
   // 数量限制
@@ -70,16 +85,16 @@ const props = defineProps({
     default: true
   }
 });
-
+*/
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const emit = defineEmits();
+const emit = defineEmits<{ (e: 'update:modelValue', str: string): void }>();
 const number = ref(0);
-const uploadList = ref([]);
-const baseUrl = import.meta.env.VITE_APP_BASE_API;
+const uploadList = ref([] as UploadUserFile[] );
+const baseUrl: string = import.meta.env.VITE_APP_BASE_API;
 const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload"); // 上传文件服务器地址
 const headers = ref({ Authorization: "Bearer " + getToken() });
-const fileList = ref([]);
-
+const fileList = ref([] as UploadUserFile[]);
+const fileUpload = ref<InstanceType<typeof ElForm>>()
 const showTip = computed(
   () => props.isShowTip && (props.fileType || props.fileSize)
 );
@@ -88,7 +103,7 @@ watch(() => props.modelValue, val => {
   if (val) {
     let temp = 1;
     // 首先将值转为数组
-    const list = Array.isArray(val) ? val : props.modelValue.split(',');
+    const list = Array.isArray(val) ? val : (props.modelValue as string).split(',');
     // 然后将数组转为对象数组
     fileList.value = list.map(item => {
       if (typeof item === "string") {
@@ -147,7 +162,7 @@ function handleUploadSuccess(res, file) {
     number.value--;
     proxy?.$modal.closeLoading();
     proxy?.$modal.msgError(res.msg);
-    proxy.$refs.fileUpload.handleRemove(file);
+    emit("update:modelValue", listToString(fileList.value));
     uploadedSuccessfully();
   }
 }
@@ -165,7 +180,7 @@ function uploadedSuccessfully() {
     uploadList.value = [];
     number.value = 0;
     emit("update:modelValue", listToString(fileList.value));
-    proxy.$modal.closeLoading();
+    proxy?.$modal.closeLoading();
   }
 }
 
@@ -179,7 +194,7 @@ function getFileName(name) {
 }
 
 // 对象转成指定字符串分隔
-function listToString(list, separator) {
+function listToString(list, separator?: string) {
   let strs = "";
   separator = separator || ",";
   for (let i in list) {
@@ -187,7 +202,7 @@ function listToString(list, separator) {
       strs += list[i].url + separator;
     }
   }
-  return strs != '' ? strs.substr(0, strs.length - 1) : '';
+  return strs != '' ? strs.slice(0, strs.length - 1) : '';
 }
 </script>
 

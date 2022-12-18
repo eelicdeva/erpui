@@ -208,7 +208,6 @@ function listToString(list, separator?: string ) {
       strs += list[i].url.replace(baseUrl, "") + separator;
     }
   }
-  //return strs != "" ? strs.substr(0, strs.length - 1) : "";
   return strs != "" ? strs.slice(0, strs.length - 1) : "";
 }
 </script>
