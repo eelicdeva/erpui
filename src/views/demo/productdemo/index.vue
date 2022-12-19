@@ -398,10 +398,14 @@
   
 <script lang="ts" setup name="Productdemo">
 import { listProductdemo, getProductdemo, delProductdemo, addProductdemo, updateProductdemo } from "@/api/demo/productdemo";
+import type { QueryParams, AddParams } from "@/api/demo/productdemo"
 import i18n from '@/lang/index';
-import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } from "vue";
+import { ElForm } from "element-plus";
+import { ComponentInternalInstance, getCurrentInstance, reactive, Ref, ref, toRefs } from "vue";
 
 const {t} = i18n.global;
+const queryRef = ref<InstanceType<typeof ElForm>>()
+const productdemoRef = ref<InstanceType<typeof ElForm>>()
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const buttons = [
@@ -409,18 +413,75 @@ const buttons = [
 { type: 'primary', text: t('button.delete'), icon: 'Delete', act: 'delete', permi: ['demo:productdemo:delete'] }
 ] as const  
 
-  const productdemoList = ref([]);
+  const productdemoList: Ref<Row[]> = ref([]);
   const open = ref(false);
   const loading = ref(true);
   const showSearch = ref(true);
   const showExtend = ref(false);
-  const ids = ref([]);
+  const ids: Ref<number[]> = ref([]);
   const single = ref(true);
   const multiple = ref(true);
   const total = ref(0);
   const title = ref("");
   const defaultSort = ref({ prop: "operData", order: "descending" });
   
+  interface Row {
+   searchValue: string | null;
+   createBy: string;
+   createTime: string;
+   updateBy: string;
+   updateTime: string | null;
+   remark: string;
+   params: QueryParams;
+   idProductLa: number,
+   skuLazada:string,
+   skuEelic: string,
+   skuNameLa: string,
+   skuNameLaId: string,
+   skuNameLaEn: string,
+   shortDescription: string,
+   shortDescriptionEn: string,
+   shortDescriptionId: string,
+   description: string,
+   descriptionId: string,
+   descriptionEn: string,
+   model: string,
+   packageContent: string,
+   packageWeight: number,
+   packageLength: number,
+   packageWidth: number,
+   packageHeight: number,
+   price: number,
+   specialPrice: number,
+   quantity: number,
+   primaryCategory: string,
+   statusLa: string,
+   colorFamily: string,
+   fblLa: number,
+   simage1: string,
+   simage2: string,
+   simage3: string,
+   simage4: string,
+   simage5: string,
+   simage6: string,
+   simage7: string,
+   simage8: string,
+   status: string;
+}
+
+interface Data {
+   form: AddParams;
+   queryParams: QueryParams;  
+   rules:{
+      skuEelic: [{
+         required: boolean;
+         message: string;
+         trigger: string;
+      }];
+   };
+}
+
+
   const columns = ref([
   { key: 0, label: t('ErpProductDemo.idProductLa'), visible: true },
   { key: 1, label: t('ErpProductDemo.skuLazada'), visible: false },
@@ -453,38 +514,39 @@ const buttons = [
   { key: 28, label: t('ErpProductDemo.remark'), visible: false }
 ]);
 
-  const data = reactive({
+
+  const data: Data = reactive({
     form: {},
     queryParams: {
       pageNum: 1,
       pageSize: 10,
-      skuLazada: null,
-      skuEelic: null,
-      skuNameLa: null,
-      shortDescription: null,
-      description: null,
-      model: null,
-      packageContent: null,
-      packageWeight: null,
-      packageLength: null,
-      packageWidth: null,
-      packageHeight: null,
-      price: null,
-      specialPrice: null,
-      quantity: null,
-      primaryCategory: null,
-      statusLa: null,
-      colorFamily: null,
-      fblLa: null,
-      simage1: null,
-      simage2: null,
-      simage3: null,
-      simage4: null,
-      simage5: null,
-      simage6: null,
-      simage7: null,
-      simage8: null,
-      status: null,
+      skuLazada: undefined,
+      skuEelic: undefined,
+      skuNameLa: undefined,
+      shortDescription: undefined,
+      description: undefined,
+      model: undefined,
+      packageContent: undefined,
+      packageWeight: undefined,
+      packageLength: undefined,
+      packageWidth: undefined,
+      packageHeight: undefined,
+      price: undefined,
+      specialPrice: undefined,
+      quantity: undefined,
+      primaryCategory: undefined,
+      statusLa: undefined,
+      colorFamily: undefined,
+      fblLa: undefined,
+      simage1: undefined,
+      simage2: undefined,
+      simage3: undefined,
+      simage4: undefined,
+      simage5: undefined,
+      simage6: undefined,
+      simage7: undefined,
+      simage8: undefined,
+      status: undefined,
     },
     rules: {
       skuEelic: [
@@ -514,48 +576,48 @@ const buttons = [
   // 表单重置
   function reset() {
     form.value = {
-      idProductLa: null,
-      skuLazada: null,
-      skuEelic: null,
-      skuNameLa: null,
-      skuNameLaId: null,
-      skuNameLaEn: null,
-      shortDescription: null,
-      shortDescriptionEn: null,
-      shortDescriptionId: null,
-      description: null,
-      descriptionId: null,
-      descriptionEn: null,
-      model: null,
-      packageContent: null,
-      packageWeight: null,
-      packageLength: null,
-      packageWidth: null,
-      packageHeight: null,
-      price: null,
-      specialPrice: null,
-      quantity: null,
-      primaryCategory: null,
-      statusLa: null,
-      colorFamily: null,
-      fblLa: null,
-      simage1: null,
-      simage2: null,
-      simage3: null,
-      simage4: null,
-      simage5: null,
-      simage6: null,
-      simage7: null,
-      simage8: null,
+      idProductLa: undefined,
+      skuLazada: undefined,
+      skuEelic: undefined,
+      skuNameLa: undefined,
+      skuNameLaId: undefined,
+      skuNameLaEn: undefined,
+      shortDescription: undefined,
+      shortDescriptionEn: undefined,
+      shortDescriptionId: undefined,
+      description: undefined,
+      descriptionId: undefined,
+      descriptionEn: undefined,
+      model: undefined,
+      packageContent: undefined,
+      packageWeight: undefined,
+      packageLength: undefined,
+      packageWidth: undefined,
+      packageHeight: undefined,
+      price: undefined,
+      specialPrice: undefined,
+      quantity: undefined,
+      primaryCategory: undefined,
+      statusLa: undefined,
+      colorFamily: undefined,
+      fblLa: undefined,
+      simage1: undefined,
+      simage2: undefined,
+      simage3: undefined,
+      simage4: undefined,
+      simage5: undefined,
+      simage6: undefined,
+      simage7: undefined,
+      simage8: undefined,
       status: "0",
-      delFlag: null,
-      createBy: null,
-      createTime: null,
-      updateBy: null,
-      updateTime: null,
-      remark: null
+      delFlag: undefined,
+      createBy: undefined,
+      createTime: undefined,
+      updateBy: undefined,
+      updateTime: undefined,
+      remark: undefined
     };
-    proxy.resetForm("productdemoRef");
+    productdemoRef.value?.resetFields();
   }
   
   /** 搜索按钮操作 */
@@ -566,7 +628,7 @@ const buttons = [
   
   /** 重置按钮操作 */
   function resetQuery() {
-    proxy.resetForm("queryRef");
+    queryRef.value?.resetFields()
     handleQuery();
   }
   
@@ -591,7 +653,7 @@ function handleSortChange(column, prop, order) {
     title.value = "添加产品Demo";
   }
    /** 修改按钮操作 */
-   function handleButtonText(row, act: string) {
+   function handleButtonText(row: Row, act: string) {
     if( act == "edit" ){
       return handleUpdate(row);
     }
@@ -602,7 +664,7 @@ function handleSortChange(column, prop, order) {
 
 
   /** 修改按钮操作 */
-  function handleUpdate(row) {
+  function handleUpdate(row: Row) {
     reset();
     const _idProductLa = row.idProductLa || ids.value
     getProductdemo(_idProductLa).then(response => {
@@ -614,9 +676,10 @@ function handleSortChange(column, prop, order) {
   
   /** 提交按钮 */
   function submitForm() {
-    proxy?.$refs["productdemoRef"].validate(valid => {
+    // proxy?.$refs["productdemoRef"].validate(valid => {
+    productdemoRef.value?.validate(valid => {
       if (valid) {
-        if (form.value.idProductLa != null) {
+        if (form.value.idProductLa != undefined) {
           updateProductdemo(form.value).then(response => {
             proxy?.$modal.msgSuccess(t('button.successModify'));
             open.value = false;
@@ -624,7 +687,7 @@ function handleSortChange(column, prop, order) {
           });
         } else {
           addProductdemo(form.value).then(response => {
-            proxy.$modal.msgSuccess(t('button.AddSuccess'));
+            proxy?.$modal.msgSuccess(t('button.AddSuccess'));
             open.value = false;
             getList();
           });
@@ -634,9 +697,9 @@ function handleSortChange(column, prop, order) {
   }
   
   /** 删除按钮操作 */
-  function handleDelete(row) {
+  function handleDelete(row: Row) {
     const _idProductLas = row.idProductLa || ids.value;
-    proxy.$modal.confirm('是否确认删除产品Demo编号为"' + _idProductLas + '"的数据项？').then(function() {
+    proxy?.$modal.confirm('是否确认删除产品Demo编号为"' + _idProductLas + '"的数据项？').then(function() {
       return delProductdemo(_idProductLas);
     }).then(() => {
       getList();
@@ -646,7 +709,7 @@ function handleSortChange(column, prop, order) {
   
   /** 导出按钮操作 */
   function handleExport() {
-    proxy.download('demo/productdemo/export', {
+    proxy?.$download('demo/productdemo/export', {
       ...queryParams.value
     }, `productdemo_${new Date().getTime()}.xlsx`)
   }
