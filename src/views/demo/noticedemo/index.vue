@@ -329,7 +329,7 @@ function handleAdd() {
   title.value = t('notice.addNotice');
 }
 /**修改按钮操作 */
-function handleUpdate(row) {
+function handleUpdate(row: Row) {
   reset();
   const noticeId = row.noticeId || ids.value;
   getNotice(noticeId).then(response => {
@@ -359,7 +359,7 @@ function submitForm() {
   });
 }
 /** 删除按钮操作 */
-function handleDelete(row) {
+function handleDelete(row: Row) {
   const noticeIds = row.noticeId || ids.value
   proxy?.$modal.confirm(t('notice.confirmDelete') + noticeIds + t('user.confirmDelete2')).then(function() {
     return delNotice(noticeIds);
