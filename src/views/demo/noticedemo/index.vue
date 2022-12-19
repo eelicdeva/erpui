@@ -182,29 +182,80 @@
       </el-dialog>
    </div>
 </template>
-<script lang="ts">
-export default { name: 'noticeDemo' };
-</script>
+
 <script lang="ts" setup name="Notice">
 import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/system/notice";
+import type { QueryParams, AddParams } from "@/api/system/notice"
 import i18n from '@/lang';
-import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } from "vue";
+import { ComponentInternalInstance, getCurrentInstance, reactive, Ref, ref, toRefs } from "vue";
+import { ElForm } from "element-plus";
+import { parseTime } from "@/utils/ruoyi";
 
 const {t} = i18n.global;
+const queryRef = ref<InstanceType<typeof ElForm>>()
+const noticeRef = ref<InstanceType<typeof ElForm>>()
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
-const { sys_notice_status, sys_notice_type } = proxy.useDict("sys_notice_status", "sys_notice_type");
+const { sys_notice_status, sys_notice_type } = proxy?.useDict("sys_notice_status", "sys_notice_type");
 
-const noticeList = ref([]);
+const noticeList: Ref<Row[]> = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
 const showExtend = ref(false);
-const ids = ref([]);
+const ids: Ref<number[]> = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
+
+interface Row {
+   searchValue: string | null;
+   createBy: string;
+   createTime: string;
+   updateBy: string;
+   updateTime: string | null;
+   remark: string;
+   params: QueryParams;
+   noticeId: number;
+   noticeTitle: string;
+   noticeType: string;
+   noticeContent: string;
+   status: string;
+}
+
+interface Data {
+   form: AddParams;
+   queryParams: QueryParams;  
+   rules:{
+      noticeTitle: [{
+         required: boolean;
+         message: string;
+         trigger: string;
+      }];
+      noticeType: [{
+         required: boolean;
+         message: string;
+         trigger: string;     
+      }];
+   };
+}
+
+const data: Data = reactive({
+  form: {},
+  queryParams: {
+    pageNum: 1,
+    pageSize: 10,
+    noticeTitle: undefined,
+    createBy: undefined,
+    status: undefined
+  },
+  rules: {
+    noticeTitle: [{ required: true, message: t('notice.titleRules'), trigger: "blur" }],
+    noticeType: [{ required: true, message: t('notice.typeRules'), trigger: "change" }]
+  },
+});
+
 //show columns
 const columns = ref([
   { key: 0, label: t('user.serialRole'), visible: true },
@@ -225,20 +276,7 @@ const columns = ref([
     status: undefined
   })
 */
-  const data = reactive({
-  form: {},
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    noticeTitle: undefined,
-    createBy: undefined,
-    status: undefined
-  },
-  rules: {
-    noticeTitle: [{ required: true, message: t('notice.titleRules'), trigger: "blur" }],
-    noticeType: [{ required: true, message: t('notice.typeRules'), trigger: "change" }]
-  },
-});
+
 
 const { queryParams, form, rules } = toRefs(data);
 
@@ -265,7 +303,8 @@ function reset() {
     noticeContent: undefined,
     status: "0"
   };
-  proxy.resetForm("noticeRef");
+  noticeRef.value?.resetFields();
+//   proxy.resetForm("noticeRef");
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -274,7 +313,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy?.resetForm("queryRef");
+   queryRef.value?.resetFields();
   handleQuery();
 }
 /** 多选框选中数据 */
@@ -301,17 +340,17 @@ function handleUpdate(row) {
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["noticeRef"].validate(valid => {
+  noticeRef.value?.validate(valid => {
     if (valid) {
       if (form.value.noticeId != undefined) {
         updateNotice(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.successModify'));
+          proxy?.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addNotice(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.AddSuccess'));
+          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -322,11 +361,11 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const noticeIds = row.noticeId || ids.value
-  proxy.$modal.confirm(t('notice.confirmDelete') + noticeIds + t('user.confirmDelete2')).then(function() {
+  proxy?.$modal.confirm(t('notice.confirmDelete') + noticeIds + t('user.confirmDelete2')).then(function() {
     return delNotice(noticeIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('user.succesDeleted'));
+    proxy?.$modal.msgSuccess(t('user.succesDeleted'));
   }).catch(() => {});
 }
 
