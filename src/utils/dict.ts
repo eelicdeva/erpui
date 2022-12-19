@@ -13,11 +13,11 @@ import { ref, toRefs } from 'vue';
  * 获取字典数据
  * todo delete cookies lang
  */
-export function useDict(...args: string[]) {
+export async function useDict(...args: string[]) {
   const res = ref({} as {T: string}); 
   var lang: string = Cookies.get('lang') || "en";
-      return (() => { args.forEach((dictType: string, index) => {res.value[dictType] = []; 
-          getDicts(dictType).then(resp => { res.value[dictType] = resp.data.map((
+      return (() => { args.forEach(async (dictType: string, index) => {res.value[dictType] = []; 
+         await getDicts(dictType).then(resp => { res.value[dictType] = resp.data.map((
                 p: { 
                      dictLabel: string; 
                      dictLabelEn: string; 
