@@ -83,8 +83,8 @@
 	return time_str;
 };
 
-// 表单重置 to-do this: any
-export function resetForm(this: any, refName) {
+// ||to-do check resetForm no need to use in typescript 表单重置 
+export function resetForm(this, refName) {
   if (this.$refs[refName]) {
     this.$refs[refName].resetFields();
   }
@@ -110,7 +110,7 @@ export function selectDictLabel(datas, value) {
   if (value === undefined) {
     return "";
   }
-  var actions = [] as any[];
+  var actions = [] as string[];
   Object.keys(datas).some((key) => {
     if (datas[key].value == ('' + value)) {
       actions.push(datas[key].label);
@@ -125,7 +125,7 @@ export function selectDictLabel(datas, value) {
 
 // to-do not yet use?
 // ||回显数据字典（字符串数组）
-export function selectDictLabels( datas, value, separator ) {
+export function selectDictLabels( datas, value: string | undefined, separator: undefined ) {
   //debugger
   if (value === undefined || value.length ===0) {
     return "";
@@ -133,7 +133,7 @@ export function selectDictLabels( datas, value, separator ) {
   if (Array.isArray(value)) {
     value = value.join(",");
   }
-  var actions = [];
+  var actions = [] as string[];
   var currentSeparator = undefined === separator ? "," : separator;
   var temp = value.split(currentSeparator);
   Object.keys(value.split(currentSeparator)).some((val) => {
@@ -196,12 +196,12 @@ export function mergeRecursive(source: { [x: string]: any; }, target: { [x: stri
 
 /**
  * 构造树型结构数据
- * @param {*} data 数据源
- * @param {*} id id字段 默认 'id'
- * @param {*} parentId 父节点字段 默认 'parentId'
- * @param {*} children 孩子节点字段 默认 'children'
+ * @param {Object[]} data 数据源
+ * @param {string} id id字段 默认 'id'
+ * @param {string} parentId 父节点字段 默认 'parentId'
+ * @param {string} children 孩子节点字段 默认 'children'
  */
-export function handleTree(data, id, parentId, children) {
+export function handleTree(data: Object[], id: string, parentId?:string, children?: string) {
   let config = {
     id: id || 'id',
     parentId: parentId || 'parentId',
@@ -210,7 +210,7 @@ export function handleTree(data, id, parentId, children) {
 
   var childrenListMap = {};
   var nodeIds = {};
-  var tree = [];
+  var tree = [] as Object[];
 
   for (let d of data) {
     let parentId = d[config.parentId];
@@ -232,7 +232,7 @@ export function handleTree(data, id, parentId, children) {
     adaptToChildrenList(t);
   }
 
-  function adaptToChildrenList(o) {
+  function adaptToChildrenList(o: Object) {
     if (childrenListMap[o[config.id]] !== null) {
       o[config.childrenList] = childrenListMap[o[config.id]];
     }
