@@ -116,21 +116,21 @@ declare module '@vue/runtime-core' {
         // || 警告消息
         msgWarning(content: string): void;
         // || 弹出提示
-        alert(content: string): void;
+        alert(content: string): ElMessageBoxShortcutMethod;
         // || 错误提示
-        alertError(content: string): void;
+        alertError(content: string): ElMessageBoxShortcutMethod;
         // || 成功提示
-        alertSuccess(content: string): void;
+        alertSuccess(content: string): ElMessageBoxShortcutMethod;
         // || 警告提示
-        alertWarning(content: string): void;
+        alertWarning(content: string): ElMessageBoxShortcutMethod;
         // || 通知提示
-        notify(content: string): void;
+        notify(content: string): NotifyTypedFn;
         // || 错误通知
-        notifyError(content: string): void;
+        notifyError(content: string): NotifyTypedFn;
         // || 成功通知
-        notifySuccess(content: string): void;
+        notifySuccess(content: string): NotifyTypedFn;
         // || 警告通知
-        notifyWarning(content: string): void;
+        notifyWarning(content: string): NotifyTypedFn;
         // || 确认窗体
         confirm(content: string): ElMessageBoxShortcutMethod;
         // || 提交内容
