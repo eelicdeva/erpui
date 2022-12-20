@@ -16,7 +16,7 @@ export function listUser(query: string) {
  * @param  { string | undefined | null} userId
  * @return request({url: string, method: string})
  */
-export function getUser(userId: string | undefined | null) {
+export function getUser(userId?: string | undefined | null) {
   return request({
     url: '/system/user/' + parseStrEmpty(userId),
     method: 'get'

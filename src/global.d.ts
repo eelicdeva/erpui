@@ -151,6 +151,7 @@ declare module '@vue/runtime-core' {
     };
   */
     useDict(...args: string[]);
+    addDateRange(params: any, dateRange: any[], propName?: string);
   }
 }
 

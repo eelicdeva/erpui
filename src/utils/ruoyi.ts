@@ -90,8 +90,8 @@ export function resetForm(this, refName) {
   }
 }
 
-// 添加日期范围
-export function addDateRange(params, dateRange, propName) {
+// to-do check any ||添加日期范围
+export function addDateRange(params: any, dateRange: any[], propName?: string) {
   let search = params;
   search.params = typeof (search.params) === 'object' && search.params !== null && !Array.isArray(search.params) ? search.params : {};
   dateRange = Array.isArray(dateRange) ? dateRange : [];

@@ -148,7 +148,7 @@
                </el-table-column>
                <el-table-column :label="$t('user.creationtime')" align="center" prop="createTime" v-if="columns[6].visible" width="160">
                   <template #default="scope">
-                     <span>{{ parseTime(scope.row.createTime) }}</span>
+                     <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
                   </template>
                </el-table-column>
                <el-table-column :label="$t('user.operate')" align="center" width="150" class-name="small-padding fixed-width">
@@ -358,19 +358,26 @@ import { getToken } from "@/utils/auth";
 import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser, deptTreeSelect } from "@/api/system/user";
 import i18n from '@/lang/index';
 import { useRouter } from "vue-router";
-import { ComponentInternalInstance, getCurrentInstance, reactive, ref } from "vue";
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref, Ref, toRefs, watch } from "vue";
+import type { ElForm, ElTree, ElUpload } from "element-plus";
+import { parseTime } from "@/utils/ruoyi";
+import { ElMessageBox } from 'element-plus';
 
 const {t} = i18n.global;
-
-const router = useRouter();
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const { sys_normal_disable, sys_user_sex } = proxy.useDict("sys_normal_disable", "sys_user_sex");
+const router = useRouter();
+const uploadRef = ref<InstanceType<typeof ElUpload>>()
+const queryRef = ref<InstanceType<typeof ElForm>>()
+const userRef = ref<InstanceType<typeof ElForm>>()
+const deptTreeRef = ref<InstanceType<typeof ElTree>>()
 
-const userList = ref([]);
+const { sys_normal_disable, sys_user_sex } = proxy?.useDict("sys_normal_disable", "sys_user_sex");
+
+const userList: Ref<Row[]> = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
-const ids = ref([]);
+const ids: Ref<number[]> = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
@@ -379,9 +386,96 @@ const dateRange = ref([]);
 const deptName = ref("");
 const deptOptions = ref(undefined);
 const initPassword = ref(undefined);
-const postOptions = ref([]);
-const roleOptions = ref([]);
+const postOptions: Ref<postOptions[]> = ref([]);
+const roleOptions: Ref<roleOptions[]> = ref([]);
 const buttonType = "primary";
+
+interface Row {
+   searchValue: string | null
+   createBy: string
+   createTime: string
+   updateBy: string
+   updateTime: string | null
+   remark: string
+   // params: QueryParams;
+   userId: number
+   admin: boolean
+   avatar: string
+   delFlag: string
+   deptId: number
+   email: string
+   loginDate: string
+   loginIp: string
+   nickName: string
+   password: string
+}
+
+interface Data {
+   form: any;
+   queryParams: any; 
+   rules:{
+      userName: [{
+         required: boolean
+         message: string
+         trigger: string
+      },
+      {
+         min: number
+         max: number
+         message: string
+         trigger: string
+      },
+      {
+         pattern: RegExp
+         message: string
+         trigger: string
+      },
+      {
+         pattern: RegExp
+         message: string
+         trigger: string
+      }]
+      nickName: [{
+         required: boolean
+         message: string
+         trigger: string
+      }]
+      password: [{
+         required: boolean
+         message: string
+         trigger: string
+      },
+      {
+         min: number
+         max: number
+         message: string
+         trigger: string
+      }]
+      email: [{
+         type: any
+         message: string
+         trigger: string[]
+      }]
+      phonenumber: [{
+         pattern: RegExp
+         message: string
+         trigger: string
+      }]
+   }
+}
+
+interface postOptions {
+   postId: number
+   postName: string
+   status: number
+}
+
+interface roleOptions{
+   roleId: number
+   roleName: string
+   status: number
+}
+
 /*** 用户导入参数 */
 const upload = reactive({
   // 是否显示弹出层（用户导入）
@@ -408,7 +502,7 @@ const columns = ref([
   { key: 6, label: t('user.creationtime'), visible: true }
 ]);
 
-const data = reactive({
+const data: Data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
@@ -419,9 +513,13 @@ const data = reactive({
     deptId: undefined
   },
   rules: {
-    userName: [{ required: true, message: t('user.usernameRules'), trigger: "blur" }, { min: 4, max: 16, message: t('user.usernameRules2'), trigger: "blur" }, { pattern: /^[a-zA-Z]/, message: t('register.usernamePattern2'), trigger: "blur"}, { pattern: /^[a-zA-Z0-9_-]+$/, message: t('register.usernamePattern'), trigger: "blur"}], 
+    userName: [{ required: true, message: t('user.usernameRules'), trigger: "blur" }, 
+      { min: 4, max: 16, message: t('user.usernameRules2'), trigger: "blur" }, 
+      { pattern: /^[a-zA-Z]/, message: t('register.usernamePattern2'), trigger: "blur"}, 
+      { pattern: /^[a-zA-Z0-9_-]+$/, message: t('register.usernamePattern'), trigger: "blur"}], 
     nickName: [{ required: true, message: t('user.nicknameRules'), trigger: "blur" }],
-    password: [{ required: true, message: t('user.passwordRules'), trigger: "blur" }, { min: 5, max: 20, message: t('register.passwordlength'), trigger: "blur" }],
+    password: [{ required: true, message: t('user.passwordRules'), trigger: "blur" }, 
+      { min: 5, max: 20, message: t('register.passwordlength'), trigger: "blur" }],
     email: [{ type: "email", message: t('user.cemailRules'), trigger: ["blur", "change"] }],
     phonenumber: [{ pattern: /[0-9]+$/, message: t('user.pnumberRules'), trigger: "blur" }]
   }
@@ -436,7 +534,8 @@ const filterNode = (value, data) => {
 };
 /** 根据名称筛选部门树 */
 watch(deptName, val => {
-  proxy.$refs["deptTreeRef"].filter(val);
+  deptTreeRef.value?.filter(val);
+  deptTreeRef.value?.filter(val);
 });
 /** 查询部门下拉树结构 */
 function getDeptTree() {
@@ -447,7 +546,7 @@ function getDeptTree() {
 /** 查询用户列表 */
 function getList() {
   loading.value = true;
-  listUser(proxy.addDateRange(queryParams.value, dateRange.value)).then(res => {
+  listUser(proxy?.addDateRange(queryParams.value, dateRange.value)).then(res => {
     loading.value = false;
     userList.value = res.rows;
     total.value = res.total;
@@ -466,15 +565,17 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields()
+//   proxy.resetForm("queryRef");
   queryParams.value.deptId = undefined;
-  proxy.$refs.tree.setCurrentKey(null);  
+  //proxy?.$refs.tree?.setCurrentKey(null);  
+  deptTreeRef.value?.setCurrentKey(undefined);  
   handleQuery();
 };
 /** 删除按钮操作 */
 function handleDelete(row) {
   const userIds = row.userId || ids.value;
-  proxy.$modal.confirm(t('user.confirmDelete1') + userIds + t('user.confirmDelete2')).then(function () {
+  proxy?.$modal.confirm(t('user.confirmDelete1') + userIds + t('user.confirmDelete2')).then(function () {
     return delUser(userIds);
   }).then(() => {
     getList();
@@ -483,14 +584,14 @@ function handleDelete(row) {
 };
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/user/export", {
+  proxy?.$download("system/user/export", {
     ...queryParams.value,
   },`user_${new Date().getTime()}.xlsx`);
 };
 /** 用户状态修改  */
 function handleStatusChange(row: { status: string; userName: string; userId: string; }) {
   let text = row.status === "0" ? t('button.enable') : t('button.disable');
-  proxy.$modal.confirm(t('user.handleStatus1') + text + ' " " ' + row.userName + t('user.handleStatus2')).then(function () {
+  proxy?.$modal.confirm(t('user.handleStatus1') + text + ' " " ' + row.userName + t('user.handleStatus2')).then(function () {
     return changeUserStatus(row.userId, row.status);
   }).then(() => {
     proxy.$modal.msgSuccess(text + t('button.success'));
@@ -499,7 +600,7 @@ function handleStatusChange(row: { status: string; userName: string; userId: str
   });
 };
 /** 更多操作 */
-function handleCommand(command: string, row: { status: string; userName: string; userId: string; }) {
+function handleCommand(command: string, row) {
   switch (command) {
     case "handleResetPwd":
       handleResetPwd(row);
@@ -518,7 +619,8 @@ function handleAuthRole(row: { userId: string; }) {
 };
 /** 重置密码按钮操作 */
 function handleResetPwd(row: { status?: string; userName: string; userId: string; }) {
-  proxy.$prompt(t('user.resetPW1') + row.userName + t('user.resetPW2'), t('el.messagebox.title'), {
+  ElMessageBox.prompt(
+   t('user.resetPW1') + row.userName + t('user.resetPW2'), t('el.messagebox.title'), {
     confirmButtonText: t('el.messagebox.confirm'),
     cancelButtonText: t('el.messagebox.cancel'),
     closeOnClickModal: false,
@@ -526,12 +628,12 @@ function handleResetPwd(row: { status?: string; userName: string; userId: string
     inputErrorMessage: t('register.passwordlength'),
   }).then(({ value }) => {
     resetUserPwd(row.userId, value).then(response => {
-      proxy.$modal.msgSuccess(t('user.resetSucces') + value);
+      proxy?.$modal.msgSuccess(t('user.resetSucces') + value);
     });
   }).catch(() => {});
 };
 /** 选择条数  */
-function handleSelectionChange(selection: { map: (arg0: (item: any) => any) => never[]; length: number; }) {
+function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.userId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
@@ -543,7 +645,7 @@ function handleImport() {
 };
 /** 下载模板操作 */
 function importTemplate() {
-  proxy.$download("system/user/importTemplate", {
+  proxy?.$download("system/user/importTemplate", {
   }, `user_template_${new Date().getTime()}.xlsx`);
 };
 /**文件上传中处理 */
@@ -554,13 +656,15 @@ const handleFileUploadProgress = (event, file, fileList) => {
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
-  proxy.$refs["uploadRef"].handleRemove(file);
-  proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", t('button.ImportResults'), { dangerouslyUseHTMLString: true });
+  //proxy.$refs["uploadRef"].handleRemove(file);
+  uploadRef.value?.handleRemove(file);
+  ElMessageBox.alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", t('button.ImportResults'), { dangerouslyUseHTMLString: true });
   getList();
 };
 /** 提交上传文件 */
 function submitFileForm() {
-  proxy.$refs["uploadRef"].submit();
+  //proxy.$refs["uploadRef"].submit();
+  uploadRef.value?.submit();
 };
 
 /** 重置操作表单 */
@@ -579,7 +683,8 @@ function reset() {
     postIds: [],
     roleIds: []
   };
-  proxy.resetForm("userRef");
+  userRef.value?.resetFields();
+//   proxy.resetForm("userRef");
 };
 /** 取消按钮 */
 function cancel() {
@@ -614,17 +719,18 @@ function handleUpdate(row) {
 };
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["userRef"].validate(valid => {
+//   proxy.$refs["userRef"].validate(valid => {
+  userRef.value?.validate(valid => {
     if (valid) {
       if (form.value.userId != undefined) {
         updateUser(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.successModify'));
+          proxy?.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addUser(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.AddSuccess'));
+          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
