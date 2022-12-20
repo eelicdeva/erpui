@@ -32,8 +32,6 @@
  * @const blobValidate = async (data: any )=> { ...return boolean }
  */
 
-import { isNumber } from "lodash";
-
 /**
  * 日期格式化
  *
@@ -173,14 +171,11 @@ export function sprintf(str: string) {
  * @param  {string|undefined|null} str;
  * @return str: string;
  */
-export function parseStrEmpty(str: string | number | undefined | null): string {
+export function parseStrEmpty(str: string | number | number[] | undefined | null): string {
   if (!str || str == "undefined" || str == "null") {
     return "";
   }
-  if (isNumber(str)){
-    return String(str)
-  }
-  return str;
+  return str.toString();
 }
 
 // 数据合并
