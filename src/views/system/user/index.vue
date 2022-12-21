@@ -413,7 +413,7 @@ interface Row {
 
 interface Data {
    form: AddParams;
-   queryParams: any; 
+   queryParams: QueryParams; 
    rules:{
       userName: [{
          required: boolean
@@ -601,18 +601,18 @@ function handleStatusChange(row: { status: string; userName: string; userId: str
   });
 };
 /** 更多操作 */
-function handleCommand(command: string, row) {
-  switch (command) {
-    case "handleResetPwd":
-      handleResetPwd(row);
-      break;
-    case "handleAuthRole":
-      handleAuthRole(row);
-      break;
-    default:
-      break;
-  }
-};
+// function handleCommand(command: string, row) {
+//   switch (command) {
+//     case "handleResetPwd":
+//       handleResetPwd(row);
+//       break;
+//     case "handleAuthRole":
+//       handleAuthRole(row);
+//       break;
+//     default:
+//       break;
+//   }
+// };
 /** 跳转角色分配 */
 function handleAuthRole(row: { userId: string; }) {
   const userId = row.userId;
