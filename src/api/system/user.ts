@@ -1,6 +1,32 @@
 import request from '@/utils/request'
 import { parseStrEmpty } from "@/utils/ruoyi";
 
+
+export interface QueryParams {
+  pageNum: number
+  pageSize: number
+  deptId?: number
+  userName?: string
+  phonenumber?: string
+  status?: string //to-do is it need?
+}
+
+export interface AddParams {
+  userId?: number
+  deptId?: number
+  userName?: string
+  nickName?: string
+  password?: string
+  phonenumber?: string
+  email?: string
+  sex?: string
+  status?: string
+  remark?: string
+  postIds?: number[]
+  roleIds?: number[]
+}
+
+
 // 查询用户列表
 export function listUser(query: string) {
   return request({
@@ -24,7 +50,7 @@ export function getUser(userId?: string | undefined | null) {
 }
 
 // 新增用户
-export function addUser(data: string) {
+export function addUser(data: AddParams) {
   return request({
     url: '/system/user',
     method: 'post',
@@ -33,7 +59,7 @@ export function addUser(data: string) {
 }
 
 // 修改用户
-export function updateUser(data: string) {
+export function updateUser(data: AddParams) {
   return request({
     url: '/system/user',
     method: 'put',

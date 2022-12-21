@@ -356,6 +356,7 @@
 <script setup lang="ts" name="User">
 import { getToken } from "@/utils/auth";
 import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser, deptTreeSelect } from "@/api/system/user";
+import type { QueryParams, AddParams } from "@/api/system/user";
 import i18n from '@/lang/index';
 import { useRouter } from "vue-router";
 import { ComponentInternalInstance, getCurrentInstance, reactive, ref, Ref, toRefs, watch } from "vue";
@@ -397,7 +398,7 @@ interface Row {
    updateBy: string
    updateTime: string | null
    remark: string
-   // params: QueryParams;
+   params: QueryParams;
    userId: number
    admin: boolean
    avatar: string
@@ -411,7 +412,7 @@ interface Row {
 }
 
 interface Data {
-   form: any;
+   form: AddParams;
    queryParams: any; 
    rules:{
       userName: [{
@@ -714,7 +715,7 @@ function handleUpdate(row) {
     form.value.roleIds = response.roleIds;
     open.value = true;
     title.value = t('user.modifyUser');
-    form.password = "";
+    form.value.password = "";
   });
 };
 /** 提交按钮 */
