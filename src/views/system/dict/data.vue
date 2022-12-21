@@ -112,7 +112,7 @@
          <el-table-column :label="$t('user.remark')" align="center" prop="remark" :show-overflow-tooltip="true" />
          <el-table-column :label="$t('user.creationtime')" align="center" prop="createTime" width="180">
             <template #default="scope">
-               <span>{{ parseTime(scope.row.createTime) }}</span>
+               <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
             </template>
          </el-table-column>
          <el-table-column :label="$t('user.operate')" align="center" width="150" class-name="small-padding fixed-width">
@@ -197,26 +197,31 @@
 <script lang="ts" setup name="Data">
 import { optionselect as getDictOptionselect, getType } from "@/api/system/dict/type";
 import { listData, getData, delData, addData, updateData } from "@/api/system/dict/data";
+import type { QueryParams, AddParams  } from "@/api/system/dict/data"
 import useAppStore from "@/stores/modules/app";
-import { getCurrentInstance, reactive, ref } from "vue";
+import { ComponentInternalInstance, getCurrentInstance, reactive, Ref, ref, toRefs } from "vue";
+import { ElForm } from "element-plus";
 import { useRoute } from "vue-router";
+import { parseTime } from "@/utils/ruoyi";
 import i18n from '@/lang/index';
 
 const {t} = i18n.global;
-const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+const queryRef = ref<InstanceType<typeof ElForm>>()
+const dataRef = ref<InstanceType<typeof ElForm>>()
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { sys_normal_disable } = proxy?.useDict("sys_normal_disable");
 
-const dataList = ref([]);
+const dataList: Ref<Row[]> = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
-const ids = ref([]);
+const ids: Ref<number[]> = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const defaultDictType = ref("");
-const typeOptions = ref([]);
+const typeOptions: Ref<typeOptions[]> = ref([]);
 const route = useRoute();
 // 数据标签回显样式
 const listClassOptions = ref([
@@ -228,7 +233,57 @@ const listClassOptions = ref([
   { value: "danger", label: "危险" }
 ]);
 
-const data = reactive({
+interface Row {
+   searchValue: string | null
+   createBy: string
+   createTime: string
+   updateBy: string | null
+   updateTime: string | null
+   remark: string
+   params: QueryParams
+   cssClass: string
+   default: boolean
+   dictCode: number
+   dictLabel: string
+   dictLabelEn: string
+   dictLabelId: string
+   dictSort: number
+   dictType: string
+   dictValue: string
+   isDefault: string
+   listClass: string
+   status: string
+}
+
+interface Data {
+   form: AddParams
+   queryParams: QueryParams 
+   rules:{
+      dictLabel: [{
+         required: boolean
+         message: string
+         trigger: string
+      }]
+      dictValue: [{
+         required: boolean
+         message: string
+         trigger: string 
+      }]
+      dictSort: [{
+         required: boolean
+         message: string
+         trigger: string  
+      }]
+   };
+}
+
+interface typeOptions {
+   dictId: number
+   dictName: string
+   dictType: string
+}
+
+const data: Data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
@@ -247,7 +302,7 @@ const data = reactive({
 const { queryParams, form, rules } = toRefs(data);
 
 /** 查询字典类型详细 */
-function getTypes(dictId: string) {
+function getTypes(dictId: string | string[]) {
   getType(dictId).then(response => {
     queryParams.value.dictType = response.data.dictType;
     defaultDictType.value = response.data.dictType;
@@ -265,6 +320,7 @@ function getTypeList() {
 function getList() {
   loading.value = true;
   listData(queryParams.value).then(response => {
+    console.log(response.rows);
     dataList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -287,7 +343,8 @@ function reset() {
     status: "0",
     remark: undefined
   };
-  proxy.resetForm("dataRef");
+  dataRef.value?.resetFields();
+//   proxy?.resetForm("dataRef");
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -297,12 +354,12 @@ function handleQuery() {
 /** 返回按钮操作 */
 function handleClose() {
   const obj = { path: "/system/dict" };
-  proxy.$tab.closeOpenPage(obj);
+  proxy?.$tab.closeOpenPage(obj.path);
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
-  queryParams.value.dictType = defaultDictType;
+  queryRef.value?.resetFields()
+  queryParams.value.dictType = defaultDictType.value;
   handleQuery();
 }
 /** 新增按钮操作 */
@@ -313,13 +370,13 @@ function handleAdd() {
   form.value.dictType = queryParams.value.dictType;
 }
 /** 多选框选中数据 */
-function handleSelectionChange(selection: { map: (arg0: (item: any) => any) => never[]; length: number; }) {
-  ids.value = selection.map((item: { dictCode: any; }) => item.dictCode);
+function handleSelectionChange(selection) {
+  ids.value = selection.map(item => item.dictCode);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 /** 修改按钮操作 */
-function handleUpdate(row: { dictCode: never[]; }) {
+function handleUpdate(row: Row) {
   reset();
   const dictCode = row.dictCode || ids.value;
   getData(dictCode).then(response => {
@@ -330,17 +387,18 @@ function handleUpdate(row: { dictCode: never[]; }) {
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["dataRef"].validate((valid: any) => {
+//   proxy.$refs["dataRef"].validate((valid: any) => {
+   dataRef.value?.validate(valid => {
     if (valid) {
       if (form.value.dictCode != undefined) {
         updateData(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.successModify'));
+          proxy?.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addData(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.AddSuccess'));
+          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -349,9 +407,9 @@ function submitForm() {
   });
 }
 /** 删除按钮操作 */
-function handleDelete(row: { dictCode: never[]; }) {
+function handleDelete(row: Row) {
   const dictCodes = row.dictCode || ids.value;
-  proxy.$modal.confirm(t('dict.dictconfirmDelete') + dictCodes + t('user.confirmDelete2')).then(function() {
+  proxy?.$modal.confirm(t('dict.dictconfirmDelete') + dictCodes + t('user.confirmDelete2')).then(function() {
     return delData(dictCodes);
   }).then(() => {
     getList();
@@ -360,7 +418,7 @@ function handleDelete(row: { dictCode: never[]; }) {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/dict/data/export", {
+  proxy?.$download("system/dict/data/export", {
     ...queryParams.value
   }, `dict_data_${new Date().getTime()}.xlsx`);
 }

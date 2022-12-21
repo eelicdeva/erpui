@@ -97,7 +97,7 @@
 		"src/**/*.ts", 
 		"src/**/*.d.ts", 
 		"src/**/*.tsx", 
-	  "src/**/*.vue"
+	  	"src/**/*.vue"
 	],
 	"exclude": [ // exec exclude folder | file || 编译排除那些不需要编译的文件|文件夹。
 		"node_modules", 

@@ -1,5 +1,21 @@
 import request from '@/utils/request'
 
+export interface QueryParams {
+  pageNum: number
+  pageSize: number
+  dictName?: string
+  dictType?: string
+  status?: string
+}
+
+export interface AddParams {
+  dictCode?: number
+  dictName?: string
+  dictType?: string
+  status?: string
+  remark?: string
+}
+
 // 查询字典类型列表
 export function listType(query: string) {
   return request({
@@ -10,7 +26,8 @@ export function listType(query: string) {
 }
 
 // 查询字典类型详细
-export function getType(dictId: string | string[]) {
+export function 
+getType(dictId: string | string[]) {
   return request({
     url: '/system/dict/type/' + dictId,
     method: 'get'

@@ -1,24 +1,24 @@
 import request from '@/utils/request'
 
 export interface QueryParams {
-  pageNum: number;
-  pageSize: number;
-  dictId?: number;
-  dictType?: string;
-  dictLabel?: string;
-  status?: string;
+  pageNum: number
+  pageSize: number
+  dictId?: number
+  dictType?: string
+  dictLabel?: string
+  status?: string
 }
 
 export interface AddParams {
-  dictCode?: number;
-  dictLabel?: string;
-  dictValue?: string;
-  cssClass?: string;
-  listClass?: string;
-  dictSort?: number;
-  dictType?: string;
-  status?: string;
-  remark?: string;
+  dictCode?: number
+  dictLabel?: string
+  dictValue?: string
+  cssClass?: string
+  listClass?: string
+  dictSort?: number
+  dictType?: string
+  status?: string
+  remark?: string
 }
 
 // 查询字典数据列表

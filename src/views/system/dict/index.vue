@@ -1,26 +1,31 @@
 <template>
    <div class="app-container">
-      <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
-         <el-form-item :label="$t('dict.name')" prop="dictType">
-            <el-select v-model="queryParams.dictType" style="width: 200px">
-               <el-option
-                  v-for="item in typeOptions"
-                  :key="item.dictId"
-                  :label="item.dictName"
-                  :value="item.dictType"
-               />
-            </el-select>
-         </el-form-item>
-         <el-form-item :label="$t('dict.tag')" prop="dictLabel">
+      <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+         <el-form-item :label="$t('dict.name')" prop="dictName">
             <el-input
-               v-model="queryParams.dictLabel"
-               :placeholder="$t('dict.tagPlaceholder')"
+               v-model="queryParams.dictName"
+               :placeholder="$t('dict.namePlaceholder')"
                clearable
+               style="width: 240px"
+               @keyup.enter="handleQuery"
+            />
+         </el-form-item>
+         <el-form-item :label="$t('dict.type')" prop="dictType">
+            <el-input
+               v-model="queryParams.dictType"
+               :placeholder="$t('dict.typePlaceholder')"
+               clearable
+               style="width: 240px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
          <el-form-item :label="$t('user.status')" prop="status">
-            <el-select v-model="queryParams.status" :placeholder="$t('dict.dataStatus')" clearable style="width: 200px">
+            <el-select
+               v-model="queryParams.status"
+               :placeholder="$t('dict.status')"
+               clearable
+               style="width: 240px"
+            >
                <el-option
                   v-for="dict in sys_normal_disable"
                   :key="dict.value"
@@ -28,6 +33,16 @@
                   :value="dict.value"
                />
             </el-select>
+         </el-form-item>
+         <el-form-item :label="$t('user.creationtime')" style="width: 308px">
+            <el-date-picker
+               v-model="dateRange"
+               value-format="YYYY-MM-DD"
+               type="daterange"
+               range-separator="-"
+               :start-placeholder="$t('user.startDate')"
+               :end-placeholder="$t('user.endDate')"
+            ></el-date-picker>
          </el-form-item>
          <el-form-item>
             <el-button type="primary" icon="Search" @click="handleQuery">{{ $t('button.search') }}</el-button>
@@ -76,34 +91,27 @@
          </el-col>
          <el-col :span="1.5">
             <el-button
-               type="warning"
+               type="danger"
                plain
-               icon="Close"
-               @click="handleClose"
-            >{{ $t('tagsView.close') }}</el-button>
+               icon="Refresh"
+               @click="handleRefreshCache"
+               v-hasPermi="['system:dict:remove']"
+            >{{ $t('button.RefreshCache') }}</el-button>
          </el-col>
          <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
 
-      <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange">
+      <el-table v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
          <el-table-column type="selection" width="55" align="center" />
-         <el-table-column :label="$t('dict.code')" align="center" prop="dictCode" />
-         <el-table-column :label="$t('dict.tag')" align="center" prop="dictLabel">
-            <template v-if="useAppStore().lang == 'zh'" #default="scope">
-               <span v-if="scope.row.listClass == '' || scope.row.listClass == 'default'">{{ scope.row.dictLabel }}</span>
-               <el-tag v-else :type="scope.row.listClass == 'primary' ? '' : scope.row.listClass">{{ scope.row.dictLabel }}</el-tag>
-            </template>
-            <template v-if="useAppStore().lang == 'en'" #default="scope">
-               <span v-if="scope.row.listClass == '' || scope.row.listClass == 'default'">{{ scope.row.dictLabelEn }}</span>
-               <el-tag v-else :type="scope.row.listClass == 'primary' ? '' : scope.row.listClass">{{ scope.row.dictLabelEn }}</el-tag>
-            </template>
-            <template v-if="useAppStore().lang == 'id'" #default="scope">
-               <span v-if="scope.row.listClass == '' || scope.row.listClass == 'default'">{{ scope.row.dictLabelId }}</span>
-               <el-tag v-else :type="scope.row.listClass == 'primary' ? '' : scope.row.listClass">{{ scope.row.dictLabelId }}</el-tag>
+         <el-table-column :label="$t('dict.id')" align="center" prop="dictId" />
+         <el-table-column :label="$t('dict.name')" align="center" prop="dictName" :show-overflow-tooltip="true"/>
+         <el-table-column :label="$t('dict.type')" align="center" :show-overflow-tooltip="true">
+            <template #default="scope">
+               <router-link :to="'/system/dict-data/index/' + scope.row.dictId" class="link-type">
+                  <span>{{ scope.row.dictType }}</span>
+               </router-link>
             </template>
          </el-table-column>
-         <el-table-column :label="$t('dict.value')" align="center" prop="dictValue" />
-         <el-table-column :label="$t('dict.sort')" align="center" prop="dictSort" />
          <el-table-column :label="$t('user.status')" align="center" prop="status">
             <template #default="scope">
                <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
@@ -115,22 +123,17 @@
                <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
             </template>
          </el-table-column>
-         <el-table-column :label="$t('user.operate')" align="center" width="150" class-name="small-padding fixed-width">
+         <el-table-column :label="$t('user.operate')" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
-               <el-button
-                  type="primary"
-                  icon="Edit"
-                  @click="handleUpdate(scope.row)"
-                  v-hasPermi="['system:dict:edit']"
+               <el-button                  
+                  v-for="button in buttons"
+                  :key="button.text"
+                  :type="button.type"
+                  :icon="button.icon"
+                  @click="handleButtonText(scope.row,button.act)"
+                  :v-hasPermi="button.permi"
                   link
-               >{{ $t('button.edit') }}</el-button>
-               <el-button
-                  type="primary"
-                  icon="Delete"
-                  @click="handleDelete(scope.row)"
-                  v-hasPermi="['system:dict:remove']"
-                  link
-               >{{ $t('button.delete') }}</el-button>
+                >{{ button.text }}</el-button>
             </template>
          </el-table-column>
       </el-table>
@@ -145,31 +148,12 @@
 
       <!-- 添加或修改参数配置对话框 -->
       <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-         <el-form ref="dataRef" :model="form" :rules="rules" label-width="100px">
-            <el-form-item :label="$t('dict.type')">
-               <el-input v-model="form.dictType" :disabled="true" />
+         <el-form ref="dictRef" :model="form" :rules="rules" label-width="80px">
+            <el-form-item :label="$t('dict.name')" prop="dictName">
+               <el-input v-model="form.dictName" :placeholder="$t('dict.namePlaceholder')" />
             </el-form-item>
-            <el-form-item :label="$t('dict.dataLabel')" prop="dictLabel">
-               <el-input v-model="form.dictLabel" :placeholder="$t('dict.dataLabelPlaceholder')" />
-            </el-form-item>
-            <el-form-item :label="$t('dict.dataValue')" prop="dictValue">
-               <el-input v-model="form.dictValue" :placeholder="$t('dict.dataValuePlaceholder')" />
-            </el-form-item>
-            <el-form-item :label="$t('dict.styleAttribute')" prop="cssClass">
-               <el-input v-model="form.cssClass" :placeholder="$t('dict.styleAttributePlaceholder')" />
-            </el-form-item>
-            <el-form-item :label="$t('menu.displaySort')" prop="dictSort">
-               <el-input-number v-model="form.dictSort" controls-position="right" :min="0" />
-            </el-form-item>
-            <el-form-item :label="$t('dict.listClass')" prop="listClass">
-               <el-select v-model="form.listClass">
-                  <el-option
-                     v-for="item in listClassOptions"
-                     :key="item.value"
-                     :label="item.label + '(' + item.value + ')'"
-                     :value="item.value"
-                  ></el-option>
-               </el-select>
+            <el-form-item :label="$t('dict.type')" prop="dictType">
+               <el-input v-model="form.dictType" :placeholder="$t('dict.typePlaceholder')" />
             </el-form-item>
             <el-form-item :label="$t('user.status')" prop="status">
                <el-radio-group v-model="form.status">
@@ -194,93 +178,43 @@
    </div>
 </template>
 
-<script lang="ts" setup name="Data">
-import { optionselect as getDictOptionselect, getType } from "@/api/system/dict/type";
-import { listData, getData, delData, addData, updateData } from "@/api/system/dict/data";
-import type { QueryParams, AddParams  } from "@/api/system/dict/data"
-import useAppStore from "@/stores/modules/app";
-import { ComponentInternalInstance, getCurrentInstance, reactive, Ref, ref, toRefs } from "vue";
-import { ElForm } from "element-plus";
-import { useRoute } from "vue-router";
+<script lang="ts" setup name="Dict">
+import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/dict/type";
+import type { QueryParams, AddParams } from "@/api/system/dict/type";
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } from "vue";
 import { parseTime } from "@/utils/ruoyi";
 import i18n from '@/lang/index';
 
 const {t} = i18n.global;
-const queryRef = ref<InstanceType<typeof ElForm>>()
-const dataRef = ref<InstanceType<typeof ElForm>>()
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const { sys_normal_disable } = proxy?.useDict("sys_normal_disable");
 
-const dataList: Ref<Row[]> = ref([]);
+const typeList = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
-const ids: Ref<number[]> = ref([]);
+const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
-const defaultDictType = ref("");
-const typeOptions: Ref<typeOptions[]> = ref([]);
-const route = useRoute();
-// 数据标签回显样式
-const listClassOptions = ref([
-  { value: "default", label: "默认" }, 
-  { value: "primary", label: "主要" }, 
-  { value: "success", label: "成功" },
-  { value: "info", label: "信息" },
-  { value: "warning", label: "警告" },
-  { value: "danger", label: "危险" }
-]);
+const dateRange = ref([]);
 
 interface Row {
    searchValue: string | null
    createBy: string
    createTime: string
-   updateBy: string | null
+   updateBy: string
    updateTime: string | null
    remark: string
-   params: QueryParams
-   cssClass: string
-   default: boolean
-   dictCode: number
-   dictLabel: string
-   dictLabelEn: string
-   dictLabelId: string
-   dictSort: number
-   dictType: string
-   dictValue: string
-   isDefault: string
-   listClass: string
-   status: string
+   params: QueryParams;
+   
 }
 
 interface Data {
-   form: AddParams
-   queryParams: QueryParams 
-   rules:{
-      dictLabel: [{
-         required: boolean
-         message: string
-         trigger: string
-      }]
-      dictValue: [{
-         required: boolean
-         message: string
-         trigger: string 
-      }]
-      dictSort: [{
-         required: boolean
-         message: string
-         trigger: string  
-      }]
-   };
-}
-
-interface typeOptions {
-   dictId: number
-   dictName?: string 
-   dictType?: string
+   form: AddParams;
+   queryParams: QueryParams; 
+   rules: rulesUser
 }
 
 const data: Data = reactive({
@@ -288,38 +222,37 @@ const data: Data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
+    dictName: undefined,
+    dictType: undefined,
     status: undefined
   },
   rules: {
-    dictLabel: [{ required: true, message: t('dict.dataLabelRules'), trigger: "blur" }],
-    dictValue: [{ required: true, message: t('dict.dataValueRules'), trigger: "blur" }],
-    dictSort: [{ required: true, message: t('dict.sortRules'), trigger: "blur" }]
-  }
+    dictName: [{ required: true, message: t('dict.nameRules'), trigger: "blur" }],
+    dictType: [{ required: true, message: t('dict.typeRules'), trigger: "blur" }]
+  },
 });
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询字典类型详细 */
-function getTypes(dictId: string | string[]) {
-  getType(dictId).then(response => {
-    queryParams.value.dictType = response.data.dictType;
-    defaultDictType.value = response.data.dictType;
-    getList();
-  });
+const buttons = [
+   {type: 'primary', text: t('button.edit'), icon: 'Edit', act : 'edit', permi: ['system:dict:edit']}, 
+   {type: 'primary', text: t('button.delete'), icon: 'Delete', act : 'delete', permi: ['system:dict:remove']},
+] as const
+
+function handleButtonText(row, act: string) {
+    if( act == "edit" ){
+      return handleUpdate(row);
+    }
+    if( act == "delete" ){
+      return handleDelete(row);
+    }
 }
 
 /** 查询字典类型列表 */
-function getTypeList() {
-  getDictOptionselect().then(response => {
-    typeOptions.value = response.data;
-  });
-}
-/** 查询字典数据列表 */
 function getList() {
   loading.value = true;
-  listData(queryParams.value).then(response => {
-    console.log(response.rows);
-    dataList.value = response.rows;
+  listType(proxy?.addDateRange(queryParams.value, dateRange.value)).then(response => {
+    typeList.value = response.rows;
     total.value = response.total;
     loading.value = false;
   });
@@ -332,71 +265,60 @@ function cancel() {
 /** 表单重置 */
 function reset() {
   form.value = {
-    dictCode: undefined,
-    dictLabel: undefined,
-    dictValue: undefined,
-    cssClass: undefined,
-    listClass: "default",
-    dictSort: 0,
+    dictId: undefined,
+    dictName: undefined,
+    dictType: undefined,
     status: "0",
     remark: undefined
   };
-  dataRef.value?.resetFields();
-//   proxy?.resetForm("dataRef");
+  proxy.resetForm("dictRef");
 }
 /** 搜索按钮操作 */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
-/** 返回按钮操作 */
-function handleClose() {
-  const obj = { path: "/system/dict" };
-  proxy?.$tab.closeOpenPage(obj.path);
-}
 /** 重置按钮操作 */
 function resetQuery() {
-  queryRef.value?.resetFields()
-  queryParams.value.dictType = defaultDictType.toString();
+  dateRange.value = [];
+  proxy.resetForm("queryRef");
   handleQuery();
 }
 /** 新增按钮操作 */
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = t('dict.addDictData');
-  form.value.dictType = queryParams.value.dictType;
+  title.value = t('dict.addDictType');
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map((item: { dictCode: any; }) => item.dictCode);
+  ids.value = selection.map(item => item.dictId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 /** 修改按钮操作 */
-function handleUpdate(row: Row) {
+function handleUpdate(row) {
   reset();
-  const dictCode = row.dictCode || ids.value;
-  getData(dictCode).then(response => {
+  const dictId = row.dictId || ids.value;
+  getType(dictId).then(response => {
     form.value = response.data;
     open.value = true;
-    title.value = t('dict.modifyDictData');
+    title.value = t('dict.modifyDictType');
   });
 }
 /** 提交按钮 */
 function submitForm() {
-//   proxy.$refs["dataRef"].validate((valid: any) => {
-   dataRef.value?.validate(valid => {
+  proxy.$refs["dictRef"].validate(valid => {
     if (valid) {
-      if (form.value.dictCode != undefined) {
-        updateData(form.value).then(response => {
-          proxy?.$modal.msgSuccess(t('button.successModify'));
+      if (form.value.dictId != undefined) {
+        updateType(form.value).then(response => {
+          proxy.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
-        addData(form.value).then(response => {
-          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
+        addType(form.value).then(response => {
+          proxy.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -405,10 +327,10 @@ function submitForm() {
   });
 }
 /** 删除按钮操作 */
-function handleDelete(row: Row) {
-  const dictCodes = row.dictCode || ids.value;
-  proxy?.$modal.confirm(t('dict.dictconfirmDelete') + dictCodes + t('user.confirmDelete2')).then(function() {
-    return delData(dictCodes);
+function handleDelete(row) {
+  const dictIds = row.dictId || ids.value;
+  proxy.$modal.confirm(t('dict.confirmDelete') + dictIds + t('user.confirmDelete2')).then(function() {
+    return delType(dictIds);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess(t('user.succesDeleted'));
@@ -416,11 +338,16 @@ function handleDelete(row: Row) {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy?.$download("system/dict/data/export", {
+  proxy.download("system/dict/type/export", {
     ...queryParams.value
-  }, `dict_data_${new Date().getTime()}.xlsx`);
+  }, `dict_${new Date().getTime()}.xlsx`);
+}
+/** 刷新缓存按钮操作 */
+function handleRefreshCache() {
+  refreshCache().then(() => {
+    proxy.$modal.msgSuccess(t('dict.refreshSuccess'));
+  });
 }
 
-getTypes(route.params && route.params.dictId);
-getTypeList();
+getList();
 </script>
