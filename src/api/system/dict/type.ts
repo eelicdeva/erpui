@@ -10,7 +10,7 @@ export function listType(query: string) {
 }
 
 // 查询字典类型详细
-export function getType(dictId: string) {
+export function getType(dictId: string | string[]) {
   return request({
     url: '/system/dict/type/' + dictId,
     method: 'get'
