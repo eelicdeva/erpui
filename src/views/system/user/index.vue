@@ -409,6 +409,12 @@ interface Row {
    loginIp: string
    nickName: string
    password: string
+   phonenumber: string
+   postIds: number
+   roleId: number
+   sex: string
+   status: string
+   userName: string
 }
 
 interface Data {
@@ -548,6 +554,7 @@ function getDeptTree() {
 function getList() {
   loading.value = true;
   listUser(proxy?.addDateRange(queryParams.value, dateRange.value)).then(res => {
+   console.log(res.rows);
     loading.value = false;
     userList.value = res.rows;
     total.value = res.total;
@@ -574,7 +581,7 @@ function resetQuery() {
   handleQuery();
 };
 /** 删除按钮操作 */
-function handleDelete(row) {
+function handleDelete(row: Row) {
   const userIds = row.userId || ids.value;
   proxy?.$modal.confirm(t('user.confirmDelete1') + userIds + t('user.confirmDelete2')).then(function () {
     return delUser(userIds);
@@ -590,7 +597,7 @@ function handleExport() {
   },`user_${new Date().getTime()}.xlsx`);
 };
 /** 用户状态修改  */
-function handleStatusChange(row: { status: string; userName: string; userId: string; }) {
+function handleStatusChange(row: Row) {
   let text = row.status === "0" ? t('button.enable') : t('button.disable');
   proxy?.$modal.confirm(t('user.handleStatus1') + text + ' " " ' + row.userName + t('user.handleStatus2')).then(function () {
     return changeUserStatus(row.userId, row.status);
@@ -614,7 +621,7 @@ function handleStatusChange(row: { status: string; userName: string; userId: str
 //   }
 // };
 /** 跳转角色分配 */
-function handleAuthRole(row: { userId: string; }) {
+function handleAuthRole(row: Row) {
   const userId = row.userId;
   router.push("/system/user-auth/role/" + userId);
 };
@@ -704,7 +711,7 @@ function handleAdd() {
   });
 };
 /** 修改按钮操作 */
-function handleUpdate(row) {
+function handleUpdate(row: Row) {
   reset();
   const userId = row.userId || ids.value;
   getUser(userId).then(response => {

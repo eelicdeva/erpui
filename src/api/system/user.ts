@@ -42,7 +42,7 @@ export function listUser(query: string) {
  * @param  { string | undefined | null} userId
  * @return request({url: string, method: string})
  */
-export function getUser(userId?: string | undefined | null) {
+export function getUser(userId?: number | number[] | null) {
   return request({
     url: '/system/user/' + parseStrEmpty(userId),
     method: 'get'
@@ -68,7 +68,7 @@ export function updateUser(data: AddParams) {
 }
 
 // 删除用户
-export function delUser(userId: string) {
+export function delUser(userId: number | number[]) {
   return request({
     url: '/system/user/' + userId,
     method: 'delete'
@@ -89,7 +89,7 @@ export function resetUserPwd(userId: string, password: string) {
 }
 
 // 用户状态修改
-export function changeUserStatus(userId: string, status: string) {
+export function changeUserStatus(userId: number, status: string) {
   const data = {
     userId,
     status
