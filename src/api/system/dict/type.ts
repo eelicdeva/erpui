@@ -9,7 +9,7 @@ export interface QueryParams {
 }
 
 export interface AddParams {
-  dictCode?: number
+  dictId?: number
   dictName?: string
   dictType?: string
   status?: string
@@ -26,8 +26,7 @@ export function listType(query: string) {
 }
 
 // 查询字典类型详细
-export function 
-getType(dictId: string | string[]) {
+export function getType(dictId: number | number[]) {
   return request({
     url: '/system/dict/type/' + dictId,
     method: 'get'
@@ -35,7 +34,7 @@ getType(dictId: string | string[]) {
 }
 
 // 新增字典类型
-export function addType(data: string) {
+export function addType(data: AddParams) {
   return request({
     url: '/system/dict/type',
     method: 'post',
@@ -44,7 +43,7 @@ export function addType(data: string) {
 }
 
 // 修改字典类型
-export function updateType(data: string) {
+export function updateType(data: AddParams) {
   return request({
     url: '/system/dict/type',
     method: 'put',
@@ -53,7 +52,7 @@ export function updateType(data: string) {
 }
 
 // 删除字典类型
-export function delType(dictId: string) {
+export function delType(dictId: number | number[]) {
   return request({
     url: '/system/dict/type/' + dictId,
     method: 'delete'

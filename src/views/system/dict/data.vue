@@ -302,7 +302,7 @@ const data: Data = reactive({
 const { queryParams, form, rules } = toRefs(data);
 
 /** 查询字典类型详细 */
-function getTypes(dictId: string | string[]) {
+function getTypes(dictId) {
   getType(dictId).then(response => {
     queryParams.value.dictType = response.data.dictType;
     defaultDictType.value = response.data.dictType;
@@ -320,7 +320,6 @@ function getTypeList() {
 function getList() {
   loading.value = true;
   listData(queryParams.value).then(response => {
-    console.log(response.rows);
     dataList.value = response.rows;
     total.value = response.total;
     loading.value = false;
