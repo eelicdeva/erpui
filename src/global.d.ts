@@ -152,6 +152,13 @@ declare module '@vue/runtime-core' {
   */
     useDict(...args: string[]);
     addDateRange(params: any, dateRange: any[], propName?: string);
+    handleTree(data: Object[], id: string, parentId?:string, children?: string);
+    download(url: string, params: Record<string, any>, filename: string, config: AxiosRequestConfig<any> | undefined);
+    parseTime(time: string | number | Date, pattern: string);
+    resetForm(this: any, refName);
+    selectDictLabel(datas: { [x: string]: { label: any; }; }, value: string | undefined);
+    selectDictLabels(datas, value: string | undefined, separator: undefined);
+
   }
 }
 
