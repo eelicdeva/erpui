@@ -17,7 +17,7 @@ export interface AddParams {
 }
 
 // 查询字典类型列表
-export function listType(query: string) {
+export function listType(query: QueryParams) {
   return request({
     url: '/system/dict/type/list',
     method: 'get',
