@@ -63,7 +63,7 @@
          </el-table-column>
          <el-table-column :label="$t('user.creationtime')" align="center" prop="createTime" width="200">
             <template #default="scope">
-               <span>{{ parseTime(scope.row.createTime) }}</span>
+               <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
             </template>
          </el-table-column>
          <el-table-column :label="$t('user.operate')" align="center" class-name="small-padding fixed-width">
@@ -147,13 +147,17 @@
 
 <script lang="ts" setup name="Dept">
 import { listDept, getDept, delDept, addDept, updateDept, listDeptExcludeChild } from "@/api/system/dept";
+import type { QueryParams, AddParams } from "@/api/system/dept";
 import i18n from '@/lang/index';
-import { ComponentInternalInstance, getCurrentInstance, nextTick, reactive, ref } from "vue";
+import { ComponentInternalInstance, getCurrentInstance, nextTick, reactive, ref, toRefs } from "vue";
+import { ElForm } from "element-plus";
+import { parseTime } from "@/utils/ruoyi";
 
 const {t} = i18n.global;
-
+const queryRef = ref<InstanceType<typeof ElForm>>()
+const deptRef = ref<InstanceType<typeof ElForm>>()
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+const { sys_normal_disable } = proxy?.useDict("sys_normal_disable");
 
 const deptList = ref([]);
 const open = ref(false);
@@ -164,7 +168,62 @@ const deptOptions = ref([]);
 const isExpandAll = ref(true);
 const refreshTable = ref(true);
 
-const data = reactive({
+interface Row {
+   searchValue: string | null
+   createBy: string
+   createTime: string
+   updateBy: string
+   updateTime: string | null
+   remark: string
+   params: QueryParams
+   deptId: number
+   deptName: string
+   email: string
+   leader: string
+   orderNum: number
+   parentId: number
+   parentName: string
+   phone: string
+   delFlag: string
+   ancestors: string
+   status: string
+   childern: Row | null  
+}
+
+interface Data {
+   form: AddParams;
+   queryParams: QueryParams; 
+   rules:{
+      parentId: [{
+         required: boolean
+         message: string
+         trigger: string
+      }]
+      deptName: [{
+         required: boolean
+         message: string
+         trigger: string 
+      }]
+      orderNum: [{
+         required: boolean
+         message: string
+         trigger: string 
+      }]
+      email: [{
+         type: any
+         message: string
+         trigger: string[]
+      }]
+      phone: [{
+         pattern: RegExp
+         message: string
+         trigger: string
+      }]
+
+   };
+}
+
+const data: Data = reactive({
   form: {},
   queryParams: {
     deptName: undefined,
@@ -187,7 +246,7 @@ const buttons = [
    {type: 'primary', text: t('button.delete'), icon: 'Delete', act : 'delete', permi: ['system:dept:remove']},
 ] as const
 
-function handleButtonText(row, act: string) {
+function handleButtonText(row: Row, act: string) {
     if( act == "edit" ){
       return handleUpdate(row);
     }
@@ -203,7 +262,7 @@ function handleButtonText(row, act: string) {
 function getList() {
   loading.value = true;
   listDept(queryParams.value).then(response => {
-    deptList.value = proxy.handleTree(response.data, "deptId");
+    deptList.value = proxy?.handleTree(response.data, "deptId");
     loading.value = false;
   });
 }
@@ -224,7 +283,8 @@ function reset() {
     email: undefined,
     status: "0"
   };
-  proxy.resetForm("deptRef");
+  deptRef.value?.resetFields();
+//   proxy.resetForm("deptRef");
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -232,14 +292,15 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields()
+//   proxy.resetForm("queryRef");
   handleQuery();
 }
 /** 新增按钮操作 */
-function handleAdd(row) {
+function handleAdd(row: Row) {
   reset();
   listDept().then(response => {
-    deptOptions.value = proxy.handleTree(response.data, "deptId");
+    deptOptions.value = proxy?.handleTree(response.data, "deptId");
   });
   if (row != undefined) {
     form.value.parentId = row.deptId;
@@ -256,10 +317,10 @@ function toggleExpandAll() {
   });
 }
 /** 修改按钮操作 */
-function handleUpdate(row) {
+function handleUpdate(row: Row) {
   reset();
   listDeptExcludeChild(row.deptId).then(response => {
-    deptOptions.value = proxy.handleTree(response.data, "deptId");
+    deptOptions.value = proxy?.handleTree(response.data, "deptId");
   });
   getDept(row.deptId).then(response => {
     form.value = response.data;
@@ -269,7 +330,8 @@ function handleUpdate(row) {
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["deptRef"].validate(valid => {
+//   proxy.$refs["deptRef"].validate(valid => {
+   deptRef.value?.validate(valid => {
     if (valid) {
       if (form.value.deptId != undefined) {
         updateDept(form.value).then(response => {
@@ -288,7 +350,7 @@ function submitForm() {
   });
 }
 /** 删除按钮操作 */
-function handleDelete(row) {
+function handleDelete(row: Row) {
   proxy?.$modal.confirm(t('menu.confirmDelete1') + row.deptName + t('menu.confirmDelete2')).then(function() {
     return delDept(row.deptId);
   }).then(() => {
