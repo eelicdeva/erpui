@@ -1,7 +1,25 @@
 import request from '@/utils/request'
 
+export interface QueryParams {
+  pageNum: number
+  pageSize: number
+  postCode?: string
+  postName?: string
+  status?: string
+}
+
+export interface AddParams {
+  postId?: number
+  postCode?: string
+  postName?: string,
+  postSort?: number,
+  status?: string
+  remark?: string
+}
+
+
 // 查询岗位列表
-export function listPost(query: string) {
+export function listPost(query: QueryParams) {
   return request({
     url: '/system/post/list',
     method: 'get',
@@ -10,7 +28,7 @@ export function listPost(query: string) {
 }
 
 // 查询岗位详细
-export function getPost(postId: string) {
+export function getPost(postId: number | number[]) {
   return request({
     url: '/system/post/' + postId,
     method: 'get'
@@ -18,7 +36,7 @@ export function getPost(postId: string) {
 }
 
 // 新增岗位
-export function addPost(data: string) {
+export function addPost(data: AddParams) {
   return request({
     url: '/system/post',
     method: 'post',
@@ -27,7 +45,7 @@ export function addPost(data: string) {
 }
 
 // 修改岗位
-export function updatePost(data: string) {
+export function updatePost(data: AddParams) {
   return request({
     url: '/system/post',
     method: 'put',
@@ -36,7 +54,7 @@ export function updatePost(data: string) {
 }
 
 // 删除岗位
-export function delPost(postId: string) {
+export function delPost(postId: number | number[]) {
   return request({
     url: '/system/post/' + postId,
     method: 'delete'

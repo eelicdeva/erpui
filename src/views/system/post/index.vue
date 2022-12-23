@@ -90,7 +90,7 @@
          </el-table-column>
          <el-table-column :label="$t('user.creationtime')" align="center" prop="createTime" width="180">
             <template #default="scope">
-               <span>{{ parseTime(scope.row.createTime) }}</span>
+               <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
             </template>
          </el-table-column>
          <el-table-column :label="$t('user.operate')" align="center" class-name="small-padding fixed-width">
@@ -153,13 +153,19 @@
 
 <script lang="ts" setup name="Post">
 import { listPost, addPost, delPost, getPost, updatePost } from "@/api/system/post";
+import type { QueryParams, AddParams } from "@/api/system/post";
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref, Ref, toRefs} from "vue";
+import { ElForm } from "element-plus";
+import { parseTime } from "@/utils/ruoyi";
 import i18n from '@/lang/index';
 
 const {t} = i18n.global;
-const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+const queryRef = ref<InstanceType<typeof ElForm>>()
+const postRef = ref<InstanceType<typeof ElForm>>()
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { sys_normal_disable } = proxy?.useDict("sys_normal_disable");
 
-const postList = ref([]);
+const postList: Ref<Row[]> = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
@@ -169,7 +175,45 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 
-const data = reactive({
+interface Row {
+   searchValue: string | null
+   createBy: string
+   createTime: string
+   updateBy: string | null
+   updateTime: string | null
+   remark: string
+   params: QueryParams
+   flag: boolean
+   postCode: string
+   postId: number
+   postName: string
+   postSort: string
+   status: string
+}
+
+interface Data {
+   form: AddParams
+   queryParams: QueryParams 
+   rules:{
+      postName: [{
+         required: boolean
+         message: string
+         trigger: string
+      }]
+      postCode: [{
+         required: boolean
+         message: string
+         trigger: string 
+      }]
+      postSort: [{
+         required: boolean
+         message: string
+         trigger: string  
+      }]
+   };
+}
+
+const data: Data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
@@ -192,7 +236,7 @@ const buttons = [
    {type: 'primary', text: t('button.delete'), icon: 'Delete', act : 'delete', permi: ['system:post:remove']},
 ] as const
 
-function handleButtonText(row, act: string) {
+function handleButtonText(row: Row, act: string) {
     if( act == "edit" ){
       return handleUpdate(row);
     }
@@ -225,7 +269,8 @@ function reset() {
     status: "0",
     remark: undefined
   };
-  proxy.resetForm("postRef");
+  postRef.value?.resetFields();
+//   proxy.resetForm("postRef");
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -234,7 +279,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields()
   handleQuery();
 }
 /** 多选框选中数据 */
@@ -250,7 +295,7 @@ function handleAdd() {
   title.value = t('post.addPost');
 }
 /** 修改按钮操作 */
-function handleUpdate(row) {
+function handleUpdate(row: Row) {
   reset();
   const postId = row.postId || ids.value;
   getPost(postId).then(response => {
@@ -261,17 +306,18 @@ function handleUpdate(row) {
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["postRef"].validate(valid => {
+//   proxy.$refs["postRef"].validate(valid => {
+   postRef.value?.validate(valid => {
     if (valid) {
       if (form.value.postId != undefined) {
         updatePost(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.successModify'));
+          proxy?.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addPost(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.AddSuccess'));
+          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -280,9 +326,9 @@ function submitForm() {
   });
 }
 /** 删除按钮操作 */
-function handleDelete(row) {
+function handleDelete(row: Row) {
   const postIds = row.postId || ids.value;
-  proxy.$modal.confirm(t('post.confirmDelete') + postIds + t('user.confirmDelete2')).then(function() {
+  proxy?.$modal.confirm(t('post.confirmDelete') + postIds + t('user.confirmDelete2')).then(function() {
     return delPost(postIds);
   }).then(() => {
     getList();
@@ -291,7 +337,7 @@ function handleDelete(row) {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/post/export", {
+  proxy?.$download("system/post/export", {
     ...queryParams.value
   }, `post_${new Date().getTime()}.xlsx`);
 }
