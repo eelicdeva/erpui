@@ -11,6 +11,7 @@
 * i18n Ally
 * Chrome
 * Vue.js devtools
+4. install Git History
 
 
 # Code Language || 代码语言 ||| Bahasa Kode
