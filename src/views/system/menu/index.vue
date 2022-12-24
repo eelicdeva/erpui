@@ -71,7 +71,7 @@
          </el-table-column>
          <el-table-column :label="$t('user.creationtime')" align="center" prop="createTime">
             <template #default="scope">
-               <span>{{ parseTime(scope.row.createTime) }}</span>   
+               <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>   
             </template>
          </el-table-column>
          <el-table-column :label="$t('user.operate')" align="center" width="200" class-name="small-padding fixed-width">
@@ -285,42 +285,78 @@
 
 <script lang="ts" setup name="Menu">
 import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/menu";
+import type { QueryParams, AddParams } from "@/api/system/menu";
 import SvgIcon from "@/components/SvgIcon/index.vue";
 import IconSelect from "@/components/IconSelect/index.vue";
 import { ClickOutside as vClickOutside } from 'element-plus';
+import { ElForm } from "element-plus";
 import i18n from "@/lang/index";
-import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } from "vue";
-import type { Ref } from "vue";
+import { ComponentInternalInstance, getCurrentInstance, reactive, Ref, ref, toRefs, nextTick } from "vue";
+import { parseTime } from "@/utils/ruoyi";
 
 const {t} = i18n.global;
-
+const queryRef = ref<InstanceType<typeof ElForm>>()
+const menuRef = ref<InstanceType<typeof ElForm>>()
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const { sys_show_hide, sys_normal_disable } = proxy.useDict("sys_show_hide", "sys_normal_disable");
+const { sys_show_hide, sys_normal_disable } = proxy?.useDict("sys_show_hide", "sys_normal_disable");
 
-const menuList: Ref<any[]> = ref([]);
+const menuList: Ref<Row[]> = ref([]);
 const open: Ref<boolean> = ref(false);
 const loading: Ref<boolean>  = ref(true);
 const showSearch: Ref<boolean>  = ref(true);
 const title: Ref<string>  = ref("");
-const menuOptions = ref([]);
+const menuOptions: Ref<any> = ref([]);
 const isExpandAll: Ref<boolean>  = ref(false);
 const refreshTable: Ref<boolean>  = ref(true);
 const showChooseIcon: Ref<boolean>  = ref(false);
 const iconSelectRef: Ref<any> = ref(null);
 
-interface dataMenu {
-   form: {};
-  queryParams: {
-    menuName: string | undefined
-    visible: boolean | undefined
-  };
+interface Row {
+   searchValue: string | null
+   createBy: string
+   createTime: string
+   updateBy: string | null
+   updateTime: string | null
+   params: QueryParams
+   icon: string
+   isCache: string
+   isFrame: string
+   menuId: number
+   menuName: string
+   menuType: string
+   orderNum: number
+   parentId: number
+   parentName: string | null
+   path: string
+   perms: string
+   query: string
+   remark: string | null
+   status: string
+}
+
+interface Data {
+  form: AddParams
+  queryParams: QueryParams 
   rules: {
-   menuName: any;
-   orderNum: any;
-   path: any;
+    menuName: [{
+      required: boolean
+      message: string
+      trigger: string
+    }]
+    orderNum: [{
+      required: boolean
+      message: string
+      trigger: string 
+    }]
+    path: [{
+      required: boolean
+      message: string
+      trigger: string  
+    }]
   }
-};   
-const data: dataMenu = reactive({
+}; 
+
+const data: Data = reactive({
   form: {},
   queryParams: {
     menuName: undefined,
@@ -341,7 +377,7 @@ const buttons = [
    {type: 'primary', text: t('button.delete'), icon: 'Delete', act : 'delete', permi: ['system:menu:remove']},
 ] as const
 
-function handleButtonText(row, act: string) {
+function handleButtonText(row: Row, act: string) {
     if( act == "edit" ){
       return handleUpdate(row);
     }
@@ -357,7 +393,7 @@ function handleButtonText(row, act: string) {
 function getList() {
   loading.value = true;
   listMenu(queryParams.value).then(response => {
-    menuList.value = proxy.handleTree(response.data, "menuId");
+    menuList.value = proxy?.handleTree(response.data, "menuId");
     loading.value = false;
   });
 }
@@ -366,7 +402,7 @@ function getTreeselect() {
   menuOptions.value = [];
   listMenu().then(response => {
     const menu = { menuId: 0, menuName: t('menu.main'), children: [] };
-    menu.children = proxy.handleTree(response.data, "menuId");
+    menu.children = proxy?.handleTree(response.data, "menuId");
     menuOptions.value.push(menu);
   });
 }
@@ -389,7 +425,8 @@ function reset() {
     visible: "0",
     status: "0"
   };
-  proxy.resetForm("menuRef");
+  menuRef.value?.resetFields();
+//   proxy.resetForm("menuRef");
 }
 /** 展示下拉图标 */
 function showSelectIcon() {
@@ -411,11 +448,12 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
+//   proxy.resetForm("queryRef");
   handleQuery();
 }
 /** 新增按钮操作 */
-function handleAdd(row) {
+function handleAdd(row: Row) {
   reset();
   getTreeselect();
   if (row != null && row.menuId) {
@@ -435,7 +473,7 @@ function toggleExpandAll() {
   });
 }
 /** 修改按钮操作 */
-async function handleUpdate(row) {
+async function handleUpdate(row: Row) {
   reset();
   await getTreeselect();
   getMenu(row.menuId).then(response => {
@@ -446,17 +484,18 @@ async function handleUpdate(row) {
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["menuRef"].validate(valid => {
+//   proxy.$refs["menuRef"].validate(valid => {
+   menuRef.value?.validate(valid => {
     if (valid) {
       if (form.value.menuId != undefined) {
         updateMenu(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.successModify'));
+          proxy?.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addMenu(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.AddSuccess'));
+          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -465,8 +504,8 @@ function submitForm() {
   });
 }
 /** 删除按钮操作 */
-function handleDelete(row) {
-  proxy.$modal.confirm(t('menu.confirmDelete1') + row.menuName + t('menu.confirmDelete2')).then(function() {
+function handleDelete(row: Row) {
+  proxy?.$modal.confirm(t('menu.confirmDelete1') + row.menuName + t('menu.confirmDelete2')).then(function() {
     return delMenu(row.menuId);
   }).then(() => {
     getList();

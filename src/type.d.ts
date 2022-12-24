@@ -1,7 +1,0 @@
-interface rulesUser {
-   
-}
-
-export {
-    rulesUser
-}
