@@ -357,7 +357,6 @@
 import { getToken } from "@/utils/auth";
 import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser, deptTreeSelect } from "@/api/system/user";
 import type { QueryParams, AddParams } from "@/api/system/user";
-import type { rulesUser } from '@/type';
 import i18n from '@/lang/index';
 import { useRouter } from "vue-router";
 import { ComponentInternalInstance, getCurrentInstance, reactive, ref, Ref, toRefs, watch } from "vue";
@@ -421,7 +420,55 @@ interface Row {
 interface Data {
    form: AddParams;
    queryParams: QueryParams; 
-   rules: rulesUser
+   rules: {
+    userName: [{
+        required: boolean
+        message: string
+        trigger: string
+     },
+     {
+        min: number
+        max: number
+        message: string
+        trigger: string
+     },
+     {
+        pattern: RegExp
+        message: string
+        trigger: string
+     },
+     {
+        pattern: RegExp
+        message: string
+        trigger: string
+     }]
+     nickName: [{
+        required: boolean
+        message: string
+        trigger: string
+     }]
+     password: [{
+        required: boolean
+        message: string
+        trigger: string
+     },
+     {
+        min: number
+        max: number
+        message: string
+        trigger: string
+     }]
+     email: [{
+        type: any
+        message: string
+        trigger: string[]
+     }]
+     phonenumber: [{
+        pattern: RegExp
+        message: string
+        trigger: string
+     }]
+   }
 }
 
 interface postOptions {
@@ -507,7 +554,6 @@ function getDeptTree() {
 function getList() {
   loading.value = true;
   listUser(proxy?.addDateRange(queryParams.value, dateRange.value)).then(res => {
-   console.log(res.rows);
     loading.value = false;
     userList.value = res.rows;
     total.value = res.total;
