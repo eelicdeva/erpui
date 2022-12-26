@@ -70,7 +70,7 @@
          </el-table-column>
          <el-table-column :label="$t('user.creationtime')"  align="center" prop="createTime" width="180">
             <template #default="scope">
-               <span>{{ parseTime(scope.row.createTime) }}</span>
+               <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
             </template>
          </el-table-column>
          <el-table-column :label="$t('user.operate')" align="center" class-name="small-padding fixed-width">
@@ -96,28 +96,33 @@
    </div>
 </template>
 
-<script setup name="AuthUser">
-import selectUser from "./selectUser";
+<script setup lang="ts" name="AuthUser">
+import selectUser from "./selectUser.vue";
 import { allocatedUserList, authUserCancel, authUserCancelAll } from "@/api/system/role";
+import type { QueryParams } from "@/api/system/role";
 import i18n from '@/lang/index';
+import { useRoute } from "vue-router";
+import { ElForm } from "element-plus";
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref, Ref } from "vue";
 
 const {t} = i18n.global;
-
+const queryRef = ref<InstanceType<typeof ElForm>>();
+const selectRef = ref<InstanceType<typeof selectUser>>();
 const route = useRoute();
-const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { sys_normal_disable } = proxy?.useDict("sys_normal_disable");
 
 const userList = ref([]);
 const loading = ref(true);
 const showSearch = ref(true);
 const multiple = ref(true);
 const total = ref(0);
-const userIds = ref([]);
+const userIds: Ref<number[]> = ref([]);
 
-const queryParams = reactive({
+const queryParams: QueryParams = reactive({
   pageNum: 1,
   pageSize: 10,
-  roleId: route.params.roleId,
+  roleId: Number(route.params.roleId),
   userName: undefined,
   phonenumber: undefined,
 });
@@ -134,7 +139,7 @@ function getList() {
 // 返回按钮
 function handleClose() {
   const obj = { path: "/system/role" };
-  proxy.$tab.closeOpenPage(obj);
+  proxy?.$tab.closeOpenPage(obj.path);
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -143,7 +148,8 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields()
+//   proxy.resetForm("queryRef");
   handleQuery();
 }
 // 多选框选中数据
@@ -153,11 +159,12 @@ function handleSelectionChange(selection) {
 }
 /** 打开授权用户表弹窗 */
 function openSelectUser() {
-  proxy.$refs["selectRef"].show();
+  selectRef.value?.show();
+//   proxy?.$refs["selectRef"]?.show();
 }
 /** 取消授权按钮操作 */
 function cancelAuthUser(row) {
-  proxy.$modal.confirm(t('role.cancelConfirm1') + row.userName + t('role.cancelConfirm2')).then(function () {
+  proxy?.$modal.confirm(t('role.cancelConfirm1') + row.userName + t('role.cancelConfirm2')).then(function () {
     return authUserCancel({ userId: row.userId, roleId: queryParams.roleId });
   }).then(() => {
     getList();
@@ -168,7 +175,7 @@ function cancelAuthUser(row) {
 function cancelAuthUserAll(row) {
   const roleId = queryParams.roleId;
   const uIds = userIds.value.join(",");
-  proxy.$modal.confirm(t('role.cancelauthall')).then(function () {
+  proxy?.$modal.confirm(t('role.cancelauthall')).then(function () {
     return authUserCancelAll({ roleId: roleId, userIds: uIds });
   }).then(() => {
     getList();
