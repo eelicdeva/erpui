@@ -1,7 +1,38 @@
 import request from '@/utils/request'
+import { TreeKey } from 'element-plus/es/components/tree/src/tree.type'
+
+export interface QueryParams {
+  pageNum: number
+  pageSize: number
+  roleName?: string
+  roleKey?: string
+  status?: string
+  roleId?: number
+  userName?: string
+  phonenumber?: string
+}
+
+export interface AddParams {
+  roleId?: number
+  roleName?: string
+  roleKey?: string
+  roleSort?: number
+  dataScope?: string
+  status?: string
+  menuIds?: TreeKey[] 
+  deptIds?: TreeKey[] 
+  menuCheckStrictly?: boolean
+  deptCheckStrictly?: boolean
+  remark?: string
+  userId?: number
+  userIds?: string
+}
+
+
+
 
 // 查询角色列表
-export function listRole(query: string) {
+export function listRole(query: QueryParams) {
   return request({
     url: '/system/role/list',
     method: 'get',
@@ -10,7 +41,7 @@ export function listRole(query: string) {
 }
 
 // 查询角色详细
-export function getRole(roleId: string) {
+export function getRole(roleId: number | number[]) {
   return request({
     url: '/system/role/' + roleId,
     method: 'get'
@@ -18,7 +49,7 @@ export function getRole(roleId: string) {
 }
 
 // 新增角色
-export function addRole(data: string) {
+export function addRole(data: AddParams) {
   return request({
     url: '/system/role',
     method: 'post',
@@ -27,7 +58,7 @@ export function addRole(data: string) {
 }
 
 // 修改角色
-export function updateRole(data: string) {
+export function updateRole(data: AddParams) {
   return request({
     url: '/system/role',
     method: 'put',
@@ -36,7 +67,7 @@ export function updateRole(data: string) {
 }
 
 // 角色数据权限
-export function dataScope(data: string) {
+export function dataScope(data: AddParams) {
   return request({
     url: '/system/role/dataScope',
     method: 'put',
@@ -45,7 +76,7 @@ export function dataScope(data: string) {
 }
 
 // 角色状态修改
-export function changeRoleStatus(roleId: string, status: string) {
+export function changeRoleStatus(roleId: number, status: string) {
   const data = {
     roleId,
     status
@@ -58,7 +89,7 @@ export function changeRoleStatus(roleId: string, status: string) {
 }
 
 // 删除角色
-export function delRole(roleId: string) {
+export function delRole(roleId: number | number[]) {
   return request({
     url: '/system/role/' + roleId,
     method: 'delete'
@@ -66,7 +97,7 @@ export function delRole(roleId: string) {
 }
 
 // 查询角色已授权用户列表
-export function allocatedUserList(query: string) {
+export function allocatedUserList(query: QueryParams) {
   return request({
     url: '/system/role/authUser/allocatedList',
     method: 'get',
@@ -75,7 +106,7 @@ export function allocatedUserList(query: string) {
 }
 
 // 查询角色未授权用户列表
-export function unallocatedUserList(query: string) {
+export function unallocatedUserList(query: QueryParams) {
   return request({
     url: '/system/role/authUser/unallocatedList',
     method: 'get',
@@ -84,7 +115,7 @@ export function unallocatedUserList(query: string) {
 }
 
 // 取消用户授权角色
-export function authUserCancel(data: string) {
+export function authUserCancel(data: AddParams) {
   return request({
     url: '/system/role/authUser/cancel',
     method: 'put',
@@ -93,7 +124,7 @@ export function authUserCancel(data: string) {
 }
 
 // 批量取消用户授权角色
-export function authUserCancelAll(data: string) {
+export function authUserCancelAll(data: AddParams) {
   return request({
     url: '/system/role/authUser/cancelAll',
     method: 'put',
@@ -102,7 +133,7 @@ export function authUserCancelAll(data: string) {
 }
 
 // 授权用户选择
-export function authUserSelectAll(data: string) {
+export function authUserSelectAll(data: AddParams) {
   return request({
     url: '/system/role/authUser/selectAll',
     method: 'put',
