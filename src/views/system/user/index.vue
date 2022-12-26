@@ -363,6 +363,7 @@ import { ComponentInternalInstance, getCurrentInstance, reactive, ref, Ref, toRe
 import type { ElForm, ElTree, ElUpload } from "element-plus";
 import { parseTime } from "@/utils/ruoyi";
 import { ElMessageBox } from 'element-plus';
+import {RuleType} from 'async-validator';
 
 const {t} = i18n.global;  
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
@@ -459,7 +460,7 @@ interface Data {
         trigger: string
      }]
      email: [{
-        type: any
+        type: RuleType
         message: string
         trigger: string[]
      }]
