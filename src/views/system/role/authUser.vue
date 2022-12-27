@@ -76,10 +76,11 @@
          <el-table-column :label="$t('user.operate')" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-button
-                  type="text"
+                  type="primary"
                   icon="CircleClose"
                   @click="cancelAuthUser(scope.row)"
                   v-hasPermi="['system:role:remove']"
+                  link
                >{{ $t('role.cancelauth') }}</el-button>
             </template>
          </el-table-column>
@@ -148,7 +149,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  queryRef.value?.resetFields()
+  queryRef.value?.resetFields();
 //   proxy.resetForm("queryRef");
   handleQuery();
 }
