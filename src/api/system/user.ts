@@ -23,7 +23,7 @@ export interface AddParams {
   status?: string
   remark?: string
   postIds?: number[]
-  roleIds?: number[]
+  roleIds?: number[] | string
 }
 
 
@@ -76,7 +76,7 @@ export function delUser(userId: number | number[]) {
 }
 
 // 用户密码重置
-export function resetUserPwd(userId: string, password: string) {
+export function resetUserPwd(userId: number, password: string) {
   const data = {
     userId,
     password
@@ -141,7 +141,7 @@ export function uploadAvatar(data: FormData) {
 }
 
 // 查询授权角色
-export function getAuthRole(userId: string) {
+export function getAuthRole(userId: number | string | string[] ) {
   return request({
     url: '/system/user/authRole/' + userId,
     method: 'get'
@@ -149,7 +149,7 @@ export function getAuthRole(userId: string) {
 }
 
 // 保存授权角色
-export function updateAuthRole(data: string) {
+export function updateAuthRole(data: AddParams) {
   return request({
     url: '/system/user/authRole',
     method: 'put',

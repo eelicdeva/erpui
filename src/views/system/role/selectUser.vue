@@ -37,7 +37,7 @@
             </el-table-column>
             <el-table-column :label="$t('user.creationtime')" align="center" prop="createTime" width="180">
                <template #default="scope">
-                  <span>{{ parseTime(scope.row.createTime) }}</span>
+                  <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
                </template>
             </el-table-column>
          </el-table>
@@ -58,9 +58,12 @@
    </el-dialog>
 </template>
 
-<script setup name="SelectUser">
+<script setup lang="ts" name="SelectUser">
 import { authUserSelectAll, unallocatedUserList } from "@/api/system/role";
+import type { QueryParams } from "@/api/system/role";
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref, Ref } from "vue";
 import i18n from '@/lang/index';
+import { ElForm, ElTable } from "element-plus";
 
 const {t} = i18n.global;
 
@@ -70,15 +73,16 @@ const props = defineProps({
   }
 });
 
-const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { sys_normal_disable } = proxy?.useDict("sys_normal_disable");
 
 const userList = ref([]);
 const visible = ref(false);
 const total = ref(0);
-const userIds = ref([]);
-
-const queryParams = reactive({
+const userIds: Ref<number[]> = ref([]);
+const queryRef = ref<InstanceType<typeof ElForm>>();
+const refTable = ref<InstanceType<typeof ElTable>>();
+const queryParams: QueryParams = reactive({
   pageNum: 1,
   pageSize: 10,
   roleId: undefined,
@@ -93,8 +97,9 @@ function show() {
   visible.value = true;
 }
 /**选择行 */
-function clickRow(row) {
-  proxy.$refs["refTable"].toggleRowSelection(row);
+async function clickRow(row) {
+  refTable.value?.toggleRowSelection(row, undefined);
+//   proxy.$refs["refTable"].toggleRowSelection(row);
 }
 // 多选框选中数据
 function handleSelectionChange(selection) {
@@ -114,7 +119,8 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
+//   proxy.resetForm("queryRef");
   handleQuery();
 }
 const emit = defineEmits(["ok"]);
@@ -123,11 +129,11 @@ function handleSelectUser() {
   const roleId = queryParams.roleId;
   const uIds = userIds.value.join(",");
   if (uIds == "") {
-    proxy.$modal.msgError(t('user.selectError'));
+    proxy?.$modal.msgError(t('user.selectError'));
     return;
   }
   authUserSelectAll({ roleId: roleId, userIds: uIds }).then(res => {
-    proxy.$modal.msgSuccess(res.msg);
+    proxy?.$modal.msgSuccess(res.msg);
     if (res.code === 200) {
       visible.value = false;
       emit("ok");

@@ -7,13 +7,13 @@ export interface QueryParams {
   roleName?: string
   roleKey?: string
   status?: string
-  roleId?: number
+  roleId?: number | string
   userName?: string
   phonenumber?: string
 }
 
 export interface AddParams {
-  roleId?: number
+  roleId?: number | string
   roleName?: string
   roleKey?: string
   roleSort?: number
