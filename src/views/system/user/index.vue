@@ -363,7 +363,7 @@ import { ComponentInternalInstance, getCurrentInstance, reactive, ref, Ref, toRe
 import type { ElForm, ElTree, ElUpload } from "element-plus";
 import { parseTime } from "@/utils/ruoyi";
 import { ElMessageBox } from 'element-plus';
-import {RuleType} from 'async-validator';
+import { RuleType } from 'async-validator';
 
 const {t} = i18n.global;  
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
@@ -573,7 +573,7 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  queryRef.value?.resetFields()
+  queryRef.value?.resetFields();
 //   proxy.resetForm("queryRef");
   queryParams.value.deptId = undefined;
   //proxy?.$refs.tree?.setCurrentKey(null);  
@@ -626,7 +626,7 @@ function handleAuthRole(row: Row) {
   router.push("/system/user-auth/role/" + userId);
 };
 /** 重置密码按钮操作 */
-function handleResetPwd(row: { status?: string; userName: string; userId: string; }) {
+function handleResetPwd(row: Row) {
   ElMessageBox.prompt(
    t('user.resetPW1') + row.userName + t('user.resetPW2'), t('el.messagebox.title'), {
     confirmButtonText: t('el.messagebox.confirm'),
