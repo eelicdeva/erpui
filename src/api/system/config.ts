@@ -1,7 +1,25 @@
 import request from '@/utils/request'
 
+export interface QueryParams {
+  pageNum: number
+  pageSize: number
+  configName?: string
+  configKey?: string
+  configType?: string
+}
+
+export interface AddParams {
+    configId?: number
+    configName?: string
+    configKey?: string
+    configValue?: string
+    configType?: string
+    remark?: string
+}
+
+
 // 查询参数列表
-export function listConfig(query: string) {
+export function listConfig(query: QueryParams) {
   return request({
     url: '/system/config/list',
     method: 'get',
@@ -10,7 +28,7 @@ export function listConfig(query: string) {
 }
 
 // 查询参数详细
-export function getConfig(configId: string) {
+export function getConfig(configId: number | number[]) {
   return request({
     url: '/system/config/' + configId,
     method: 'get'
@@ -26,7 +44,7 @@ export function getConfigKey(configKey: string) {
 }
 
 // 新增参数配置
-export function addConfig(data: string) {
+export function addConfig(data: AddParams) {
   return request({
     url: '/system/config',
     method: 'post',
@@ -35,7 +53,7 @@ export function addConfig(data: string) {
 }
 
 // 修改参数配置
-export function updateConfig(data: string) {
+export function updateConfig(data: AddParams) {
   return request({
     url: '/system/config',
     method: 'put',
@@ -44,7 +62,7 @@ export function updateConfig(data: string) {
 }
 
 // 删除参数配置
-export function delConfig(configId: string) {
+export function delConfig(configId: number | number[]) {
   return request({
     url: '/system/config/' + configId,
     method: 'delete'

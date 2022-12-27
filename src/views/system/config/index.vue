@@ -110,7 +110,7 @@
          <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
          <el-table-column label="创建时间" align="center" prop="createTime" width="180">
             <template #default="scope">
-               <span>{{ parseTime(scope.row.createTime) }}</span>
+               <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
             </template>
          </el-table-column>
          <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
@@ -174,24 +174,67 @@
 
 <script lang="ts" setup name="Config">
 import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from "@/api/system/config";
+import type { QueryParams, AddParams } from "@/api/system/config";
 import i18n from '@/lang/index';
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref, Ref, toRefs } from "vue";
+import type { ElForm } from "element-plus";
 
 const {t} = i18n.global;
-const { proxy } = getCurrentInstance();
-const { sys_yes_no } = proxy.useDict("sys_yes_no");
-
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { sys_yes_no } = proxy?.useDict("sys_yes_no");
+const queryRef = ref<InstanceType<typeof ElForm>>()
+const configRef = ref<InstanceType<typeof ElForm>>()
 const configList = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
-const ids = ref([]);
+const ids: Ref<number[]> = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
 
-const data = reactive({
+interface Row {
+   searchValue: string | null
+   createBy: string
+   createTime: string
+   updateBy: string
+   updateTime: string | null
+   remark: string
+   params: QueryParams
+   configId: number
+   configKey: string
+   configName: string
+   configNameEn: string
+   configNameId: string
+   configType: string
+   configValue: string
+}
+
+interface Data {
+   form: AddParams;
+   queryParams: QueryParams; 
+   rules: {
+      configName: [{
+         required: boolean
+         message: string
+         trigger: string
+      }]
+      configKey: [{
+         required: boolean
+         message: string
+         trigger: string
+      }]
+      configValue: [{
+         required: boolean
+         message: string
+         trigger: string
+      }]
+   }
+}
+
+const data: Data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
@@ -214,7 +257,7 @@ const buttons = [
    {type: 'primary', text: t('button.delete'), icon: 'Delete', act : 'delete', permi: ['system:config:remove']},
 ] as const
 
-function handleButtonText(row, act: string) {
+function handleButtonText(row: Row, act: string) {
     if( act == "edit" ){
       return handleUpdate(row);
     }
@@ -226,7 +269,8 @@ function handleButtonText(row, act: string) {
 /** 查询参数列表 */
 function getList() {
   loading.value = true;
-  listConfig(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
+  listConfig(proxy?.addDateRange(queryParams.value, dateRange.value)).then(response => {
+    console.log(response.rows);
     configList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -247,7 +291,8 @@ function reset() {
     configType: "Y",
     remark: undefined
   };
-  proxy.resetForm("configRef");
+  configRef.value?.resetFields();
+//   proxy.resetForm("configRef");
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -257,7 +302,8 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
+//   proxy.resetForm("queryRef");
   handleQuery();
 }
 /** 多选框选中数据 */
@@ -273,7 +319,7 @@ function handleAdd() {
   title.value = "添加参数";
 }
 /** 修改按钮操作 */
-function handleUpdate(row) {
+function handleUpdate(row: Row) {
   reset();
   const configId = row.configId || ids.value;
   getConfig(configId).then(response => {
@@ -284,17 +330,18 @@ function handleUpdate(row) {
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["configRef"].validate(valid => {
+//   proxy.$refs["configRef"].validate(valid => {
+   configRef.value?.validate(valid => {
     if (valid) {
       if (form.value.configId != undefined) {
         updateConfig(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy?.$modal.msgSuccess("修改成功");
           open.value = false;
           getList();
         });
       } else {
         addConfig(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy?.$modal.msgSuccess("新增成功");
           open.value = false;
           getList();
         });
@@ -303,9 +350,9 @@ function submitForm() {
   });
 }
 /** 删除按钮操作 */
-function handleDelete(row) {
+function handleDelete(row: Row) {
   const configIds = row.configId || ids.value;
-  proxy.$modal.confirm('是否确认删除参数编号为"' + configIds + '"的数据项？').then(function () {
+  proxy?.$modal.confirm('是否确认删除参数编号为"' + configIds + '"的数据项？').then(function () {
     return delConfig(configIds);
   }).then(() => {
     getList();
@@ -314,14 +361,14 @@ function handleDelete(row) {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/config/export", {
+  proxy?.$download("system/config/export", {
     ...queryParams.value
   }, `config_${new Date().getTime()}.xlsx`);
 }
 /** 刷新缓存按钮操作 */
 function handleRefreshCache() {
   refreshCache().then(() => {
-    proxy.$modal.msgSuccess("刷新缓存成功");
+    proxy?.$modal.msgSuccess("刷新缓存成功");
   });
 }
 
