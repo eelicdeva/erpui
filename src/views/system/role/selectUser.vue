@@ -24,8 +24,8 @@
          </el-form-item>
       </el-form>
       <el-row>
-         <el-table @row-click="clickRow" ref="refTable" :data="userList" @selection-change="handleSelectionChange" height="260px">
-            <el-table-column type="selection" width="55"></el-table-column>
+         <el-table :row-key="getRowKey" @row-click="clickRow" ref="refTable" :data="userList" @selection-change="handleSelectionChange" height="260px">
+            <el-table-column type="selection" width="55" :reserve-selection="true" ></el-table-column>
             <el-table-column :label="$t('user.name')" prop="userName" :show-overflow-tooltip="true" />
             <el-table-column :label="$t('user.nickname')" prop="nickName" :show-overflow-tooltip="true" />
             <el-table-column :label="$t('user.email')" prop="email" :show-overflow-tooltip="true" />
@@ -90,6 +90,11 @@ const queryParams: QueryParams = reactive({
   phonenumber: undefined
 });
 
+//get id rows
+function getRowKey(row) {
+      return row.userId;
+}
+
 // 显示弹框
 function show() {
   queryParams.roleId = props.roleId;
@@ -97,9 +102,9 @@ function show() {
   visible.value = true;
 }
 /**选择行 */
-async function clickRow(row) {
-  refTable.value?.toggleRowSelection(row, undefined);
-//   proxy.$refs["refTable"].toggleRowSelection(row);
+function clickRow(row) {
+   // @ts-expect-error
+   refTable.value?.toggleRowSelection(row, undefined);
 }
 // 多选框选中数据
 function handleSelectionChange(selection) {
