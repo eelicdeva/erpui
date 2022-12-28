@@ -30,7 +30,7 @@
          <el-table-column :label="$t('role.key')" align="center" prop="roleKey" />
          <el-table-column :label="$t('user.creationtime')" align="center" prop="createTime" width="180">
             <template #default="scope">
-               <span>{{ parseTime(scope.row.createTime) }}</span>
+               <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
             </template>
          </el-table-column>
       </el-table>
@@ -50,9 +50,11 @@
 
 <script setup lang="ts" name="AuthRole">
 import { getAuthRole, updateAuthRole } from "@/api/system/user";
+import type {  AddParams } from "@/api/system/user";
 import i18n from "@/lang/index";
-import { ComponentInternalInstance, getCurrentInstance, ref } from "vue";
+import { ComponentInternalInstance, getCurrentInstance, ref, Ref, nextTick } from "vue";
 import { useRoute } from "vue-router";
+import { ElForm, ElTable } from "element-plus";
 
 const { t } = i18n.global;
 const route = useRoute();
@@ -63,35 +65,60 @@ const pageNum = ref(1);
 const pageSize = ref(10);
 const roleIds = ref([]);
 const roles = ref([]);
-const form = ref({
+const form: Ref<AddParams> = ref({
    nickName: undefined,
    userName: undefined,
    userId: undefined,
 });
+const roleRef = ref<InstanceType<typeof ElTable>>();
+
+interface Row {
+   admin: boolean
+   searchValue: string | null
+   createBy: string | null
+   createTime: string
+   updateBy: string | null
+   updateTime: string | null
+   remark: string
+   dataScope: string
+   delFlag: string
+   deptCheckStrictly: boolean
+   deptIds: number[] | null
+   flag: boolean
+   menuCheckStrictly: boolean 
+   menuIds: number[] | null
+   roleId: number
+   roleKey: string
+   roleName: string
+   roleSort: string
+   status: string
+}
 
 /** 单击选中行数据 */
-function clickRow(row) {
-   proxy.$refs["roleRef"].toggleRowSelection(row);
+function clickRow(row: Row) {
+   // @ts-expect-error
+   roleRef.value?.toggleRowSelection(row, undefined);
+   // proxy.$refs["roleRef"].toggleRowSelection(row);
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
    roleIds.value = selection.map((item) => item.roleId);
 }
 /** 保存选中的数据编号 */
-function getRowKey(row) {
-   return row.roleId;
+function getRowKey(row: Row) {
+   return String(row.roleId);
 }
 /** 关闭按钮 */
 function close() {
    const obj = { path: "/system/user" };
-   proxy.$tab.closeOpenPage(obj);
+   proxy?.$tab.closeOpenPage(obj.path);
 }
 /** 提交按钮 */
 function submitForm() {
    const userId = form.value.userId;
    const rIds = roleIds.value.join(",");
    updateAuthRole({ userId: userId, roleIds: rIds }).then((response) => {
-      proxy.$modal.msgSuccess(t("button.Authorizationsucceeded"));
+      proxy?.$modal.msgSuccess(t("button.Authorizationsucceeded"));
       close();
    });
 }
@@ -101,13 +128,16 @@ function submitForm() {
    if (userId) {
       loading.value = true;
       getAuthRole(userId).then((response) => {
+        
          form.value = response.user;
          roles.value = response.roles;
          total.value = roles.value.length;
          nextTick(() => {
-            roles.value.forEach((row) => {
+            roles.value.forEach((row: Row) => {
                if (row.flag) {
-                  proxy.$refs["roleRef"].toggleRowSelection(row);
+                  // @ts-expect-error
+                  roleRef.value?.toggleRowSelection(row, undefined);
+                  // proxy.$refs["roleRef"].toggleRowSelection(row);
                }
             });
          });
