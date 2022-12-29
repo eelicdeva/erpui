@@ -72,8 +72,6 @@
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    
-
     <el-table v-loading="loading" :data="bookList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column :label="$t('book.isbn')" align="center" prop="isbn" width="145" />
@@ -82,9 +80,9 @@
           <image-preview :src="scope.row.bookImage" :width="50" :height="70"/>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('book.title')" align="center" prop="bookTitle" width="250" :show-overflow-tooltip="true"/>
+      <el-table-column :label="$t('book.title')" align="center" prop="bookTitle" width="250" :show-overflow-tooltip = "true"/>
       <el-table-column :label="$t('book.category')" align="center" prop="category.categoryName" />
-      <el-table-column :label="$t('notice.author')" align="center" prop="author" width="170" :show-overflow-tooltip="true"/>
+      <el-table-column :label="$t('notice.author')" align="center" prop="author" width="170" :show-overflow-tooltip = "true"/>
       <el-table-column :label="$t('book.shelfLabels')" align="center" prop="location.location" />
       <el-table-column :label="$t('book.cdStatus')" align="center" prop="cdStatus" >
         <template #default="scope">
@@ -192,14 +190,17 @@
 
 <script lang="ts" setup name="Book">
 import { listBook, getBook, delBook, addBook, updateBook, changeCdStatus } from "@/api/hr/book";
+import type { QueryParams, AddParams } from "@/api/hr/book";
 import { listCategory } from "@/api/hr/category";
 import { listLocation } from "@/api/hr/location";
-import addCategory from '@/views/erp/hr/book/category/AddCategory';
+import addCategory from '@/views/erp/hr/book/category/AddCategory/index.vue';
 import i18n from '@/lang/index';
+import { ComponentInternalInstance, getCurrentInstance, ref, Ref, toRefs, reactive } from "vue";
+import type { ElForm } from "element-plus";
 
 const {t} = i18n.global;
-const { proxy } = getCurrentInstance();
-const { sys_language } = proxy.useDict( "sys_language");
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { sys_language } = proxy?.useDict("sys_language");
 
 const bookList = ref([]);
 const open = ref(false);
@@ -210,15 +211,105 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
-const categoryOptions = ref([]);
-const locationOptions = ref([]);
+const categoryOptions: Ref<categoryOptions[]> = ref([]);
+const locationOptions: Ref<locationOptions[]> = ref([]);
+const queryRef = ref<InstanceType<typeof ElForm>>();
+const bookRef = ref<InstanceType<typeof ElForm>>();
 
-const data = reactive({
+interface Row {
+   searchValue: string | null
+   createBy: string
+   createTime: string
+   updateBy: string | null
+   updateTime: string | null
+   remark: string | null
+   params: QueryParams
+   flag: boolean
+   author: string
+   bookId: string
+   bookImage: string
+   bookTitle: string
+   categoryId: string
+   cdStatus: string
+   isbn: string
+   language: string
+   locationId: string
+   status: string
+   synopsis: string  
+}
+
+
+interface Data {
+   form: AddParams;
+   queryParams: QueryParams; 
+   rules: {
+     isbn: [{
+        required: boolean
+        message: string
+        trigger: string
+     },
+     {
+        min: number
+        max: number
+        message: string
+        trigger: string
+     },
+     {
+        pattern: RegExp
+        message: string
+        trigger: string
+     }]
+     bookTitle: [{
+        required: boolean
+        message: string
+        trigger: string
+     }]
+     categoryId: [{
+        required: boolean
+        message: string
+        trigger: string
+     }]
+     author: [{
+        required: boolean
+        message: string
+        trigger: string
+     }]
+     locationId: [{
+        required: boolean
+        message: string
+        trigger: string
+     }]
+     synopsis: [{
+        required: boolean
+        message: string
+        trigger: string
+     }]
+     language: [{
+        required: boolean
+        message: string
+        trigger: string
+     }] 
+   }
+}
+
+interface categoryOptions {
+   categoryId: string
+   categoryName: string
+   status: number
+}
+
+interface locationOptions{
+   locationId: string
+   location: string
+   status: string
+}
+
+const data: Data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    isbn: null,
+    isbn: undefined,
     bookTitle: null,
     bookImage: null,
     author: null,
@@ -250,6 +341,7 @@ const { queryParams, form, rules } = toRefs(data);
 function getList() {
   loading.value = true;
   listBook(queryParams.value).then(response => {
+    console.log(response.rows);
     bookList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -283,7 +375,8 @@ function reset() {
     updateTime: null,
     categoryId: null,
   };
-  proxy.resetForm("bookRef");
+  bookRef.value?.resetFields();
+  // proxy.resetForm("bookRef");
 }
 
 /** 搜索按钮操作 */
@@ -294,7 +387,8 @@ function handleQuery() {
 
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
+  // proxy.resetForm("queryRef");
   handleQuery();
 }
 
@@ -315,7 +409,7 @@ function handleAdd() {
 }
 
 /** 修改按钮操作 */
-function handleUpdate(row) {
+function handleUpdate(row: Row) {
   getLocationList();
   getCategoryList();
   reset();
@@ -329,17 +423,18 @@ function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["bookRef"].validate(valid => {
+  // proxy.$refs["bookRef"].validate(valid => {
+  bookRef.value?.validate(valid => {
     if (valid) {
       if (form.value.bookId != null) {
         updateBook(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.successModify'));
+          proxy?.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addBook(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.AddSuccess'));
+          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -349,9 +444,9 @@ function submitForm() {
 }
 
 /** 删除按钮操作 */
-function handleDelete(row) {
+function handleDelete(row: Row) {
   const _bookIds = row.bookId || ids.value;
-  proxy.$modal.confirm(t('book.confirmDelete') + _bookIds + t('user.confirmDelete2')).then(function() {
+  proxy?.$modal.confirm(t('book.confirmDelete') + _bookIds + t('user.confirmDelete2')).then(function() {
     return delBook(_bookIds);
   }).then(() => {
     getList();
@@ -361,17 +456,17 @@ function handleDelete(row) {
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download('system/book/export', {
+  proxy?.$download('system/book/export', {
     ...queryParams.value
   }, `book_${new Date().getTime()}.xlsx`)
 }
 
-function handleStatusChange(row) {
+function handleStatusChange(row: Row) {
   let text = row.cdStatus === "0" ? t('button.enable') : t('button.disable');
-  proxy.$modal.confirm(t('user.handleStatus1') + text + ' " " ' + row.bookTitle + t('user.handleStatus2')).then(function () {
+  proxy?.$modal.confirm(t('user.handleStatus1') + text + ' " " ' + row.bookTitle + t('user.handleStatus2')).then(function () {
     return changeCdStatus(row.bookId, row.cdStatus);
   }).then(() => {
-    proxy.$modal.msgSuccess(text + t('button.success'));
+    proxy?.$modal.msgSuccess(text + t('button.success'));
   }).catch(function () {
     row.cdStatus = row.cdStatus === "0" ? "1" : "0";
   });
@@ -388,11 +483,6 @@ function getLocationList() {
     locationOptions.value = response.rows;
   });
 };
-
-function addMember() {
-  console.log("addMember\n");
-}
-
 
 getList();
 </script>
