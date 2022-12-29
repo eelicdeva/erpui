@@ -1,7 +1,31 @@
 import request from '@/utils/request'
 
+export interface QueryParams {
+  pageNum: number
+  pageSize: number
+  checkoutDate?: string | null
+  returnDate?: string | null
+  nameBorrower?: string | null
+  bookTitle?: string | null
+  bookImage?: string | null
+  isbn?: string | null
+}
+
+export interface AddParams {
+  loanId?: string | null
+  checkoutDate?: string | null
+  returnDate?: string | null
+  nameBorrower?: string | null
+  bookTitle?: string | null
+  bookTitleEn?: string | null
+  bookTitleId?: string | null
+  bookImage?: string | null
+  isbn?: string | null
+  bookId?: string | null
+}
+
 // 查询Book Loan Management列表
-export function listLoan(query: string) {
+export function listLoan(query: QueryParams) {
   return request({
     url: '/hr/loan/list',
     method: 'get',
@@ -18,7 +42,7 @@ export function getLoan(loanId: string) {
 }
 
 // 新增Book Loan Management
-export function addLoan(data: string) {
+export function addLoan(data: AddParams) {
   return request({
     url: '/hr/loan',
     method: 'post',
@@ -27,7 +51,7 @@ export function addLoan(data: string) {
 }
 
 // 修改Book Loan Management
-export function updateLoan(data: string) {
+export function updateLoan(data: AddParams) {
   return request({
     url: '/hr/loan',
     method: 'put',

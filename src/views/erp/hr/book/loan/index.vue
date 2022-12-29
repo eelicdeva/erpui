@@ -173,17 +173,18 @@
 
 <script lang="ts" setup name="Loan">
 import { listLoan, getLoan, delLoan, addLoan, updateLoan } from "@/api/hr/loan";
+import type { QueryParams, AddParams } from "@/api/hr/loan";
 import { getAllBook } from "@/api/hr/book";
 import { listCategory } from "@/api/hr/category";
 import i18n from '@/lang/index';
 import useAppStore from "@/stores/modules/app";
-import addCategory from '@/views/erp/hr/book/category/AddCategory';
-import { getCurrentInstance, reactive, ref, toRefs } from "vue";
-
+import addCategory from '@/views/erp/hr/book/category/AddCategory/index.vue';
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref, Ref, toRefs } from "vue";
+import { parseTime } from "@/utils/ruoyi";
+import type { ElForm } from "element-plus";
 
 const {t} = i18n.global;
-const { proxy } = getCurrentInstance();
-const {sys_normal_disable } = proxy.useDict( "sys_normal_disable");
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const loanList = ref([]);
 const open = ref(false);
@@ -194,11 +195,49 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
-const bookOptions = ref([]);
-const categoryOptions = ref([]);
-let book = ref();
+const bookOptions: Ref<bookOptions[]> = ref([]);
+const categoryOptions: Ref<categoryOptions[]> = ref([]);
+const queryRef = ref<InstanceType<typeof ElForm>>();
+const loanRef = ref<InstanceType<typeof ElForm>>();
 
-const data = reactive({
+interface Data {
+   form: AddParams;
+   queryParams: QueryParams; 
+   rules: {
+     nameBorrower: [{
+        required: boolean
+        message: string
+        trigger: string
+     }]
+     bookTitle: [{
+        required: boolean
+        message: string
+        trigger: string
+     }]
+     checkoutDate: [{
+        required: boolean
+        message: string
+        trigger: string
+     }] 
+   }
+}
+
+interface categoryOptions {
+   categoryId: string
+   categoryName: string
+   status: number
+}
+
+interface bookOptions {
+   bookId: string
+   bookTitle: string
+   bookTitleEn: string
+   bookTitleId: string
+   bookImage: string
+   isbn: string
+}
+
+const data: Data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
@@ -249,7 +288,8 @@ function reset() {
     isbn: null,
     bookId: null
   };
-  proxy.resetForm("loanRef");
+  loanRef.value?.resetFields();
+  // proxy.resetForm("loanRef");
 }
 
 /** 搜索按钮操作 */
@@ -260,7 +300,8 @@ function handleQuery() {
 
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
+  // proxy.resetForm("queryRef");
   handleQuery();
 }
 
@@ -302,17 +343,18 @@ function submitForm() {
         form.value.isbn = bookOptions.value[i].isbn;
     }
   }
-  proxy.$refs["loanRef"].validate(valid => {
+  // proxy.$refs["loanRef"].validate(valid => {
+  loanRef.value?.validate(valid => {
     if (valid) {
       if (form.value.loanId != null) {
         updateLoan(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.successModify'));
+          proxy?.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addLoan(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.AddSuccess'));
+          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -324,7 +366,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _loanIds = row.loanId || ids.value;
-  proxy.$modal.confirm(t('book.loanconfirmDelete') + _loanIds + t('user.confirmDelete2')).then(function() {
+  proxy?.$modal.confirm(t('book.loanconfirmDelete') + _loanIds + t('user.confirmDelete2')).then(function() {
     return delLoan(_loanIds);
   }).then(() => {
     getList();
@@ -334,7 +376,7 @@ function handleDelete(row) {
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download('system/loan/export', {
+  proxy?.$download('system/loan/export', {
     ...queryParams.value
   }, `loan_${new Date().getTime()}.xlsx`)
 }
