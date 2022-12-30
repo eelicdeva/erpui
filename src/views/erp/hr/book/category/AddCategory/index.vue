@@ -28,18 +28,31 @@
 <script lang="ts" setup>
 import i18n from '@/lang/index';
 import { addCategory, updateCategory } from "@/api/hr/category";
+import type { AddParams } from "@/api/hr/category";
 import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } from 'vue';
+import type { ElForm } from "element-plus";
 
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const { sys_normal_disable } = proxy.useDict('sys_normal_disable');
+const { sys_normal_disable } = proxy?.useDict('sys_normal_disable');
 
 const {t} = i18n.global;
 const open = ref(false);
 const title = ref("");
+const categoryRef = ref<InstanceType<typeof ElForm>>();
 
+interface Data {
+   form: AddParams;
+   rules: {
+     categoryName: [{
+        required: boolean
+        message: string
+        trigger: string
+     }] 
+   }
+}
 
-const data = reactive({
+const data: Data  = reactive({
   form: {},
   rules: {
     categoryName: [{ required: true, message: t('book.categoryRules'), trigger: "blur" }],
@@ -59,7 +72,8 @@ function reset() {
     updateBy: null,
     updateTime: null
   };
-  proxy.resetForm("categoryRef");
+  categoryRef.value?.resetFields();
+//   proxy.resetForm("categoryRef");
 }
 
 function handleAdd() {
@@ -69,22 +83,28 @@ function handleAdd() {
 }
 
 function submitForm() {
-    proxy.$refs["categoryRef"].validate(valid => {
+    // proxy.$refs["categoryRef"].validate(valid => {
+    categoryRef.value?.validate(valid => {   
         if (valid) {
             if (form.value.categoryId != null) {
                 updateCategory(form.value).then(response => {
-                    proxy.$modal.msgSuccess("修改成功");
+                    proxy?.$modal.msgSuccess(t('button.successModify'));
                     open.value = false;
                     window.location.reload();
                 });
             } else {
                 addCategory(form.value).then(response => {
-                    proxy.$modal.msgSuccess("新增成功");
+                    proxy?.$modal.msgSuccess(t('button.AddSuccess'));
                     open.value = false;
                     window.location.reload();
                 });
             }
         }
     });
+}
+
+function cancel() {
+  open.value = false;
+  reset();
 }
 </script>
