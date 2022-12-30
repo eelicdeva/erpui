@@ -1,7 +1,25 @@
 import request from '@/utils/request'
 
+export interface QueryParams {
+  pageNum: number
+  pageSize: number
+  location?: string | null
+  status?: string | null
+}
+
+export interface AddParams {
+  locationId?: string | null
+  location?: string | null
+  status?: string
+  delFlag?: string | null
+  createBy?: string | null
+  createTime?: string | null
+  updateBy?: string | null
+  updateTime?: string | null
+}
+
 // 查询location列表
-export function listLocation(query: string) {
+export function listLocation(query?: QueryParams) {
   return request({
     url: '/hr/location/list',
     method: 'get',
@@ -18,7 +36,7 @@ export function getLocation(locationId: string) {
 }
 
 // 新增location
-export function addLocation(data: string) {
+export function addLocation(data: AddParams) {
   return request({
     url: '/hr/location',
     method: 'post',
@@ -27,7 +45,7 @@ export function addLocation(data: string) {
 }
 
 // 修改location
-export function updateLocation(data: string) {
+export function updateLocation(data: AddParams) {
   return request({
     url: '/hr/location',
     method: 'put',
