@@ -129,14 +129,16 @@
   </div>
 </template>
 
-<script setup name="Category">
+<script setup lang="ts" name="Category">
 import { listCategory, getCategory, delCategory, addCategory, updateCategory } from "@/api/hr/category";
+import type { QueryParams, AddParams } from "@/api/hr/category";
 import i18n from '@/lang/index';
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs } from 'vue';
+import type { ElForm } from "element-plus";
 
 const {t} = i18n.global;
-const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDict('sys_normal_disable');
-
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { sys_normal_disable } = proxy?.useDict('sys_normal_disable');
 
 const categoryList = ref([]);
 const open = ref(false);
@@ -147,8 +149,22 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
+const queryRef = ref<InstanceType<typeof ElForm>>();
+const categoryRef = ref<InstanceType<typeof ElForm>>();
 
-const data = reactive({
+interface Data {
+   form: AddParams;
+   queryParams: QueryParams; 
+   rules: {
+     categoryName: [{
+        required: boolean
+        message: string
+        trigger: string
+     }] 
+   }
+}
+
+const data: Data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
@@ -191,7 +207,8 @@ function reset() {
     updateBy: null,
     updateTime: null
   };
-  proxy.resetForm("categoryRef");
+  categoryRef.value?.resetFields();
+  // proxy.resetForm("categoryRef");
 }
 
 /** 搜索按钮操作 */
@@ -202,7 +219,8 @@ function handleQuery() {
 
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
+  // proxy.resetForm("queryRef");
   handleQuery();
 }
 
@@ -233,17 +251,18 @@ function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["categoryRef"].validate(valid => {
+  // proxy.$refs["categoryRef"].validate(valid => {
+  categoryRef.value?.validate(valid => {
     if (valid) {
       if (form.value.categoryId != null) {
         updateCategory(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy?.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addCategory(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -255,17 +274,17 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _categoryIds = row.categoryId || ids.value;
-  proxy.$modal.confirm('是否确认删除book category编号为"' + _categoryIds + '"的数据项？').then(function() {
+  proxy?.$modal.confirm('是否确认删除book category编号为"' + _categoryIds + '"的数据项？').then(function() {
     return delCategory(_categoryIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess(t('user.succesDeleted'));
   }).catch(() => {});
 }
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download('hr/category/export', {
+  proxy?.$download('hr/category/export', {
     ...queryParams.value
   }, `category_${new Date().getTime()}.xlsx`)
 }
