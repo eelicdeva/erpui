@@ -135,13 +135,16 @@
   </div>
 </template>
 
-<script setup name="Mbti">
+<script lang="ts" setup name="Mbti">
 import { listMbti, getMbti, delMbti, addMbti, updateMbti } from "@/api/hr/mbti";
+import type { QueryParams, AddParams } from "@/api/hr/mbti";
 import i18n from '@/lang/index';
+import { ComponentInternalInstance, getCurrentInstance, ref, toRefs, reactive } from "vue";
+import type { ElForm } from "element-plus";
 
 const {t} = i18n.global;
-const { proxy } = getCurrentInstance();
-const { sys_mbti_result } = proxy.useDict( "sys_mbti_result");
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { sys_mbti_result } = proxy?.useDict( "sys_mbti_result");
 
 const mbtiList = ref([]);
 const open = ref(false);
@@ -152,8 +155,17 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
+const queryRef = ref<InstanceType<typeof ElForm>>();
+const mbtiRef = ref<InstanceType<typeof ElForm>>();
 
-const data = reactive({
+  interface Data {
+   form: AddParams;
+   queryParams: QueryParams; 
+   rules: {
+   }
+}
+  
+const data: Data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
@@ -192,7 +204,8 @@ function reset() {
     answer: null,
     result: null
   };
-  proxy.resetForm("mbtiRef");
+  mbtiRef.value?.resetFields();
+  // proxy.resetForm("mbtiRef");
 }
 
 /** 搜索按钮操作 */
@@ -203,7 +216,8 @@ function handleQuery() {
 
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
+  // proxy.resetForm("queryRef");
   handleQuery();
 }
 
@@ -234,17 +248,18 @@ function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["mbtiRef"].validate(valid => {
+  // proxy.$refs["mbtiRef"].validate(valid => {
+  mbtiRef.value?.validate(valid => {
     if (valid) {
       if (form.value.userId != null) {
         updateMbti(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy?.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addMbti(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -256,7 +271,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _userIds = row.userId || ids.value;
-  proxy.$modal.confirm('是否确认删除MBTI Test编号为"' + _userIds + '"的数据项？').then(function() {
+  proxy?.$modal.confirm('是否确认删除MBTI Test编号为"' + _userIds + '"的数据项？').then(function() {
     return delMbti(_userIds);
   }).then(() => {
     getList();
@@ -266,7 +281,7 @@ function handleDelete(row) {
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download('hr/mbti/export', {
+  proxy?.$download('hr/mbti/export', {
     ...queryParams.value
   }, `mbti_${new Date().getTime()}.xlsx`)
 }

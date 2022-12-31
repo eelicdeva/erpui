@@ -1,7 +1,22 @@
 import request from '@/utils/request'
 
+export interface QueryParams {
+  pageNum: number
+  pageSize: number
+  userName?: string | null
+  answer?: string | null
+  result?: string | null
+}
+
+export interface AddParams {
+  userId?: string | null
+  userName?: string | null
+  answer?: string | null
+  result?: string | null
+}
+
 // 查询MBTI Test列表
-export function listMbti(query: string) {
+export function listMbti(query: QueryParams) {
   return request({
     url: '/hr/mbti/list',
     method: 'get',
@@ -18,7 +33,7 @@ export function getMbti(userId: string) {
 }
 
 // 新增MBTI Test
-export function addMbti(data: string) {
+export function addMbti(data: AddParams) {
   return request({
     url: '/hr/mbti/add',
     method: 'post',
@@ -27,7 +42,7 @@ export function addMbti(data: string) {
 }
 
 // 修改MBTI Test
-export function updateMbti(data: string) {
+export function updateMbti(data: AddParams) {
   return request({
     url: '/hr/mbti',
     method: 'put',
