@@ -9,7 +9,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="handleQuery">{{ $t('button.submit2') }}</el-button>
+        <el-button type="primary" icon="Refresh" @click="handleQuery">{{ $t('tagsView.refresh') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -30,53 +30,25 @@
   </div>
 </template>
 
-<script setup name="Loan">
+<script lang="ts" setup name="Loan">
 import { countBookLoan } from "@/api/hr/loan";
 import { countBookCategory } from "@/api/hr/book";
-import i18n from '@/lang/index';
-import useAppStore from "@/stores/modules/app";
 import * as echarts from 'echarts';
-
-const { t } = i18n.global;
-const { proxy } = getCurrentInstance();
+import { ref } from 'vue';
+import type { ElForm } from "element-plus";
 
 const showLoanStats = ref(false);
 const showCategoryStats = ref(true);
-const showSearch = ref(true);
 let stats = ref();
-const bookCategoryStats = ref(null);
-const bookLoanStats = ref(null);
+let bookCategoryStats: HTMLElement;
+let bookLoanStats: HTMLElement;
 
-
-const data = reactive({
-  form: {},
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    checkoutDate: null,
-    returnDate: null,
-    nameBorrower: null,
-    bookTitle: null,
-    bookImage: null,
-    isbn: null,
-  },
-  rules: {
-  }
-});
-
-
-// 表单重置
-function reset() {
-
-  proxy.resetForm("loanRef");
-}
 
 /** 搜索按钮操作 */
 function handleQuery() {
   if (stats.value == "category") {
     showCategoryStats.value = true;
     showLoanStats.value = false;
-
   }
   if (stats.value == "loan") {
     showCategoryStats.value = false;
@@ -88,7 +60,7 @@ function handleQuery() {
 
 function countCategory() {
   countBookCategory().then(response => {
-    const bookCategoryStatsIntance = echarts.init(bookCategoryStats.value, "macarons");
+    const bookCategoryStatsIntance = echarts.init(bookCategoryStats, "macarons");
     bookCategoryStatsIntance.setOption({
       xAxis: {
         data: response.data.dictLabel,
@@ -146,7 +118,6 @@ function countCategory() {
     });
     const zoomSize = 6;
     bookCategoryStatsIntance.on('click', function (params) {
-      console.log(response.data.dictLabel[Math.max(params.dataIndex - zoomSize / 2, 0)]);
       bookCategoryStatsIntance.dispatchAction({
         type: 'dataZoom',
         startValue: response.data.dictLabel[Math.max(params.dataIndex - zoomSize / 2, 0)],
@@ -160,7 +131,7 @@ function countCategory() {
 
 function countLoan() {
   countBookLoan().then(response => {
-    const bookLoanStatsIntance = echarts.init(bookLoanStats.value, "macarons");
+    const bookLoanStatsIntance = echarts.init(bookLoanStats, "macarons");
     bookLoanStatsIntance.setOption({ 
       xAxis: {
         data: response.data.checkoutDate,
@@ -218,7 +189,6 @@ function countLoan() {
     });
     const zoomSize = 6;
     bookLoanStatsIntance.on('click', function (params) {
-      console.log(response.data.checkoutDate[Math.max(params.dataIndex - zoomSize / 2, 0)]);
       bookLoanStatsIntance.dispatchAction({
         type: 'dataZoom',
         startValue: response.data.checkoutDate[Math.max(params.dataIndex - zoomSize / 2, 0)],
