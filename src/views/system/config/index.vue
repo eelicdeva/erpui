@@ -270,7 +270,6 @@ function handleButtonText(row: Row, act: string) {
 function getList() {
   loading.value = true;
   listConfig(proxy?.addDateRange(queryParams.value, dateRange.value)).then(response => {
-    console.log(response.rows);
     configList.value = response.rows;
     total.value = response.total;
     loading.value = false;
