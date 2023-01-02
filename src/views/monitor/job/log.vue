@@ -120,10 +120,11 @@
          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-button
-                  type="text"
+                  type="primary"
                   icon="View"
                   @click="handleView(scope.row)"
                   v-hasPermi="['monitor:job:query']"
+                  link
                >详细</el-button>
             </template>
          </el-table-column>
@@ -175,24 +176,56 @@
    </div>
 </template>
 
-<script setup name="JobLog">
+<script lang="ts" setup name="JobLog">
 import { getJob } from "@/api/monitor/job";
 import { listJobLog, delJobLog, cleanJobLog } from "@/api/monitor/jobLog";
+import type { QueryParams } from "@/api/monitor/jobLog";
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs, Ref } from "vue";
+import { useRoute } from "vue-router";
+import type { ElForm } from "element-plus";
 
-const { proxy } = getCurrentInstance();
-const { sys_common_status, sys_job_group } = proxy.useDict("sys_common_status", "sys_job_group");
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { sys_common_status, sys_job_group } = proxy?.useDict("sys_common_status", "sys_job_group");
+
 
 const jobLogList = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
-const ids = ref([]);
+const ids: Ref<number[]>  = ref([]);
 const multiple = ref(true);
 const total = ref(0);
 const dateRange = ref([]);
 const route = useRoute();
+const queryRef = ref<InstanceType<typeof ElForm>>();
 
-const data = reactive({
+interface Row {
+   searchValue: string | null
+   createBy: string | null
+   createTime: string
+   updateBy: string | null
+   updateTime: string | null
+   remark: string | null
+   status: number
+   exceptionInfo: string | null
+   invokeTarget: string | null
+   jobGroup: string | null
+   jobLogId: number | null
+   jobMessage: string | null
+   jobName: string | null
+   params: QueryParams
+   startTime: string | null
+   stopTime: string | null
+}
+
+
+
+interface Data {
+   form: any;
+   queryParams: QueryParams;  
+}
+
+const data: Data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
@@ -203,12 +236,12 @@ const data = reactive({
   }
 });
 
-const { queryParams, form, rules } = toRefs(data);
+const { queryParams, form } = toRefs(data);
 
 /** 查询调度日志列表 */
 function getList() {
   loading.value = true;
-  listJobLog(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
+  listJobLog(proxy?.addDateRange(queryParams.value, dateRange.value)).then(response => {
     jobLogList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -217,7 +250,7 @@ function getList() {
 // 返回按钮
 function handleClose() {
   const obj = { path: "/monitor/job" };
-  proxy.$tab.closeOpenPage(obj);
+  proxy?.$tab.closeOpenPage(obj.path);
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -227,7 +260,8 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
+//   proxy.resetForm("queryRef");
   handleQuery();
 }
 // 多选框选中数据
@@ -236,13 +270,14 @@ function handleSelectionChange(selection) {
   multiple.value = !selection.length;
 }
 /** 详细按钮操作 */
-function handleView(row) {
+function handleView(row: Row) {
+  console.log(row);
   open.value = true;
   form.value = row;
 }
 /** 删除按钮操作 */
-function handleDelete(row) {
-  proxy.$modal.confirm('是否确认删除调度日志编号为"' + ids.value + '"的数据项?').then(function () {
+function handleDelete(row: Row) {
+  proxy?.$modal.confirm('是否确认删除调度日志编号为"' + ids.value + '"的数据项?').then(function () {
     return delJobLog(ids.value);
   }).then(() => {
     getList();
@@ -251,7 +286,7 @@ function handleDelete(row) {
 }
 /** 清空按钮操作 */
 function handleClean() {
-  proxy.$modal.confirm("是否确认清空所有调度日志数据项?").then(function () {
+  proxy?.$modal.confirm("是否确认清空所有调度日志数据项?").then(function () {
     return cleanJobLog();
   }).then(() => {
     getList();
@@ -260,14 +295,14 @@ function handleClean() {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("monitor/jobLog/export", {
+  proxy?.$download("monitor/jobLog/export", {
     ...queryParams.value,
   }, `job_log_${new Date().getTime()}.xlsx`);
 }
 
 (() => {
   const jobId = route.params && route.params.jobId;
-  if (jobId !== undefined && jobId != 0) {
+  if (jobId !== undefined && jobId != "0") {
     getJob(jobId).then(response => {
       queryParams.value.jobName = response.data.jobName;
       queryParams.value.jobGroup = response.data.jobGroup;
