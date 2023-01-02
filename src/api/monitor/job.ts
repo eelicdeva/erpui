@@ -1,7 +1,29 @@
 import request from '@/utils/request'
 
+export interface QueryParams {
+  pageNum: number
+  pageSize: number
+  jobName?: string | null
+  jobGroup?: string | null
+  status?: string | null
+
+}
+
+export interface AddParams {
+    jobId?: number | null
+    jobName?: string | null
+    jobGroup?: string | null
+    invokeTarget?: string | null
+    cronExpression?: string | null
+    misfirePolicy?: number | null
+    concurrent?: number | null
+    status?: string | number | null
+    nextValidTime?: string | number | Date
+    createTime?: string | number | Date
+}
+
 // 查询定时任务调度列表
-export function listJob(query: string) {
+export function listJob(query: QueryParams) {
   return request({
     url: '/monitor/job/list',
     method: 'get',
@@ -10,7 +32,7 @@ export function listJob(query: string) {
 }
 
 // 查询定时任务调度详细
-export function getJob(jobId: string) {
+export function getJob(jobId: string | string[]) {
   return request({
     url: '/monitor/job/' + jobId,
     method: 'get'
@@ -18,7 +40,7 @@ export function getJob(jobId: string) {
 }
 
 // 新增定时任务调度
-export function addJob(data: string) {
+export function addJob(data: AddParams) {
   return request({
     url: '/monitor/job',
     method: 'post',
@@ -27,7 +49,7 @@ export function addJob(data: string) {
 }
 
 // 修改定时任务调度
-export function updateJob(data: string) {
+export function updateJob(data: AddParams) {
   return request({
     url: '/monitor/job',
     method: 'put',
@@ -36,7 +58,7 @@ export function updateJob(data: string) {
 }
 
 // 删除定时任务调度
-export function delJob(jobId: string) {
+export function delJob(jobId: number) {
   return request({
     url: '/monitor/job/' + jobId,
     method: 'delete'
@@ -44,7 +66,7 @@ export function delJob(jobId: string) {
 }
 
 // 任务状态修改
-export function changeJobStatus(jobId: string, status: string) {
+export function changeJobStatus(jobId: number, status: string) {
   const data = {
     jobId,
     status

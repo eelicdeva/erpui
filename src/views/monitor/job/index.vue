@@ -312,10 +312,16 @@
 
 <script lang="ts" setup name="Job">
 import { listJob, getJob, delJob, addJob, updateJob, runJob, changeJobStatus } from "@/api/monitor/job";
+import type { QueryParams, AddParams } from "@/api/monitor/job";
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref, toRefs, Ref } from "vue";
+import { useRouter } from "vue-router";
+import i18n from '@/lang/index';
+import type { ElForm } from "element-plus";
 
+const {t} = i18n.global;
 const router = useRouter();
-const { proxy } = getCurrentInstance();
-const { sys_job_group, sys_job_status } = proxy.useDict("sys_job_group", "sys_job_status");
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { sys_job_group, sys_job_status } = proxy?.useDict("sys_job_group", "sys_job_status");
 
 const jobList = ref([]);
 const open = ref(false);
@@ -328,9 +334,34 @@ const total = ref(0);
 const title = ref("");
 const openView = ref(false);
 const openCron = ref(false);
-const expression = ref("");
+const expression: Ref<string | null | undefined> = ref("");
+const queryRef = ref<InstanceType<typeof ElForm>>();
+const jobRef = ref<InstanceType<typeof ElForm>>();
 
-const data = reactive({
+interface Data {
+   form: AddParams
+   queryParams: QueryParams 
+   rules:{
+      jobName: [{
+         required: boolean
+         message: string
+         trigger: string
+      }];
+      invokeTarget: [{
+         required: boolean
+         message: string
+         trigger: string  
+      }];
+      cronExpression: [{
+         required: boolean
+         message: string
+         trigger: string  
+      }];
+   };
+}
+
+
+const data: Data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
@@ -348,6 +379,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
+
 /** 查询定时任务列表 */
 function getList() {
   loading.value = true;
@@ -358,8 +390,8 @@ function getList() {
   });
 }
 /** 任务组名字典翻译 */
-function jobGroupFormat(row, column) {
-  return proxy.selectDictLabel(sys_job_group.value, row.jobGroup);
+function jobGroupFormat(row, column?: any) {
+  return proxy?.selectDictLabel(sys_job_group.value, row.jobGroup);
 }
 /** 取消按钮 */
 function cancel() {
@@ -378,7 +410,8 @@ function reset() {
     concurrent: 1,
     status: "0"
   };
-  proxy.resetForm("jobRef");
+  jobRef.value?.resetFields();
+//   proxy.resetForm("jobRef");
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -387,7 +420,8 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
+//   proxy.resetForm("queryRef");
   handleQuery();
 }
 // 多选框选中数据
@@ -397,25 +431,26 @@ function handleSelectionChange(selection) {
   multiple.value = !selection.length;
 }
 // 更多操作触发
-function handleCommand(command, row) {
-  switch (command) {
-    case "handleRun":
-      handleRun(row);
-      break;
-    case "handleView":
-      handleView(row);
-      break;
-    case "handleJobLog":
-      handleJobLog(row);
-      break;
-    default:
-      break;
-  }
-}
+// function handleCommand(command, row) {
+//   switch (command) {
+//     case "handleRun":
+//       handleRun(row);
+//       break;
+//     case "handleView":
+//       handleView(row);
+//       break;
+//     case "handleJobLog":
+//       handleJobLog(row);
+//       break;
+//     default:
+//       break;
+//   }
+// }
+
 // 任务状态修改
 function handleStatusChange(row) {
   let text = row.status === "0" ? "启用" : "停用";
-  proxy.$modal.confirm('确认要"' + text + '""' + row.jobName + '"任务吗?').then(function () {
+  proxy?.$modal.confirm('确认要"' + text + '""' + row.jobName + '"任务吗?').then(function () {
     return changeJobStatus(row.jobId, row.status);
   }).then(() => {
     proxy.$modal.msgSuccess(text + "成功");
@@ -425,7 +460,7 @@ function handleStatusChange(row) {
 }
 /* 立即执行一次 */
 function handleRun(row) {
-  proxy.$modal.confirm('确认要立即执行一次"' + row.jobName + '"任务吗?').then(function () {
+  proxy?.$modal.confirm('确认要立即执行一次"' + row.jobName + '"任务吗?').then(function () {
     return runJob(row.jobId, row.jobGroup);
   }).then(() => {
     proxy.$modal.msgSuccess("执行成功");})
@@ -444,9 +479,9 @@ function handleShowCron() {
   openCron.value = true;
 }
 /** 确定后回传值 */
-function crontabFill(value) {
-  form.value.cronExpression = value;
-}
+// function crontabFill(value) {
+//   form.value.cronExpression = value;
+// }
 /** 任务日志列表查询 */
 function handleJobLog(row) {
   const jobId = row.jobId || 0;
@@ -470,17 +505,18 @@ function handleUpdate(row) {
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["jobRef"].validate(valid => {
+//   proxy.$refs["jobRef"].validate(valid => {
+   jobRef.value?.validate(valid => {
     if (valid) {
       if (form.value.jobId != undefined) {
         updateJob(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy?.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addJob(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });
@@ -491,7 +527,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const jobIds = row.jobId || ids.value;
-  proxy.$modal.confirm('是否确认删除定时任务编号为"' + jobIds + '"的数据项?').then(function () {
+  proxy?.$modal.confirm('是否确认删除定时任务编号为"' + jobIds + '"的数据项?').then(function () {
     return delJob(jobIds);
   }).then(() => {
     getList();
@@ -500,7 +536,7 @@ function handleDelete(row) {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("monitor/job/export", {
+  proxy?.$download("monitor/job/export", {
     ...queryParams.value,
   }, `job_${new Date().getTime()}.xlsx`);
 }
