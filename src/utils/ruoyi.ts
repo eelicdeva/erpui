@@ -39,7 +39,7 @@
  * @param {string} pattern 格式化类型
  * @returns
  */
- export const parseTime = (time: string | number | Date, pattern: string) => {
+ export const parseTime = (time?: string | number | Date, pattern?: string) => {
 	if (!time) {
 		return null;
 	}
