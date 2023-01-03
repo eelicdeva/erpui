@@ -151,12 +151,19 @@
 
 <script lang="ts" setup name="CacheList">
 import { listCacheName, listCacheKey, getCacheValue, clearCacheName, clearCacheKey, clearCacheAll } from "@/api/monitor/cache";
+import { ComponentInternalInstance, getCurrentInstance, ref, Ref } from "vue";
 
-const { proxy } = getCurrentInstance();
+interface cacheForm {
+  cacheName?: string;
+  cacheKey?: string;
+  cacheValue?: string;
+}
+
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const cacheNames = ref([]);
 const cacheKeys = ref([]);
-const cacheForm = ref({});
+const cacheForm: Ref<cacheForm> = ref({});
 const loading = ref(true);
 const subLoading = ref(false);
 const nowCacheName = ref("");
@@ -174,19 +181,19 @@ function getCacheNames() {
 /** 刷新缓存名称列表 */
 function refreshCacheNames() {
   getCacheNames();
-  proxy.$modal.msgSuccess("刷新缓存列表成功");
+  proxy?.$modal.msgSuccess("刷新缓存列表成功");
 }
 
 /** 清理指定名称缓存 */
 function handleClearCacheName(row) {
   clearCacheName(row.cacheName).then(response => {
-    proxy.$modal.msgSuccess("清理缓存名称[" + nowCacheName.value + "]成功");
+    proxy?.$modal.msgSuccess("清理缓存名称[" + nowCacheName.value + "]成功");
     getCacheKeys();
   });
 }
 
 /** 查询缓存键名列表 */
-function getCacheKeys(row) {
+function getCacheKeys(row?: any) {
   const cacheName = row !== undefined ? row.cacheName : nowCacheName.value;
   if (cacheName === "") {
     return;
@@ -202,13 +209,13 @@ function getCacheKeys(row) {
 /** 刷新缓存键名列表 */
 function refreshCacheKeys() {
   getCacheKeys();
-  proxy.$modal.msgSuccess("刷新键名列表成功");
+  proxy?.$modal.msgSuccess("刷新键名列表成功");
 }
 
 /** 清理指定键名缓存 */
 function handleClearCacheKey(cacheKey) {
   clearCacheKey(cacheKey).then(response => {
-    proxy.$modal.msgSuccess("清理缓存键名[" + cacheKey + "]成功");
+    proxy?.$modal.msgSuccess("清理缓存键名[" + cacheKey + "]成功");
     getCacheKeys();
   });
 }
@@ -233,7 +240,7 @@ function handleCacheValue(cacheKey) {
 /** 清理全部缓存 */
 function handleClearCacheAll() {
   clearCacheAll().then(response => {
-    proxy.$modal.msgSuccess("清理全部缓存成功");
+    proxy?.$modal.msgSuccess("清理全部缓存成功");
   });
 }
 
