@@ -124,7 +124,7 @@
                <el-button
                   type="primary"
                   icon="View"
-                  @click="handleView(scope.row, scope.index)"
+                  @click="handleView(scope.row)"
                   v-hasPermi="['system:operlog:query']"
                   link
                >详细</el-button>
@@ -188,23 +188,33 @@
 
 <script lang="ts" setup name="Operlog">
 import { list, delOperlog, cleanOperlog } from "@/api/monitor/operlog";
+import type { QueryParams, AddParams } from "@/api/monitor/operlog";
+import { ComponentInternalInstance, getCurrentInstance, ref, reactive, toRefs } from "vue";
+import type { ElForm, ElTable } from "element-plus";
 
-const { proxy } = getCurrentInstance();
-const { sys_oper_type, sys_common_status } = proxy.useDict("sys_oper_type","sys_common_status");
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { sys_oper_type, sys_common_status } = proxy?.useDict("sys_oper_type","sys_common_status");
 
 const operlogList = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
 const ids = ref([]);
-const single = ref(true);
+// const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
-const title = ref("");
+// const title = ref("");
 const dateRange = ref([]);
 const defaultSort = ref({ prop: "operTime", order: "descending" });
+const queryRef = ref<InstanceType<typeof ElForm>>();
+const operlogRef = ref<InstanceType<typeof ElTable>>();
 
-const data = reactive({
+interface Data {
+   form: AddParams
+   queryParams: QueryParams 
+}
+
+const data: Data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
@@ -221,15 +231,15 @@ const { queryParams, form } = toRefs(data);
 /** 查询登录日志 */
 function getList() {
   loading.value = true;
-  list(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
+  list(proxy?.addDateRange(queryParams.value, dateRange.value)).then(response => {
     operlogList.value = response.rows;
     total.value = response.total;
     loading.value = false;
   });
 }
 /** 操作日志类型字典翻译 */
-function typeFormat(row, column) {
-  return proxy.selectDictLabel(sys_oper_type.value, row.businessType);
+function typeFormat(row, column ?: any) {
+  return proxy?.selectDictLabel(sys_oper_type.value, row.businessType);
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -239,8 +249,10 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  proxy.resetForm("queryRef");
-  proxy.$refs["operlogRef"].sort(defaultSort.value.prop, defaultSort.value.order);
+  queryRef.value?.resetFields();
+//   proxy.resetForm("queryRef");
+  operlogRef.value?.sort(defaultSort.value.prop, defaultSort.value.order);
+//   proxy.$refs["operlogRef"].sort(defaultSort.value.prop, defaultSort.value.order);
   handleQuery();
 }
 /** 多选框选中数据 */
@@ -262,7 +274,7 @@ function handleView(row) {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const operIds = row.operId || ids.value;
-  proxy.$modal.confirm('是否确认删除日志编号为"' + operIds + '"的数据项?').then(function () {
+  proxy?.$modal.confirm('是否确认删除日志编号为"' + operIds + '"的数据项?').then(function () {
     return delOperlog(operIds);
   }).then(() => {
     getList();
@@ -271,7 +283,7 @@ function handleDelete(row) {
 }
 /** 清空按钮操作 */
 function handleClean() {
-  proxy.$modal.confirm("是否确认清空所有操作日志数据项?").then(function () {
+  proxy?.$modal.confirm("是否确认清空所有操作日志数据项?").then(function () {
     return cleanOperlog();
   }).then(() => {
     getList();
@@ -280,7 +292,7 @@ function handleClean() {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("monitor/operlog/export",{
+  proxy?.$download("monitor/operlog/export",{
     ...queryParams.value,
   }, `config_${new Date().getTime()}.xlsx`);
 }
