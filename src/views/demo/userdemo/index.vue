@@ -129,41 +129,45 @@
                   </el-table-column>
                   <el-table-column :label="$t('user.creationtime')" width="160" align="center" prop="createTime" v-if="columns[6].visible" >
                      <template #default="scope">
-                        <span>{{ parseTime(scope.row.createTime) }}</span>
+                        <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
                      </template>
                   </el-table-column>
                   <el-table-column :label="$t('user.operate')" width="150" align="center"  class-name="small-padding fixed-width">
                      <template #default="scope">
                         <el-tooltip :content="$t('button.edit')" placement="top" v-if="scope.row.userId !== 1">
                            <el-button
-                              type="text"
+                              type="primary"
                               icon="Edit"
                               @click="handleUpdate(scope.row)"
                               v-hasPermi="['system:user:edit']"
+                              link
                            ></el-button>
                         </el-tooltip>
                         <el-tooltip :content="$t('button.delete')" placement="top" v-if="scope.row.userId !== 1">
                            <el-button
-                              type="text"
+                              type="primary"
                               icon="Delete"
                               @click="handleDelete(scope.row)"
                               v-hasPermi="['system:user:remove']"
+                              link
                            ></el-button>
                         </el-tooltip>
                         <el-tooltip :content="$t('button.resetPW')" placement="top" v-if="scope.row.userId !== 1">
                            <el-button
-                              type="text"
+                              type="primary"
                               icon="Key"
                               @click="handleResetPwd(scope.row)"
                               v-hasPermi="['system:user:resetPwd']"
+                              link
                            ></el-button>
                         </el-tooltip>
                         <el-tooltip :content="$t('button.authRole')" placement="top" v-if="scope.row.userId !== 1">
                            <el-button
-                              type="text"
+                              type="primary"
                               icon="CircleCheck"
                               @click="handleAuthRole(scope.row)"
                               v-hasPermi="['system:user:edit']"
+                              link
                            ></el-button>
                         </el-tooltip>
                      </template>
@@ -334,22 +338,29 @@
 <script lang="ts" setup>
 import { getToken } from "@/utils/auth";
 import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser, deptTreeSelect } from "@/api/system/user";
+import type { QueryParams, AddParams } from "@/api/system/user";
 import i18n from '@/lang/index';
 import { useRouter } from "vue-router";
-import { ComponentInternalInstance, getCurrentInstance, reactive, ref } from "vue";
+import { ComponentInternalInstance, getCurrentInstance, reactive, Ref, ref, watch, toRefs } from "vue";
+import { ElForm } from "element-plus";
+import { parseTime } from "@/utils/ruoyi";
 
 const {t} = i18n.global;
 
 const router = useRouter();
-const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const { sys_normal_disable, sys_user_sex } = proxy.useDict("sys_normal_disable", "sys_user_sex");
 
-const userList = ref([]);
+const queryRef = ref<InstanceType<typeof ElForm>>()
+const userRef = ref<InstanceType<typeof ElForm>>()
+const deptTreeRef = ref<InstanceType<typeof ElForm>>()
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const { sys_normal_disable, sys_user_sex } = proxy?.useDict("sys_normal_disable", "sys_user_sex");
+
+const userList: Ref<Row[]> = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
 const showExtend = ref(false);
-const ids = ref([]);
+const ids: Ref<number[]> = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
@@ -358,9 +369,95 @@ const dateRange = ref([]);
 const deptName = ref("");
 const deptOptions = ref(undefined);
 const initPassword = ref(undefined);
-const postOptions = ref([]);
-const roleOptions = ref([]);
+const postOptions: Ref<postOptions[]> = ref([]);
+const roleOptions: Ref<roleOptions[]> = ref([]);
 
+interface Row {
+   searchValue: string | null;
+   createBy: string;
+   createTime: string;
+   updateBy: string;
+   updateTime: string | null;
+   remark: string;
+   // params: QueryParams;
+   userId: number
+   admin: boolean;
+   avatar: string;
+   delFlag: string;
+   deptId: number;
+   email: string;
+   loginDate: string;
+   loginIp: string;
+   nickName: string;
+   password: string;
+
+}
+
+interface Data {
+   form: AddParams
+   queryParams: QueryParams 
+   rules:{
+      userName: [{
+         required: boolean
+         message: string
+         trigger: string
+      },
+      {
+         min: number
+         max: number
+         message: string
+         trigger: string
+      },
+      {
+         pattern: RegExp
+         message: string
+         trigger: string
+      },
+      {
+         pattern: RegExp
+         message: string
+         trigger: string
+      }]
+      nickName: [{
+         required: boolean
+         message: string
+         trigger: string
+      }]
+      password: [{
+         required: boolean
+         message: string
+         trigger: string
+      },
+      {
+         min: number
+         max: number
+         message: string
+         trigger: string
+      }]
+      email: [{
+         type: any
+         message: string
+         trigger: string[]
+      }]
+      phonenumber: [{
+         pattern: RegExp
+         message: string
+         trigger: string
+      }]
+   }
+}
+
+interface postOptions {
+   postId: number
+   postName: string
+   status: number
+}
+
+interface roleOptions{
+   roleId: number
+   roleName: string
+   status: number
+}
 
 /*** 用户导入参数 */
 const upload = reactive({
@@ -388,7 +485,7 @@ const columns = ref([
   { key: 6, label: t('user.creationtime'), visible: true }
 ]);
 
-const data = reactive({
+const data: Data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
@@ -416,6 +513,7 @@ const filterNode = (value, data) => {
 };
 /** 根据名称筛选部门树 */
 watch(deptName, val => {
+  deptTreeRef.filter(val);
   proxy.$refs["deptTreeRef"].filter(val);
 });
 /** 查询部门下拉树结构 */
@@ -446,7 +544,7 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields()
   queryParams.value.deptId = undefined;
   proxy.$refs.tree.setCurrentKey(null);
   handleQuery();
@@ -454,7 +552,7 @@ function resetQuery() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const userIds = row.userId || ids.value;
-  proxy.$modal.confirm(t('user.confirmDelete1') + userIds + t('user.confirmDelete2')).then(function () {
+  proxy?.$modal.confirm(t('user.confirmDelete1') + userIds + t('user.confirmDelete2')).then(function () {
     return delUser(userIds);
   }).then(() => {
     getList();
@@ -463,14 +561,14 @@ function handleDelete(row) {
 };
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/user/export", {
+  proxy?.$download("system/user/export", {
     ...queryParams.value,
   },`user_${new Date().getTime()}.xlsx`);
 };
 /** 用户状态修改  */
 function handleStatusChange(row) {
   let text = row.status === "0" ? t('button.enable') : t('button.disable');
-  proxy.$modal.confirm(t('user.handleStatus1') + text + ' " " ' + row.userName + t('user.handleStatus2')).then(function () {
+  proxy?.$modal.confirm(t('user.handleStatus1') + text + ' " " ' + row.userName + t('user.handleStatus2')).then(function () {
     return changeUserStatus(row.userId, row.status);
   }).then(() => {
     proxy.$modal.msgSuccess(text + t('button.success'));
@@ -479,7 +577,7 @@ function handleStatusChange(row) {
   });
 };
 /** 更多操作 */
-function handleCommand(command, row) {
+function handleCommand(command, row: Row) {
   switch (command) {
     case "handleResetPwd":
       handleResetPwd(row);
@@ -492,13 +590,13 @@ function handleCommand(command, row) {
   }
 };
 /** 跳转角色分配 */
-function handleAuthRole(row) {
+function handleAuthRole(row: Row) {
   const userId = row.userId;
   router.push("/system/user-auth/role/" + userId);
 };
 /** 重置密码按钮操作 */
-function handleResetPwd(row) {
-  proxy.$prompt(t('user.resetPW1') + row.userName + t('user.resetPW2'), t('el.messagebox.title'), {
+function handleResetPwd(row: Row) {
+  proxy?.$modal.prompt(t('user.resetPW1') + row.userName + t('user.resetPW2'), t('el.messagebox.title'), {
     confirmButtonText: t('el.messagebox.confirm'),
     cancelButtonText: t('el.messagebox.cancel'),
     closeOnClickModal: false,
@@ -523,7 +621,7 @@ function handleImport() {
 };
 /** 下载模板操作 */
 function importTemplate() {
-  proxy.download("system/user/importTemplate", {
+  proxy?.$download("system/user/importTemplate", {
   }, `user_template_${new Date().getTime()}.xlsx`);
 };
 /**文件上传中处理 */
@@ -535,7 +633,7 @@ const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
   proxy.$refs["uploadRef"].handleRemove(file);
-  proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", t('button.ImportResults'), { dangerouslyUseHTMLString: true });
+  proxy?.$modal.alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", t('button.ImportResults'), { dangerouslyUseHTMLString: true });
   getList();
 };
 /** 提交上传文件 */
@@ -558,7 +656,8 @@ function reset() {
     postIds: [],
     roleIds: []
   };
-  proxy.resetForm("userRef");
+  userRef.value?.resetFields();
+//   proxy.resetForm("userRef");
 };
 /** 取消按钮 */
 function cancel() {
@@ -577,7 +676,7 @@ function handleAdd() {
   });
 };
 /** 修改按钮操作 */
-function handleUpdate(row) {
+function handleUpdate(row: Row) {
   reset();
   const userId = row.userId || ids.value;
   getUser(userId).then(response => {
@@ -593,17 +692,18 @@ function handleUpdate(row) {
 };
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["userRef"].validate(valid => {
+//   proxy.$refs["userRef"].validate(valid => {
+  userRef.value?.validate(valid => {
     if (valid) {
       if (form.value.userId != undefined) {
         updateUser(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.successModify'));
+          proxy?.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });
       } else {
         addUser(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.AddSuccess'));
+          proxy?.$modal.msgSuccess(t('button.AddSuccess'));
           open.value = false;
           getList();
         });

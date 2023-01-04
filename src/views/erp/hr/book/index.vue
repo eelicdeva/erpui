@@ -238,7 +238,6 @@ interface Row {
    synopsis: string  
 }
 
-
 interface Data {
    form: AddParams;
    queryParams: QueryParams; 
@@ -341,7 +340,6 @@ const { queryParams, form, rules } = toRefs(data);
 function getList() {
   loading.value = true;
   listBook(queryParams.value).then(response => {
-    console.log(response.rows);
     bookList.value = response.rows;
     total.value = response.total;
     loading.value = false;

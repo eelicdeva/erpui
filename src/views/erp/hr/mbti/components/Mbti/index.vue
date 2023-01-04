@@ -145,7 +145,6 @@ export default {
           result: this.MbtiTendency
         }
         addMbti(this.form).then(response => {
-          console.log("sukses")
         });
       } 
       // document.querySelector('.progress__box').style.width = ((this.cnt + 1) / this.mbti.questionList.length ) * 100 + '%'

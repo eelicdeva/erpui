@@ -158,7 +158,7 @@ const title = ref("");
 const queryRef = ref<InstanceType<typeof ElForm>>();
 const mbtiRef = ref<InstanceType<typeof ElForm>>();
 
-  interface Data {
+interface Data {
    form: AddParams;
    queryParams: QueryParams; 
    rules: {
