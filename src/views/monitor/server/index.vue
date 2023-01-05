@@ -169,17 +169,18 @@
   </div>
 </template>
 
-<script setup>
-import { getServer } from '@/api/monitor/server'
+<script setup lang="ts" >
+import { getServer } from '@/api/monitor/server';
+import { ComponentInternalInstance, getCurrentInstance, ref } from "vue";
 
 const server = ref([]);
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 function getList() {
-  proxy.$modal.loading("正在加载服务监控数据，请稍候！");
+  proxy?.$modal.loading("正在加载服务监控数据，请稍候！");
   getServer().then(response => {
     server.value = response.data;
-    proxy.$modal.closeLoading();
+    proxy?.$modal.closeLoading();
   });
 }
 
