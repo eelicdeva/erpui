@@ -152,7 +152,7 @@ import i18n from '@/lang/index';
 import { ComponentInternalInstance, getCurrentInstance, nextTick, reactive, ref, toRefs } from "vue";
 import { ElForm } from "element-plus";
 import { parseTime } from "@/utils/ruoyi";
-import {RuleType} from 'async-validator';
+import { RuleType } from 'async-validator';
 
 const {t} = i18n.global;
 const queryRef = ref<InstanceType<typeof ElForm>>()
