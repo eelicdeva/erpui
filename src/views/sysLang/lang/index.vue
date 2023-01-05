@@ -116,24 +116,36 @@
   </div>
 </template>
 
-<script setup name="Lang">
+<script lang="ts" setup name="Lang">
 import { listLang, updateLang } from "@/api/sysLang/lang";
+import type { QueryParams, AddParams } from "@/api/sysLang/lang";
 import i18n from '@/lang/index';
+import { ComponentInternalInstance, getCurrentInstance, ref, reactive, toRefs } from "vue";
+import type { ElForm } from "element-plus";
+
 
 const {t} = i18n.global;
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const langList = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
+// const ids = ref([]);
+// const single = ref(true);
+// const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
+const queryRef = ref<InstanceType<typeof ElForm>>();
+const langRef = ref<InstanceType<typeof ElForm>>();
 
-const data = reactive({
+interface Data {
+  form: AddParams
+  queryParams: QueryParams
+  rules: any
+}
+
+const data: Data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
@@ -189,7 +201,8 @@ function reset() {
     updatetime: null,
     remark: null
   };
-  proxy.resetForm("langRef");
+  langRef.value?.resetFields();
+  // proxy.resetForm("langRef");
 }
 
 /** 搜索按钮操作 */
@@ -200,7 +213,8 @@ function handleQuery() {
 
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
+  // proxy.resetForm("queryRef");
   handleQuery();
 }
 
@@ -216,10 +230,7 @@ function resetQuery() {
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
-  const _langId = row.langId || ids.value
-  console.log("row :");
-  console.log(row);
-  
+  // const _langId = row.langId || ids.value
   form.value.langId = row.langId,
   form.value.zhCn = row.zhCn,
   form.value.enUs = row.enUs,
@@ -230,17 +241,16 @@ function handleUpdate(row) {
   form.value.langFn = row.langFn,
   open.value = true;
   title.value = "修改lang";
-  console.log(form.value);
- 
 }
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["langRef"].validate(valid => {
+  // proxy.$refs["langRef"].validate(valid => {
+  langRef.value?.validate(valid => {
     if (valid) {
       if (form.value.langIdx != null) {
         updateLang(form.value).then(response => {
-          proxy.$modal.msgSuccess(t('button.successModify'));
+          proxy?.$modal.msgSuccess(t('button.successModify'));
           open.value = false;
           getList();
         });

@@ -1,7 +1,41 @@
 import request from '@/utils/request'
 
+export interface QueryParams {
+  pageNum: number
+  pageSize: number
+  zhCn?: string | null
+  enUs?: string | null 
+  idId?: string | null
+  langIdx?: string | null
+  langKey?: string | null
+  langTb?: string | null
+  langFn?: string | null
+  status?: string | null
+  createby?: string | null
+  createtime?: string | null
+  updateby?: string | null
+  updatetime?: string | null
+}
+
+export interface AddParams {
+  langId?: string | number | null
+  zhCn?: string | null
+  enUs?: string | null
+  idId?: string | null
+  langIdx?: string | null
+  langKey?: string | null
+  langFn?: string | null
+  langTb?: string | null
+  status?: string | null
+  createby?: string | null
+  createtime?: string | null
+  updateby?: string | null
+  updatetime?: string | null 
+  remark?: string | null
+}
+
 // 查询lang列表
-export function listLang(query: string) {
+export function listLang(query: QueryParams) {
   return request({
     url: '/sysLang/lang/list',
     method: 'get',
@@ -18,7 +52,7 @@ export function getLang(langId: string) {
 }
 
 // 新增lang
-export function addLang(data: string) {
+export function addLang(data: AddParams) {
   return request({
     url: '/sysLang/lang',
     method: 'post',
@@ -27,7 +61,7 @@ export function addLang(data: string) {
 }
 
 // 修改lang
-export function updateLang(data: string) {
+export function updateLang(data: AddParams) {
   return request({
     url: '/sysLang/lang',
     method: 'put',
@@ -43,7 +77,7 @@ export function delLang(langId: string) {
   })
 }
 
-export function listLangRecord(query: string) {
+export function listLangRecord(query: QueryParams) {
   return request({
     url: '/sysLang/lang/list/record',
     method: 'get',
