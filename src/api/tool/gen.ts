@@ -1,7 +1,22 @@
 import request from '@/utils/request'
 
+export interface QueryParams {
+  pageNum: number
+  pageSize: number
+  tableName?: string
+  tableComment?: string
+}
+
+export interface AddParams {
+ noticeId?: number
+ noticeTitle?: string
+ noticeType?: string
+ noticeContent?: string
+ status?: string
+}
+
 // 查询生成表数据
-export function listTable(query: string) {
+export function listTable(query: QueryParams) {
   return request({
     url: '/tool/gen/list',
     method: 'get',
@@ -9,7 +24,7 @@ export function listTable(query: string) {
   })
 }
 // 查询db数据库列表
-export function listDbTable(query: string) {
+export function listDbTable(query: QueryParams) {
   return request({
     url: '/tool/gen/db/list',
     method: 'get',
@@ -18,7 +33,7 @@ export function listDbTable(query: string) {
 }
 
 // 查询表详细信息
-export function getGenTable(tableId: string) {
+export function getGenTable(tableId: string | string[]) {
   return request({
     url: '/tool/gen/' + tableId,
     method: 'get'
@@ -35,7 +50,7 @@ export function updateGenTable(data: string) {
 }
 
 // 导入表
-export function importTable(data: string) {
+export function importTable(data: object) {
   return request({
     url: '/tool/gen/importTable',
     method: 'post',
