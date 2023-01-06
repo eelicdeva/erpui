@@ -173,8 +173,65 @@
 import { getServer } from '@/api/monitor/server';
 import { ComponentInternalInstance, getCurrentInstance, ref } from "vue";
 
-const server = ref([]);
+interface cpu {
+  cpuNum: number;
+  free: number;
+  sys: number;
+  total: number;
+  used: number;
+  wait: number;
+}
+
+interface jvm {
+  free: number;
+  home: string;
+  inputArgs: string;
+  max: number;
+  name: string;
+  runTime: string;
+  startTime: string;
+  total: number;
+  usage: number;
+  used: number;
+  version: string;
+}
+
+interface mem {
+  free: number;
+  total: number;
+  used: number;
+  usage: number; 
+}
+
+interface sys {
+  computerIp: string;
+  computerName:string;
+  osArch: string;
+  osName:string;
+  userDir:string;
+}
+
+interface sysFiles {
+  dirName: string;
+  free: string;
+  sysTypeName: string;  
+  total: string;
+  typeName: string;
+  usage: number;
+  used: string;
+}
+
+interface server {
+  cpu: cpu;
+  jvm: jvm;
+  mem: mem;
+  sys: sys;
+  sysFiles: sysFiles[];
+}
+
+const server = ref({} as server);
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+
 
 function getList() {
   proxy?.$modal.loading("正在加载服务监控数据，请稍候！");
