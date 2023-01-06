@@ -63,17 +63,19 @@
    </div>
 </template>
 
-<script setup name="Online">
+<script setup lang="ts" name="Online">
 import { forceLogout, list as initData } from "@/api/monitor/online";
+import { ComponentInternalInstance, getCurrentInstance, ref } from "vue";
+import type { ElForm } from "element-plus";
 
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const onlineList = ref([]);
 const loading = ref(true);
 const total = ref(0);
 const pageNum = ref(1);
 const pageSize = ref(10);
-
+const queryRef = ref<InstanceType<typeof ElForm>>();
 const queryParams = ref({
   ipaddr: undefined,
   userName: undefined
@@ -95,12 +97,13 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
+//   proxy.resetForm("queryRef");
   handleQuery();
 }
 /** 强退按钮操作 */
 function handleForceLogout(row) {
-    proxy.$modal.confirm('是否确认强退名称为"' + row.userName + '"的用户?').then(function () {
+    proxy?.$modal.confirm('是否确认强退名称为"' + row.userName + '"的用户?').then(function () {
   return forceLogout(row.tokenId);
   }).then(() => {
     getList();
