@@ -153,12 +153,15 @@
   </div>
 </template>
 
-<script setup name="Lang">
+<script setup lang="ts" name="Lang">
 import { delLang, addLang, updateLang, listLangRecord, cleanLangRecord } from "@/api/sysLang/lang";
+import type { QueryParams, AddParams } from "@/api/sysLang/lang";
+import { ComponentInternalInstance, getCurrentInstance, ref, reactive, toRefs } from "vue";
+import type { ElForm } from "element-plus";
 
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
-const recordList = ref([]);
+// const recordList = ref([]);
 const langList = ref([]);
 const open = ref(false);
 const loading = ref(true);
@@ -168,8 +171,16 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
+const queryRef = ref<InstanceType<typeof ElForm>>();
+const langRef = ref<InstanceType<typeof ElForm>>();
 
-const data = reactive({
+  interface Data {
+  form: AddParams
+  queryParams: QueryParams
+  rules: any
+}
+
+const data: Data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
@@ -216,13 +227,14 @@ function reset() {
     langTb: null,
     langFn: null,
     status: "0",
-    createBy: null,
-    createTime: null,
-    updateBy: null,
-    updateTime: null,
+    createby: null,
+    createtime: null,
+    updateby: null,
+    updatetime: null,
     remark: null
   };
-  proxy.resetForm("langRef");
+  langRef.value?.resetFields();
+  // proxy.resetForm("langRef");
 }
 
 /** 搜索按钮操作 */
@@ -233,7 +245,8 @@ function handleQuery() {
 
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
+  // proxy.resetForm("queryRef");
   handleQuery();
 }
 
@@ -250,17 +263,18 @@ function handleSelectionChange(selection) {
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["langRef"].validate(valid => {
+  // proxy.$refs["langRef"].validate(valid => {
+  langRef.value?.validate(valid => {
     if (valid) {
       if (form.value.langId != null) {
         updateLang(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
+          proxy?.$modal.msgSuccess("修改成功");
           open.value = false;
           getList();
         });
       } else {
         addLang(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy?.$modal.msgSuccess("新增成功");
           open.value = false;
           getList();
         });
@@ -272,7 +286,7 @@ function submitForm() {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _langIds = row.langId || ids.value;
-  proxy.$modal.confirm('是否确认删除lang编号为"' + _langIds + '"的数据项？').then(function() {
+  proxy?.$modal.confirm('是否确认删除lang编号为"' + _langIds + '"的数据项？').then(function() {
     return delLang(_langIds);
   }).then(() => {
     getList();
@@ -282,7 +296,7 @@ function handleDelete(row) {
 
 /** 清空按钮操作 */
 function handleClean() {
-  proxy.$modal.confirm("是否确认清空所有操作日志数据项?").then(function () {
+  proxy?.$modal.confirm("是否确认清空所有操作日志数据项?").then(function () {
     return cleanLangRecord();
   }).then(() => {
     getList();
@@ -292,7 +306,7 @@ function handleClean() {
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download('sysLang/lang/export', {
+  proxy?.$download('sysLang/lang/export', {
     ...queryParams.value
   }, `lang_${new Date().getTime()}.xlsx`)
 }
