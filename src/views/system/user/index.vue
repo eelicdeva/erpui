@@ -368,10 +368,10 @@ import { RuleType } from 'async-validator';
 const {t} = i18n.global;  
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const router = useRouter();
-const uploadRef = ref<InstanceType<typeof ElUpload>>()
-const queryRef = ref<InstanceType<typeof ElForm>>()
-const userRef = ref<InstanceType<typeof ElForm>>()
-const deptTreeRef = ref<InstanceType<typeof ElTree>>()
+const uploadRef = ref<InstanceType<typeof ElUpload>>();
+const queryRef = ref<InstanceType<typeof ElForm>>();
+const userRef = ref<InstanceType<typeof ElForm>>();
+const deptTreeRef = ref<InstanceType<typeof ElTree>>();
 
 const { sys_normal_disable, sys_user_sex } = proxy?.useDict("sys_normal_disable", "sys_user_sex");
 
@@ -388,8 +388,8 @@ const dateRange = ref([]);
 const deptName = ref("");
 const deptOptions = ref(undefined);
 const initPassword = ref(undefined);
-const postOptions: Ref<postOptions[]> = ref([]);
-const roleOptions: Ref<roleOptions[]> = ref([]);
+const postOptions: Ref<PostOptions[]> = ref([]);
+const roleOptions: Ref<RoleOptions[]> = ref([]);
 const buttonType = "primary";
 
 interface Row {
@@ -472,13 +472,13 @@ interface Data {
    }
 }
 
-interface postOptions {
+interface PostOptions {
    postId: number
    postName: string
    status: number
 }
 
-interface roleOptions{
+interface RoleOptions{
    roleId: number
    roleName: string
    status: number
