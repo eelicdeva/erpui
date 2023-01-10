@@ -221,7 +221,7 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const defaultDictType = ref("");
-const typeOptions: Ref<typeOptions[]> = ref([]);
+const typeOptions: Ref<TypeOptions[]> = ref([]);
 const route = useRoute();
 // 数据标签回显样式
 const listClassOptions = ref([
@@ -277,7 +277,7 @@ interface Data {
    };
 }
 
-interface typeOptions {
+interface TypeOptions {
    dictId: number
    dictName: string
    dictType: string
