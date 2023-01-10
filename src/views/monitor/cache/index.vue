@@ -71,12 +71,12 @@ import { getCache } from '@/api/monitor/cache';
 import * as echarts from 'echarts';
 import { ComponentInternalInstance, getCurrentInstance, ref } from "vue";
 
-interface commandStats {
+interface CommandStats {
   name: string
   value: string
 }
 
-interface info {
+interface Info {
 active_defrag_hits: string
 active_defrag_key_hits: string
 active_defrag_key_misses: string
@@ -261,9 +261,9 @@ used_memory_vm_total_human: string
 }
 
 interface Cache {
-  commandStats: commandStats[];
+  commandStats: CommandStats[];
   dbSize: number
-  info: info
+  info: Info
 }
 
 const cache = ref({} as Cache);

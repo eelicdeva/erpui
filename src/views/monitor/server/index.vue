@@ -173,7 +173,7 @@
 import { getServer } from '@/api/monitor/server';
 import { ComponentInternalInstance, getCurrentInstance, ref } from "vue";
 
-interface cpu {
+interface Cpu {
   cpuNum: number;
   free: number;
   sys: number;
@@ -182,7 +182,7 @@ interface cpu {
   wait: number;
 }
 
-interface jvm {
+interface Jvm {
   free: number;
   home: string;
   inputArgs: string;
@@ -196,14 +196,14 @@ interface jvm {
   version: string;
 }
 
-interface mem {
+interface Mem {
   free: number;
   total: number;
   used: number;
   usage: number; 
 }
 
-interface sys {
+interface Sys {
   computerIp: string;
   computerName:string;
   osArch: string;
@@ -211,7 +211,7 @@ interface sys {
   userDir:string;
 }
 
-interface sysFiles {
+interface SysFiles {
   dirName: string;
   free: string;
   sysTypeName: string;  
@@ -222,11 +222,11 @@ interface sysFiles {
 }
 
 interface server {
-  cpu: cpu;
-  jvm: jvm;
-  mem: mem;
-  sys: sys;
-  sysFiles: sysFiles[];
+  cpu: Cpu;
+  jvm: Jvm;
+  mem: Mem;
+  sys: Sys;
+  sysFiles: SysFiles[];
 }
 
 const server = ref({} as server);
