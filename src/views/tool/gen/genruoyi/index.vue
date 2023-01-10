@@ -188,9 +188,10 @@ import { useRoute } from 'vue-router';
 import importTable from "./importTable.vue";
 import type { ElForm } from "element-plus";
 
+
+
 const route = useRoute();
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-
 
 const tableList = ref([]);
 const loading = ref(true);
@@ -205,7 +206,7 @@ const uniqueId = ref("");
 const queryRef = ref<InstanceType<typeof ElForm>>();
 const importRef = ref<InstanceType<typeof importTable>>();
 
-interface previewData {
+interface PreviewData {
   'vm/java/controller.java.vm'?: string
   'vm/java/domain.java.vm'?: string
   'vm/java/mapper.java.vm'?: string
@@ -220,7 +221,7 @@ interface previewData {
 interface Preview {
   open: boolean
   title: string
-  data: previewData
+  data: PreviewData
   activeName: string
 }
 
