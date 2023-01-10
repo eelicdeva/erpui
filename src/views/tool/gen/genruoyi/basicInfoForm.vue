@@ -32,12 +32,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ElForm } from "element-plus";
 defineProps({
   info: {
     type: Object,
     default: null
   }
 });
+
+const basicInfoForm = ref<InstanceType<typeof ElForm>>();
+
 
 // 表单校验
 const rules = ref({
@@ -46,4 +50,9 @@ const rules = ref({
   className: [{ required: true, message: "请输入实体类名称", trigger: "blur" }],
   functionAuthor: [{ required: true, message: "请输入作者", trigger: "blur" }]
 });
+
+defineExpose({
+  basicInfoForm
+})
+
 </script>
