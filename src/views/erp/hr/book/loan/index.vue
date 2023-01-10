@@ -195,8 +195,8 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
-const bookOptions: Ref<bookOptions[]> = ref([]);
-const categoryOptions: Ref<categoryOptions[]> = ref([]);
+const bookOptions: Ref<BookOptions[]> = ref([]);
+const categoryOptions: Ref<CategoryOptions[]> = ref([]);
 const queryRef = ref<InstanceType<typeof ElForm>>();
 const loanRef = ref<InstanceType<typeof ElForm>>();
 
@@ -222,13 +222,13 @@ interface Data {
    }
 }
 
-interface categoryOptions {
+interface CategoryOptions {
    categoryId: string
    categoryName: string
    status: number
 }
 
-interface bookOptions {
+interface BookOptions {
    bookId: string
    bookTitle: string
    bookTitleEn: string
