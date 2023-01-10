@@ -211,8 +211,8 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
-const categoryOptions: Ref<categoryOptions[]> = ref([]);
-const locationOptions: Ref<locationOptions[]> = ref([]);
+const categoryOptions: Ref<CategoryOptions[]> = ref([]);
+const locationOptions: Ref<LocationOptions[]> = ref([]);
 const queryRef = ref<InstanceType<typeof ElForm>>();
 const bookRef = ref<InstanceType<typeof ElForm>>();
 
@@ -291,13 +291,13 @@ interface Data {
    }
 }
 
-interface categoryOptions {
+interface CategoryOptions {
    categoryId: string
    categoryName: string
    status: number
 }
 
-interface locationOptions{
+interface LocationOptions{
    locationId: string
    location: string
    status: string
