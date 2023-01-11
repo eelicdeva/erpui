@@ -29,10 +29,8 @@
 </template>
 
 <script lang="ts" setup name="TreeSelect">
-import { computed, getCurrentInstance, nextTick, onMounted, ref, watch } from 'vue';
-import type { ComponentInternalInstance } from 'vue';
-
-const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { ElSelect, ElTree } from 'element-plus';
 
 const props = defineProps({
   /* 配置项 */
@@ -80,15 +78,16 @@ const valueId = computed({
 });
 const valueTitle = ref('');
 const defaultExpandedKey = ref<(string | number)[]>([]);
-
+const selectTree = ref<InstanceType<typeof ElTree>>()
+const treeSelect = ref<InstanceType<typeof ElSelect>>()
 function initHandle() {
   nextTick(() => {
       const selectedValue = valueId.value;
       if (selectedValue !== null && typeof selectedValue !== 'undefined') {
-          const node = (proxy?.$refs.selectTree as any).getNode(selectedValue);
+          const node = selectTree.value?.getNode(selectedValue);
           if (node) {
               valueTitle.value = node.data[props.objMap.label];
-              (proxy?.$refs.selectTree as any).setCurrentKey(selectedValue); // 设置默认选中
+               selectTree.value?.setCurrentKey(selectedValue); // 设置默认选中
               defaultExpandedKey.value = [selectedValue]; // 设置默认展开
           }
       } else {
@@ -100,11 +99,11 @@ function handleNodeClick(node: Object) {
   valueTitle.value = node[props.objMap.label];
   valueId.value = node[props.objMap.value];
   defaultExpandedKey.value = [];
-  (proxy?.$refs.treeSelect as any).blur();
+  treeSelect.value?.blur();
   selectFilterData('');
 }
 function selectFilterData(val) {
-  (proxy?.$refs.selectTree as any).filter(val);
+  selectTree.value?.filter(val);
 }
 function filterNode(value, data) {
   if (!value) return true;
