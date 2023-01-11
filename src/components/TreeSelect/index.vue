@@ -78,64 +78,60 @@ const valueId = computed({
     emit('update:value', val)
   }
 });
-
-
-
 const valueTitle = ref('');
-const defaultExpandedKey = ref([]);
+const defaultExpandedKey = ref<(string | number)[]>([]);
 
 function initHandle() {
   nextTick(() => {
-    const selectedValue  = valueId.value; 
-    if(selectedValue !== null && typeof (selectedValue) !== 'undefined') {
-      const node = proxy.$refs.selectTree.getNode(selectedValue)
-      if (node) {
-        valueTitle.value = node.data[props.objMap.label]
-        proxy.$refs.selectTree.setCurrentKey(selectedValue) // 设置默认选中
-        defaultExpandedKey.value = [selectedValue] // 设置默认展开
+      const selectedValue = valueId.value;
+      if (selectedValue !== null && typeof selectedValue !== 'undefined') {
+          const node = (proxy?.$refs.selectTree as any).getNode(selectedValue);
+          if (node) {
+              valueTitle.value = node.data[props.objMap.label];
+              (proxy?.$refs.selectTree as any).setCurrentKey(selectedValue); // 设置默认选中
+              defaultExpandedKey.value = [selectedValue]; // 设置默认展开
+          }
+      } else {
+          clearHandle();
       }
-    } else {
-      clearHandle()
-    }
-  })
+  });
 }
-
-function handleNodeClick(node) {
-  valueTitle.value = node[props.objMap.label]
+function handleNodeClick(node: Object) {
+  valueTitle.value = node[props.objMap.label];
   valueId.value = node[props.objMap.value];
   defaultExpandedKey.value = [];
-  ( proxy?.$refs.treeSelect as HTMLSelectElement).blur()
-  selectFilterData('')
+  (proxy?.$refs.treeSelect as any).blur();
+  selectFilterData('');
 }
 function selectFilterData(val) {
-  ( proxy?.$refs.treeSelect ).filter(val)
+  (proxy?.$refs.selectTree as any).filter(val);
 }
 function filterNode(value, data) {
-  if (!value) return true
-  return data[props.objMap['label']].indexOf(value) !== -1
+  if (!value) return true;
+  return data[props.objMap['label']].indexOf(value) !== -1;
 }
 function clearHandle() {
-  valueTitle.value = ''
-  valueId.value = ''
+  valueTitle.value = '';
+  valueId.value = '';
   defaultExpandedKey.value = [];
-  clearSelected()
+  clearSelected();
 }
 function clearSelected() {
-  const allNode = document.querySelectorAll('#tree-option .el-tree-node')
-  allNode.forEach((element) => element.classList.remove('is-current'))
+  const allNode = document.querySelectorAll('#tree-option .el-tree-node');
+  allNode.forEach(element => element.classList.remove('is-current'));
 }
 
 onMounted(() => {
-  initHandle()
-})
+  initHandle();
+});
 
 watch(valueId, () => {
   initHandle();
-})
+});
 </script>
 
-<style lang='scss' scoped>
-@import "@/assets/styles/variables.module.scss";
+<style lang="scss" scoped>
+@import '@/assets/styles/variables.module.scss';
 .el-scrollbar .el-scrollbar__view .el-select-dropdown__item {
   padding: 0;
   background-color: #fff;
