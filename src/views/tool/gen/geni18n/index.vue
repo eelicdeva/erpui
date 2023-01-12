@@ -177,13 +177,17 @@
   </div>
 </template>
 
-<script setup name="Gen">
+<script setup lang="ts" name="Gen">
 import { listTable, previewTable, delTable, genCode, synchDb } from "@/api/tool/geni18n";
+import type { QueryParams } from "@/api/tool/geni18n";
 import router from "@/router";
-import importTable from "./importTable";
+import importTable from "./importTable.vue";
+import { getCurrentInstance, ComponentInternalInstance, ref, reactive, toRefs, onActivated } from 'vue';
+import { useRoute } from 'vue-router';
+import type { ElForm } from "element-plus";
 
 const route = useRoute();
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const tableList = ref([]);
 const loading = ref(true);
@@ -195,8 +199,34 @@ const total = ref(0);
 const tableNames = ref([]);
 const dateRange = ref([]);
 const uniqueId = ref("");
+const queryRef = ref<InstanceType<typeof ElForm>>();
+const importRef = ref<InstanceType<typeof importTable>>();
 
-const data = reactive({
+interface PreviewData {
+  'vm/java/controller.java.vm'?: string
+  'vm/java/domain.java.vm'?: string
+  'vm/java/mapper.java.vm'?: string
+  'vm/java/service.java.vm'?: string
+  'vm/java/serviceImpl.java.vm'?: string
+  'vm/js/api.js.vm'?: string
+  'vm/sql/sql.vm'?: string
+  'vm/vue/v3/index.vue.vm'?: string
+  'vm/xml/mapper.xml.vm'?: string  
+}
+
+interface Preview {
+  open: boolean
+  title: string
+  data: PreviewData
+  activeName: string
+}
+
+interface Data {
+  queryParams: QueryParams
+  preview: Preview
+}
+
+const data: Data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
@@ -216,10 +246,10 @@ const { queryParams, preview } = toRefs(data);
 onActivated(() => {
   const time = route.query.t;
   if (time != null && time != uniqueId.value) {
-    uniqueId.value = time;
+    uniqueId.value = String(time);
     queryParams.value.pageNum = Number(route.query.pageNum);
     dateRange.value = [];
-    proxy.resetForm("queryForm");
+    proxy?.resetForm("queryForm");
     getList();
   }
 })
@@ -227,7 +257,7 @@ onActivated(() => {
 /** 查询表集合 */
 function getList() {
   loading.value = true;
-  listTable(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
+  listTable(proxy?.addDateRange(queryParams.value, dateRange.value)).then(response => {
     tableList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -242,21 +272,21 @@ function handleQuery() {
 function handleGenTable(row) {
   const tbNames = row.tableName || tableNames.value;
   if (tbNames == "") {
-    proxy.$modal.msgError("请选择要生成的数据");
+    proxy?.$modal.msgError("请选择要生成的数据");
     return;
   }
   if (row.genType === "1") {
     genCode(row.tableName).then(response => {
-      proxy.$modal.msgSuccess("成功生成到自定义路径：" + row.genPath);
+      proxy?.$modal.msgSuccess("成功生成到自定义路径：" + row.genPath);
     });
   } else {
-    proxy.$download.zip("/tool/geni18n/batchGenCode?tables=" + tbNames, "eelic.zip");
+    proxy?.$download.zip("/tool/geni18n/batchGenCode?tables=" + tbNames, "eelic.zip");
   }
 }
 /** 同步数据库操作 */
 function handleSynchDb(row) {
   const tableName = row.tableName;
-  proxy.$modal.confirm('确认要强制同步"' + tableName + '"表结构吗？').then(function () {
+  proxy?.$modal.confirm('确认要强制同步"' + tableName + '"表结构吗？').then(function () {
     return synchDb(tableName);
   }).then(() => {
     proxy.$modal.msgSuccess("同步成功");
@@ -264,12 +294,14 @@ function handleSynchDb(row) {
 }
 /** 打开导入表弹窗 */
 function openImportTable() {
-  proxy.$refs["importRef"].show();
+  importRef.value?.show();
+  // proxy.$refs["importRef"].show();
 }
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
+  // proxy.resetForm("queryRef");
   handleQuery();
 }
 /** 预览按钮 */
@@ -282,7 +314,7 @@ function handlePreview(row) {
 }
 /** 复制代码成功 */
 function copyTextSuccess() {
-  proxy.$modal.msgSuccess("复制成功");
+  proxy?.$modal.msgSuccess("复制成功");
 }
 // 多选框选中数据
 function handleSelectionChange(selection) {
@@ -299,7 +331,7 @@ function handleEditTable(row) {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const tableIds = row.tableId || ids.value;
-  proxy.$modal.confirm('是否确认删除表编号为"' + tableIds + '"的数据项？').then(function () {
+  proxy?.$modal.confirm('是否确认删除表编号为"' + tableIds + '"的数据项？').then(function () {
     return delTable(tableIds);
   }).then(() => {
     getList();
