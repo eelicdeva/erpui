@@ -163,32 +163,90 @@
   </el-card>
 </template>
 
-<script setup name="GenEditi18n">
+<script setup lang="ts" name="GenEditi18n">
 import { getGenTable, updateGenTable } from "@/api/tool/geni18n";
 import { optionselect as getDictOptionselect } from "@/api/system/dict/type";
-import basicInfoForm from "./basicInfoForm";
-import genInfoForm from "./genInfoForm";
-import genChartForm from "./genChartForm";
-import viewForm from "./viewForm";
-
+import basicInfoForm from "./basicInfoForm.vue";
+import genInfoForm from "./genInfoForm.vue";
+import genChartForm from "./genChartForm.vue";
+import viewForm from "./viewForm.vue";
+import { ComponentInternalInstance, getCurrentInstance, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import useAppStore from "@/stores/modules/app";
+import type { QueryParams } from "@/api/tool/gen";
+
+interface Column {
+    capJavaField: string;
+    columnComment: string;
+    columnId: number;
+    columnName: string;
+    columnType: string;
+    createBy: string;
+    createTime: string;
+    dictType: string;
+    edit: boolean;
+    htmlType: string | null;
+    increment: boolean;
+    insert: boolean;
+    isEdit: string | null;
+    isIncrement: string;
+    isInsert: string;
+    isList: string | null;
+    isPk: string;
+    isQuery: string | null;
+    isRequired: string | null;
+    javaField: string;
+    javaType: string;
+    list: boolean;
+    params: QueryParams;
+    pk: boolean;
+    query: boolean;
+    queryType: string | null;
+    remark: string;
+    required: boolean;
+    searchValue: null
+    sort: number;
+    superColumn: boolean;
+    tableId: number;
+    updateBy: string;
+    updateTime: string;
+    usableColumn: boolean;
+}
+
+interface DictOptions {
+  dictType: string;
+  dictName: string;
+}
+
+interface Info {
+  columns: Column[]
+  params: object;
+  treeCode: string | null;
+  treeName: string | null;
+  treeParentCode: string | null;
+  parentMenuId: string | null;
+}
 
 const route = useRoute();
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const activeName = ref("columnInfo");
 const tableHeight = ref(document.documentElement.scrollHeight - 245 + "px");
 const tables = ref([]);
-const columns = ref([]);
-const dictOptions = ref([]);
-const info = ref({});
+const columns = ref<Column[]>([]);
+const dictOptions = ref<DictOptions[]>([]);
+const info = ref({} as Info);
+const basicInfo = ref<InstanceType<typeof basicInfoForm>>();
+const genInfo = ref<InstanceType<typeof genInfoForm>>();
+const chartInfo = ref<InstanceType<typeof genChartForm>>();
 
 /** 提交按钮 */
 function submitForm() {
-  const basicForm = proxy.$refs.basicInfo.$refs.basicInfoForm;
-  const genForm = proxy.$refs.genInfo.$refs.genInfoForm;
-  const genChartForm = proxy.$refs.chartInfo.$refs.genChartForm;
-  Promise.all([basicForm, genForm, genChartForm ].map(getFormPromise)).then(res => {
+
+  // const basicForm = proxy.$refs.basicInfo.$refs.basicInfoForm;
+  // const genForm = proxy.$refs.genInfo.$refs.genInfoForm;
+  // const genChartForm = proxy.$refs.chartInfo.$refs.genChartForm;
+  Promise.all([basicInfo.value?.basicInfoForm, genInfo.value?.genInfoForm, chartInfo.value?.genChartForm].map(getFormPromise)).then(res => {
     const validateResult = res.every(item => !!item);
     if (validateResult) {
       const genTable = Object.assign({}, info.value);
@@ -200,26 +258,27 @@ function submitForm() {
         parentMenuId: info.value.parentMenuId
       };
       updateGenTable(genTable).then(res => {
-        proxy.$modal.msgSuccess(res.msg);
+        proxy?.$modal.msgSuccess(res.msg);
         if (res.code === 200) {
           close();
         }
       });
     } else {
-      proxy.$modal.msgError("表单校验未通过，请重新检查提交内容");
+      proxy?.$modal.msgError("表单校验未通过，请重新检查提交内容");
     }
   });
 }
-function getFormPromise(form) {
-  return new Promise(resolve => {
-    form.validate(res => {
-      resolve(res);
+function getFormPromise(form?: any) {
+  console.log(form)
+    return new Promise(resolve => {
+        form?.validate((res: any) => {
+            resolve(res);
+        });
     });
-  });
 }
 function close() {
   const obj = { path: "/tool/code/geni18n", query: { t: Date.now(), pageNum: route.query.pageNum } };
-  proxy.$tab.closeOpenPage(obj);
+  proxy?.$tab.closeOpenPage(obj.path);
 }
 
 (() => {
