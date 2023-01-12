@@ -216,17 +216,7 @@ function moveToCurrentTag() {
         scrollPaneRef.value?.moveToTarget(r.fullPath);
         // when query is different then update
         if (r.fullPath !== route.fullPath) {
-          const { fullPath, path, name, meta, query } = route;
-          const currentViewTag = {} as Tag;
-          if (name !== null && name !== undefined) {
-            //@ts-ignore
-            currentViewTag.name = name;
-            currentViewTag.fullPath = fullPath;
-            currentViewTag.query = query
-            currentViewTag.path = path;      
-            currentViewTag.meta = meta;      
-            useTagsViewStore().updateVisitedView(currentViewTag)
-          }
+          useTagsViewStore().updateVisitedView(route);
         }
       }
     }
