@@ -222,22 +222,30 @@
   </el-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { listMenu } from "@/api/system/menu";
+import { ComponentInternalInstance, getCurrentInstance, ref, watch } from 'vue';
+import { ElForm } from "element-plus";
 
-const subColumns = ref([]);
+interface SubColumn {
+  columnName: string;
+  columnComment: string;
+}
+
+const genInfoForm = ref<InstanceType<typeof ElForm>>();
+const subColumns = ref<SubColumn[]>([]);
 const menuOptions = ref({});
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const props = defineProps({
   info: {
-    type: Object,
-    default: null
+    type: Object as () => any,
+    default: null,
   },
   tables: {
-    type: Array,
-    default: null
-  }
+    type: Array as () => Array<any>,
+    default: null,
+  },
 });
 
 // 表单校验
@@ -258,7 +266,7 @@ function tplSelectChange(value) {
   }
 }
 function setSubTableColumns(value) {
-  for (var item in props.tables) {
+  for (let item in props.tables) {
     const name = props.tables[item].tableName;
     if (value === name) {
       subColumns.value = props.tables[item].columns;
@@ -269,7 +277,7 @@ function setSubTableColumns(value) {
 /** 查询菜单下拉树结构 */
 function getMenuTreeselect() {
   listMenu().then(response => {
-    menuOptions.value = proxy.handleTree(response.data, "menuId");
+    menuOptions.value = proxy!.handleTree(response.data, "menuId");
   });
 }
 
@@ -278,4 +286,9 @@ watch(() => props.info.subTableName, val => {
 });
 
 getMenuTreeselect();
+
+defineExpose({
+  genInfoForm 
+})
+
 </script>
