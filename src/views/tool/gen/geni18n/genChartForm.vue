@@ -1,5 +1,5 @@
 <template>
-    <el-form ref="genChartForm" :model="info" :rules="rules" label-width="150px">
+    <el-form ref="genChartForm" :model="info" label-width="150px">
         <el-row>
             <el-col :span="24">
               <el-form-item :label="$t('genTable.chartType')" prop="chartType">
@@ -38,12 +38,15 @@
               </el-form-item>
             </el-col>
           </el-row>
-      </el-form>
+    </el-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { ref } from 'vue';
+import { ElForm } from "element-plus";
+const genChartForm= ref<InstanceType<typeof ElForm>>();
 
-const props = defineProps({
+defineProps({
   info: {
     type: Object,
     default: null
@@ -54,6 +57,8 @@ const props = defineProps({
   }
 });
 
-
+defineExpose({
+  genChartForm
+});
 
 </script>
