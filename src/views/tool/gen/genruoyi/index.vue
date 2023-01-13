@@ -179,7 +179,7 @@
   </div>
 </template>
 
-<script setup name="Gen" lang="ts">
+<script setup lang="ts" name="Gen">
 import { listTable, previewTable, delTable, genCode, synchDb } from "@/api/tool/gen";
 import type { QueryParams } from "@/api/tool/gen";
 import router from "@/router";
