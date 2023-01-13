@@ -48,14 +48,18 @@
   </el-dialog>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { listDbTable, importTable } from "@/api/tool/geni18n";
+import { ComponentInternalInstance, getCurrentInstance, ref, reactive } from 'vue';
+import { ElForm, ElTable } from "element-plus";
 
 const total = ref(0);
 const visible = ref(false);
 const tables = ref([]);
 const dbTableList = ref([]);
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
+const table = ref<InstanceType<typeof ElTable>>();
+const queryRef = ref<InstanceType<typeof ElForm>>();
 
 const queryParams = reactive({
   pageNum: 1,
@@ -73,7 +77,9 @@ function show() {
 }
 /** 单击选择行 */
 function clickRow(row) {
-  proxy.$refs.table.toggleRowSelection(row);
+  // @ts-expect-error
+  table.value?.toggleRowSelection(row, undefined);
+  // proxy.$refs.table.toggleRowSelection(row);
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
@@ -93,18 +99,19 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef");
+  queryRef.value?.resetFields();
+  // proxy.resetForm("queryRef");
   handleQuery();
 }
 /** 导入按钮操作 */
 function handleImportTable() {
   const tableNames = tables.value.join(",");
   if (tableNames == "") {
-    proxy.$modal.msgError("请选择要导入的表");
+    proxy?.$modal.msgError("请选择要导入的表");
     return;
   }
   importTable({ tables: tableNames }).then(res => {
-    proxy.$modal.msgSuccess(res.msg);
+    proxy?.$modal.msgSuccess(res.msg);
     if (res.code === 200) {
       visible.value = false;
       emit("ok");
