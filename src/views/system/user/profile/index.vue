@@ -62,14 +62,29 @@
    </div>
 </template>
 
-<script setup name="Profile">
-import userAvatar from "./userAvatar";
-import userInfo from "./userInfo";
-import resetPwd from "./resetPwd";
+<script setup lang="ts" name="Profile">
+import userAvatar from "./userAvatar.vue";
+import userInfo from "./userInfo.vue";
+import resetPwd from "./resetPwd.vue";
 import { getUserProfile } from "@/api/system/user";
+import { ref, reactive } from 'vue';
+
+interface User {
+   userName?: string
+   phonenumber?: string
+   email?: string
+   dept?: {
+      deptName: string
+   }
+   createTime?: string
+}
 
 const activeTab = ref("userinfo");
-const state = reactive({
+const state = reactive<{
+    user: User;
+    roleGroup: object;
+    postGroup: object;
+}>({
   user: {},
   roleGroup: {},
   postGroup: {}

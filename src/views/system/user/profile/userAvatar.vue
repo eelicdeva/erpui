@@ -1,9 +1,11 @@
 <template>
+  <div>
   <div class="user-info-head" @click="editCropper()"><img :src="options.img" :title="$t('avatar.uploadAvatar')" class="img-circle img-lg" /></div>
   <el-dialog :title="title" v-model="open" width="800px" append-to-body @opened="modalOpened"  @close="closeDialog">
     <el-row>
       <el-col :xs="24" :md="12" :style="{height: '350px'}">
         <vue-cropper
+            v-if="visible"
             ref="cropper"
             :img="options.img"
             :info="true"
@@ -13,7 +15,7 @@
             :fixedBox="options.fixedBox"
             :outputType="options.outputType"
             @realTime="realTime"
-            v-if="visible"
+           
         />
       </el-col>
       <el-col :xs="24" :md="12" :style="{height: '350px'}">
@@ -49,6 +51,7 @@
       </el-col>
     </el-row>
   </el-dialog>
+  </div>
 </template>
 
 <script lang="ts" setup name="userAvatar">
@@ -77,11 +80,11 @@ interface Options {
   autoCropHeight: number;// 默认生成截图框高度
   fixedBox: boolean; // 固定截图框大小 不允许改变
   outputType: string; // 默认生成截图为PNG格式
-  visible?: boolean; 
   previews: {
     url?: string;
     img?: string; //string | ArrayBuffer | null;
   }; //预览数据
+  visible: boolean;
 };
 
 const options: Options = reactive({
@@ -91,7 +94,8 @@ const options: Options = reactive({
   autoCropHeight: 200, // 默认生成截图框高度
   fixedBox: true, // 固定截图框大小 不允许改变
   outputType:"png", // 默认生成截图为PNG格式
-  previews: {} //预览数据
+  previews: {}, //预览数据
+  visible: false,
 });
 
 /** 编辑头像 */
