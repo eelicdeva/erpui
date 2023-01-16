@@ -16,21 +16,27 @@
    </el-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { updateUserPwd } from "@/api/system/user";
 import { getPublicKey } from '@/api/login'
 import { encrypt } from "@/utils/jsencrypt";
 import i18n from '@/lang/index';
+import { ComponentInternalInstance, getCurrentInstance, reactive, ref } from "vue";
+import { ElForm } from "element-plus";
 
 const {t} = i18n.global;
+const pwdRef = ref<InstanceType<typeof ElForm>>();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
-const { proxy } = getCurrentInstance();
-
-const user = reactive({
+const user = reactive<{
+  oldPassword?: string,
+  newPassword?: string,
+  confirmPassword?: string,
+}>({
   oldPassword: undefined,
   newPassword: undefined,
   confirmPassword: undefined
-});
+});  
 
 const equalToPassword = (rule, value, callback) => {
   if (user.newPassword !== value) {
@@ -47,14 +53,14 @@ const rules = ref({
 
 /** 提交按钮 */
 function submit() {
-  proxy.$refs.pwdRef.validate(valid => {
+  pwdRef.value?.validate(valid => {
     if (valid) {
       getPublicKey().then(res => {
         let publicKey = res.publicKey
         const oldPassword = encrypt(user.oldPassword, publicKey)
         const newPassword = encrypt(user.newPassword, publicKey)
       updateUserPwd(oldPassword, newPassword).then(response => {
-          proxy.$modal.msgSuccess(t('button.successModify'));
+          proxy?.$modal.msgSuccess(t('button.successModify'));
         });
       })
     }
@@ -62,6 +68,6 @@ function submit() {
 };
 /** 关闭按钮 */
 function close() {
-  proxy.$tab.closePage();
+  proxy?.$tab.closePage();
 };
 </script>
