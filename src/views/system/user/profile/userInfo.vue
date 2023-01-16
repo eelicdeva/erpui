@@ -22,20 +22,24 @@
    </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { updateUserProfile } from "@/api/system/user";
 import i18n from '@/lang/index';
+import { ComponentInternalInstance, getCurrentInstance, ref} from "vue";
+import { ElForm } from "element-plus";
+import type { FormRules } from 'element-plus'
 
+const userRef = ref<InstanceType<typeof ElForm>>();
 const {t} = i18n.global;
 const props = defineProps({
   user: {
-    type: Object
+    type: Object as () => any,
   }
 });
 
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
-const rules = ref({
+const rules = ref<FormRules>({
   nickName: [{ required: true, message: t('user.nicknameRules'), trigger: "blur" }],
   email: [{ required: true, message: t('user.emailRules'), trigger: "blur" }, { type: "email", message:  t('user.emailRules'), trigger: ["blur", "change"] }],
   phonenumber: [{ required: true, message: t('user.phoneNumberRules'), trigger: "blur" }, { pattern: /[0-9]+$/, message: t('user.pnumberRules'), trigger: "blur" }],
@@ -43,16 +47,16 @@ const rules = ref({
 
 /** 提交按钮 */
 function submit() {
-  proxy.$refs.userRef.validate(valid => {
+  userRef.value?.validate(valid => {
     if (valid) {
       updateUserProfile(props.user).then(response => {
-        proxy.$modal.msgSuccess(t('button.successModify'));
+        proxy?.$modal.msgSuccess(t('button.successModify'));
       });
     }
   });
 };
 /** 关闭按钮 */
 function close() {
-  proxy.$tab.closePage();
+  proxy?.$tab.closePage();
 };
 </script>
