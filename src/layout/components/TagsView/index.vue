@@ -6,7 +6,7 @@
         :key="tag.fullPath"
         :data-path="tag.fullPath"
         :class="isActive(tag.fullPath) ? 'active' : ''"
-        :to="{ path: tag.fullPath }"
+        :to="{ path: tag.fullPath, query: tag.query }"
         class="tags-view-item"
         :style="activeStyle(tag.fullPath)"
         @click.middle="!isAffix(tag.fullPath,tag.meta.affix) ? closeSelectedTag(tag.fullPath) : ''"

@@ -16,6 +16,7 @@ import iframeToggle from "./IframeToggle/index.vue"
 import useTagsViewStore from '@/stores/modules/tagsView'
 
 const tagsViewStore = useTagsViewStore()
+
 </script>
 
 <style lang="scss" scoped>

@@ -59,9 +59,9 @@ const useTagsViewStore = defineStore(
         )
       },
       addCachedView(view: VisitedView) {
-        if (this.cachedViews.includes(view.fullPath)) return
+        if (this.cachedViews.includes(view.name)) return
         if (!view.meta.noCache) {
-          this.cachedViews.push(view.fullPath)
+          this.cachedViews.push(view.name)
         }
       },
       delView(view: string ) { //view: fullPath
