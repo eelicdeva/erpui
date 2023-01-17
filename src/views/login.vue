@@ -54,7 +54,7 @@
       </el-form-item>
       <!-- to-do checkbox error loginForm 
       <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
-      -->  
+        -->
       <el-form-item style="width: 100%">
         <el-button
           :loading="loading"
@@ -91,16 +91,20 @@ import LangSelect from "@/components/LangSelect/index.vue";
 import useSettingsStore from '@/stores/modules/settings';
 //import ElForm from "element-plus/es/components/form";
 //const loginRef = ref([] as Array<HTMLElement>)
+import { nextTick, ref } from "vue";
+import { ElForm } from "element-plus";
 
 interface LoginForm {
-  code?: string;
+  code: string;
   password: string;
-  lang?: string;
-  rememberMe?: boolean,
+  lang: string;
+  rememberMe: boolean,
   username: string;
-  uuid?: string;
+  uuid: string;
 }
 
+const loginForm =  ref<LoginForm>();
+const loginRef = ref<InstanceType<typeof ElForm>>();
 export default {
   name: "login",
   'components': { LangSelect },
@@ -167,20 +171,22 @@ export default {
   },
   methods: {
     langListen() {      
-      const loginRef = this.$refs.loginRef;
-      loginRef.clearValidate();
-      this.$nextTick(() => loginRef.validate(()=>{})); //
+      
+      loginRef.value?.clearValidate();
+      nextTick(() => loginRef.value?.validate(()=>{})); //
    },
     handleLogin() {    
       (this.$refs.loginRef as any).validate((valid) => {
         if (valid) {
-         
           this.loading = true;
           // 勾选了需要记住密码设置在cookie中设置记住用户名和密码
           if (this.loginForm.rememberMe) {
-            Cookies.set("username", loginForm.value.username, { expires: 30 });
-            Cookies.set("password", encrypt(loginForm.value.password), { expires: 30 });
-            Cookies.set("rememberMe", loginForm.value.rememberMe, { expires: 30 });
+            if (loginForm.value?.username !== undefined)
+              Cookies.set("username", loginForm.value?.username, { expires: 30 });
+            if (loginForm.value?.password !== undefined)
+              Cookies.set("password", encrypt(loginForm.value.password), { expires: 30 });
+            if (loginForm.value?.rememberMe !== undefined)  
+              Cookies.set("rememberMe", String(loginForm.value.rememberMe), { expires: 30 });
           } else {
             // 否则移除
             Cookies.remove("username");
@@ -227,11 +233,9 @@ export default {
       const username = Cookies.get("username");
       const password = Cookies.get("password");
       const rememberMe = Cookies.get("rememberMe");
-      this.loginForm = {
-        username: username === undefined ? this.loginForm.username : username,
-        password: password === undefined ? this.loginForm.password : decrypt(password),
-        rememberMe: rememberMe === undefined ? false : Boolean(rememberMe),
-      };
+      loginForm.value?.username === undefined ? this.loginForm.username : username,
+      loginForm.value?.password === undefined ? this.loginForm.password : decrypt(password),
+      loginForm.value?.rememberMe === undefined ? false : Boolean(rememberMe)
     },
   },
 };

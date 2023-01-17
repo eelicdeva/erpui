@@ -23,7 +23,7 @@ export const encrypt = (txt: string, publicKey?: string): string => {
  * @return {string} 
  */
 let privateKey ='';
-export const decrypt = (txt: string): string => {
+export const decrypt = (txt?: string): string => {
   const encryptor = new JSEncrypt()
   encryptor.setPrivateKey(privateKey) // 设置私钥
   return encryptor.decrypt(txt) // 对数据进行解密

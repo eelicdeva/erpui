@@ -22,7 +22,7 @@ export default {
     }
   },
   // ||关闭指定tab页签
-  async closePage(obj: string) {
+  async closePage(obj?: string) {
     if (obj === undefined) {
       await useTagsViewStore()
       .delView(router.currentRoute.value.fullPath);

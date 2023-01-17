@@ -34,7 +34,7 @@ declare module '@vue/runtime-core' {
       /**
        * close selected tab || 关闭指定tab页签
        */
-      closePage(obj: string): Promise<NavigationFailure | void | undefined>;
+      closePage(obj?: string): Promise<NavigationFailure | void | undefined>;
      /**
        * close all tab ||关闭所有tab页签
        */
