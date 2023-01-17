@@ -80,8 +80,11 @@
 import { useRouter } from "vue-router";
 import { getCodeImg, register } from "@/api/login";
 import LangSelect from "@/components/LangSelect/index.vue";
+import { nextTick, ref } from "vue";
+import { ElForm, ElMessageBox } from "element-plus";
 
 
+const registerRef = ref<InstanceType<typeof ElForm>>();
 export default {
   name: "register",
   components: { LangSelect },
@@ -142,8 +145,8 @@ export default {
   },
   methods: {
     langLisen() {      
-      this.$refs.registerRef.clearValidate();
-      this.$nextTick(() => this.$refs.registerRef.validate(()=>{}));
+      registerRef.value?.clearValidate();
+      nextTick(() => registerRef.value?.validate(()=>{}));
    },
     getCode() {
       getCodeImg().then(res => {
@@ -155,12 +158,12 @@ export default {
       });
     },
     handleRegister() {
-      this.$refs.registerRef.validate(valid => {
+      registerRef.value?.validate(valid => {
         if (valid) {
           this.loading = true;
           register(this.registerForm).then(res => {
             const username = this.registerForm.username;
-            this.$alert("<font color='red'>" + this.$t('register.congratulations') + " " + username + " " + this.$t('register.success') + " </font>", this.$t('utils.request.msgSysHint'), {
+            ElMessageBox.alert("<font color='red'>" + this.$t('register.congratulations') + " " + username + " " + this.$t('register.success') + " </font>", this.$t('utils.request.msgSysHint'), {
               dangerouslyUseHTMLString: true,
               type: 'success'
             }).then(() => {
