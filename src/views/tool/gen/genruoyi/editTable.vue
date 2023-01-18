@@ -238,7 +238,7 @@ function getFormPromise(form?: any) {
     });
 }
 function close() {
-    const obj = { path: '/tool/code/gen', query: { t: Date.now(), pageNum: route.query.pageNum } };
+    const obj = { path: '/tool/code/genruoyi', query: { t: Date.now(), pageNum: route.query.pageNum } };
     proxy?.$tab.closeOpenPage(obj.path);
 }
 

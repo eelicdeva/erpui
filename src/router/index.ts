@@ -290,7 +290,7 @@ export const dynamicRoutes: DynamicRoute[] = [
         path: 'index/:tableId(\\d+)',
         component: () => import('@/views/tool/gen/geni18n/editTable.vue'),
         name: 'GenEditi18n',
-        meta: { title: '修改生成配置', activeMenu: '/tool/gen/geni18n' }
+        meta: { title: '修改生成配置', activeMenu: '/tool/code/geni18n' }
       }
     ]
   },
@@ -304,7 +304,7 @@ export const dynamicRoutes: DynamicRoute[] = [
         path: 'index/:tableId(\\d+)',
         component: () => import('@/views/tool/gen/genruoyi/editTable.vue'),
         name: 'GenEdit',
-        meta: { title: '修改生成配置', activeMenu: '/tool/gen/genruoyi' }
+        meta: { title: '修改生成配置', activeMenu: '/tool/code/genruoyi' }
       }
     ]
   }

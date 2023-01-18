@@ -46,9 +46,9 @@ interface MenuData {
     icon: string;        // || 设置该路由的图标，对应路径src/assets/icons/svg 
     noCache: boolean;   // || true:则不会被 <keep-alive> 缓存(默认 false)
     link: string;      // ||外部链接
-    //activeMenu?: string;  // is it need?
+    activeMenu?: string;  // is it need?
     affix?: boolean;    // for the tagsview
-    //breadcrumb?: boolean;  // for the Breadrumb
+    // breadcrumb?: boolean;  // for the Breadrumb
   };
   query?: string;
   children: MenuData[];
@@ -60,10 +60,10 @@ const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
 
 const sidebarMenus =  computed(() => permissionStore.sidebarMenus);
-const showLogo = computed<boolean>(() => settingsStore.sidebarLogo);
-const sideTheme = computed<string>(() => settingsStore.sideTheme);
-const theme = computed<string>(() => settingsStore.theme);
-const isCollapse = computed<boolean>(() => !appStore.sidebar.opened);
+const showLogo = computed(() => settingsStore.sidebarLogo);
+const sideTheme = computed(() => settingsStore.sideTheme);
+const theme = computed(() => settingsStore.theme);
+const isCollapse = computed(() => !appStore.sidebar.opened);
 
 const activeMenu = computed(() => {
   const { meta, path } = route;
