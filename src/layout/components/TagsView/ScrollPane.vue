@@ -13,8 +13,8 @@
 
 <script lang="ts" setup name="ScrollPane">
 import useTagsViewStore, { VisitedView } from '@/stores/modules/tagsView';
-import { computed, getCurrentInstance, onBeforeUnmount, onMounted, ref } from 'vue';
-import type { ComponentInternalInstance } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { ElScrollbar } from 'element-plus';
 
 export interface TagScroll {
   fullPath: string;
@@ -22,16 +22,14 @@ export interface TagScroll {
   offsetWidth: number;
 }
 const tagAndTagSpacing = ref(4);
-const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-// el-scrollbar from element-plus by js
-// @ts-ignore
-const scrollWrapper = computed(() => (proxy?.$refs.scrollContainer.$refs.wrap$));
+const scrollContainer = ref<InstanceType<typeof ElScrollbar>>()
+const scrollWrapper = computed(() => (scrollContainer.value?.wrap$));
 
 onMounted(() => {
-  scrollWrapper.value.addEventListener('scroll', emitScroll, true)
+  scrollWrapper.value?.addEventListener('scroll', emitScroll, true)
 })
 onBeforeUnmount(() => {
-  scrollWrapper.value.removeEventListener('scroll', emitScroll)
+  scrollWrapper.value?.removeEventListener('scroll', emitScroll)
 })
 /**
  * 
@@ -52,7 +50,9 @@ function handleScroll(e: { wheelDelta: number; deltaY: number; }) {
    */
   const eventDelta = e.wheelDelta || -e.deltaY * 40
   const $scrollWrapper = scrollWrapper.value;
-  $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
+  if ($scrollWrapper !== undefined){
+    $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
+  }
 }
 const emits = defineEmits(['scroll'])
 const emitScroll = () => {
@@ -63,9 +63,10 @@ const tagsViewStore = useTagsViewStore()
 const visitedViews = computed<VisitedView[]>(() => tagsViewStore.visitedViews);
 
 function moveToTarget(currentTag: string) { //currentTag: fullPath
+
   // el-scrollbar from  element-plus by js
-  // @ts-ignore 
-  const $container = proxy.$refs.scrollContainer.$el // : HTMLDivElement  
+ 
+  const $container = scrollContainer.value?.$el // : HTMLDivElement  
   const $containerWidth = $container.offsetWidth
   const $scrollWrapper = scrollWrapper.value;
 
@@ -74,30 +75,31 @@ function moveToTarget(currentTag: string) { //currentTag: fullPath
 
   // find first tag and last tag
   if (visitedViews.value.length > 0) {
+    
     firstTag.fullPath = visitedViews.value[0].path
     lastTag.fullPath = visitedViews.value[visitedViews.value.length - 1].path
   }   
-
-  if (firstTag.fullPath === currentTag) {
-    $scrollWrapper.scrollLeft = 0
-  } else if (lastTag.fullPath === currentTag) {
-    $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
-  } else {
-    const tagListDom = document.getElementsByClassName('tags-view-item');  
-    const currentIndex = visitedViews.value.findIndex(item => item.path === currentTag)
-    let prevTag = {} as TagScroll;
-    let nextTag = {} as TagScroll;
-    for (const k in tagListDom) {
-      if (k !== 'length' && Object.hasOwnProperty.call(tagListDom, k)) {       
-        if ((tagListDom[k] as HTMLElement).dataset.path === visitedViews.value[currentIndex - 1].path) {  
-          prevTag.fullPath = visitedViews.value[currentIndex - 1].path;
-        }      
-        if ((tagListDom[k] as HTMLElement).dataset.path === visitedViews.value[currentIndex + 1].path) {
-          nextTag.fullPath = visitedViews.value[currentIndex + 1].path;
-        }
-      }
+  if ($scrollWrapper !==undefined){
+    if (firstTag.fullPath === currentTag ) {
+      $scrollWrapper.scrollLeft = 0
+    } else if (lastTag.fullPath === currentTag) {
+      $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
+    } else {
+      const tagListDom = document.getElementsByClassName('tags-view-item');  
+      const currentIndex = visitedViews.value.findIndex(item => item.path === currentTag)
+      let prevTag = {} as TagScroll;
+      let nextTag = {} as TagScroll;
+      for (const k in tagListDom) {
+        if (k !== 'length' && Object.hasOwnProperty.call(tagListDom, k)) {       
+          if ((tagListDom[k] as HTMLElement).dataset.path === visitedViews.value[currentIndex - 1].path) {  
+            prevTag.fullPath = visitedViews.value[currentIndex - 1].path;
+          }      
+          if ((tagListDom[k] as HTMLElement).dataset.path === visitedViews.value[currentIndex + 1].path) {
+            nextTag.fullPath = visitedViews.value[currentIndex + 1].path;
+          }
+      }   
     }
-
+  
     // the tag's offsetLeft after of nextTag
     const afterNextTagOffsetLeft = nextTag.offsetLeft + nextTag.offsetWidth + tagAndTagSpacing.value
 
@@ -107,6 +109,7 @@ function moveToTarget(currentTag: string) { //currentTag: fullPath
       $scrollWrapper.scrollLeft = afterNextTagOffsetLeft - $containerWidth
     } else if (beforePrevTagOffsetLeft < $scrollWrapper.scrollLeft) {
       $scrollWrapper.scrollLeft = beforePrevTagOffsetLeft
+    }
     }
   }
 }
