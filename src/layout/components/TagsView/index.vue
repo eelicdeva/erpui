@@ -88,11 +88,14 @@ const defaultMenus = computed(() => usePermissionStore().defaultMenus);
 const theme = computed(() => useSettingsStore().theme);
 
 watch(router.currentRoute, () => {
-  addTags() 
+  addTags();
+  moveToCurrentTag();
 })
+/**
 watch(visitedViews, () => {
-  moveToCurrentTag()
+  moveToCurrentTag();
 })
+*/
 watch(visible, (value) => {
   if (value) {
     document.body.addEventListener('click', closeMenu)
@@ -185,6 +188,12 @@ function initTags() {// tags from defaultMens
   }
 }
 
+/**
+ * addTags
+ * 有菜单项tag
+ * 无菜单项tag(meta.activeMenu = 激活父菜单节点tag)
+ * 
+ */
 function addTags() {
   const { fullPath, path, name, meta } = route;
   const { link } = meta

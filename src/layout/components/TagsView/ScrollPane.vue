@@ -74,11 +74,11 @@ function moveToTarget(currentTag: string) { //currentTag: fullPath
   let lastTag = {} as TagScroll;
 
   // find first tag and last tag
-  if (visitedViews.value.length > 0) {
-    
-    firstTag.fullPath = visitedViews.value[0].path
-    lastTag.fullPath = visitedViews.value[visitedViews.value.length - 1].path
+  if (visitedViews.value.length > 0) {   
+    firstTag.fullPath = visitedViews.value[0].fullPath
+    lastTag.fullPath = visitedViews.value[visitedViews.value.length - 1].fullPath
   }   
+
   if ($scrollWrapper !==undefined){
     if (firstTag.fullPath === currentTag ) {
       $scrollWrapper.scrollLeft = 0
@@ -90,8 +90,10 @@ function moveToTarget(currentTag: string) { //currentTag: fullPath
       let prevTag = {} as TagScroll;
       let nextTag = {} as TagScroll;
       for (const k in tagListDom) {
-        if (k !== 'length' && Object.hasOwnProperty.call(tagListDom, k)) {       
+        if (k !== 'length' && Object.hasOwnProperty.call(tagListDom, k)) {    
+
           if ((tagListDom[k] as HTMLElement).dataset.path === visitedViews.value[currentIndex - 1].path) {  
+
             prevTag.fullPath = visitedViews.value[currentIndex - 1].path;
           }      
           if ((tagListDom[k] as HTMLElement).dataset.path === visitedViews.value[currentIndex + 1].path) {
