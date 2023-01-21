@@ -222,7 +222,7 @@ function moveToCurrentTag() {
   nextTick(() => {
     for (const r of visitedViews.value) {            
       if (r.path === route.path) {                      
-        scrollPaneRef.value?.moveToTarget(r.fullPath);
+        scrollPaneRef.value?.moveToTarget(r);
         // when query is different then update
         if (r.fullPath !== route.fullPath) {
           useTagsViewStore().updateVisitedView(route);
