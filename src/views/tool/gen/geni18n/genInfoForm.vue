@@ -234,7 +234,7 @@ interface SubColumn {
 
 const genInfoForm = ref<InstanceType<typeof ElForm>>();
 const subColumns = ref<SubColumn[]>([]);
-const menuOptions = ref({});
+const menuOptions = ref([]);
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 const props = defineProps({
