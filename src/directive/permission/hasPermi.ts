@@ -5,9 +5,11 @@
  
 import useUserStore from '@/stores/modules/user'
 import i18n from '@/lang/index'
+import { DirectiveBinding, VNode } from 'vue';
 
+//export declare type DirectiveHook<T = any, Prev = VNode<any, T> | null, V = any> = (el: T, binding: DirectiveBinding<V>, vnode: VNode<any, T>, prevVNode: Prev) => void;
 export default {
-  mounted(el, binding, vnode) {
+  mounted(el: { parentNode: { removeChild: (arg0: any) => any; }; }, binding: DirectiveBinding, vnode: VNode) {
     const { value } = binding
     const all_permission = "*:*:*";
     const permissions = useUserStore().permissions
