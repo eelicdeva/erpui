@@ -65,12 +65,12 @@ function handleClickOutside() {
 const settingRef = ref<InstanceType<typeof Settings> | null >(null);
 
 function setLayout() {
-  settingRef.value.openSetting();
+  settingRef.value?.openSetting();
 }
 
 onMounted(() => { //to-do if TopNav on, do not observer
   //debugger
-  //if ( !needTagsView && !sidebar.value.opened  ) {
+
   let MutationObserver = window.MutationObserver //  ||window.WebKitMutationObserver || window.MozMutationObserver;
     let observer = new MutationObserver(() => {
       let sidebar = document.getElementsByClassName("sidebar-container")[0];
@@ -85,7 +85,7 @@ onMounted(() => { //to-do if TopNav on, do not observer
       attributeOldValue: true,
       characterDataOldValue: true,
     });
-  //}
+
 })
 
 </script>
