@@ -131,7 +131,7 @@ export default {
 // eelic-i18n setting  
   components: {
     sizeSelect: {
-      setSize: "Syetel ukuran, harap menunggu...",
+      setSize: "Setel ukuran, harap menunggu...",
       sizeLarge: "Besar",
       sizeDefault: 'Default',
       sizeSmall: 'Kecil'

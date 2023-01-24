@@ -305,7 +305,7 @@ export default {
     KeyPlaceholder: 'Please input role key',
     statusPlaceholder: 'Role status',
     sort: 'Display Order',
-    Content: 'Authorization role key defined in the controller, such as: {"@"}PreAuthorize(`{"@"}ss.hasRole(\'admin\')`)',
+    Content: "Authorization role key defined in the controller, such as: {'@'}PreAuthorize(`{'@'}ss.hasRole(\'admin\')`)",
     order: 'Role Order',
     menuPerms: 'menuPermissions',
     loading : 'Loading, please wait',
