@@ -4,7 +4,7 @@
     fit="cover"
     :style="`width:${realWidth};height:${realHeight};`"
     :preview-src-list="realSrcList"
-    preview-teleported="true"
+    preview-teleported
   >
     <template #error>
       <div class="image-slot">
@@ -20,14 +20,14 @@ import { computed } from "vue";
 
 interface ImagePreviewProps {
   src: string;
-  width?: [Number, String] | string;
-  height?: [Number, String] | string;
+  width?: number | null;
+  height?: number | null;
 }
 
 const props = withDefaults(defineProps<ImagePreviewProps>(),{
   src: "",
-  width:  "",
-  height: ""
+  width: null,
+  height: null
 })
 
 const realSrc = computed(() => {

@@ -15,12 +15,29 @@
 import useTagsViewStore, { VisitedView } from '@/stores/modules/tagsView';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { ElScrollbar } from 'element-plus';
+import { LocationQuery } from 'vue-router';
 
-export interface TagScroll {
+interface Tag {
+  query?: LocationQuery;
+  fullPath: string;
+  path: string;
+  name: string;
+  meta: {
+    affix?: boolean;
+    icon?: string;  // for future use
+    title: string; 
+    link?: string | null;
+    noCache?: boolean;
+    activeMenu?: string; // for future use
+  };
+}
+
+ interface TagScroll {
   fullPath: string;
   offsetLeft: number;
   offsetWidth: number;
 }
+
 const tagAndTagSpacing = ref(4);
 const scrollContainer = ref<InstanceType<typeof ElScrollbar>>()
 const scrollWrapper = computed(() => (scrollContainer.value?.wrap$));
@@ -62,10 +79,9 @@ const emitScroll = () => {
 const tagsViewStore = useTagsViewStore()
 const visitedViews = computed<VisitedView[]>(() => tagsViewStore.visitedViews);
 
-function moveToTarget(currentTag: string) { //currentTag: fullPath
-
+function moveToTarget(currentTag: Tag) {
   // el-scrollbar from  element-plus by js
- 
+
   const $container = scrollContainer.value?.$el // : HTMLDivElement  
   const $containerWidth = $container.offsetWidth
   const $scrollWrapper = scrollWrapper.value;
@@ -79,14 +95,14 @@ function moveToTarget(currentTag: string) { //currentTag: fullPath
     lastTag.fullPath = visitedViews.value[visitedViews.value.length - 1].fullPath
   }   
 
-  if ($scrollWrapper !==undefined){
-    if (firstTag.fullPath === currentTag ) {
+  if ($scrollWrapper !== undefined){
+    if (firstTag.fullPath === currentTag.fullPath ) {
       $scrollWrapper.scrollLeft = 0
-    } else if (lastTag.fullPath === currentTag) {
+    } else if (lastTag.fullPath === currentTag.fullPath) {
       $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
     } else {
       const tagListDom = document.getElementsByClassName('tags-view-item');  
-      const currentIndex = visitedViews.value.findIndex(item => item.path === currentTag)
+      const currentIndex = visitedViews.value.findIndex(item => item.path === currentTag.path)
       let prevTag = {} as TagScroll;
       let nextTag = {} as TagScroll;
       for (const k in tagListDom) {
