@@ -223,11 +223,11 @@ function openSetting() {
 defineExpose({
   openSetting,
   handleThemeStyle,
-  variables,
+  //variables,
   originElementPlus,
-  axios,
-  ElLoading, 
-  ElMessage
+  //axios,
+  //ElLoading, 
+  //ElMessage
 })
 
 //to-do check
