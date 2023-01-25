@@ -726,6 +726,29 @@ export default {
     BacktoHome: 'Back to Home',
     Pagenotfound: 'Page not found!'
   },
+  Cache: {
+    redisVersion: 'Redis version',
+    runMode: 'Run mode',
+    standAlone: 'stand-alone',
+    cluster: 'Cluster',
+    port: 'Port',
+    clients: 'Number of clients',
+    runningTime: 'Running time (days)',
+    memoryUsage: 'Memory Usage',
+    CpuUsage: 'CPU Usage',
+    memoryAllocation: 'Memory Allocation',
+    AOF: 'Is AOF enabled?',
+    RDB: 'Is the RDB successful?',
+    Key: 'Number of Keys',
+    network: 'Network entry/exit',
+    commandStats: 'Command Statistics',
+    memoInfo: 'Memory Information',
+    loadingMessage: 'Loading cache monitoring data, please wait! ',
+    order: 'Order',
+    peak: 'Peak Value',
+    memoUsage: 'Memory Usage',
+    list: 'Cache List',
+  },
   SysLang : {
     zhCn : "China i18n",
     zhCnPlaceholder : "Please input China i18n",
@@ -753,5 +776,5 @@ export default {
     updateTimePlaceholder : "${comment}",
     remark : "${comment}",
     remarkPlaceholder : '${comment}',
- }
+  }
 }

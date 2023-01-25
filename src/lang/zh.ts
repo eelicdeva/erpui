@@ -720,6 +720,31 @@ export default {
    info404: '对不起，您正在寻找的页面不存在。尝试检查URL的错误，然后按浏览器上的刷新按钮或尝试在我们的应用程序中找到其他内容。',
    BacktoHome: '返回首页',
    Pagenotfound: '找不到网页！'
-  }
+  },
+  Cache: {
+    redisVersion: 'Redis版本',
+    runMode: '运行模式',
+    standAlone: '单机',
+    cluster: '集群',
+    port: '端口',
+    clients: '客户端数',
+    runningTime: '运行时间(天)',
+    memoryUsage: '使用内存',
+    CpuUsage: '使用CPU',
+    memoryAllocation: '内存配置',
+    AOF: 'AOF是否开启',
+    RDB: 'RDB是否成功',
+    Key: 'Key数量',
+    network: '网络入口/出口',
+    commandStats: '命令统计',
+    memoInfo: '内存信息',
+    loadingMessage: '正在加载缓存监控数据，请稍候！',
+    order: '命令',
+    peak: '峰值',
+    memoUsage: '内存消耗',
+    list: '缓存列表',
+    id: '序号',
+  },
+  
   
 }
