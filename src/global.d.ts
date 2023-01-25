@@ -136,7 +136,7 @@ declare module '@vue/runtime-core' {
         // || 提交内容
         prompt(content: string): ElMessageBoxShortcutMethod;
         // || 打开遮罩层
-        loading(content: string): void;
+        loading(content: string);
         // || 关闭遮罩层
         closeLoading();
       };

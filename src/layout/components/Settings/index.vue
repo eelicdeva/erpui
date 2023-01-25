@@ -208,8 +208,7 @@ function saveSetting() {
     "backgroundImage": storeSettings.value.backgroundImage
   };
   localStorage.setItem("layout-setting", JSON.stringify(layoutSetting));
-  setTimeout(proxy.$modal.closeLoading(), 1000)
-
+  setTimeout(proxy?.$modal.closeLoading(), 1000)
 }
 function resetSetting() {
   proxy?.$modal.loading(t('settings.loadingreset'));
