@@ -1,10 +1,12 @@
-import { ElMessage, ElMessageBox, ElNotification, ElLoading} from 'element-plus'
+import { ElMessage, ElMessageBox, ElNotification, ElLoading, LoadingParentElement } from 'element-plus'
 import i18n from '@/lang/index';
+import { ComponentPublicInstance, ComponentOptionsBase, Ref } from 'vue';
+
+
 
 const {t} = i18n.global;
 
-let loadingInstance;
-
+let loadingInstance: { close: () => void; setText?: (text: string) => void; removeElLoadingChild?: () => void; handleAfterLeave?: () => void; vm?: ComponentPublicInstance<{}, {}, {}, {}, {}, {}, {}, {}, false, ComponentOptionsBase<any, any, any, any, any, any, any, any, any, {}, {}, string>, {}>; $el?: HTMLElement; originalPosition?: Ref<string>; originalOverflow?: Ref<string>; visible?: Ref<boolean>; parent?: Ref<LoadingParentElement>; background?: Ref<string>; svg?: Ref<string>; svgViewBox?: Ref<string>; spinner?: Ref<string | boolean>; text?: Ref<string>; fullscreen?: Ref<boolean>; lock?: Ref<boolean>; customClass?: Ref<string>; target?: Ref<HTMLElement>; beforeClose?: Ref<(() => boolean) | undefined> | undefined; closed?: Ref<(() => void) | undefined> | undefined; };
 export default {
   // 消息提示
   msg(content: string) {

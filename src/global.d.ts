@@ -138,7 +138,7 @@ declare module '@vue/runtime-core' {
         // || 打开遮罩层
         loading(content: string): void;
         // || 关闭遮罩层
-        closeLoading(): void;
+        closeLoading();
       };
     $download: any;
   /*    
