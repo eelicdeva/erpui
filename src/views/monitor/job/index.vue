@@ -292,7 +292,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="12">
-                  <el-form-item label="执行策略：">
+                  <el-form-item :label="$t('Job.executionStrategy') + '：'">
                      <div v-if="form.misfirePolicy == 0">{{ $t('Job.defaultPolicy') }}</div>
                      <div v-else-if="form.misfirePolicy == 1">{{ $t('Job.executeImmediately') }}</div>
                      <div v-else-if="form.misfirePolicy == 2">{{ $t('Job.executeOnce') }}</div>
@@ -502,6 +502,8 @@ function handleUpdate(row) {
     open.value = true;
     title.value =  t('Job.modifyTask');
   });
+
+  
 }
 /** 提交按钮 */
 function submitForm() {
@@ -531,7 +533,7 @@ function handleDelete(row) {
     return delJob(jobIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('Job.succesDeleted'));
+    proxy.$modal.msgSuccess(t('user.succesDeleted'));
   }).catch(() => {});
 }
 /** 导出按钮操作 */

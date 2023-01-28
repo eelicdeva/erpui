@@ -800,6 +800,18 @@ export default {
     confirmDelete: '是否确认删除定时任务编号为"',
     addTask: '添加任务',
     modifyTask: '修改任务',
+    ExecutionStatus: '执行状态',
+    ExecutionStatusPlaceholder: '请选择执行状态',
+    ExecutionTime: '执行时间',
+    LogId: '日志编号',
+    LogInfo: '日志信息',
+    detailed: '详细',
+    logDetails: '调度日志详细',
+    logNumber: '日志序号：',
+    ExceptionInfo: '异常信息：',
+    emptySuccess: '清空成功',
+    confirmLogDelete: '是否确认删除调度日志编号为"',
+    confirmClearLog: '是否确认清空所有调度日志数据项?',
   },
   
   
