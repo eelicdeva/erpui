@@ -46,8 +46,8 @@
                value-format="YYYY-MM-DD"
                type="daterange"
                range-separator="-"
-               :start-placeholder="$t('Job.startDate')"
-               :end-placeholder="$t('Job.endDate')"
+               :start-placeholder="$t('user.startDate')"
+               :end-placeholder="$t('user.endDate')"
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
