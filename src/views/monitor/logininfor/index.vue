@@ -1,28 +1,28 @@
 <template>
    <div class="app-container">
       <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-         <el-form-item label="登录地址" prop="ipaddr">
+         <el-form-item :label="$t('loginInfor.loginAddress')" prop="ipaddr">
             <el-input
                v-model="queryParams.ipaddr"
-               placeholder="请输入登录地址"
+               :placeholder="$t('loginInfor.loginAddressPlaceholder')"
                clearable
                style="width: 240px;"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
-         <el-form-item label="用户名称" prop="userName">
+         <el-form-item :label="$t('user.name')" prop="userName">
             <el-input
                v-model="queryParams.userName"
-               placeholder="请输入用户名称"
+               :placeholder="$t('user.UserPlaceholder')"
                clearable
                style="width: 240px;"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
-         <el-form-item label="状态" prop="status">
+         <el-form-item :label="$t('user.status')" prop="status">
             <el-select
                v-model="queryParams.status"
-               placeholder="登录状态"
+               :placeholder="$t('loginInfor.loginStatus')"
                clearable
                style="width: 240px"
             >
@@ -34,14 +34,14 @@
                />
             </el-select>
          </el-form-item>
-         <el-form-item label="登录时间" style="width: 308px">
+         <el-form-item :label="$t('loginInfor.loginTime')" style="width: 308px">
             <el-date-picker
                v-model="dateRange"
                value-format="YYYY-MM-DD"
                type="daterange"
                range-separator="-"
-               start-placeholder="开始日期"
-               end-placeholder="结束日期"
+               :start-placeholder="$t('user.startDate')"
+               :end-placeholder="$t('user.endDate')"
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
@@ -84,19 +84,19 @@
 
       <el-table ref="logininforRef" v-loading="loading" :data="logininforList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
          <el-table-column type="selection" width="55" align="center" />
-         <el-table-column label="访问编号" align="center" prop="infoId" />
-         <el-table-column label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
-         <el-table-column label="地址" align="center" prop="ipaddr" :show-overflow-tooltip="true" />
-         <el-table-column label="登录地点" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
-         <el-table-column label="操作系统" align="center" prop="os" :show-overflow-tooltip="true" />
-         <el-table-column label="浏览器" align="center" prop="browser" :show-overflow-tooltip="true" />
-         <el-table-column label="登录状态" align="center" prop="status">
+         <el-table-column :label="$t('loginInfor.accessId')" align="center" prop="infoId" />
+         <el-table-column :label="$t('user.name')" align="center" prop="userName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
+         <el-table-column :label="$t('loginInfor.address')" align="center" prop="ipaddr" :show-overflow-tooltip="true" />
+         <el-table-column :label="$t('loginInfor.loginLocation')" align="center" prop="loginLocation" :show-overflow-tooltip="true" />
+         <el-table-column :label="$t('loginInfor.os')" align="center" prop="os" :show-overflow-tooltip="true" />
+         <el-table-column :label="$t('loginInfor.browser')" align="center" prop="browser" :show-overflow-tooltip="true" />
+         <el-table-column :label="$t('loginInfor.loginStatus')" align="center" prop="status">
             <template #default="scope">
                <dict-tag :options="sys_common_status" :value="scope.row.status" />
             </template>
          </el-table-column>
-         <el-table-column label="描述" align="center" prop="msg" />
-         <el-table-column label="访问时间" align="center" prop="loginTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
+         <el-table-column :label="$t('loginInfor.description')" align="center" prop="msg" />
+         <el-table-column :label="$t('loginInfor.interviewTime')" align="center" prop="loginTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="180">
             <template #default="scope">
                <span>{{ parseTime(scope.row.loginTime) }}</span>
             </template>
@@ -117,7 +117,9 @@
 import { list, delLogininfor, cleanLogininfor } from "@/api/monitor/logininfor";
 import { ComponentInternalInstance, getCurrentInstance, ref } from "vue";
 import type { ElForm, ElTable } from "element-plus";
+import i18n from '@/lang/index';
 
+const {t} = i18n.global;
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const { sys_common_status } = proxy?.useDict("sys_common_status");
 
@@ -180,20 +182,20 @@ function handleSortChange(column, prop, order) {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const infoIds = row.infoId || ids.value;
-  proxy?.$modal.confirm('是否确认删除访问编号为"' + infoIds + '"的数据项?').then(function () {
+  proxy?.$modal.confirm(t('loginInfor.confirmLogDelete') + infoIds + t('role.confirmDelete2')).then(function () {
     return delLogininfor(infoIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess(t('user.succesDeleted'));
   }).catch(() => {});
 }
 /** 清空按钮操作 */
 function handleClean() {
-  proxy?.$modal.confirm("是否确认清空所有登录日志数据项?").then(function () {
+  proxy?.$modal.confirm(t('loginInfor.confirmClean')).then(function () {
     return cleanLogininfor();
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess("清空成功");
+    proxy.$modal.msgSuccess(t('Job.emptySuccess'));
   }).catch(() => {});
 }
 /** 导出按钮操作 */

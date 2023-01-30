@@ -813,6 +813,36 @@ export default {
     confirmLogDelete: '是否确认删除调度日志编号为"',
     confirmClearLog: '是否确认清空所有调度日志数据项?',
   },
+  loginInfor: {
+    loginAddress: '登录地址',
+    loginAddressPlaceholder: '请输入登录地址',
+    loginStatus: '登录状态',
+    loginTime: '登录时间',
+    accessId: '访问编号',
+    address: '地址',
+    loginLocation: '登录地点',
+    os: '操作系统',
+    browser: '浏览器',
+    description: '描述',
+    interviewTime: '访问时间',
+    confirmDelete: '是否确认删除访问编号为"',
+    confirmClean: '是否确认清空所有登录日志数据项?',
+
+  },
+  online: {
+    sessionNumber: '会话编号',
+    loginName: '登录名称',
+    host: '主机',
+    forceLogout: '强退',
+    confirm1: '是否确认强退名称为"',
+    confirm2: '"的用户?',
+  },
+  operLog: {
+    systemModule: '系统模块',
+    systemModulePlaceholder: '请输入系统模块',
+    operType: '操作类型',
+    operStatus: '操作状态',
+  },
   
   
 }

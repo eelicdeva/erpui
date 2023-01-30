@@ -287,11 +287,11 @@ function handleDelete(row: Row) {
 }
 /** 清空按钮操作 */
 function handleClean() {
-  proxy?.$modal.confirm(t('user.confirmClearLog')).then(function () {
+  proxy?.$modal.confirm(t('Job.confirmClearLog')).then(function () {
     return cleanJobLog();
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('user.emptySuccess'));
+    proxy.$modal.msgSuccess(t('Job.emptySuccess'));
   }).catch(() => {});
 }
 /** 导出按钮操作 */
