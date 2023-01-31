@@ -848,6 +848,18 @@ export default {
     systemModulePlaceholder: 'Silakan masukkan modul sistem',
     operType: 'Jenis Operasi',
     operStatus: 'Status Operasi',
+    operTime: 'Waktu Pengoperasian',
+    reqMethod: 'Metode Permintaan',
+    operDate: 'Tanggal Operasi',
+    detailedOperLog: 'Log Operasi Terperinci',
+    operationModule: 'Modul Operasi: ',
+    loginInfo: 'Informasi Login: ',
+    reqAddress: 'Alamat Permintaan: ',
+    operMethod: 'Metode Operasi：',
+    reqParams: 'Parameter Permintaan：',
+    returnParams: 'Parameter Pengembalian: ',
+    confirmDelete: 'Apakah Anda yakin akan menghapus item data dengan nomor log " ',
+    confirmClean: 'Apakah Anda yakin untuk menghapus semua item data log operasi?',  
   },
 
 }

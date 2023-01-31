@@ -192,8 +192,6 @@ export default {
     verificationCode: 'Verification code must be a number',
     congratulations: 'Congratulations, your account',
     success: 'registration success!',
-
-
   },
   tagsView: {
     refresh: 'Refresh',
@@ -846,6 +844,18 @@ export default {
     systemModulePlaceholder: 'Please enter the system module',
     operType: 'Operation Type',
     operStatus: 'Operating Status',
+    operTime: 'Operating Time',
+    reqMethod: 'Request Method',
+    operDate: 'Operation Date',
+    detailedOperLog: 'Detailed Operation Log',
+    operationModule: 'Operation Module: ',
+    loginInfo: 'Login Information：',
+    reqAddress: 'Request Address: ',
+    operMethod: 'Operation Method：',
+    reqParams: 'Request Parameters：',
+    returnParams: 'Return Parameters: ',
+    confirmDelete: 'Are you sure to delete the data item whose log number is " ',
+    confirmClean: 'Are you sure to clear all operation log data items?',
   },
   SysLang : {
     zhCn : "China i18n",

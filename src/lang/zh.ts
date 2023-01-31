@@ -842,6 +842,18 @@ export default {
     systemModulePlaceholder: '请输入系统模块',
     operType: '操作类型',
     operStatus: '操作状态',
+    operTime: '操作时间',
+    reqMethod: '请求方式',
+    operDate: '操作日期',
+    detailedOperLog: '操作日志详细',
+    operationModule: '操作模块：',
+    loginInfo: '登录信息：',
+    reqAddress: '请求地址：',
+    operMethod: '操作方法：',
+    reqParams: '请求参数：',
+    returnParams: '返回参数：',
+    confirmDelete: '是否确认删除日志编号为"',
+    confirmClean: '是否确认清空所有操作日志数据项?',
   },
   
   
