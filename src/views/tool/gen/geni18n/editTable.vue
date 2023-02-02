@@ -6,7 +6,7 @@
       </el-tab-pane>
       <el-tab-pane :label="$t('genTable.columnInformation')" name="columnInfo">
         <el-table ref="dragTable" :data="columns" row-key="columnId" :max-height="tableHeight">
-          <el-table-column label="序号" type="index" min-width="5%"/>
+          <el-table-column :label="$t('user.serialRole')" type="index" min-width="5%"/>
           <el-table-column
             :label="$t('genTable.columnName')"
             prop="columnName"
@@ -130,7 +130,7 @@
           </el-table-column>
           <el-table-column :label="$t('genTable.dictType')" min-width="12%">
             <template #default="scope">
-              <el-select v-model="scope.row.dictType" clearable filterable placeholder="请选择">
+              <el-select v-model="scope.row.dictType" clearable filterable :placeholder="$t('user.choosePlaceholder')">
                 <el-option
                   v-for="dict in dictOptions"
                   :key="dict.dictType"
@@ -174,6 +174,7 @@ import { ComponentInternalInstance, getCurrentInstance, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import useAppStore from "@/stores/modules/app";
 import type { QueryParams } from "@/api/tool/gen";
+import i18n from '@/lang/index';
 
 interface Column {
     capJavaField: string;
@@ -227,6 +228,7 @@ interface Info {
   parentMenuId: string | null;
 }
 
+const {t} = i18n.global;
 const route = useRoute();
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
@@ -264,7 +266,7 @@ function submitForm() {
         }
       });
     } else {
-      proxy?.$modal.msgError("表单校验未通过，请重新检查提交内容");
+      proxy?.$modal.msgError(t('genTable.msgError'));
     }
   });
 }
