@@ -12,19 +12,19 @@
       <el-form-item :label="$t('genTable.tableComment')" prop="tableComment">
         <el-input
           v-model="queryParams.tableComment"
-          placeholder="请输入表描述"
+          :placeholder="$t('genTable.descRules')"
           clearable
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建时间" style="width: 308px">
+      <el-form-item :label="$t('user.creationtime')" style="width: 308px">
         <el-date-picker
           v-model="dateRange"
           value-format="YYYY-MM-DD"
           type="daterange"
           range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="$t('user.startDate')"
+          :end-placeholder="$t('user.endDate')"
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -95,16 +95,16 @@
         :show-overflow-tooltip="true"
       />
       <el-table-column
-        label="实体"
+        :label="$t('genTable.entity')" 
         align="center"
         prop="className"
         :show-overflow-tooltip="true"
       />
       <el-table-column :label="$t('user.creationtime')" align="center" prop="createTime" width="160" />
-      <el-table-column label="更新时间" align="center" prop="updateTime" width="160" />
+      <el-table-column :label="$t('genTable.updateTime')" align="center" prop="updateTime" width="160" />
       <el-table-column :label="$t('user.operate')" align="center" width="330" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-tooltip content="预览" placement="top">
+          <el-tooltip :content="$t('genTable.preview')" placement="top">
             <el-button
               type="primary"
               icon="View"
@@ -113,7 +113,7 @@
               link
             ></el-button>
           </el-tooltip>
-          <el-tooltip content="编辑" placement="top">
+          <el-tooltip :content="$t('genTable.isEdit')" placement="top">
             <el-button
               type="primary"
               icon="Edit"
@@ -122,7 +122,7 @@
               link
             ></el-button>
           </el-tooltip>
-          <el-tooltip content="删除" placement="top">
+          <el-tooltip :content="$t('button.delete')" placement="top">
             <el-button
               type="primary"
               icon="Delete"
@@ -131,7 +131,7 @@
               link
             ></el-button>
           </el-tooltip>
-          <el-tooltip content="同步" placement="top">
+          <el-tooltip :content="$t('genTable.sync')" placement="top">
             <el-button
               type="primary"
               icon="Refresh"
@@ -140,7 +140,7 @@
               link
             ></el-button>
           </el-tooltip>
-          <el-tooltip content="生成代码" placement="top">
+          <el-tooltip :content="$t('genTable.genCode')" placement="top">
             <el-button
               type="primary"
               icon="Download"
@@ -185,7 +185,9 @@ import importTable from "./importTable.vue";
 import { getCurrentInstance, ComponentInternalInstance, ref, reactive, toRefs, onActivated } from 'vue';
 import { useRoute } from 'vue-router';
 import type { ElForm } from "element-plus";
+import i18n from '@/lang/index';
 
+const {t} = i18n.global;
 const route = useRoute();
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
@@ -235,7 +237,7 @@ const data: Data = reactive({
   },
   preview: {
     open: false,
-    title: "代码预览",
+    title: t('genTable.codePreview'),
     data: {},
     activeName: "domain.java"
   }
@@ -272,12 +274,12 @@ function handleQuery() {
 function handleGenTable(row) {
   const tbNames = row.tableName || tableNames.value;
   if (tbNames == "") {
-    proxy?.$modal.msgError("请选择要生成的数据");
+    proxy?.$modal.msgError(t('genTable.msgErrorIndex'));
     return;
   }
   if (row.genType === "1") {
     genCode(row.tableName).then(response => {
-      proxy?.$modal.msgSuccess("成功生成到自定义路径：" + row.genPath);
+      proxy?.$modal.msgSuccess(t('genTable.msgGenSuccess') + row.genPath);
     });
   } else {
     proxy?.$download.zip("/tool/geni18n/batchGenCode?tables=" + tbNames, "eelic.zip");
@@ -286,10 +288,10 @@ function handleGenTable(row) {
 /** 同步数据库操作 */
 function handleSynchDb(row) {
   const tableName = row.tableName;
-  proxy?.$modal.confirm('确认要强制同步"' + tableName + '"表结构吗？').then(function () {
+  proxy?.$modal.confirm(t('genTable.confirmSync1') + tableName + t('genTable.confirmSync2')).then(function () {
     return synchDb(tableName);
   }).then(() => {
-    proxy.$modal.msgSuccess("同步成功");
+    proxy.$modal.msgSuccess(t('genTable.syncSuccess'));
   }).catch(() => {});
 }
 /** 打开导入表弹窗 */
@@ -314,7 +316,7 @@ function handlePreview(row) {
 }
 /** 复制代码成功 */
 function copyTextSuccess() {
-  proxy?.$modal.msgSuccess("复制成功");
+  proxy?.$modal.msgSuccess(t('genTable.copySuccess'));
 }
 // 多选框选中数据
 function handleSelectionChange(selection) {
@@ -331,11 +333,11 @@ function handleEditTable(row) {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const tableIds = row.tableId || ids.value;
-  proxy?.$modal.confirm('是否确认删除表编号为"' + tableIds + '"的数据项？').then(function () {
+  proxy?.$modal.confirm(t('genTable.confirmDelete1') + tableIds + t('genTable.confirmDelete2')).then(function () {
     return delTable(tableIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess(t('user.succesDeleted'));
   }).catch(() => {});
 }
 
