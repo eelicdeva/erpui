@@ -678,6 +678,9 @@ export default {
    rules3: 'Silakan masukkan nama modul yang dihasilkan',
    rules4: 'Silakan masukkan nama bisnis yang dihasilkan',
    rules5: 'Silakan masukkan nama fungsi yang dihasilkan',
+   importTable: 'Impor Tabel',
+   updateTime: 'Waktu Pembaruan',
+   msgImportTable: 'Harap pilih tabel untuk diimpor',
   },
   ErpProductDemo: {
     idProductLa: 'id',

@@ -671,6 +671,9 @@ export default {
    rules3: '请输入生成模块名',
    rules4: '请输入生成业务名',
    rules5: '请输入生成功能名',
+   importTable: '导入表',
+   updateTime: '更新时间',
+   msgImportTable: '请选择要导入的表',
   },
   ErpProductDemo: {
     idProductLa: 'id',

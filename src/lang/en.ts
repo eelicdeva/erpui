@@ -674,6 +674,9 @@ export default {
    rules3: 'Please enter the generated module name',
    rules4: 'Please enter the generated business name',
    rules5: 'Please enter the generated function name',
+   importTable: 'Import Table',
+   updateTime: 'Update Time',
+   msgImportTable: 'Please select a table to import',
   },
   ErpProductDemo: {
     idProductLa: 'id',
