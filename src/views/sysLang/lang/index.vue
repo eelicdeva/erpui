@@ -4,7 +4,7 @@
       <el-form-item :label="$t('SysLang.zhCn')" prop="zhCn" >
         <el-input
           v-model="queryParams.zhCn"
-          :placeholder="$t('lang.SysLang.zhCnPlaceholder')"
+          :placeholder="$t('SysLang.zhCnPlaceholder')"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -12,7 +12,7 @@
       <el-form-item :label="$t('SysLang.enUs')" prop="enUs" >
         <el-input
           v-model="queryParams.enUs"
-          :placeholder="$t('lang.SysLang.enUsPlaceholder')"
+          :placeholder="$t('SysLang.enUsPlaceholder')"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -20,7 +20,7 @@
       <el-form-item :label="$t('SysLang.idId')" prop="idId" >
         <el-input
           v-model="queryParams.idId"
-          :placeholder="$t('lang.SysLang.idIdPlaceholder')"
+          :placeholder="$t('SysLang.idIdPlaceholder')"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -28,7 +28,7 @@
       <el-form-item :label="$t('SysLang.langIdx')" prop="langIdx" >
         <el-input
           v-model="queryParams.langIdx"
-          :placeholder="$t('lang.SysLang.langIdxPlaceholder')"
+          :placeholder="$t('SysLang.langIdxPlaceholder')"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -36,7 +36,7 @@
       <el-form-item :label="$t('SysLang.langKey')" prop="langKey" >
         <el-input
           v-model="queryParams.zhCn"
-          :placeholder="$t('lang.SysLang.langKeyPlaceholder')"
+          :placeholder="$t('SysLang.langKeyPlaceholder')"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -44,7 +44,7 @@
       <el-form-item :label="$t('SysLang.langTb')" prop="langTb" >
         <el-input
           v-model="queryParams.langTb"
-          :placeholder="$t('lang.SysLang.langTbPlaceholder')"
+          :placeholder="$t('SysLang.langTbPlaceholder')"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -94,16 +94,16 @@
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
       <el-form ref="langRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item :label="$t('SysLang.zhCn')" prop="zhCn">
-          <el-input v-model="form.zhCn" :placeholder="$t('lang.SysLang.zhCnPlaceholder')" />
+          <el-input v-model="form.zhCn" :placeholder="$t('SysLang.zhCnPlaceholder')" />
         </el-form-item>
         <el-form-item :label="$t('SysLang.enUs')" prop="enUs">
-          <el-input v-model="form.enUs" :placeholder="$t('lang.SysLang.enUsPlaceholder')" />
+          <el-input v-model="form.enUs" :placeholder="$t('SysLang.enUsPlaceholder')" />
         </el-form-item>
         <el-form-item :label="$t('SysLang.idId')" prop="idId">
-          <el-input v-model="form.idId" :placeholder="$t('lang.SysLang.idIdPlaceholder')" />
+          <el-input v-model="form.idId" :placeholder="$t('SysLang.idIdPlaceholder')" />
         </el-form-item>
         <el-form-item :label="$t('user.remark')" prop="remark">
-          <el-input v-model="form.remark" :placeholder="$t('lang.SysLang.idIdPlaceholder')" type="textarea" />
+          <el-input v-model="form.remark" :placeholder="$t('user.remarkPlaceholder')" type="textarea" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -240,7 +240,7 @@ function handleUpdate(row) {
   form.value.langTb = row.langTb,
   form.value.langFn = row.langFn,
   open.value = true;
-  title.value = "修改lang";
+  title.value = t('SysLang.modifyI18n');
 }
 
 /** 提交按钮 */

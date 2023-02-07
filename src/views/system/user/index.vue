@@ -106,7 +106,7 @@
                      :disabled="multiple"
                      @click="handleDelete"
                      v-hasPermi="['system:user:remove']"
-                  >{{$t('button.delete') }}</el-button>
+                  >{{ $t('button.delete') }}</el-button>
                </el-col>
                <el-col :span="1.5">
                   <el-button
@@ -115,7 +115,7 @@
                      icon="Upload"
                      @click="handleImport"
                      v-hasPermi="['system:user:import']"
-                  >{{$t('button.import')}}</el-button>
+                  >{{ $t('button.import')}}</el-button>
                </el-col>
                <el-col :span="1.5">
                   <el-button
@@ -124,7 +124,7 @@
                      icon="Download"
                      @click="handleExport"
                      v-hasPermi="['system:user:export']"
-                  >{{$t('button.export') }}</el-button>
+                  >{{ $t('button.export') }}</el-button>
                </el-col>
                <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
             </el-row>
@@ -204,7 +204,7 @@
 
       <!-- 添加或修改用户配置对话框 -->
       <el-dialog :title="title" v-model="open" width="600px" append-to-body>
-         <el-form :model="form" :rules="rules" ref="userRef" label-width="80px">
+         <el-form :model="form" :rules="rules" ref="userRef">
             <el-row>
                <el-col :span="12">
                   <el-form-item :label="$t('user.nickname')" prop="nickName">

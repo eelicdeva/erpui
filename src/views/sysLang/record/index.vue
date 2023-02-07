@@ -4,7 +4,7 @@
       <el-form-item :label="$t('SysLang.zhCn')" prop="zhCn">
         <el-input
           v-model="queryParams.zhCn"
-          placeholder="请输入"
+          :placeholder="$t('SysLang.zhCnPlaceholder')"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -12,7 +12,7 @@
       <el-form-item :label="$t('SysLang.enUs')" prop="enUs">
         <el-input
           v-model="queryParams.enUs"
-          placeholder="请输入"
+          :placeholder="$t('SysLang.enUsPlaceholder')"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -20,7 +20,7 @@
       <el-form-item :label="$t('SysLang.idId')" prop="idId" >
         <el-input
           v-model="queryParams.idId"
-          placeholder="请输入"
+          :placeholder="$t('SysLang.idIdPlaceholder')"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -28,7 +28,7 @@
       <el-form-item :label="$t('SysLang.langIdx')" prop="langIdx">
         <el-input
           v-model="queryParams.langIdx"
-          placeholder="请输入"
+          :placeholder="$t('SysLang.langIdxPlaceholder')"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -36,7 +36,7 @@
       <el-form-item :label="$t('SysLang.langKey')" prop="langKey">
         <el-input
           v-model="queryParams.langKey"
-          placeholder="请输入"
+          :placeholder="$t('SysLang.langKeyPlaceholder')"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -44,7 +44,7 @@
       <el-form-item :label="$t('SysLang.langTb')" prop="langTb">
         <el-input
           v-model="queryParams.langTb"
-          placeholder="请输入"
+          :placeholder="$t('SysLang.langTbPlaceholder')"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -52,7 +52,7 @@
       <el-form-item :label="$t('SysLang.langFn')" prop="langFn">
         <el-input
           v-model="queryParams.langFn"
-          placeholder="请输入${comment}"
+          :placeholder="$t('SysLang.langFnPlaceholder')"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -105,9 +105,8 @@
       <el-table-column :label="$t('SysLang.langKey')" align="center" prop="langKey"  />
       <el-table-column :label="$t('SysLang.langTb')" align="center" prop="langTb"  />
       <el-table-column :label="$t('SysLang.langFn')" align="center" prop="langFn"  />
-      <el-table-column label="Status" align="center" prop="status" />
-      <el-table-column label="Memo" align="center" prop="remark" />
-
+      <el-table-column :label="$t('user.status')" align="center" prop="status" />
+      <el-table-column :label="$t('user.remark')" align="center" prop="remark" />
     </el-table>
     
     <pagination
@@ -118,61 +117,28 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改lang对话框 -->
-    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-      <el-form ref="langRef" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="" prop="zhCn">
-          <el-input v-model="form.zhCn" placeholder="请输入" />
-        </el-form-item>
-        <el-form-item label="" prop="enUs">
-          <el-input v-model="form.enUs" placeholder="请输入" />
-        </el-form-item>
-        <el-form-item label="" prop="langIdx">
-          <el-input v-model="form.langIdx" placeholder="请输入" />
-        </el-form-item>
-        <el-form-item label="" prop="langKey">
-          <el-input v-model="form.langKey" placeholder="请输入" />
-        </el-form-item>
-        <el-form-item label="" prop="langTb">
-          <el-input v-model="form.langTb" placeholder="请输入" />
-        </el-form-item>
-        <el-form-item label="${comment}" prop="langFn">
-          <el-input v-model="form.langFn" placeholder="请输入${comment}" />
-        </el-form-item>
-        <el-form-item label="" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
-        </div>
-      </template>
-    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts" name="Lang">
-import { delLang, addLang, updateLang, listLangRecord, cleanLangRecord } from "@/api/sysLang/lang";
+import { delLang, listLangRecord, cleanLangRecord } from "@/api/sysLang/lang";
 import type { QueryParams, AddParams } from "@/api/sysLang/lang";
 import { ComponentInternalInstance, getCurrentInstance, ref, reactive, toRefs } from "vue";
 import type { ElForm } from "element-plus";
+import i18n from '@/lang/index';
 
+const {t} = i18n.global;
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
 // const recordList = ref([]);
 const langList = ref([]);
-const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
 const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
-const title = ref("");
 const queryRef = ref<InstanceType<typeof ElForm>>();
-const langRef = ref<InstanceType<typeof ElForm>>();
 
 interface Data {
   form: AddParams
@@ -197,7 +163,7 @@ const data: Data = reactive({
   }
 });
 
-const { queryParams, form, rules } = toRefs(data);
+const { queryParams } = toRefs(data);
 
 /** 查询lang列表 */
 function getList() {
@@ -207,34 +173,6 @@ function getList() {
     total.value = response.total;
     loading.value = false;
   });
-}
-
-// 取消按钮
-function cancel() {
-  open.value = false;
-  reset();
-}
-
-// 表单重置
-function reset() {
-  form.value = {
-    langId: null,
-    zhCn: null,
-    enUs: null,
-    idId: null,
-    langIdx: null,
-    langKey: null,
-    langTb: null,
-    langFn: null,
-    status: "0",
-    createby: null,
-    createtime: null,
-    updateby: null,
-    updatetime: null,
-    remark: null
-  };
-  langRef.value?.resetFields();
-  // proxy.resetForm("langRef");
 }
 
 /** 搜索按钮操作 */
@@ -257,50 +195,24 @@ function handleSelectionChange(selection) {
   multiple.value = !selection.length;
 }
 
-
-
-
-
-/** 提交按钮 */
-function submitForm() {
-  // proxy.$refs["langRef"].validate(valid => {
-  langRef.value?.validate(valid => {
-    if (valid) {
-      if (form.value.langId != null) {
-        updateLang(form.value).then(response => {
-          proxy?.$modal.msgSuccess("修改成功");
-          open.value = false;
-          getList();
-        });
-      } else {
-        addLang(form.value).then(response => {
-          proxy?.$modal.msgSuccess("新增成功");
-          open.value = false;
-          getList();
-        });
-      }
-    }
-  });
-}
-
 /** 删除按钮操作 */
 function handleDelete(row) {
   const _langIds = row.langId || ids.value;
-  proxy?.$modal.confirm('是否确认删除lang编号为"' + _langIds + '"的数据项？').then(function() {
+  proxy?.$modal.confirm(t('SysLang.confirmDeleteRecord1') + _langIds + t('SysLang.confirmDeleteRecord2')).then(function() {
     return delLang(_langIds);
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess("删除成功");
+    proxy.$modal.msgSuccess(t('user.succesDeleted'));
   }).catch(() => {});
 }
 
 /** 清空按钮操作 */
 function handleClean() {
-  proxy?.$modal.confirm("是否确认清空所有操作日志数据项?").then(function () {
+  proxy?.$modal.confirm(t('SysLang.cleanRecord')).then(function () {
     return cleanLangRecord();
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess("清空成功");
+    proxy.$modal.msgSuccess(t('Job.emptySuccess'));
   }).catch(() => {});
 }
 
