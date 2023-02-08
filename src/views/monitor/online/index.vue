@@ -63,8 +63,7 @@
    </div>
 </template>
 
-<script setup lang="ts" nam
-e="Online">
+<script setup lang="ts" name="Online">
 import { forceLogout, list as initData } from "@/api/monitor/online";
 import { ComponentInternalInstance, getCurrentInstance, ref } from "vue";
 import type { ElForm } from "element-plus";
