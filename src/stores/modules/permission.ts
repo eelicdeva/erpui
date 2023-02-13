@@ -74,7 +74,7 @@ const usePermissionStore = defineStore(
         this.routes = (constantMenus as MenuData[]).concat(routes)  
       },
       setDefaultMenus(menus: MenuData[]) {
-        this.defaultMenus = menus;//to-do need to check 
+        this.defaultMenus = (constantMenus as MenuData[]).concat(menus);//to-do need to check 
       },
       setTopbarMenus(menus: MenuData[]) { //resRoutes 
         this.topbarMenus = menus
@@ -97,7 +97,7 @@ const usePermissionStore = defineStore(
             asyncRoutes.forEach((route) => { return router.addRoute(route) }) ;// router: Router, route: dynamicRoutes                       
             this.setRoutes(rewriteRoutes); // rewriteRoutes: constantMenus + rewriteRoutes  
             this.setSidebarMenus(filterMenus(constantMenus,true).concat(sidebarMenus));
-            this.setDefaultMenus(filterMenus(constantMenus).concat(defaultMenus));
+            this.setDefaultMenus(sidebarMenus);
             this.setTopbarMenus(defaultMenus);
             resolve(rewriteRoutes);
           });

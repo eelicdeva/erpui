@@ -145,7 +145,7 @@ const topNav = computed({
     settingsStore.changeSetting({ key: 'topNav', value: val })
     if (!val) {
       appStore.toggleSideBarHide(false);
-      permissionStore.setSidebarMenus(permissionStore.sidebarMenus);//to-do need to check
+      permissionStore.setSidebarMenus(permissionStore.defaultMenus);
     }
   }
 })
@@ -222,11 +222,11 @@ function openSetting() {
 defineExpose({
   openSetting,
   handleThemeStyle,
-  //variables,
+  variables,
   originElementPlus,
-  //axios,
-  //ElLoading, 
-  //ElMessage
+  axios,
+  ElLoading, 
+  ElMessage
 })
 
 //to-do check

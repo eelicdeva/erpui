@@ -98,19 +98,19 @@ const topMenus = computed<TopMenu[]>(() => {
 // 设置子路由
 const childrenMenus = computed(() => {
   let childrenMenus: TopMenu[] = [];
-  menus.value.map((menu) => {
-    for (let item in menu.children) {
-      if (menu.children[item].parentPath === undefined) {
-        if(menu.path === "/") {
-          menu.children[item].path = "/" + menu.children[item].path;
+  menus.value.map(router => {
+    for (let item in router.children) {
+      if (router.children[item].parentPath === undefined) {
+        if(router.path === "/") {
+          router.children[item].path = "/" + router.children[item].path;
         } else {
-          if(!isHttp(menu.children[item].path)) {// ||拼接children path '/system/user'
-            menu.children[item].path = menu.path + "/" + menu.children[item].path;
+          if(!isHttp(router.children[item].path)) {// ||拼接children path '/system/user'
+            router.children[item].path = router.path + "/" + router.children[item].path;
           }
         }
-        menu.children[item].parentPath = menu.path;// set children.parentPath
+        router.children[item].parentPath = router.path;// set children.parentPath
       }
-      childrenMenus.push(menu.children[item]);
+      childrenMenus.push(router.children[item]);
     }
   })
   return (constantMenus as TopMenu[]).concat(childrenMenus as TopMenu[]);
@@ -125,7 +125,7 @@ const activeMenu = computed(() => {
     if (!route.meta.link) {
         appStore.toggleSideBarHide(false);
     }
-  } else { //  if(!route.hasOwnProperty("children"))   to-do route didn't has children
+  } else if (!(route as any).children) {
     activePath = path;
     appStore.toggleSideBarHide(true);
   }

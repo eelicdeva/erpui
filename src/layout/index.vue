@@ -28,9 +28,9 @@ import { computed, onMounted, ref, watchEffect } from 'vue'
  * useSettingStore
  * 
  */
-const settingsStore = useSettingsStore()
+const settingsStore = useSettingsStore();
 const theme = computed(() => settingsStore.theme);
-const sideTheme =  computed(() => settingsStore.sideTheme)
+const sideTheme = computed(() => settingsStore.sideTheme);
 const sidebar = computed(() => useAppStore().sidebar);
 const device = computed(() => useAppStore().device);
 const needTagsView = computed(() => settingsStore.tagsView);
