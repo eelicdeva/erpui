@@ -35,11 +35,46 @@
     <div class="drawer-item">
       <span>{{ $t('settings.loginImage') }}</span>
     </div>
-
     <el-select v-model="backgroundImage" placeholder="Please select" @change="backgroundImageChange">
-      <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-        <span> {{ item.label }} </span>
-        <el-image :src=item.value style="height:32px;float: right" />
+      <el-option label="Background 1" value="src/assets/images/login-background1.jpg">
+        <span> Background 1 </span>
+        <img src="@/assets/images/login-background1.jpg" style="height:32px;float: right" />
+      </el-option>
+      <el-option label="Background 2" value="src/assets/images/login-background2.jpg">
+        <span> Background 2 </span>
+        <img src="@/assets/images/login-background2.jpg" style="height:32px;float: right" />
+      </el-option>
+      <el-option label="Background 3" value="src/assets/images/login-background3.jpg">
+        <span> Background 3 </span>
+        <img src="@/assets/images/login-background3.jpg" style="height:32px;float: right" />
+      </el-option>
+      <el-option label="Background 4" value="src/assets/images/login-background4.jpg">
+        <span> Background 4 </span>
+        <img src="@/assets/images/login-background4.jpg" style="height:32px;float: right" />
+      </el-option>
+      <el-option label="Background 5" value="src/assets/images/login-background5.jpg">
+        <span> Background 5 </span>
+        <img src="@/assets/images/login-background5.jpg" style="height:32px;float: right" />
+      </el-option>
+      <el-option label="Background 6" value="src/assets/images/login-background6.jpg">
+        <span> Background 6 </span>
+        <img src="@/assets/images/login-background6.jpg" style="height:32px;float: right" />
+      </el-option>
+      <el-option label="Background 7" value="src/assets/images/login-background7.jpg">
+        <span> Background 7 </span>
+        <img src="@/assets/images/login-background7.jpg" style="height:32px;float: right" />
+      </el-option>
+      <el-option label="Background 8" value="src/assets/images/login-background8.jpg">
+        <span> Background 8 </span>
+        <img src="@/assets/images/login-background8.jpg" style="height:32px;float: right" />
+      </el-option>
+      <el-option label="Background 9" value="src/assets/images/login-background9.jpg">
+        <span> Background 9 </span>
+        <img src="@/assets/images/login-background9.jpg" style="height:32px;float: right" />
+      </el-option>
+      <el-option label="Background 10" value="src/assets/images/login-background10.jpg">
+        <span> Background 10 </span>
+        <img src="@/assets/images/login-background10.jpg" style="height:32px;float: right" />
       </el-option>
     </el-select>
     <el-divider />
@@ -119,20 +154,6 @@ const permissionStore = usePermissionStore()
 
 const showSettings = ref(false);
 const theme = ref(settingsStore.theme);
-
-const options = ref([ // check-router setting need to definded before stores used.
-  { value: 'src/assets/images/login-background1.jpg', label: 'Background 1' },
-  { value: 'src/assets/images/login-background2.jpg', label: 'Background 2' },
-  { value: 'src/assets/images/login-background3.jpg', label: 'Background 3' },
-  { value: 'src/assets/images/login-background4.jpg', label: 'Background 4' },
-  { value: 'src/assets/images/login-background5.jpg', label: 'Background 5' },
-  { value: 'src/assets/images/login-background6.jpg', label: 'Background 6' },
-  { value: 'src/assets/images/login-background7.jpg', label: 'Background 7' },
-  { value: 'src/assets/images/login-background8.jpg', label: 'Background 8' },
-  { value: 'src/assets/images/login-background9.jpg', label: 'Background 9' },
-  { value: 'src/assets/images/login-background10.jpg', label: 'Background 10' },
-]);
-
 const sideTheme = ref(settingsStore.sideTheme);
 const backgroundImage = ref(settingsStore.backgroundImage);
 const storeSettings = computed(() => settingsStore);

@@ -276,7 +276,7 @@ function handleView(row) {
 /** 删除按钮操作 */
 function handleDelete(row) {
   const operIds = row.operId || ids.value;
-  proxy?.$modal.confirm(t('operLog.confirmDelete') + operIds + ('role.confirmDelete2')).then(function () {
+  proxy?.$modal.confirm(t('operLog.confirmDelete') + operIds + t('role.confirmDelete2')).then(function () {
     return delOperlog(operIds);
   }).then(() => {
     getList();
@@ -289,7 +289,7 @@ function handleClean() {
     return cleanOperlog();
   }).then(() => {
     getList();
-    proxy.$modal.msgSuccess(t('user.emptySuccess'));
+    proxy.$modal.msgSuccess(t('Job.emptySuccess'));
   }).catch(() => {});
 }
 /** 导出按钮操作 */
