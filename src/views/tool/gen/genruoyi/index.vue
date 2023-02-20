@@ -170,7 +170,7 @@
           :name="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
           :key="value"
         >
-          <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;复制</el-link>
+          <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;{{ $t('button.copy') }}</el-link>
           <pre>{{ value }}</pre>
         </el-tab-pane>
       </el-tabs>
@@ -314,7 +314,6 @@ function resetQuery() {
 /** 预览按钮 */
 function handlePreview(row) {
   previewTable(row.tableId).then(response => {
-    console.log(response.data);
     preview.value.data = response.data;
     preview.value.open = true;
     preview.value.activeName = "domain.java";

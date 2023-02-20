@@ -232,7 +232,6 @@ function submitForm() {
     });
 }
 function getFormPromise(form?: any) {
-  console.log(form)
     return new Promise(resolve => {
         form?.validate((res: any) => {
             resolve(res);

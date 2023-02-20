@@ -149,6 +149,15 @@
               link
             ></el-button>
           </el-tooltip>
+          <el-tooltip :content="$t('genTable.formPreview')" placement="top">
+            <el-button
+              type="primary"
+              icon="Document"
+              @click="handlePreviewForm(scope.row)"
+              v-hasPermi="['tool:gen:preview']"
+              link
+            ></el-button>
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
@@ -168,7 +177,7 @@
           :name="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
           :key="value"
         >
-          <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;复制</el-link>
+          <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;{{ $t('button.copy') }}</el-link>
           <pre>{{ value }}</pre>
         </el-tab-pane>
       </el-tabs>
@@ -325,6 +334,12 @@ function handleSelectionChange(selection) {
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
+
+function handlePreviewForm(row) {
+  const tableId = row.tableId || ids.value[0];
+  router.push({ path: "/tool/geni18n-preview/index/" + tableId, query: { pageNum: queryParams.value.pageNum } });
+}
+
 /** 修改按钮操作 */
 function handleEditTable(row) {
   const tableId = row.tableId || ids.value[0];

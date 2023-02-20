@@ -150,9 +150,6 @@
       <el-tab-pane :label="$t('genTable.GenerateInfo')" name="genInfo">
         <gen-info-form ref="genInfo" :info="info" />
       </el-tab-pane>
-      <el-tab-pane label="view" name="view">
-        <view-form></view-form>
-      </el-tab-pane>
     </el-tabs>
     <el-form label-width="100px">
       <div style="text-align: center;margin-left:-100px;margin-top:10px;">
@@ -169,7 +166,6 @@ import { optionselect as getDictOptionselect } from "@/api/system/dict/type";
 import basicInfoForm from "./basicInfoForm.vue";
 import genInfoForm from "./genInfoForm.vue";
 import genChartForm from "./genChartForm.vue";
-import viewForm from "./viewForm.vue";
 import { ComponentInternalInstance, getCurrentInstance, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import useAppStore from "@/stores/modules/app";
@@ -271,7 +267,6 @@ function submitForm() {
   });
 }
 function getFormPromise(form?: any) {
-  console.log(form)
     return new Promise(resolve => {
         form?.validate((res: any) => {
             resolve(res);
