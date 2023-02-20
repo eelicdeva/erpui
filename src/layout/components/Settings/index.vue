@@ -250,8 +250,6 @@ defineExpose({
   ElMessage
 })
 
-//to-do check
-watch(backgroundImage, () => { console.log(backgroundImage.value) })
 </script>
 
 <style lang='scss' scoped>

@@ -558,6 +558,7 @@ export default {
     hasPermi: '请设置操作权限标签值',
     hasRole: '请设置角色权限标签值',
     log: '日志',
+    copy: '复制',
   },
   navbar: {
     personalCenter: '个人中心',
@@ -678,6 +679,7 @@ export default {
    preview: '预览',
    sync: '同步',
    genCode: '生成代码',
+   formPreview: '表单预览',
    msgErrorIndex: '请选择要生成的数据',
    codePreview: '代码预览',
    msgGenSuccess: '成功生成到自定义路径：',
@@ -687,6 +689,7 @@ export default {
    copySuccess: '复制成功',
    confirmDelete1: '是否确认删除表编号为"',
    confirmDelete2: '"的数据项？',
+   selectDict: '请选择字典生成',
   },
   ErpProductDemo: {
     idProductLa: 'id',

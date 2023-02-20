@@ -272,7 +272,6 @@ function handleSelectionChange(selection) {
 }
 /** 详细按钮操作 */
 function handleView(row: Row) {
-  console.log(row);
   open.value = true;
   form.value = row;
 }

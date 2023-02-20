@@ -561,6 +561,7 @@ export default {
     hasPermi: 'Please set the operation permission label value',
     hasRole: 'Please set the role permission label value',
     log: 'Log',
+    copy: 'Copy',
   },
   navbar: {
     personalCenter: 'Personal Center',
@@ -681,6 +682,7 @@ export default {
    preview: 'Preview',
    sync: 'Sync',
    genCode: 'Generate Code',
+   formPreview: 'Form Preview',
    msgErrorIndex: 'Please select the data to generate',
    codePreview: 'Code Preview',
    msgGenSuccess: 'Generated successfully to custom path: ',
@@ -690,6 +692,7 @@ export default {
    copySuccess: 'Copy Successfully',
    confirmDelete1: 'Are you sure to delete the data item whose table number is " ',
    confirmDelete2: ' "？',
+   selectDict: 'Please select dictionary generation',
   },
   ErpProductDemo: {
     idProductLa: 'id',

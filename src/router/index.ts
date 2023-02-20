@@ -307,6 +307,20 @@ export const dynamicRoutes: DynamicRoute[] = [
         meta: { title: '修改生成配置', activeMenu: '/tool/code/genruoyi' }
       }
     ]
+  },
+  {
+    path: '/tool/geni18n-preview',
+    component: Layout,
+    hidden: true,
+    permissions: ['tool:gen:preview'],
+    children: [
+      {
+        path: 'index/:tableId(\\d+)',
+        component: () => import('@/views/tool/gen/geni18n/previewForm.vue'),
+        name: 'GenPreviewi18n',
+        meta: { title: t('genTable.formPreview'), activeMenu: '/tool/code/geni18n' }
+      }
+    ]
   }
 ]
 /**

@@ -563,6 +563,7 @@ export default {
     hasPermi: 'Harap tetapkan nilai label izin operasi',
     hasRole: 'Harap tetapkan nilai label izin peran',
     log: 'Log',
+    copy: 'Salin',
   },
   navbar: {
     personalCenter: 'Pusat Pribadi',
@@ -683,6 +684,7 @@ export default {
    preview: 'Pratinjau',
    sync: 'Sinkronkan',
    genCode: 'Buat Code',
+   formPreview: 'Pratinjau Form',
    msgErrorIndex: 'Pilih data yang akan dihasilkan',
    codePreview: 'Pratinjau Kode',
    msgGenSuccess: 'Dihasilkan dengan sukses ke jalur khusus: ',
@@ -692,6 +694,7 @@ export default {
    copySuccess: 'Berhasil Menyalin',
    confirmDelete1: 'Apakah Anda yakin akan menghapus item data yang nomor tabelnya adalah " ',
    confirmDelete2: ' "？',
+   selectDict: 'Silakan pilih pembuatan dictionary',
   },
   ErpProductDemo: {
     idProductLa: 'id',

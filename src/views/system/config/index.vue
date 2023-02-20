@@ -99,7 +99,7 @@
 
       <el-table v-loading="loading" :data="configList" @selection-change="handleSelectionChange">
          <el-table-column type="selection" width="55" align="center" />
-         <el-table-column :label="$t('parameter.id')" align="center" prop="configId" />
+         <el-table-column :label="$t('config.id')" align="center" prop="configId" />
          <el-table-column :label="$t('config.name')" align="center" prop="configName" :show-overflow-tooltip="true" />
          <el-table-column :label="$t('config.keyName')" align="center" prop="configKey" :show-overflow-tooltip="true" />
          <el-table-column :label="$t('config.key')" align="center" prop="configValue" />
