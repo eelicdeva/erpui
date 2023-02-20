@@ -136,7 +136,7 @@ import useSettingsStore from '@/stores/modules/settings';
 import usePermissionStore from '@/stores/modules/permission';
 import { handleThemeStyle } from '@/utils/theme'
 import i18n from '@/lang/index';
-import { computed, getCurrentInstance, ref, watch } from 'vue';
+import { computed, getCurrentInstance, ref } from 'vue';
 import type { ComponentInternalInstance } from 'vue';
 
 const { t } = i18n.global;
