@@ -68,26 +68,6 @@ function setLayout() {
   settingRef.value?.openSetting();
 }
 
-onMounted(() => { //to-do if TopNav on, do not observer
-  //debugger
-
-  let MutationObserver = window.MutationObserver //  ||window.WebKitMutationObserver || window.MozMutationObserver;
-    let observer = new MutationObserver(() => {
-      let sidebar = document.getElementsByClassName("sidebar-container")[0];
-      let width =  !!sidebar? (sidebar as HTMLDivElement).offsetWidth: 0; // to-do offsetwidth error
-      (document.getElementsByClassName("main-container")[0] as HTMLDivElement).style.marginLeft = `${width}px`;
-    });
-    observer.observe(document.getElementsByClassName("sidebar-container")[0], {
-      attributes: true,
-      characterData: true,
-      childList: true,
-      subtree: true,
-      attributeOldValue: true,
-      characterDataOldValue: true,
-    });
-
-})
-
 </script>
 
 <style lang="scss" scoped>

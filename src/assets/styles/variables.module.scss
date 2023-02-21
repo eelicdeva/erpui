@@ -10,7 +10,7 @@ $panGreen: #30B08F;
 
 // 默认菜单主题风格
 $base-menu-color: #bfcbd9;
-$base-menu-color-active: #409EFF;
+$base-menu-color-active: var(--el-color-primary);
 $base-menu-background: #304156;
 $base-logo-title-color: #ffffff;
 
@@ -42,7 +42,7 @@ $--color-warning: #E6A23C;
 $--color-danger: #F56C6C;
 $--color-info: #909399;
 
-$base-sidebar-width: auto;
+$base-sidebar-width: 250px;
 
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
