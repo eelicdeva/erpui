@@ -21,7 +21,7 @@ const storageSetting =  JSON.parse((localStorage.getItem('layout-setting')) || '
 const useSettingsStore = defineStore(
   'settings',
   {
-    state: (): UseSettingsStore => ({
+    state: () => ({
       backgroundImage: storageSetting.backgroundImage || 'src/assets/images/login-background1.jpg',//string
       dynamicTitle: storageSetting.dynamicTitle === undefined ? dynamicTitle : storageSetting.dynamicTitle, //boolean
       fixedHeader: storageSetting.fixedHeader === undefined ? fixedHeader : storageSetting.fixedHeader, //boolean
@@ -36,11 +36,11 @@ const useSettingsStore = defineStore(
     actions: {
       // ||修改布局设置
       
-      changeSetting(data: { key: string; value: string | boolean}) {
-        // ||{ key: sideTheme, value: theme-light / theme-dark }
+      changeSetting(data: any) {
         const { key, value } = data;
         if (this.hasOwnProperty(key)) {
-          this[key]= value;
+          Reflect.set(this, key, value);
+          // this[key]= value;
         }
       },
       // ||设置网页标题

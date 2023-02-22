@@ -204,6 +204,7 @@ const dynamicTitle = computed({
 function themeChange(val) {
   settingsStore.changeSetting({ key: 'theme', value: val })
   theme.value = val;
+  handleThemeStyle(val);
 }
 
 function handleTheme(val) {
