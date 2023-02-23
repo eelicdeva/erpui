@@ -243,7 +243,6 @@ function handleDelete(){
       columns.value = res.data.rows;
       info.value = res.data.info;
       tables.value = res.data.tables;
-      console.log(res.data.info);
       for (let columns in info.value.columns){
         if(info.value.columns[columns].search){
           isSearch.value = true;

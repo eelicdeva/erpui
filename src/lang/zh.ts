@@ -493,6 +493,7 @@ export default {
     isbnRules3: 'ISBN 只能是数字和“-”',
     bookCategoryRules: '图书分类不能为空',
     authorRules: '作者姓名不能为空',
+    shelfLabelsRules : '位置不能为空',
     synopsisRules : '概要不能为空',
     languageRules : '语言不能为空',
     categoryRules : '类别不能为空',
