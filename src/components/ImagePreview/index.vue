@@ -19,7 +19,7 @@ import { isExternal } from "@/utils/validate";
 import { computed } from "vue";
 
 interface ImagePreviewProps {
-  src: string;
+  src: string | null;
   width?: number | null;
   height?: number | null;
 }
