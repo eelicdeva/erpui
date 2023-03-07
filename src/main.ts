@@ -39,6 +39,8 @@ import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, select
 import Pagination from '@/components/Pagination/index.vue';;
 // custom Table RightToolbar / 自定义表格工具组件
 import RightToolbar from '@/components/RightToolbar/index.vue'
+// 富文本组件
+import Editor from "@/components/Editor/index.vue";
 // custom Table ExtendToolbar / 自定义表格区域隐藏工具组件
 import ExtendToolbar from '@/components/ExtendToolbar/index.vue';
 // 文件上传组件
@@ -73,6 +75,7 @@ app.component('FileUpload', FileUpload);
 app.component('ImageUpload', ImageUpload);
 app.component('ImagePreview', ImagePreview);
 app.component('RightToolbar', RightToolbar);
+app.component('Editor', Editor)
 app.component('ExtendToolbar', ExtendToolbar);
 
 app.use(router);

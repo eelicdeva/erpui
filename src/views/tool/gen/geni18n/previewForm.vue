@@ -153,12 +153,12 @@
             </template>
             <template v-if="columns.htmlType == 'fileUpload' && columns.isInsert == '1' ">
               <el-form-item :label="columns.javaField">
-                <!-- <file-upload"/> -->
+                <file-upload/>
               </el-form-item>
             </template>
             <template v-if="columns.htmlType == 'editor' && columns.isInsert == '1' ">
               <el-form-item :label="columns.javaField">
-                <!-- <editor :min-height="192"/> -->
+                <editor :min-height="192"/>
               </el-form-item>
             </template>
             <template v-if="columns.htmlType == 'checkbox' && columns.isInsert == '1' ">
