@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="12" class="card-box">
         <el-card>
-          <template #header><span>CPU</span></template>
+          <template #header><Cpu style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">CPU</span></template>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <table cellspacing="0" style="width: 100%;">
               <thead>
@@ -37,7 +37,7 @@
 
       <el-col :span="12" class="card-box">
         <el-card>
-          <template #header><span>{{ $t('server.memory') }}</span></template>
+          <template #header><Tickets style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ $t('server.memory') }}</span></template>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <table cellspacing="0" style="width: 100%;">
               <thead>
@@ -76,7 +76,7 @@
 
       <el-col :span="24" class="card-box">
         <el-card>
-          <template #header><span>{{ $t('server.serverInfo') }}</span></template>
+          <template #header><Monitor style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ $t('server.serverInfo') }}</span></template>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <table cellspacing="0" style="width: 100%;">
               <tbody>
@@ -100,7 +100,7 @@
 
       <el-col :span="24" class="card-box">
         <el-card>
-          <template #header><span>{{ $t('server.JVMInfo') }}</span></template>
+          <template #header><CoffeeCup style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ $t('server.JVMInfo') }}</span></template>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <table cellspacing="0" style="width: 100%;table-layout:fixed;">
               <tbody>
@@ -136,7 +136,7 @@
 
       <el-col :span="24" class="card-box">
         <el-card>
-          <template #header><span>{{ $t('server.diskStatus') }}</span></template>
+          <template #header><MessageBox style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ $t('server.diskStatus') }}</span></template>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <table cellspacing="0" style="width: 100%;">
               <thead>

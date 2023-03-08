@@ -4,7 +4,7 @@
       <el-col :span="8">
         <el-card style="height: calc(100vh - 125px)">
           <template #header>
-            <span>{{ $t("Cache.list") }}</span>
+            <Collection style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ $t("Cache.list") }}</span>
             <el-button
               style="float: right; padding: 3px 0"
               type="text"
@@ -61,7 +61,7 @@
       <el-col :span="8">
         <el-card style="height: calc(100vh - 125px)">
           <template #header>
-            <span>{{ $t("Cache.key") }}</span>
+            <Key style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ $t("Cache.key") }}</span>
             <el-button
               style="float: right; padding: 3px 0"
               type="text"
@@ -110,7 +110,7 @@
       <el-col :span="8">
         <el-card :bordered="false" style="height: calc(100vh - 125px)">
           <template #header>
-            <span>{{ $t("Cache.content") }}</span>
+            <Document style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ $t("Cache.content") }}</span>
             <el-button
               style="float: right; padding: 3px 0"
               type="text"

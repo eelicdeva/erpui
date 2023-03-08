@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="24" class="card-box">
         <el-card>
-          <template #header><span>{{ $t("user.BasicInfo") }}</span></template>
+          <template #header><Monitor style = " width: 1em; height: 1em; vertical-align: middle; "/> <span style = " vertical-align: middle; ">{{ $t("user.BasicInfo") }}</span></template>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <table cellspacing="0" style="width: 100%">
               <tbody>
@@ -45,7 +45,7 @@
 
       <el-col :span="12" class="card-box">
         <el-card>
-          <template #header><span>{{ $t("Cache.commandStats") }}</span></template>
+          <template #header><PieChart style = " width: 1em; height: 1em; vertical-align: middle; "/> <span style = " vertical-align: middle; ">{{ $t("Cache.commandStats") }}</span></template>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <div ref="commandstats" style="height: 420px" />
           </div>
@@ -55,7 +55,7 @@
       <el-col :span="12" class="card-box">
         <el-card>
           <template #header>
-            <span>{{ $t("Cache.memoInfo") }}</span>
+            <Odometer  style = " width: 1em; height: 1em; vertical-align: middle; "/> <span  style = " vertical-align: middle; ">{{ $t("Cache.memoInfo") }}</span>
           </template>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <div ref="usedmemory" style="height: 420px" />
