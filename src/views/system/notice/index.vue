@@ -151,12 +151,7 @@
                </el-col>
                <el-col :span="24">
                   <el-form-item :label="$t('notice.content')">
-                     <el-input
-                        :rows="6"
-                        type="textarea"
-                        :placeholder="$t('user.remarkPlaceholder')"
-                        v-model="form.noticeContent"
-                     />
+                     <editor v-model="form.noticeContent" :min-height="192"/>
                   </el-form-item>
                </el-col>
             </el-row>
