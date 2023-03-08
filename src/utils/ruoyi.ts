@@ -291,14 +291,6 @@ export function getNormalPath(p: string ): string {
 
 // 验证是否为blob格式
 
-export const blobValidate = async (data: any )=> {
-  let isBlob = false;
-  try {
-    const text = await data.text();
-    JSON.parse(text);
-    return isBlob;
-  } catch (error) {
-    isBlob = true;
-  }
-    return isBlob;
+export function blobValidate(data) {
+  return data.type !== 'application/json'
 }
