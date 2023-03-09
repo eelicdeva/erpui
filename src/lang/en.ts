@@ -818,7 +818,7 @@ export default {
     clear2: ' ] Successfully',
     refreshKey: 'Refresh the key name list successfully',
     clearKey: 'Clear cache key name [ ',
-    clearAllChaces: 'Cleared all caches successfully',
+    clearAllCaches: 'Cleared all caches successfully',
   },
   Job: {
     name: 'Task Name',
