@@ -37,7 +37,7 @@
          <el-form-item :label="$t('loginInfor.loginTime')" style="width: 308px">
             <el-date-picker
                v-model="dateRange"
-               value-format="YYYY-MM-DD"
+               value-format="YYYY-MM-DD HH:mm:ss"
                type="daterange"
                range-separator="-"
                :start-placeholder="$t('user.startDate')"

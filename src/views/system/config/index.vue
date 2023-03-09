@@ -102,7 +102,7 @@
          <el-table-column :label="$t('config.id')" align="center" prop="configId" />
          <el-table-column :label="$t('config.name')" align="center" prop="configName" :show-overflow-tooltip="true" />
          <el-table-column :label="$t('config.keyName')" align="center" prop="configKey" :show-overflow-tooltip="true" />
-         <el-table-column :label="$t('config.key')" align="center" prop="configValue" />
+         <el-table-column :label="$t('config.key')" align="center" prop="configValue" :show-overflow-tooltip="true" />
          <el-table-column :label="$t('config.type')" align="center" prop="configType">
             <template #default="scope">
                <dict-tag :options="sys_yes_no" :value="scope.row.configType" />

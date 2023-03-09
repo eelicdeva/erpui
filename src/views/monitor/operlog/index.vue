@@ -52,11 +52,12 @@
          <el-form-item :label="$t('operLog.operTime')" style="width: 308px">
             <el-date-picker
                v-model="dateRange"
-               value-format="YYYY-MM-DD"
+               value-format="YYYY-MM-DD HH:mm:ss"
                type="daterange"
                range-separator="-"
                :start-placeholder="$t('user.startDate')"
                :end-placeholder="$t('user.endDate')"
+               :default-time="[new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]"
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
