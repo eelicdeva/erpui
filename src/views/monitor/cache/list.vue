@@ -7,7 +7,8 @@
             <Collection style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ $t("Cache.list") }}</span>
             <el-button
               style="float: right; padding: 3px 0"
-              type="text"
+              link
+              type="primary"
               icon="Refresh"
               @click="refreshCacheNames()"
             ></el-button>
@@ -48,7 +49,8 @@
             >
               <template #default="scope">
                 <el-button
-                  type="text"
+                  link
+                  type="primary"
                   icon="Delete"
                   @click="handleClearCacheName(scope.row)"
                 ></el-button>
@@ -64,7 +66,8 @@
             <Key style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ $t("Cache.key") }}</span>
             <el-button
               style="float: right; padding: 3px 0"
-              type="text"
+              link
+              type="primary"
               icon="Refresh"
               @click="refreshCacheKeys()"
             ></el-button>
@@ -97,7 +100,8 @@
             >
               <template #default="scope">
                 <el-button
-                  type="text"
+                  link
+                  type="primary"
                   icon="Delete"
                   @click="handleClearCacheKey(scope.row)"
                 ></el-button>
@@ -113,7 +117,8 @@
             <Document style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">{{ $t("Cache.content") }}</span>
             <el-button
               style="float: right; padding: 3px 0"
-              type="text"
+              link
+              type="primary"
               icon="Refresh"
               @click="handleClearCacheAll()"
               >{{ $t("Cache.clearAll") }}</el-button
