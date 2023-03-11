@@ -1,28 +1,33 @@
 <template>
-	<div class="popup-result">
-		<p class="title">最近5次运行时间</p>
-		<ul class="popup-result-scroll">
-			<template v-if='isShow'>
-				<li v-for='item in resultList' :key="item">{{item}}</li>
-			</template>
-			<li v-else>计算结果中...</li>
-		</ul>
-	</div>
+    <div class="popup-result">
+        <p class="title">最近5次运行时间</p>
+        <ul class="popup-result-scroll">
+            <template v-if="isShow">
+                <li v-for="item in resultList" :key="item">{{ item }}</li>
+            </template>
+            <li v-else>计算结果中...</li>
+        </ul>
+    </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { onMounted, ref, watch } from 'vue';
+
 const props = defineProps({
     ex: {
         type: String,
-        default: ''
-    }
-})
-const dayRule = ref('')
-const dayRuleSup = ref('')
-const dateArr = ref([])
-const resultList = ref([])
-const isShow = ref(false)
-watch(() => props.ex, () => expressionChange())
+        default: '',
+    },
+});
+const dayRule = ref('');
+const dayRuleSup = ref<any>('');
+const dateArr = ref<any[]>([]);
+const resultList = ref<string[]>([]);
+const isShow = ref(false);
+watch(
+    () => props.ex,
+    () => expressionChange()
+);
 // 表达式值变化时，开始去计算结果
 function expressionChange() {
     // 计算开始-隐藏结果
@@ -32,7 +37,7 @@ function expressionChange() {
     // 用于记录进入循环的次数
     let nums = 0;
     // 用于暂时存符号时间规则结果的数组
-    let resultArr = [];
+    let resultArr: string[] = [];
     // 获取当前时间精确至[年、月、日、时、分、秒]
     let nTime = new Date();
     let nYear = nTime.getFullYear();
@@ -57,37 +62,37 @@ function expressionChange() {
     let MDate = dateArr.value[4];
     let YDate = dateArr.value[5];
     // 获取当前时间在数组中的索引
-    let sIdx = getIndex(sDate, nSecond);
-    let mIdx = getIndex(mDate, nMin);
-    let hIdx = getIndex(hDate, nHour);
-    let DIdx = getIndex(DDate, nDay);
-    let MIdx = getIndex(MDate, nMonth);
-    let YIdx = getIndex(YDate, nYear);
+    let sIdx = getIndex(sDate, nSecond) as number;
+    let mIdx = getIndex(mDate, nMin) as number;
+    let hIdx = getIndex(hDate, nHour) as number;
+    let DIdx = getIndex(DDate, nDay) as number;
+    let MIdx = getIndex(MDate, nMonth) as number;
+    let YIdx = getIndex(YDate, nYear) as number;
     // 重置月日时分秒的函数(后面用的比较多)
     const resetSecond = function () {
         sIdx = 0;
-        nSecond = sDate[sIdx]
-    }
+        nSecond = sDate[sIdx];
+    };
     const resetMin = function () {
         mIdx = 0;
-        nMin = mDate[mIdx]
+        nMin = mDate[mIdx];
         resetSecond();
-    }
+    };
     const resetHour = function () {
         hIdx = 0;
-        nHour = hDate[hIdx]
+        nHour = hDate[hIdx];
         resetMin();
-    }
+    };
     const resetDay = function () {
         DIdx = 0;
-        nDay = DDate[DIdx]
+        nDay = DDate[DIdx];
         resetHour();
-    }
+    };
     const resetMonth = function () {
         MIdx = 0;
-        nMonth = MDate[MIdx]
+        nMonth = MDate[MIdx];
         resetDay();
-    }
+    };
     // 如果当前年份不为数组中当前值
     if (nYear !== YDate[YIdx]) {
         resetMonth();
@@ -149,7 +154,12 @@ function expressionChange() {
                     continue;
                 }
                 // 判断日期的合法性，不合法的话也是跳出当前循环
-                if (checkDate(YY + '-' + MM + '-' + thisDD + ' 00:00:00') !== true && dayRule.value !== 'workDay' && dayRule.value !== 'lastWeek' && dayRule.value !== 'lastDay') {
+                if (
+                    checkDate(YY + '-' + MM + '-' + thisDD + ' 00:00:00') !== true &&
+                    dayRule.value !== 'workDay' &&
+                    dayRule.value !== 'lastWeek' &&
+                    dayRule.value !== 'lastDay'
+                ) {
                     resetDay();
                     continue goMonth;
                 }
@@ -230,14 +240,14 @@ function expressionChange() {
                     if (dayRuleSup.value < thisWeek) {
                         DD -= thisWeek - dayRuleSup.value;
                     } else if (dayRuleSup.value > thisWeek) {
-                        DD -= 7 - (dayRuleSup.value - thisWeek)
+                        DD -= 7 - (dayRuleSup.value - thisWeek);
                     }
                 }
                 // 判断时间值是否小于10置换成“05”这种格式
                 DD = DD < 10 ? '0' + DD : DD;
                 // 循环“时”数组
                 goHour: for (let hi = hIdx; hi < hDate.length; hi++) {
-                    let hh = hDate[hi] < 10 ? '0' + hDate[hi] : hDate[hi]
+                    let hh = hDate[hi] < 10 ? '0' + hDate[hi] : hDate[hi];
                     // 如果到达最大值时
                     if (nMin > mDate[mDate.length - 1]) {
                         resetMin();
@@ -284,7 +294,7 @@ function expressionChange() {
                             let ss = sDate[si] < 10 ? '0' + sDate[si] : sDate[si];
                             // 添加当前时间（时间合法性在日期循环时已经判断）
                             if (MM !== '00' && DD !== '00') {
-                                resultArr.push(YY + '-' + MM + '-' + DD + ' ' + hh + ':' + mm + ':' + ss)
+                                resultArr.push(YY + '-' + MM + '-' + DD + ' ' + hh + ':' + mm + ':' + ss);
                                 nums++;
                             }
                             // 如果条数满了就退出循环
@@ -312,9 +322,9 @@ function expressionChange() {
                             }
                         } //goSecond
                     } //goMin
-                }//goHour
-            }//goDay
-        }//goMonth
+                } //goHour
+            } //goDay
+        } //goMonth
     }
     // 判断100年内的结果条数
     if (resultArr.length === 0) {
@@ -322,14 +332,14 @@ function expressionChange() {
     } else {
         resultList.value = resultArr;
         if (resultArr.length !== 5) {
-            resultList.value.push('最近100年内只有上面' + resultArr.length + '条结果！')
+            resultList.value.push('最近100年内只有上面' + resultArr.length + '条结果！');
         }
     }
     // 计算完成-显示结果
     isShow.value = true;
 }
 // 用于计算某位数字在数组中的索引
-function getIndex(arr, value) {
+function getIndex(arr: number[], value: number) {
     if (value <= arr[0] || value > arr[arr.length - 1]) {
         return 0;
     } else {
@@ -345,11 +355,11 @@ function getYearArr(rule, year) {
     dateArr.value[5] = getOrderArr(year, year + 100);
     if (rule !== undefined) {
         if (rule.indexOf('-') >= 0) {
-            dateArr.value[5] = getCycleArr(rule, year + 100, false)
+            dateArr.value[5] = getCycleArr(rule, year + 100, false);
         } else if (rule.indexOf('/') >= 0) {
-            dateArr.value[5] = getAverageArr(rule, year + 100)
+            dateArr.value[5] = getAverageArr(rule, year + 100);
         } else if (rule !== '*') {
-            dateArr.value[5] = getAssignArr(rule)
+            dateArr.value[5] = getAssignArr(rule);
         }
     }
 }
@@ -357,11 +367,11 @@ function getYearArr(rule, year) {
 function getMonthArr(rule) {
     dateArr.value[4] = getOrderArr(1, 12);
     if (rule.indexOf('-') >= 0) {
-        dateArr.value[4] = getCycleArr(rule, 12, false)
+        dateArr.value[4] = getCycleArr(rule, 12, false);
     } else if (rule.indexOf('/') >= 0) {
-        dateArr.value[4] = getAverageArr(rule, 12)
+        dateArr.value[4] = getAverageArr(rule, 12);
     } else if (rule !== '*') {
-        dateArr.value[4] = getAssignArr(rule)
+        dateArr.value[4] = getAssignArr(rule);
     }
 }
 // 获取"日"数组-主要为日期规则
@@ -370,7 +380,7 @@ function getWeekArr(rule) {
     if (dayRule.value === '' && dayRuleSup.value === '') {
         if (rule.indexOf('-') >= 0) {
             dayRule.value = 'weekDay';
-            dayRuleSup.value = getCycleArr(rule, 7, false)
+            dayRuleSup.value = getCycleArr(rule, 7, false);
         } else if (rule.indexOf('#') >= 0) {
             dayRule.value = 'assWeek';
             let matchRule = rule.match(/[0-9]{1}/g);
@@ -388,7 +398,7 @@ function getWeekArr(rule) {
             }
         } else if (rule !== '*' && rule !== '?') {
             dayRule.value = 'weekDay';
-            dayRuleSup.value = getAssignArr(rule)
+            dayRuleSup.value = getAssignArr(rule);
         }
     }
 }
@@ -398,10 +408,10 @@ function getDayArr(rule) {
     dayRule.value = '';
     dayRuleSup.value = '';
     if (rule.indexOf('-') >= 0) {
-        dateArr.value[3] = getCycleArr(rule, 31, false)
+        dateArr.value[3] = getCycleArr(rule, 31, false);
         dayRuleSup.value = 'null';
     } else if (rule.indexOf('/') >= 0) {
-        dateArr.value[3] = getAverageArr(rule, 31)
+        dateArr.value[3] = getAverageArr(rule, 31);
         dayRuleSup.value = 'null';
     } else if (rule.indexOf('W') >= 0) {
         dayRule.value = 'workDay';
@@ -412,7 +422,7 @@ function getDayArr(rule) {
         dayRuleSup.value = 'null';
         dateArr.value[3] = [31];
     } else if (rule !== '*' && rule !== '?') {
-        dateArr.value[3] = getAssignArr(rule)
+        dateArr.value[3] = getAssignArr(rule);
         dayRuleSup.value = 'null';
     } else if (rule === '*') {
         dayRuleSup.value = 'null';
@@ -422,38 +432,38 @@ function getDayArr(rule) {
 function getHourArr(rule) {
     dateArr.value[2] = getOrderArr(0, 23);
     if (rule.indexOf('-') >= 0) {
-        dateArr.value[2] = getCycleArr(rule, 24, true)
+        dateArr.value[2] = getCycleArr(rule, 24, true);
     } else if (rule.indexOf('/') >= 0) {
-        dateArr.value[2] = getAverageArr(rule, 23)
+        dateArr.value[2] = getAverageArr(rule, 23);
     } else if (rule !== '*') {
-        dateArr.value[2] = getAssignArr(rule)
+        dateArr.value[2] = getAssignArr(rule);
     }
 }
 // 获取"分"数组
 function getMinArr(rule) {
     dateArr.value[1] = getOrderArr(0, 59);
     if (rule.indexOf('-') >= 0) {
-        dateArr.value[1] = getCycleArr(rule, 60, true)
+        dateArr.value[1] = getCycleArr(rule, 60, true);
     } else if (rule.indexOf('/') >= 0) {
-        dateArr.value[1] = getAverageArr(rule, 59)
+        dateArr.value[1] = getAverageArr(rule, 59);
     } else if (rule !== '*') {
-        dateArr.value[1] = getAssignArr(rule)
+        dateArr.value[1] = getAssignArr(rule);
     }
 }
 // 获取"秒"数组
 function getSecondArr(rule) {
     dateArr.value[0] = getOrderArr(0, 59);
     if (rule.indexOf('-') >= 0) {
-        dateArr.value[0] = getCycleArr(rule, 60, true)
+        dateArr.value[0] = getCycleArr(rule, 60, true);
     } else if (rule.indexOf('/') >= 0) {
-        dateArr.value[0] = getAverageArr(rule, 59)
+        dateArr.value[0] = getAverageArr(rule, 59);
     } else if (rule !== '*') {
-        dateArr.value[0] = getAssignArr(rule)
+        dateArr.value[0] = getAssignArr(rule);
     }
 }
 // 根据传进来的min-max返回一个顺序的数组
 function getOrderArr(min, max) {
-    let arr = [];
+    let arr: number[] = [];
     for (let i = min; i <= max; i++) {
         arr.push(i);
     }
@@ -461,17 +471,17 @@ function getOrderArr(min, max) {
 }
 // 根据规则中指定的零散值返回一个数组
 function getAssignArr(rule) {
-    let arr = [];
+    let arr: number[] = [];
     let assiginArr = rule.split(',');
     for (let i = 0; i < assiginArr.length; i++) {
-        arr[i] = Number(assiginArr[i])
+        arr[i] = Number(assiginArr[i]);
     }
-    arr.sort(compare)
+    arr.sort(compare);
     return arr;
 }
 // 根据一定算术规则计算返回一个数组
 function getAverageArr(rule, limit) {
-    let arr = [];
+    let arr: number[] = [];
     let agArr = rule.split('/');
     let min = Number(agArr[0]);
     let step = Number(agArr[1]);
@@ -484,7 +494,7 @@ function getAverageArr(rule, limit) {
 // 根据规则返回一个具有周期性的数组
 function getCycleArr(rule, limit, status) {
     // status--表示是否从0开始（则从1开始）
-    let arr = [];
+    let arr: number[] = [];
     let cycleArr = rule.split('-');
     let min = Number(cycleArr[0]);
     let max = Number(cycleArr[1]);
@@ -496,13 +506,13 @@ function getCycleArr(rule, limit, status) {
         if (status === false && i % limit === 0) {
             add = limit;
         }
-        arr.push(Math.round(i % limit + add))
+        arr.push(Math.round((i % limit) + add));
     }
-    arr.sort(compare)
+    arr.sort(compare);
     return arr;
 }
 // 比较数字大小（用于Array.sort）
-function compare(value1, value2) {
+function compare(value1: number, value2: number) {
     if (value2 - value1 > 0) {
         return -1;
     } else {
@@ -510,8 +520,9 @@ function compare(value1, value2) {
     }
 }
 // 格式化日期格式如：2017-9-19 18:04:33
-function formatDate(value, type) {
+function formatDate(value, type?) {
     // 计算日期相关值
+    // eslint-disable-next-line eqeqeq
     let time = typeof value == 'number' ? new Date(value) : value;
     let Y = time.getFullYear();
     let M = time.getMonth() + 1;
@@ -522,7 +533,19 @@ function formatDate(value, type) {
     let week = time.getDay();
     // 如果传递了type的话
     if (type === undefined) {
-        return Y + '-' + (M < 10 ? '0' + M : M) + '-' + (D < 10 ? '0' + D : D) + ' ' + (h < 10 ? '0' + h : h) + ':' + (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+        return (
+            Y +
+            '-' +
+            (M < 10 ? '0' + M : M) +
+            '-' +
+            (D < 10 ? '0' + D : D) +
+            ' ' +
+            (h < 10 ? '0' + h : h) +
+            ':' +
+            (m < 10 ? '0' + m : m) +
+            ':' +
+            (s < 10 ? '0' + s : s)
+        );
     } else if (type === 'week') {
         // 在quartz中 1为星期日
         return week + 1;
@@ -531,10 +554,10 @@ function formatDate(value, type) {
 // 检查日期是否存在
 function checkDate(value) {
     let time = new Date(value);
-    let format = formatDate(time)
+    let format = formatDate(time);
     return value === format;
 }
 onMounted(() => {
-    expressionChange()
-})
+    expressionChange();
+});
 </script>

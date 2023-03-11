@@ -13,15 +13,15 @@
 
       <div class="center-board">
          <div class="action-bar">
-            <el-button icon="download" type="primary" link @click="download">
+            <el-button icon="download" type="primary" link>
                <!-- 导出vue文件 -->
                export vue file
             </el-button>
-            <el-button class="copy-btn-main" icon="document-copy" type="primary" link @click="copy">
+            <el-button class="copy-btn-main" icon="document-copy" type="primary" link >
                <!-- 复制代码 -->
                copy code
             </el-button>
-            <el-button class="delete-btn" icon="delete" type="primary" link @click="empty">
+            <el-button class="delete-btn" icon="delete" type="primary" link >
                <!-- 清空 -->
                empty
             </el-button>
@@ -34,7 +34,7 @@
 </template>
 
 
-<script>
+<script lang="ts">
 
 import logo from '@/assets/logo/logo.png'
 
